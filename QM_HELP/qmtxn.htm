@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMTxn()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMTxn()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmtxn.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMTxn()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmtrapcallabort.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmweofseq.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMTxn()</span> function starts, commits or aborts a transaction on the server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The function takes a single argument, <span style="font-style: italic;">Mode</span>, as the action to be performed. This may be:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px">1</td><td style="border:none;padding:0">Start a transaction. Equivalent to use of the QMBasic TRANSACTION START statement.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px">2</td><td style="border:none;padding:0">Commit a durable transaction. Equivalent to use of the QMBasic TRANSACTION COMMIT statement.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px">3</td><td style="border:none;padding:0">Abort a transaction. Equivalent to use of the QMBasic TRANSACTION ABORT statement.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px">4</td><td style="border:none;padding:0">Commit a non-durable transaction. Equivalent to use of the QMBasic TRANSACTION COMMIT statement in a program compiled with the NON.DURABLE.TXN setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive.</td></tr></table></div><p style="text-indent: -59px; margin: 10px 0 0 89px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The example program fragments below read two records, apply an update such as transferring funds from one client to the other, and then write both records. By using a transaction, the two updates are applied together. A real program would include error handling.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMTxn(</span><span style="font-style: italic;">Mode</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMTxn(1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec1 = QMReadu(fClients, Client1, TRUE, &amp;Err);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec2 = QMReadu(fClients, Client2, TRUE, &amp;Err);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMWrite(fClients, Client1, Rec1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMWrite(fClients, Client2, Rec2);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMTxn(2);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMFree(Rec);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMFree(Rec2);</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note the use of <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span> to release dynamically allocated memory in this example.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMTxn(</span><span style="font-style: italic;">Mode</span><span style="font-weight: bold;"> as Integer)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMTxn(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec1 = QMReadu(fClients, Client1, True, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec2 = QMReadu(fClients, Client2, True, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMWrite fClients, Client1, Rec1</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;">QMWrite fClients, Client2, Rec2</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;">QMTxn(2)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A3_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A3','TOGGLE0186A3_ICON')">QMBasic</a> Class Module</span></td></tr></table></div><div id="TOGGLE0186A3" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">Txn(</span><span style="font-style: italic;">Mode</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">session-&gt;Txn(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec1 = session-&gt;Readu(fClients, Client1, @true, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec2 = session-&gt;Readu(fClients, Client2, @true, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">session-&gt;Write(fClients, Client1, Rec1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">session-&gt;Write(fClients, Client2, Rec2)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">session-&gt;Txn(2)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A4_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A4','TOGGLE0186A4_ICON')">Java</a></span></td></tr></table></div><div id="TOGGLE0186A4" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">Txn(</span><span style="font-style: italic;">Mode</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">qm.Txn(1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec1 = qm.Readu(fClients, Client1, true);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec2 = qm.Readu(fClients, Client2, true);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">qm.Write(fClients, Client1, Rec1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">qm.Write(fClients, Client2, Rec2);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">qm.Txn(2);</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A5_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A5','TOGGLE0186A5_ICON')">Python</a></span></td></tr></table></div><div id="TOGGLE0186A5" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">Txn(</span><span style="font-style: italic;">Mode</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">qm.Txn(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec1 = qm.Readu(fClients, Client1, true)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec2 = qm.Readu(fClients, Client2, true)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">qm.Write(fClients, Client1, Rec1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">qm.Write(fClients, Client2, Rec2)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">qm.Txn(2)</span></p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A3_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A3\',\'TOGGLE0186A3_ICON\')');
+HMInitToggle('TOGGLE0186A3','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A4_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A4\',\'TOGGLE0186A4_ICON\')');
+HMInitToggle('TOGGLE0186A4','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A5_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A5\',\'TOGGLE0186A5_ICON\')');
+HMInitToggle('TOGGLE0186A5','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

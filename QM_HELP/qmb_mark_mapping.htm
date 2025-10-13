@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MARK.MAPPING</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MARK.MAPPING" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_mark_mapping.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MARK.MAPPING</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_lts.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_mat.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MARK.MAPPING</span> statement determines how field marks are handled when reading or writing from a directory file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 23px;"><span style="font-weight: bold;">MARK.MAPPING</span> <span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-weight: bold;">OFF</span></p>
+<p style="margin: 0 0 10px 23px;"><span style="font-weight: bold;">MARK.MAPPING </span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-weight: bold;">ON</span></p>
+<p style="margin: 0 0 0 22px;"><span style="font-weight: bold;">MARK.MAPPING </span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">expr</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable for a previously opened file.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">evaluates to a number.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Data written to directory files usually has field marks translated to newlines. On reading, the reverse translation is performed to recover the original data. Records storing binary information may contain bytes that appear to be field marks and these will be translated, possibly causing data corruption.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of <span style="font-weight: bold;">MARK.MAPPING </span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-weight: bold;">OFF</span> will suppress this mark mapping process until a subsequent <span style="font-weight: bold;">MARK.MAPPING </span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-weight: bold;">ON</span> statement or the file is closed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MARK.MAPPING </span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">expr</span> format of this statement is equivalent to <span style="font-weight: bold;">MARK.MAPPING </span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-weight: bold;">ON</span> if the value of <span style="font-style: italic;">expr</span> is non-zero and <span style="font-weight: bold;">MARK.MAPPING </span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-weight: bold;">OFF</span> if <span style="font-style: italic;">expr</span> is zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">MARK.MAPPING FILE.VAR, OFF</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">READ REC FROM FILE.VAR, ID ELSE STOP 'NOT FOUND'</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment reads a record with mark translation suppressed.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Masked Decimal Conversion (MD, ML, MR)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Masked decimal conversion (MD, MR)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_md.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Masked Decimal Conversion (MD, ML, MR)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_mc.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_mt.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The masked decimal conversion codes convert a number between its internal and external forms. The formats available provide scaling, currency symbol insertion, thousands separation and a variety of methods for handling negative numbers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Scaling provides a means by which items such as currency values which are usually written as pounds and pence (or dollars and cents) can be handled internally as integer numbers of pence (or cents) for faster and precise calculation. Scaling is performed by specifying the position of an assumed decimal point.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Input conversion allows for some degree of flexibility in the exact format used. For example, any of the negative value representations may be used regardless of the method actually defined in the conversion code.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The three masked decimal conversion codes are</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">MD</span></td><td style="border:none;padding:0">Convert without regard to justification</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">ML</span></td><td style="border:none;padding:0">Left justify the converted result</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">MR</span></td><td style="border:none;padding:0">Right justify the converted result</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The full format of this conversion code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ML</span> <span style="font-style: italic;">n</span> {<span style="font-style: italic;">f</span>} {<span style="font-weight: bold;">,</span>} {<span style="font-style: italic;">$</span>} {<span style="font-style: italic;">s</span>} &nbsp;{<span style="font-weight: bold;">[</span><span style="font-style: italic;">intl</span><span style="font-weight: bold;">]</span>} {<span style="font-weight: bold;">P</span>} {<span style="font-weight: bold;">Z</span>} {<span style="font-weight: bold;">T</span>} {<span style="font-style: italic;">x</span>{<span style="font-style: italic;">c</span>}} {<span style="font-style: italic;">fx</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">is a digit in the range 0 to 9 specifying the number of digits to appear to the right of the decimal point. Rounding occurs on output conversion in the fractional part and, if the result is an integer, the decimal point does not appear.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">f</span></td><td style="border:none;padding:0">is a digit in the range 0 to 9 specifying the position of the implied decimal point in the data to be converted. For example, if the value supplied to an output conversion is 12345 and <span style="font-style: italic;">f</span> is 2, the result is 123.45. Conversely, if the value supplied to an input conversion is 123.45 and <span style="font-style: italic;">f</span> is 2, the result is 12345. If omitted, <span style="font-style: italic;">f</span> defaults to the same value as <span style="font-style: italic;">n</span>.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">,</span></td><td style="border:none;padding:0">specifies that the national language convention thousands separator is to be inserted between every third digit to the left of the decimal point. The default delimiter is a comma but this may be changed by use of the <span style="font-weight: bold;"><a href="nls.htm" class="topiclink">NLS</a> </span>command or the <span style="font-weight: bold;"><a href="qmb_setnls.htm" class="topiclink">SETNLS</a> </span>QMBasic statement.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">$</span></td><td style="border:none;padding:0">specifies that the national currency symbol should be used as a prefix to the converted data on output conversion and may be present on input conversion. The default currency symbol is a dollar sign but this may be changed by use of the <span style="font-weight: bold;"><a href="nls.htm" class="topiclink">NLS</a> </span>command or the <span style="font-weight: bold;"><a href="qmb_setnls.htm" class="topiclink">SETNLS</a> </span>QMBasic statement.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">s</span></td><td style="border:none;padding:0">specifies the handling of the numeric sign of the value.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">+</td><td style="border:none;padding:0">places a + or - sign to the right of the converted data.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">-</td><td style="border:none;padding:0">places a - sign to the right of negative values or a space to the right of positive values.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">(</span></td><td style="border:none;padding:0">encloses negative values in round brackets. A positive value has a space placed to its right. &nbsp;This element is not allowed when the PICK.ML.CONV.MASK mode of the  <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command is in effect.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">&lt;</span></td><td style="border:none;padding:0">encloses negative values in angle brackets. A positive value has a space placed to its right.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">C</span></td><td style="border:none;padding:0">places the letters cr to the right of negative values or two spaces to the right of positive values. Use the <span style="font-weight: bold;">CRDB.UPCASE</span> keyword of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command to change this to CR<span style="font-family: Arial,Helvetica,sans-serif;">.</span></td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">D</span></td><td style="border:none;padding:0">places the letters db to the right of negative values or two spaces to the right of positive values. Use the <span style="font-weight: bold;">CRDB.UPCASE</span> keyword of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command to change this to DB. Note that this qualifier is implemented inconsistently across different multivalue products. QM follows the Prime Information semantics. Most other products apply the db suffix to positive values.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 90px;">Input conversion accepts any of these representations of a negative value regardless of the actual conversion code used.</p>
+<p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">[</span><span style="font-style: italic;">intl</span><span style="font-weight: bold;">]</span></td><td style="border:none;padding:0">specifies alternative international handling of currency symbols and separators. <span style="font-style: italic;">intl</span> consists of up to four comma separated items which specify the prefix, thousands separator, decimal separator and suffix to be applied to the converted value. These components should be quoted if there is any potential confusion.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">P</span></td><td style="border:none;padding:0">specifies that no scaling is to be performed if the supplied data already has a decimal point.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">Z</span></td><td style="border:none;padding:0">specifies that a zero value should be represented by a null string on output conversion. This option is ignored on input conversion.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">T</span></td><td style="border:none;padding:0">specifies that trailing decimal places should be truncated rather than rounded. This option is ignored on input conversion.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">x</span>{<span style="font-style: italic;">c</span>}</td><td style="border:none;padding:0">specifies that the result of an output conversion is to be a field of <span style="font-style: italic;">x</span> characters, left or right justified as specified by use of ML or MR. If the converted data is longer than <span style="font-style: italic;">x</span> characters it will be truncated to fit. If it is less than <span style="font-style: italic;">x</span> characters it is padded using character <span style="font-style: italic;">c</span> or spaces if <span style="font-style: italic;">c</span> is not specified. The value of <span style="font-style: italic;">x</span> may be one or two digits.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"></td><td style="border:none;padding:0">On input conversion, the value of <span style="font-style: italic;">x</span> is ignored and all occurrences of character <span style="font-style: italic;">c</span>, or spaces if <span style="font-style: italic;">c</span> is not specified, within the data are ignored.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">fx</span></td><td style="border:none;padding:0">is an alternative style of padding specification. It cannot be used with <span style="font-style: italic;">x</span>{<span style="font-style: italic;">c</span>}.</td></tr></table></div><p style="margin: 0 0 0 120px;"><span style="font-style: italic;">f</span> specifies the padding character to be used; * for asterisk, # for space, % for zero.</p>
+<p style="margin: 0 0 0 120px;"><span style="font-style: italic;">x</span> specifies the field width.</p>
+<p style="margin: 10px 0 0 90px;">The <span style="font-style: italic;">fx</span> element may be a complete mask as used in  <a href="fmt_spec.htm" class="topiclink">format specifications</a> (e.g. #3-#4). For compatibility with Pick style systems, when the PICK.ML.CONV.MASK mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command is in effect, the <span style="font-style: italic;">fx</span> element of ML and MR conversions may be enclosed in round brackets.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Masked Decimal Output Conversion</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the input data is a null string, the ML and MR codes normally treat this as zero and return an appropriately formatted conversion of the number zero. If the PICK.NULL mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command is active, a null string will be returned.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following table sets out a variety of combinations of masked decimal output conversion features.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">Value</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">Conversion</span></p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">0</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'0'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">0</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0Z</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">''</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:831px; padding:4px; border:none"><p style="page-break-inside: avoid;">Sign handling</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0+</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678+'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0+</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678-'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0-</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678 '</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0-</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678-'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0&lt;</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">' 12345678 '</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0&lt;</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'&lt;12345678&gt;'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0(</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">' 12345678 '</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0(</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'(12345678)'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0C</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678 &nbsp;'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0C</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678CR'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0D</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678 &nbsp;'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0D</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678DB'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:831px; padding:4px; border:none"><p style="page-break-inside: avoid;">Scale factors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD22</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'123456.78'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">1234567.89</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD22</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345.68'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD22</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-123456.78'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD02</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'123457'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD02T</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'123456'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:831px; padding:4px; border:none"><p style="page-break-inside: avoid;">Thousands separators and currency symbols</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">1234567</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0,</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'1,234,567'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD2,$</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'$123,456.78'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:831px; padding:4px; border:none"><p style="page-break-inside: avoid;">Left justification and padding</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">0</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML004*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'0***'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML0010*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678**'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML0+12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678+***'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML0+12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678-***'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML0-12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678 ***'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML0(12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678 ***'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML0(12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'(12345678)**'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML0C12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678 &nbsp;**'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;">ML0C12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678CR**'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:831px; padding:4px; border:none"><p style="page-break-after: avoid;">Right justification and padding</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR004*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'***0'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR0010*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'**12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR0+12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'***12345678+'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR0+12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'***12345678-'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR0-12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'***12345678 '</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR0(12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'***12345678 '</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR0(12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'**(12345678)'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR0C12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'**12345678 &nbsp;'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>-12345678</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>MR0C12*</p>
+</td>
+<td style="vertical-align:top; width:555px; padding:4px; border:none"><p>'**12345678CR'</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Masked Decimal Input Conversion Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The behaviour of a masked decimal input conversion with invalid data provides close compatibility with other multivalue products but may not be exactly identical as there is some variation. The MD code will return a null string as its result. The ML and MR codes return the converted form of the leading numeric part of the data, ignoring any further characters. If there is no leading numeric part, the original data is returned unconverted. The QMBasic <span style="font-weight: bold;"><a href="qmb_iconv.htm" class="topiclink">ICONV()</a></span> function will return a status code of 1 when attempting to convert invalid data with the MD, ML and MR codes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following table sets out a variety of combinations of masked decimal conversion features.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">Value</span></p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">Conversion</span></p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">''</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">''</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'0'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'0'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:831px; padding:4px; border:none"><p style="page-break-inside: avoid;">Sign handling</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-12345678'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678-'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'&lt;12345678&gt;'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'(12345678)'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678CR'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678DB'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'-12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:831px; padding:4px; border:none"><p style="page-break-inside: avoid;">Scale factors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'123456.78'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD2</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'123456.78'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD23</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'1234567.8'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:831px; padding:4px; border:none"><p style="page-break-inside: avoid;">Currency symbols and thousands separators</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12,345'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD0,</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p style="page-break-inside: avoid;">'$123,456.78'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p style="page-break-inside: avoid;">MD2,$</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p style="page-break-inside: avoid;">'12345678'</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>'($123456.78)'</p>
+</td>
+<td style="vertical-align:top; width:145px; padding:4px; border:none"><p>MD22$(</p>
+</td>
+<td style="vertical-align:top; width:553px; padding:4px; border:none"><p>'-12345678'</p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+</body>
+</html>

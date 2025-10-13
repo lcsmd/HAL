@@ -1,0 +1,19 @@
+     OPEN 'RULES' TO RULES ELSE PRINT 'RULES';STOP
+     OPEN 'RULES3' TO RULES3 ELSE PRINT 'RULES3';STOP
+     SELECT RULES
+     LOOP
+     WHILE READNEXT RULE.ID DO
+          READ RBUFF FROM RULES,RULE.ID THEN
+               INS "" BEFORE RBUFF<1>
+               RBUFF<2> = CHANGE(RBUFF<2>,"D=","")
+               *IF INDEX(RBUFF<2>,"=",1) THEN DELETE RULE,RULE.ID
+               RBUFF<3> = CHANGE(RBUFF<3>,"C:","")
+               IF INDEX(RBUFF<3>,"N:",1) THEN
+                    RBUFF<3> = CHANGE(RBUFF<3>,"N:","")
+                    RBUFF<1> = RBUFF<2>
+                    RBUFF<2> = RBUFF<3>
+               END
+          END
+          WRITE RBUFF ON RULES3,RULE.ID
+     REPEAT
+

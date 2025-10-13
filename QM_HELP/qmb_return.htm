@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>RETURN</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="RETURN,RETURN FROM PROGRAM,RETURN TO" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_return.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">RETURN</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_restricted.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_reuse.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RETURN</span> statement returns from an internal subroutine entered by <span style="font-weight: bold;">GOSUB</span> or an external subroutine entered by <span style="font-weight: bold;">CALL</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">RETURN </span>{<span style="font-style: italic;">expr</span>}</p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">RETURN</span> <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">label</span>{<span style="font-weight: bold;">:</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">RETURN FROM PROGRAM</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">label</span></td><td style="border:none;padding:0">is a label in the same program or subroutine as the <span style="font-weight: bold;">RETURN</span> statement.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">is the value to be returned from a user written function.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RETURN</span> statement returns from the most recent <span style="font-weight: bold;"><a href="qmb_gosub.htm" class="topiclink">GOSUB</a></span> or <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span> statement. Thus the same <span style="font-weight: bold;">RETURN</span> statement could leave either an internal or catalogued subroutine.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RETURN </span><span style="font-style: italic;">expr</span> form of the <span style="font-weight: bold;">RETURN</span> statement is only valid in a <span style="font-weight: bold;"><a href="qmb_function.htm" class="topiclink">FUNCTION</a></span> and returns <span style="font-style: italic;">expr</span> as the result of the function. If the function returns to its caller using a simple <span style="font-weight: bold;">RETURN</span> statement with no <span style="font-style: italic;">expr</span>, a null string is returned.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">label</span> clause causes return from a <span style="font-weight: bold;"><a href="qmb_gosub.htm" class="topiclink">GOSUB</a></span> to continue execution at the given label rather than at the statement following the <span style="font-weight: bold;"><a href="qmb_gosub.htm" class="topiclink">GOSUB</a></span>. This clause is ignored when returning from a <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span>. Excessive use of <span style="font-weight: bold;">RETURN TO</span> can lead to programs that are extremely difficult to maintain.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Sometimes a subroutine needs to return to the calling routine but it is not known how many internal subroutines may be active (e.g. in error paths). The standard way to achieve this in all multivalue database products is with a statement of the form</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">ERROR.LABEL: &nbsp;RETURN TO ERROR.LABEL</span></p>
+<p>This slightly strange construct will cause all internal subroutines to return to the <span style="font-weight: bold;">RETURN</span> statement and then return to the calling program. This is different from <span style="font-weight: bold;"><a href="qmb_stop.htm" class="topiclink">STOP</a></span> which would also terminate the current sentence.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMBasic provides a rather more readable (and marginally faster) method by using</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">RETURN FROM PROGRAM</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SUBROUTINE PRINT.REPORT(ID)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">statements</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">RETURN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This skeleton subroutine performs its task and then returns to its caller.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FUNCTION MATMAX(MAT A)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; MAX = A(1)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; N = INMAT(A)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; FOR I = 1 TO N</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;IF A(I) &gt; MAX THEN MAX = A(I)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NEXT I</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RETURN MAX</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p> &nbsp; </p>
+<p>This function scans a one dimensional matrix and passes back the value of the largest element.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+<span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span>, <span style="font-weight: bold;"><a href="qmb_gosub.htm" class="topiclink">GOSUB</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

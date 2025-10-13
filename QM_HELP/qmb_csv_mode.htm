@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>CSV.MODE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CSV.MODE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_csv_mode.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">CSV.MODE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_csvdq.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_data.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CSV.MODE</span> statement sets the conversion mode for CSV (comma separated variable) construction.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CSV.MODE </span><span style="font-style: italic;">mode</span> {<span style="font-weight: bold;">,</span><span style="font-style: italic; font-weight: bold;"> </span><span style="font-style: italic;">delim</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">mode</span></td><td style="border:none;padding:0">is the desired mode value.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">delim</span></td><td style="border:none;padding:0">is the delimiter to appear between items. If omitted or a null string, this defaults to a comma. If more than one character in length, only the first character is used.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The CSV mode setting determines the quoting rules and delimiter applied by the <span style="font-weight: bold;"><a href="qmb_formcsv.htm" class="topiclink">FORMCSV()</a></span>, <span style="font-weight: bold;"><a href="qmb_printcsv.htm" class="topiclink">PRINTCSV</a></span> and <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span> operations.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Three modes of conversion are supported:</p>
+<p style="text-indent: 0; padding-left: 20px; margin: 6px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">1.</span>Output conforms to the CSV format specification (RFC 4180). Items containing double quotes or the delimiter character are enclosed in double quotes with embedded double quotes replace by two adjacent double quotes. </p><p style="text-indent: 0; padding-left: 20px; margin: 6px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">2.</span>Encloses all non-null values in double quotes except for numeric items that do not contain a comma. Embedded double quotes are replaced by two adjacent double quotes.</p><p style="text-indent: 0; padding-left: 20px; margin: 6px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">3.</span>Encloses all values in double quotes. Embedded double quotes are replaced by two adjacent double quotes.</p><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Mode 1 is used by default.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The optional <span style="font-style: italic;">delim</span> component of this statement sets the delimiter character to be used, defaulting to a comma. </p>
+<p class="p_Normal">&nbsp;</p>
+<p>Any change to the mode or delimiter persists through subroutine calls. If changed within a subroutine, the previous value is restored on return. Use of <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> to enter a new command processor level will reset the mode and delimiter to their default states. The previous mode and delimiter will be restored on return from the executed command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An application can find the current CSV mode and delimiter by using the <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key values 1043 (SYS$CSV.MODE) and 1046 (SYS$CSV.DELIM) respectively.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = 'ABC':@FM:'123':@FM:'A&quot;B':@FM:'A,B'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CSV.MODE 1 &nbsp;; DISPLAY FORMCSV(S)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CSV.MODE 2 &nbsp;; DISPLAY FORMCSV(S)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CSV.MODE 3 &nbsp;; DISPLAY FORMCSV(S)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment would display</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ABC,123,&quot;A&quot;&quot;B&quot;,&quot;A,B&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">&quot;ABC&quot;,123,&quot;A&quot;&quot;B&quot;,&quot;A,B&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">&quot;ABC&quot;,&quot;123&quot;,&quot;A&quot;&quot;B&quot;,&quot;A,B&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CSV.MODE 1, '*' &nbsp;; PRINTCSV 'ABC', 'DEF', 'GHI'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment would display</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ABC*DEF*GHI</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_formcsv.htm" class="topiclink">FORMCSV()</a></span>, <span style="font-weight: bold;"><a href="qmb_readcsv.htm" class="topiclink">READCSV</a></span>, <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

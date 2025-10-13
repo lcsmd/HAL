@@ -1,0 +1,3602 @@
+      COM P.HIST,EMPTY,PRODUCT,DET,PROG.ACTION,ORDNO,ORIG.DET,PROGRAM,HREC
+      COM CREC,DISCOUNT,CATEGORY,XX,DREC,BILL,SMAN,CONTROL,SCREENS,CUST
+      COM SCR,SCR.HDR,QUOTE.F,CUSTNO,INVENTORY,INTLS,INVNO,SCRD,SCRDB
+      !
+      $INCLUDE UTLSBP ASSIGN.VAR
+      $INCLUDE ASSIGN.VAR.PTR
+      !
+      F = ''
+      OPEN 'BRANCH' TO BRANCH ELSE F = F:',BRANCH'
+      OPEN 'SHIPTO.FIND' TO F.SHIPTO.FIND ELSE F=F:', SHIPTO.FIND'
+      OPEN 'CUSTOMER' TO CUST ELSE F = F:',CUST'
+      OPEN 'SHIP.VIA' TO SHIP.VIA ELSE F = F:',SHIP.VIA'
+      OPEN 'SCREENS' TO SCREENS ELSE F = F:',SCREENS'
+      OPEN 'TAX' TO TAX ELSE F = F:',TAX'
+      OPEN 'CUST.AR' TO CUST.AR ELSE F = F:',CUST.AR'
+      OPEN 'ORDER.HOLD' TO ORDHOLD ELSE F = F:',ORDER.HOLD'
+      OPEN 'OD' TO OD ELSE F = F:',OD'
+      OPEN 'INVENTORY' TO INVENTORY ELSE F = F:',INVENTORY'
+      OPEN 'PRODUCT' TO PRODUCT ELSE F = F:',PRODUCT'
+      OPEN 'ORDER.TYPE' TO ORDER.TYPE ELSE F = F:',ORDER.TYPE'
+      OPEN 'CONTROL' TO CONTROL ELSE F = F:',CONTROL'
+      OPEN 'CUST.PO' TO CUST.PO ELSE F = F:',CUST.PO'
+      OPEN 'JOB' TO F.JOB ELSE F = F:',JOB'
+      OPEN 'CUST.PO.CONTROL' TO CUST.PO.CONTROL ELSE F = F:',CUST.PO.CONTROL'
+      OPEN 'DAILY.ORD' TO DAILY.ORD ELSE F = F:',DAILY.ORD'
+      OPEN 'OPEN.ORDERS' TO OPEN.ORD ELSE F = F:',OPEN.ORDERS'
+      OPEN 'PICKING' TO PICKING ELSE F = F:',PICKING'
+      OPEN 'SALESMAN' TO SMAN ELSE F = F:',SALESMAN'
+      OPEN 'OH' TO OH ELSE F = F:',OH'
+      OPEN 'SHIPTO' TO SHIPTOFILE ELSE F = F:',SHIPTO'
+      OPEN 'CUST.OPEN.ORD.XREF' TO CUST.OPEN.ORD.XREF ELSE F = F:',CUST.OPEN.ORD.XREF'
+      OPEN 'CUST.CLOSED.ORD.XREF' TO CUST.CLOSED.ORD.XREF ELSE F = F:',CUST.CLOSED.ORD.XREF'
+      OPEN 'TERMS' TO TERMS ELSE F = F:',TERMS'
+      OPEN 'BO.PICKING' TO BO.PICK ELSE F = F:',BO.PICKING'
+      OPEN 'ALPHA.XREF' TO AX ELSE F = F:',ALPHA.XREF'
+      OPEN 'PRICE.QUOTE' TO F.PRICE.QUOTE ELSE F = F:',PRICE.QUOTE'
+      OPEN 'PRICE.QUOTE.X' TO F.PRICE.QUOTE.X ELSE F = F:',PRICE.QUOTE.X'
+      OPEN 'PO' TO PO.F ELSE F = F:',PO'
+      OPEN 'PROD.POINTER' TO F.PROD.POINTER ELSE F = F:',PROD.POINTER'
+      OPEN 'OPEN-ITEMS' TO OI.F ELSE F = F:',OPEN-ITEMS'
+      OPEN 'CUST.CATEGORY' TO F.CUST.CATEGORY ELSE F = F:',CUST.CATEGORY'
+      OPEN 'GENPO' TO F.GENPO ELSE F = F:',GENPO'
+      OPEN 'VM.PO.XREF' TO F.VM.PO.XREF ELSE F = F:',VM.PO.XREF'
+      OPEN 'VM' TO F.VM ELSE F = F:',VM'
+      OPEN 'POINTER-FILE' TO POINTER.FILE ELSE F = F:',POINTER-FILE'
+      OPEN 'MASTER' TO MASTER ELSE F = F:',MASTER'
+      OPEN 'DELETED.INVOICE' TO DELETED.INVOICE ELSE F = F:', DELETED.INVOICE'
+      OPEN 'POS' TO F.POS ELSE F = F:', POS'
+      OPEN 'INV.MON.X' TO INV.MON.X ELSE F = F:', INV.MON.X'
+      OPEN 'FASTRACK' TO F.FASTRACK ELSE F = F:', FASTRACK'
+      OPEN 'TRUCK.SCHED' TO F.TRUCK.SCHED ELSE F = F:', TRUCK'
+      OPEN 'CONTACTS' TO F.CONTACTS ELSE F = F:', CONTACTS'
+      !
+      IF F # '' THEN PRINT FILE.ERRORS:F:BCK: ; INPUT NL,1: ; STOP
+      !
+      SHIP = '' ; INVNO = '' ; MBRANCH = '' ; QUOTE=''
+      READV EDOCS FROM CONTROL, 'IMAGE.MODULE.ACTIVE', 1 ELSE EDOCS = ''
+      READ CHANGE.SLMN.CORR.ONLY FROM CONTROL,'CHANGE.SLMN.OECORR' ELSE CHANGE.SLMN.CORR.ONLY = 'N'
+      SHOW.FULL.SHIPTO.NAME = OCONV('SHOW.FULL.SHIPTO.NAME','TCONTROL;X;1;1')
+      SHIPTO.SBY = OCONV('SHIPTO.MAINT.SORT.BY.NAME','TCONTROL;X;1;1')
+      UP.SALES.TAX = OCONV('UP.SALES.TAX','TCONTROL;X;1;1')
+      READ DEF FROM CONTROL,'FOB' ELSE DEF = ''
+      READV DISPL.SHIPTO.ADDR2 FROM CONTROL,'DISPL.SHIPTO.ADDR2',1 ELSE DISPL.SHIPTO.ADDR2=''
+      READV DISPL.SHIPTO.CONTACT FROM CONTROL,'DISPL.SHIPTO.CONTACT',1 ELSE DISPL.SHIPTO.CONTACT = 'N'
+      READV SUP.COMP.HDR FROM CONTROL,'SUP.COMP.HDR',1 ELSE SUP.COMP.HDR=''
+      READV DFLT.SHIP.DATE FROM CONTROL, 'DEFAULT.SO.SHIP.DATE', 1 ELSE DFLT.SHIP.DATE = 'N'
+      READV RSIT FROM CONTROL, 'ROUTE.SCHEDULE.INCLUDE.TODAY', 1 ELSE RSIT = 'N'
+      READ DFLT.SHIPTO.COMPANY FROM CONTROL,"DFLT.SHIPTO.COMPANY" ELSE DFLT.SHIPTO.COMPANY = ""
+      READ RTBYPASS FROM CONTROL,'ROUTE.BYPASS' THEN
+         BYPASS.TIME = ICONV(RTBYPASS<1>,'MT')
+      END ELSE
+         BYPASS.TIME = ''
+      END
+      !
+      READ ARDAYS FROM CONTROL, 'OEH.AR.DAYS' ELSE ARDAYS = ''
+      IF ARDAYS = '' THEN ARDAYS = 30
+      !
+      READ WHSE.B FROM CONTROL, 'WAREHOUSE' ELSE
+         PRINT C22:BELL:'CONTROL WAREHOUSE Record Missing, <RET>...':
+         INPUT NL
+         STOP
+      END
+      DSWH = ''
+      REFRESH.SCR=''
+      ORIG.SHIPTO=''
+      SHIPTO=''
+      LAST.STATION.ORDNO = ''
+      CUST.CONTACTS = ''
+      LOCATE 'Y' IN WHSE.B<9> SETTING WHVL THEN DSWH = WHSE.B<1,WHVL>
+      CALL USERINFO (CONTROL, ONAME, OPER, ULEVEL, INTLS, '')
+      INPUT PROGRAM
+25:   !
+      !
+      READ USERS.B FROM MASTER, 'SYSTEM.USERS' ELSE
+         PRINT C22:BELL:'MASTER SYSTEM.USERS Record Missing, Hit RETURN...': ; INPUT NL,1: ; STOP
+      END
+      !
+      !
+      ! CHECK FOR VALID ACCESS LEVEL
+      !
+      IF PROGRAM[1,3] # 'INQ' THEN
+         IF PROGRAM = 'OE' THEN
+            PATH = 'SALES ORDER ENTRY'
+         END ELSE PATH = 'SALES ORDER CORRECTION'
+         CALL ACCESS.SUB (CONTROL, PATH, VALID, '')
+         IF NOT(VALID) THEN
+            IF PROGRAM = 'OC' THEN PROGRAM = 'OE' ; GO 25
+            STOP
+         END
+      END
+      READ SCR.B FROM SCREENS, 'OEH' ELSE
+         PRINT C22:BELL:'SCREENS OEH MISSING, <RET>...':
+         INPUT NL
+         STOP
+      END
+      READ SCRD.B FROM SCREENS, 'OED.TOP' ELSE
+         PRINT C22:BELL:'SCREENS OED.TOP MISSING, <RET>...':
+         INPUT NL,1:_
+         STOP
+      END
+      READ SCRDB.B FROM SCREENS, 'OED.BOTTOM' ELSE
+         PRINT C22:BELL:'SCREENS OED.BOTTOM MISSING, <RET>...':
+         INPUT NL,1:_
+         STOP
+      END
+      READ SCRF.B FROM SCREENS, 'OEH.FINAL' ELSE
+         PRINT C22:BELL:'SCREENS OEH.FINAL MISSING, <RET>...':
+         INPUT NL,1:_
+         STOP
+      END
+      READ COMP.B FROM CONTROL, 'COMPANY' ELSE COMP.B = ''
+      USEQPCK = COMP.B<38>
+      MINGP = COMP.B<13>
+      SOREVSYS=COMP.B<16>
+      DFLTBR = COMP.B<19>
+      BRANCH.AR = COMP.B<217>
+      DFLTSP = COMP.B<26>
+      CPO.VERIFY = COMP.B<123>
+      SKIP.SHIPTO = COMP.B<122>
+      SBYBIN = COMP.B<39>
+      FAST.CUST=COMP.B<73>
+      RECORD.SHIPTO=COMP.B<78>
+      IF SBYBIN='Y' THEN SBYBIN='S'
+      CRHLDV = COMP.B<40>
+      SEEAR = COMP.B<41>
+      DFLTENTBY = COMP.B<52>
+      CASHSALE = COMP.B<62>
+      MANSONO = COMP.B<64>
+      DFLT.SHIP.BILL.ONLY = COMP.B<89>
+      WRITER.AS.SALESMAN = COMP.B<163>
+      MAND.ORDER.TYPE = COMP.B<179>
+      MAND.SHIP.VIA = COMP.B<180>
+      MAND.SHIP.DATE = COMP.B<181>
+      RED.ALERT.SETUP = COMP.B<191>
+      FORCE.WHSE.ENTRY = COMP.B<204>
+      CANADA = COMP.B<227>
+      MULT.SHIPMENTS = COMP.B<228>
+      VAL.JOB.NUM = COMP.B<235>
+      LARGE.ORDER.VALUE = COMP.B<245>
+      IF LARGE.ORDER.VALUE = '' THEN LARGE.ORDER.VALUE = 300000
+      IF COMP.B<20> = 'A' THEN JSTF = 'L%7' ELSE JSTF = 'R%7'
+      READV SBD FROM CONTROL, 'STATION.BRANCH.DEFAULT', (PORT+1) ELSE SBD = ''
+      IF SBD = '' THEN SBD = DFLTBR
+      !
+      DEMAND.SCR.FLG = ''
+      EOF = FALSE ; CATEGORY = ''
+      DISP.CYCLE = ""
+      SELECT F.CUST.CATEGORY
+      LOOP
+         READNEXT ID THEN
+            LOCATE ID IN CATEGORY<1> BY 'AL' SETTING VM ELSE
+               INS ID BEFORE CATEGORY<1,VM>
+            END
+         END ELSE EOF = TRUE
+      UNTIL EOF DO REPEAT
+      !
+      SELECT SMAN
+      READLIST SLMLIST ELSE SLMLIST = ''
+      SLMLIST = CHANGE(SLMLIST,IAMC,IVM)
+      FOR I = 1 TO DCOUNT(SLMLIST<1>,IVM)
+         READV SLM.INTLS FROM SMAN, SLMLIST<1,I>, 34 THEN
+            SLMLIST<2,I> = SLM.INTLS
+         END
+      NEXT I
+      !
+      SELECT F.JOB
+      *     EXECUTE 'SELECT JOB BY DESCR' CAPTURING OUTPUT
+      READLIST JOBLIST ELSE JOBLIST = ''
+      JOBS.DAT = '' ; JOBS.SORT = ''
+      JOBLIST = CHANGE(JOBLIST,IAMC,IVM)
+      JCNT = 0
+      FOR I = 1 TO DCOUNT(JOBLIST<1>,IVM)
+         READ JOB.B FROM F.JOB,JOBLIST<1,I> THEN
+            DESCR = JOB.B<1>
+            IF JOB.B<6> = 'O' THEN
+               JCNT = JCNT + 1
+               LOCATE DESCR IN JOBS.SORT<1> BY 'AL' SETTING JPOS ELSE NULL
+               JOBS.DAT = INSERT(JOBS.DAT,2,JPOS,0,JOBLIST<1,I>)
+               JOBS.INFO = JOBLIST<1,I> 'L#10':SPACE(1):JOB.B<1> 'L#30':" ":OCONV(JOB.B<2>,'D2/') 'R#8':" ":OCONV(JOB.B<3>,'D2/') 'R#8':" ":JOB.B<6> 'R#4'
+               JOBS.DAT = INSERT(JOBS.DAT,1,JPOS,0,JOBS.INFO)
+               JOBS.SORT = INSERT(JOBS.SORT,1,JPOS,0,JOB.B<1>)
+               *              JOBS.DAT<1,JCNT> = JOBLIST<1,I> 'L#10':SPACE(1):JOB.B<1> 'L#30'
+               *              JOBS.DAT<1,JCNT> = JOBS.DAT<1,JCNT>:" ":OCONV(JOB.B<2>,'D2/') 'R#8'
+               *              JOBS.DAT<1,JCNT> = JOBS.DAT<1,JCNT>:" ":OCONV(JOB.B<3>,'D2/') 'R#8'
+               *              JOBS.DAT<1,JCNT> = JOBS.DAT<1,JCNT>:" ":JOB.B<6> 'R#4'
+            END
+         END
+      NEXT I
+      !
+      EXECUTE 'COUNT BRANCH' CAPTURING OUTPUT
+      CALL ITEMS.SELECTED (OUTPUT, BRANCHES, '')
+      !
+1212: **
+      MSG = ""
+      ORDNO = 0
+      BEGIN CASE
+         CASE PROGRAM[1,3] = 'INQ' ; TITLE = 'ORDER INQUIRY'
+         CASE PROGRAM = 'OC' ; TITLE = 'ORDER CORRECTION'
+         CASE 1 ; TITLE = 'ORDER ENTRY'
+      END CASE
+      SCR = CLS:PRON
+      CALL SCREEN.PAINTER (SCR.B, SCR, '')
+      SCR = SCR:@(8,0):LON:' ':TITLE:' ':LOFF
+      SCR = SCR:@(16,18):DLON:'0 -':ARDAYS:DLOFF
+      SCR = SCR:@(16,19):DLON:ARDAYS+1 'L#2':'-60':DLOFF
+      SCRD = CLS
+      CALL SCREEN.PAINTER (SCRD.B, SCRD, '')
+      SCRDB = ''
+      CALL SCREEN.PAINTER (SCRDB.B, SCRDB, '')
+      SCRD = SCRD:@(8,0):LON:' ':TITLE:' ':LOFF
+      SCRD = SCRD:@(0,3):DLON
+      SCRD = SCRD:'PRODUCT   DESCRIPTION                    '
+      SCRD = SCRD:'Q-ORD ':DLOFF
+      SCR = SCR:PROFF
+      SCR.FINAL = CLS
+      CALL SCREEN.PAINTER (SCRF.B, SCR.FINAL, '')
+1000: DREC = '' ; DET = '' ; HREC = '' ; ORD.B='' ; PROG.ACTION = '' ; CANCEL = FALSE ; BILL='' ; TRACK1.B = '' ; TRACK2.B = '' ; TRACK3.B ='' ; FASTRACKS = '' ; EMPTY = ''
+      ORIG.DET = '' ; ORIG.WHSE = ''
+      PO.LIST = ''
+      IF REFRESH.SCR THEN
+         PRINT @(8,0):LON:' ':TITLE'L#20':LOFF
+         REFRESH.SCR=''
+      END ELSE
+         PRINT SCR:
+      END
+      MSG = ''
+      RELEASE
+      IF PROGRAM = "OE" THEN
+      !ORDER ENTRY
+99:      XMISC = IVM:STR('*',7):SPACE(13)
+         IF FAST.CUST # 'N' THEN
+            XMISC<4> = 1:IVM:2:IVM:6:IVM:8:IVM:10:IVM:12
+            XMISC<5> = 'Search':IVM:'FastKey':IVM:'Last S/O':IVM:'FastCust':IVM:'ShptSrch':IVM:'O   rdCor'
+         END ELSE
+            XMISC<4>=1:IVM:2:IVM:6:IVM:10:IVM:12
+            XMISC<5>='Search':IVM:'FastKey':IVM:'Last S/O':IVM:'ShptSrch':IVM:'OrderCor'
+         END
+         XMISC<10> = 23
+         QUOTE = '' ; ORDNO = 0 ; SHIPTO = '00000001' ; SHIP.B = ''
+         IF DFLT.SHIPTO.COMPANY = "Y" AND PROGRAM = "OE" THEN
+            SHIPTO = "MAN"
+            HREC<9> = "MAN"
+         END
+         IF LAST.STATION.ORDNO # '' THEN
+            PRINT @(63,22):DLULON:'Last S/O ':DLULOFF:LULON:LAST.STATION.ORDNO:LULOFF:
+         END
+         CALL CIP (7,1,20,'',CUSTNO,ESCFLG,XMISC)
+         IF XMISC<6> = 6 THEN
+            IF LAST.STATION.ORDNO # '' THEN
+               PROGRAM = 'OC' ; REFRESH.SCR=1 ; DATA LAST.STATION.ORDNO ; GO 25
+            END
+         END
+         IF XMISC<6> = 12 THEN
+            PROGRAM = 'OC' ; REFRESH.SCR=1 ; GO 25
+         END
+         IF XMISC<6> = 10 THEN
+            XK='X ':CUSTNO ; MF='SHIPTO' ; MFX = 'SPTO.XREF' ; FK='' ; XM=''
+            CALL SUB.CMC.XREF(XK, MF, MFX, FK, XM)
+            IF XM<1> THEN PRINT SCR:
+            IF FK='' THEN GO 99
+            CUSTNO=OCONV(FK,'G!1')
+            SHIPTO=OCONV(FK,'G1!1')
+         END
+         IF XMISC<6> = 1 THEN CUSTNO = 'X ':CUSTNO
+         IF CUSTNO[1,1]='Q' & (NUM(CUSTNO[2,9]) ! NUM(CUSTNO[3,9])) THEN
+            QUOTE=CUSTNO[2,9]
+            QUOTE=QUOTE'R%6'
+            READ QUOTE.B FROM F.PRICE.QUOTE, QUOTE ELSE
+               TEXT = 'Quote# > ':QUOTE:' < Not found, Press ESCAPE ...'
+               PRINT BELL:
+               CALL MESSAGE.SUB (TEXT, ' ', '', '')
+               PRINT SCR:
+               GO 99
+            END
+            CUSTNO=QUOTE.B<9>
+            READV DUMMY FROM CUST,CUSTNO,1 ELSE
+               TEXT = 'Customer ':CUSTNO:' Not found in Customer File, Press ESCAPE...'
+               PRINT BELL:
+               CALL MESSAGE.SUB (TEXT, ' ', '', '')
+               PRINT SCR:
+               GO 99
+            END
+         END
+         IF XMISC<6>= 2 THEN
+            EXECUTE "FASTKEY"
+            GO 1000
+         END
+         IF XMISC<6> = 8 THEN
+            CALL FAST.CUST.SUB (FCNO, '')
+            IF FCNO # '' THEN DATA FCNO
+            GO 1000
+         END
+101:  !
+         IF CUSTNO[1,2]='X ' OR CUSTNO[1,2]='Z ' THEN
+            X.KEY=CUSTNO ; MFILE='CUSTOMER' ; MFILE.XREF='CUSTOMER.XREF' ; FK='' ; XM=''
+            CALL SUB.CMC.XREF (X.KEY,MFILE,MFILE.XREF,FK,XM)
+            IF XM<1> THEN PRINT SCR:
+            IF FK='E' ! FK='END' ! TRIM(FK)='' THEN GO 99
+            CUSTNO = FK
+         END
+         IF ESCFLG OR CUSTNO='E' THEN STOP
+         IF CUSTNO = '' THEN GO 99
+         READ AXREC FROM AX, CUSTNO THEN
+            CUSTNO = ''
+            CALL CUST.XREF(AXREC,CUSTNO,CUST,'5','20','1')
+            PRINT SCR:
+         END
+         READ CREC FROM CUST,CUSTNO JSTF ELSE
+            IF CUSTNO # '' THEN
+               IF CUSTNO[1,2] # 'Z ' THEN CUSTNO='Z ':CUSTNO ; GO 101
+            END
+            GO 99
+         END
+         CUSTNO=CUSTNO JSTF
+         IF CASHSALE # 'Y' THEN
+            IF CREC<100>='Y' THEN
+               TEXT = 'CASH Customer - Use POINT OF SALE for this Order, Press Escape..'
+               PRINT BELL:
+               CALL MESSAGE.SUB (TEXT, ' ', '', '')
+               PRINT SCR:
+               GO 99
+            END
+         END
+         CRMISC = ''
+         GOSUB 9999
+         IF CREC<24> # '' THEN
+            IF DATE()-CREC<24> > 180 THEN
+               PRINT C22:
+               TEXT = 'Customer had no activity over 6 months, Press ESCAPE...'
+               PRINT BELL:
+               CALL MESSAGE.SUB (TEXT, ' ', '', '')
+               PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+            END
+         END
+         IF SEEAR = 'Y' & NOT(INDEX(PROGRAM,'INQ',1)) THEN
+            CRMISC = ''
+            CALL CUST.CREDIT.SUB(CUSTNO, CRMISC)
+            GOSUB 4000
+            PRINT SCR.HDR
+         END
+         PRINT @(7,1):CUSTNO'L#7'
+         BEGIN CASE
+            CASE CREC<52> = 'H' ; MSG = 'on CREDIT HOLD'
+            CASE CREC<52> = 'I' ; MSG = 'INACTIVE'
+            CASE CREC<52> = 'L' ; MSG = 'in LEGAL'
+            CASE 1 ; MSG = ''
+         END CASE
+         IF MSG # '' THEN
+            TEXT = 'Customer is ':MSG:' !, Press ESCAPE...'
+            PRINT BELL
+            CALL MESSAGE.SUB (TEXT, ' ', '', '')
+            PRINT SCR: ; GO 99
+         END
+         IF CRHLDV = 'Y' & NOT(INDEX(PROGRAM,'INQ',1)) THEN
+            CRMISC=''
+            CALL CUST.CREDIT.SUB(CUSTNO, CRMISC)
+            CRMSG=''
+            IF CRMISC<4>+0 < 0 & CREC<100> # 'Y' THEN
+               CRMISC<4>=ABS(CRMISC<4>)
+               CRMSG='Over Cr Limit: ':OCONV(CRMISC<4>,'MD02,$')
+            END
+            IF CRMISC<12> > CREC<13> & CREC<100> # 'Y' THEN
+               IF CRMSG = '' THEN CRMSG = 'Open A/R Over ':CREC<13>:' Days' ELSE
+                  CRMSG=CRMSG:' & Open A/R Over ':CREC<13>:' Days'
+               END
+            END
+            IF CRMSG # '' THEN
+               IF SEEAR # 'Y' THEN CRMSG = 'This Sales Order will be placed on HOLD!'
+               TEXT = CRMSG:', Continue ? (Y/N)...'
+               VERIFY = 'Y':IVM:'N'
+               PRINT BELL:
+               TMISC = ''
+               CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+               PRINT SCR:
+               IF ESCFLG ! TMISC<10> = 'N' THEN GO 99
+               GOSUB 4000 ; PRINT SCR.HDR
+            END
+         END
+         IF CREC<76> # '' THEN
+            CALL CM.INTER.NOTES(CUST, SCREENS, CUSTNO, '')
+            PRINT SCR
+            GOSUB 4000 ; PRINT SCR.HDR
+            GOSUB 9999
+            PRINT @(7,1):CUSTNO
+         END
+         IF BRANCH.AR = 'Y' & (CREC<114> # '' & CREC<114> # SBD) THEN
+            TEXT = 'This Customer is Marked for Branch ':CREC<114>:' Press Escape...'
+            TMISC = '' ; VERIFY = ' '
+            PRINT BELL:
+            CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+            PRINT SCR:
+            GO 99
+         END
+      !
+         IF QUOTE # '' THEN GO 1919
+         READ OXREC FROM CUST.OPEN.ORD.XREF,CUSTNO ELSE OXREC = ''
+         CUST.BO = FALSE
+         CUST.OPEN.ORD = FALSE
+         ORDCT = DCOUNT(OXREC<1>,CHAR(253)) ; OCTR = 0
+         LOOP
+            OCTR = OCTR + 1
+         WHILE OCTR LE ORDCT & NOT(CUST.BO) DO
+            READV ORDSTAT FROM OH, OXREC<1,OCTR>, 13 THEN
+               IF ORDSTAT = 'BO' THEN CUST.BO = TRUE
+            END
+         REPEAT
+         IF CUST.BO AND CREC<127> # 'N' THEN
+            TEXT = 'Existing BACKORDERS !, Do you wish to INQUIRE ? (Y/N)...'
+            PRINT BELL:
+            TMISC = '' ; TMISC<5> = 'N' ; VERIFY = 'Y':IVM:'N'
+            CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+            IF TMISC<10> = 'N' ! ESCFLG THEN
+               PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+            END ELSE
+               DATA CUSTNO
+               EXECUTE 'CUST.BO.INQ'
+               PRINT SCR:
+               PRINT @(7,1):CUSTNO'L#7'
+            END
+         END
+         READV QUOTES FROM F.PRICE.QUOTE.X, CUSTNO, 1 ELSE QUOTES = ''
+         SPCT = DCOUNT(CREC<67>,CHAR(253)) ; SCT = 0
+         LOOP
+            SCT = SCT + 1
+         WHILE SCT LE SPCT DO
+            READV SPQUOTES FROM F.PRICE.QUOTE.X, CUSTNO:'|':CREC<67,SCT>, 1 THEN
+               QUOTES<1,-1> = SPQUOTES
+            END
+         REPEAT
+         IF QUOTES # '' AND CREC<128> # 'N' THEN
+            TEXT = 'QUOTES Exist for this customer !, Convert ? (Y/N)...'
+            PRINT BELL:
+            XMISC = '' ; XMISC<5>= 'N' ; VERIFY = 'Y':IVM:'N'
+            CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, XMISC)
+            PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+            IF XMISC<10> = 'Y' THEN
+               QITEMS = DCOUNT(QUOTES<1>,CHAR(253))
+               CTR = 0
+               DATA.B = ''
+               LOOP
+                  CTR = CTR + 1
+               WHILE CTR LE QITEMS DO
+                  QID = QUOTES<1,CTR>
+                  READ QUOTE.B FROM F.PRICE.QUOTE, QID THEN
+                     PL = QID 'L#7 ':OCONV(QUOTE.B<11>,'D2/') 'L#8  ':QUOTE.B<12> 'L#4  '
+                     PL = PL:QUOTE.B<8> 'L#23':QUOTE.B<18> 'L#7':OCONV(QUOTE.B<16>,'MD2,$') 'R#12'
+                     LOCATE QID IN DATA.B<2> BY 'DR' SETTING VM ELSE
+                        INS QID BEFORE DATA.B<2,VM>
+                        INS PL BEFORE DATA.B<1,VM>
+                     END
+                  END
+               REPEAT
+               QITEMS = DCOUNT(DATA.B<2>,CHAR(253))
+               IF QITEMS THEN
+                  SMISC = 'CUSTOMER PRICE QUOTE SELECTOR'
+                  SMISC<5> = 'QUOTE#  QUOTE DT  USER  GENERAL INTRNL CMMENT  ORDER#  QUOTE TOTAL'
+                  SMISC<7> = 5
+                  CALL SELECTOR (DATA.B, SMISC)
+                  PRINT SCR
+                  GOSUB 9999
+                  PRINT @(7,1):CUSTNO
+                  IF SMISC<2> # '' THEN
+                     QUOTE = DATA.B<2,SMISC<2>>
+                     READU QUOTE.B FROM F.PRICE.QUOTE, QUOTE ELSE QUOTE.B=''
+                     TXCD = QUOTE.B<13> ; TOTAL = QUOTE.B<16>
+                     SUBTOTAL = QUOTE.B<14> ; TAXAMT = QUOTE.B<15>
+                  END ELSE QUOTE=''
+               END
+            END
+         END
+      !
+1919:    **
+         IF QUOTE # '' THEN
+            READ QUOTE.B FROM F.PRICE.QUOTE, QUOTE THEN
+               IF QUOTE.B<18> # '' THEN
+1920:             TEXT = 'CAUTION: QUOTE Converted to Order ':QUOTE.B<18>:' Continue ? (Y)es/(N)o ..'
+                  PRINT BELL:
+                  VERIFY = 'Y':IVM:'N'
+                  TMISC=''
+                  CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+                  PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+                  RSP=TMISC<10>
+                  IF ESCFLG THEN RSP='N'
+                  IF RSP='Y' OR RSP='N' THEN NULL ELSE GO 1920
+                  IF RSP='N' THEN GO 1000
+               END
+            END
+         END
+         HREC<1> = CUSTNO
+         HREC<33> = QUOTE
+         IF QUOTE # '' THEN
+            IF QUOTE.B<36,1> # '' OR QUOTE.B<36,2> # '' THEN
+               HREC<9> = 'MAN'
+               SHIPTO = 'MAN'
+               HREC<10,1> = QUOTE.B<36,1>
+               HREC<10,2> = QUOTE.B<36,2>
+               HREC<10,3> = QUOTE.B<36,3>
+               HREC<10,4> = QUOTE.B<36,5>
+               HREC<10,5> = QUOTE.B<36,6>
+               HREC<10,6> = QUOTE.B<36,7>
+            END
+            HREC<32,1>='QUOTE : ':QUOTE
+            HREC<30>=QUOTE.B<8>
+            SVC=QUOTE.B<20>
+            HREC<3>=QUOTE.B<19>
+            HREC<4>=QUOTE.B<20>
+            HREC<12>=QUOTE.B<40>
+            IF HREC<4> # '' THEN
+               READ SHIP.VIA.B FROM SHIP.VIA, HREC<4> THEN
+                  IF SHIP.VIA.B<5> # '' THEN
+                     LOCATE SHIP.VIA.B<5> IN WHSE.B<1> SETTING POS THEN
+                        HREC<34> = SHIP.VIA.B<5>
+                        PRINT @(43,13):WHSE.B<2,POS> 'L#14'
+                     END
+                  END
+               END
+            END
+            HREC<52> = QUOTE.B<28>
+            IF QUOTE.B<35> # '' THEN HREC<32,-1> = QUOTE.B<35>
+            IF QUOTE.B<10> # '' THEN
+               SHIPTO = QUOTE.B<10>
+               IF HREC<9> = '' THEN
+                  HREC<9>= QUOTE.B<10>
+               END
+            END
+            GOSUB 4000 ; PRINT SCR.HDR:
+         END
+         PRINT @(1,2):CREC<1>'L#30'
+         PRINT @(1,3):CREC<2>'L#30'
+         PRINT @(1,4):CREC<3>'L#30'
+         PRINT @(1,5):CREC<4>'L#18':CREC<5>"L#3":CREC<6>"L#9"
+         PRINT @(40,1):SHIPTO
+         GOSUB 1050                      ; *SHIPTO
+         GOSUB 1999                      ; *READ CUSTOMER & SHIPTO DATA
+1002:    *
+         *JS*        IF SKIP.SHIPTO = 'Y' THEN
+         HREC<31> = SBD
+         IF CREC<114> # '' THEN HREC<31> = CREC<114>
+         PRINT @(70,0):HREC<31>'L#5'
+         READV DFLT.WHSE FROM BRANCH, HREC<31>, 11 ELSE DFLT.WHSE = ''
+         IF FORCE.WHSE.ENTRY # "Y" THEN HREC<34> = DFLT.WHSE
+         IF HREC<34> = '' AND FORCE.WHSE.ENTRY # "Y" THEN HREC<34> = '01'
+         LOCATE HREC<34> IN WHSE.B<1> SETTING POS THEN
+            PRINT @(43,13):WHSE.B<2,POS> 'L#14'
+         END
+         *S*     IF SKIP.SHIPTO = 'Y' AND DCOUNT(CREC<67>,CHAR(253))+0 = 1 THEN
+         IF (SKIP.SHIPTO = 'Y' AND DCOUNT(CREC<67>,CHAR(253))+0 = 1) OR DFLT.SHIPTO.COMPANY = "Y" THEN
+            GO 1002.2
+         END
+1002.1:  GOSUB 2101
+         IF SHIPTO = "E" THEN GO 1000
+1002.2:  GOSUB 1800                      ; *BRANCH
+1002.3:  GOSUB 1810                      ; *ENTERED BY
+1003:    GOSUB 2102                      ; *CUST P.O.
+1004:    GOSUB 2102.1                    ; *JOB NUMBER
+1005:    GOSUB 2103                      ; *SPEC INST
+1005.1:  GOSUB 2103.5                    ; *BILL-TO ATT
+1005.2:  GOSUB 2103.6                    ; *SHIP-TO ATT
+1006:    GOSUB 2104                      ; *ORD DATE
+1007:    GOSUB 2106                      ; *SALESMAN
+1008:    GOSUB 2107                      ; *SHIP VIA
+1009:    GOSUB 2109                      ; *SHIPPING DATE
+1010:    GOSUB 2113                      ; *TERMS
+1011:    GOSUB 2114                      ; *TAX CODE
+1011.2:  GOSUB 2114.2                    ; *WAREHOUSE
+1011.3:  GOSUB 2114.3                    ; *SHIP EXACT?
+1011.4:  GOSUB 2114.4                    ; *SUPPRESS COMPANY HEADER ON P/T
+1011.5:  GOSUB 2114.5                    ; *ORDER TYPE
+1013:    GOSUB 2116                      ; *P/O LINK TYPE ?
+1014:    GOSUB 2117                      ; *CASH SALE ?
+1015:    GOSUB 2118                      ; *PRT BO ITEMS ?
+1060:    IF ORIG.WHSE = '' THEN ORIG.WHSE=HREC<34>
+1099:    ***
+         GOSUB 2000                      ; *CHANGE ROUTINE
+         GOSUB 4000
+         IF PROG.ACTION = 'SHIP.SCRN' ELSE
+            CALL OED                     ; *DETAIL ENTRY
+            IF PROG.ACTION # 'HEADER' AND PROG.ACTION # 'ESCAPE' THEN
+               GOSUB 2650                ; *** CHECK FOR MANDATORY FIELDS
+            END
+         END
+         IF PROG.ACTION = 'ESCAPE' THEN
+            RELEASE
+            STOP
+         END
+         IF PROG.ACTION = 'HEADER' THEN
+            PRINT SCR:SCR.HDR: ; GO 1099
+         END
+         IF PROGRAM = 'OC' & SOREVSYS = 'Y' THEN GOSUB 9150  ; * NEW REVISION ?
+         GOSUB 8000                      ; *UPDATE FILES
+         IF PROG.ACTION[1,2] = 'OC' THEN
+            PROGRAM = 'OC'
+            DATA OCONV(PROG.ACTION,'G1,1')
+            GO 1212
+         END
+         GO 1000
+      END ELSE
+         IF PROGRAM = "OC" ! PROGRAM = "INQ1" THEN
+1500:       IF PROGRAM = 'OC' THEN
+               PRINT C22:DMON:'Enter Order Number or Press ':DMOFF:LON:' ESCAPE ':LOFF:DMON:' for NEW S/O...':DMOFF:
+            END
+            XMISC = '' ; XMISC<10> = 23
+            IF LAST.STATION.ORDNO # '' THEN
+               PRINT @(63,22):DLULON:'Last S/O ':DLULOFF:LULON:LAST.STATION.ORDNO:LULOFF:
+               XMISC<4> = 6 ; XMISC<5> = 'Last S/O'
+            END
+            CALL CIP(40,0,7,'',ORDNO,ESCFLG,XMISC)
+            PRINT C22:
+            IF ESCFLG THEN
+               IF PROGRAM[1,3] = 'INQ' THEN STOP
+               PROGRAM = 'OE'
+               REFRESH.SCR=1
+               GO 25
+            END
+            IF XMISC<6> = 6 THEN ORDNO = LAST.STATION.ORDNO ; PRINT @(40,0):LAST.STATION.ORDNO
+            IF ORDNO='' THEN GO 1500
+            ORDNO = OCONV(ORDNO,'G-1')
+            IF LEN(ORDNO) LE 6 THEN
+               ORDNO = STR("0",6-LEN(ORDNO)):ORDNO
+            END
+            IF PROGRAM[1,3] = 'INQ' THEN
+               READ HREC FROM OH, ORDNO ELSE GO 1500
+               READ DREC FROM OD, ORDNO ELSE GO 1500
+            END ELSE
+               RMISC = 'ORDER NUMBER'
+               CALL READFILE (OH, ORDNO, HREC, RMISC)
+               IF RMISC<2> ! RMISC<3> THEN GO 1500
+               RMISC = 'ORDER NUMBER'
+               CALL READFILE (OD, ORDNO, DREC, RMISC)
+               IF RMISC<2> THEN GO 1500
+            END
+            *S
+      !   CHECK FOR ACCESS LEVEL IF CONFIRMED
+            IF HREC<17,(HREC<37>+1)> # "" AND PROGRAM ='OC' THEN
+               PATH = 'UPDATE S/O AFTER CONFIRMED'
+               CALL ACCESS.SUB (CONTROL, PATH,VALID,'')
+               IF NOT(VALID) THEN
+                  PROGRAM = 'OE' ; GO 25
+                  STOP
+               END
+            END
+            *S
+            PRINT @(40,0):ORDNO 'L#7'
+            LAST.STATION.ORDNO = ORDNO
+            READ CREC FROM CUST, HREC<1> ELSE CREC = 'NOT ON FILE'
+            CUSTNO=HREC<1>
+            CRMISC = ''
+            IF SEEAR = 'Y' & NOT(INDEX(PROGRAM,'INQ',1)) THEN CALL CUST.CREDIT.SUB (CUSTNO,CRMISC)
+            GOSUB 4000                   ; * PRINT HEADER INFO
+            PRINT SCR.HDR:
+            GOSUB 3000                   ; * BUILD DETAIL RECORD
+            ORIG.DET = DET ; ORIG.WHSE = HREC<34>
+            IF PROGRAM = 'INQ' ! PROGRAM = 'INQ1' THEN
+1510:          XMISC = '' ; XMISC<10> = 23
+               IF HREC<38> # '' THEN XMISC<4>= 10 ; XMISC<5> = 'RevNotes'
+               IF HREC<52> # '' THEN
+                  IF XMISC<4>='' THEN
+                     XMISC<4>='7' ; XMISC<5>='IntNotes'
+                  END ELSE XMISC<4>=XMISC<4>:IVM:7 ; XMISC<5>=XMISC<5>:IVM:'IntNotes'
+               END
+               IF HREC<32> # '' THEN
+                  IF XMISC<4>='' THEN
+                     XMISC<4>='8' ; XMISC<5>='ExtNotes'
+                  END ELSE XMISC<4>=XMISC<4>:IVM:8 ; XMISC<5>=XMISC<5>:IVM:'ExtNotes'
+               END
+               IF XMISC<4> = '' THEN
+                  XMISC<4> = 11 ; XMISC<5> = 'ShpTrack'
+               END ELSE
+                  XMISC<4> = XMISC<4>:IVM:11
+                  XMISC<5> = XMISC<5>:IVM:'ShpTrack'
+               END
+               IF EDOCS = 'S' & ORDNO # 0 & ORDNO # '' THEN
+                  LOCATE 12 IN XMISC<4> BY 'AR' SETTING VM ELSE
+                     INS 12 BEFORE XMISC<4,VM>
+                     INS 'eDocScan' BEFORE XMISC<5,VM>
+                  END
+               END
+               IF HREC<37> GT 1 THEN
+                  LOCATE 4 IN XMISC<4> BY 'AR' SETTING VM ELSE
+                     INS 4:IVM:5 BEFORE XMISC<4,VM>
+                     INS 'NxtCycle':IVM:'PrvCycle' BEFORE XMISC<5,VM>
+                  END
+               END
+               IF HREC<89> # '' THEN
+                  PRINT C22:BELL:DLULON:'Reason to Cancel ? ':DLULOFF:LULON:HREC<89>:LULOFF:
+               END ELSE
+                  PRINT C22:'Press Any Key to Continue or ':LON:' ESCAPE ':LOFF:
+               END
+               CALL CIP (79, 22, 1, '', '', ESCFLG, XMISC)
+               IF XMISC<6> = 4 AND INDEX(XMISC<5>,'NxtCycle',1) THEN
+                  IF DISP.CYCLE = "" THEN DISP.CYCLE = HREC<37> ELSE DISP.CYCLE = DISP.CYCLE + 1
+                  IF DISP.CYCLE = 0 THEN DISP.CYCLE = HREC<37>
+                  IF DISP.CYCLE > HREC<37> THEN DISP.CYCLE = 1
+                  GOSUB 5000
+                  GO 1510
+               END
+               IF XMISC<6> = 5 THEN
+                  IF DISP.CYCLE = "" THEN DISP.CYCLE = HREC<37> ELSE DISP.CYCLE = DISP.CYCLE - 1
+                  IF DISP.CYCLE > HREC<37> THEN DISP.CYCLE = 1
+                  IF DISP.CYCLE = 0 THEN DISP.CYCLE = HREC<37>
+                  GOSUB 5000
+                  GO 1510
+               END
+               IF XMISC<6> = 12 THEN
+                  CALL EDOCS.SUB ('S', 'SO', ORDNO, '', '', '')
+                  GO 1510
+               END
+               IF XMISC<6> = 7 OR XMISC<6> = 8 THEN
+                  IF XMISC<6> = 7 THEN ATR.MARK=52 ELSE ATR.MARK=32
+                  COMMENTS = HREC<ATR.MARK>
+                  CMISC = ''
+                  CMISC<1> = 5
+                  CMISC<2> = 8
+                  CMISC<3> = 3
+                  CMISC<4> = 1
+                  CMISC<5> = 30
+                  IF XMISC<6> = 7 THEN
+                     CMISC<6> = 'OEH.INTER.NOTES'
+                  END ELSE CMISC<6> = 'OEH.EXTER.NOTES'
+                  CMISC<7> = 2
+                  IF INDEX(PROGRAM,'INQ',1) THEN CMISC<8> = 1
+                  CALL COMMENTS.SUB (3, COMMENTS, ESCFLG, CMISC)
+                  IF ESCFLG THEN
+                     PRINT SCR ; GOSUB 4000 ; PRINT SCR.HDR
+                     GO 1510
+                  END
+               END
+               IF XMISC<6> = 10 THEN
+1525:             PRINT C22:'Enter REVISION NUMBER to view Notes':
+                  CALL CIP (76, 22, 2, '', REVNO, ESCFLG, '')
+                  IF ESCFLG THEN GO 1510
+                  IF NUM(REVNO) ELSE GO 1525
+                  IF REVNO GT 0 & REVNO LE HREC<38> ELSE GO 1525
+                  GOSUB 9200 ; PRINT SCR:SCR.HDR: ; GO 1510
+               END
+               IF XMISC<6> = 11 THEN
+                  CALL UPS.TRACK.INQ (ORDNO, HREC, SCREENS, '*')
+                  PRINT SCR ; GOSUB 4000 ; PRINT SCR.HDR:
+                  GO 1510
+               END
+               IF NOT(ESCFLG) THEN CALL OED
+               **** IF POS SHOW LAST SCREEN HERE ****
+               PRINT SCR:
+               GO 1500
+            END
+            PROGRAM = "DI"               ; * TEMP CHANGE SO OED WILL PRINT 1ST PAGE & RETURN
+            PROGRAM = "OC"               ; * CHANGE PROGRAM BACK TO ORDER CORRECTION
+            IF HREC<13> = "CO" THEN
+               IF HREC<43> = 'Y' THEN
+                  IF HREC<89> # '' THEN PRINT C23:DLULON:'Reason to Cancel ?':DLULOFF:LULON:' ':HREC<89>:LULOFF:
+                  PRINT C22:BELL:LON:" Sales Order Cancelled on ":
+                  PRINT OCONV(HREC<14>,'D2/'):' by ':HREC<44>:
+               END ELSE
+                  PRINT C22:BELL:LON:" Order Completed on ":
+                  PRINT OCONV(HREC<14>,'D2/'):
+               END
+               PRINT ' Press RETURN to Inquire or ESCAPE ':LOFF
+               XMISC=''
+               CALL CIP(78,22,1,'',RSP,ESCFLG,XMISC)
+               IF ESCFLG THEN GO 25
+               PROGRAM = 'INQ'
+               CALL OED
+               PROGRAM = 'OC'
+               GO 25
+            END
+            IF HREC<13> = 'BI' AND HREC<67> # 'Y' THEN
+               PRINT C22:BELL:LON:'In BILLING Process, No Changes Permitted, <RET> For Inquiry or <ESC>..':
+               XMISC='' ; CALL CIP(78,22,1,'',RSP,ESCFLG,XMISC)
+               IF ESCFLG THEN GO 25
+               PROGRAM = 'INQ'
+               CALL OED
+               PROGRAM = 'OC'
+               GO 25
+            END
+            IF HREC<49,HREC<37>+1> # '' AND PROGRAM = 'OC' THEN
+               READV DFLTRCK FROM SHIP.VIA, HREC<4>, 8 ELSE DFLTRCK = ''
+               *S*            IF DFLTRCK # '' THEN
+1025:          TEXT = 'Order is being shipped ':HREC<49,HREC<37>+1>:', Continue ? (Y)es/(N)o...'
+               VERIFY = 'Y':IVM:'N'
+               PRINT BELL:
+               TMISC = ''
+               CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+               PRINT SCR:
+               RSP=TMISC<10>
+               IF ESCFLG THEN RSP='N'
+               IF RSP = 'Y' THEN
+                  PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+               END
+               IF RSP='N' THEN GO 25
+               *S*            END
+            END
+1530:       **
+            GOSUB 2000                   ; * CHANGE MODE
+            GOSUB 4000
+            IF PROG.ACTION = 'SHIP.SCRN' ELSE
+               CALL OED
+            END
+            IF PROG.ACTION = 'ESCAPE' THEN
+               RELEASE
+               STOP
+            END
+            IF PROG.ACTION = 'HEADER' THEN
+               PRINT SCR:SCR.HDR: ; GO 1530
+            END
+            IF SOREVSYS = 'Y' THEN GOSUB 9150      ; * NEW REVISION ?
+            GOSUB 9000                   ; * TOTAL UP ORDER
+1600:       GOSUB 8003                   ; * UPDATE FILES
+            IF PROG.ACTION[1,2] = 'OC' THEN
+               PROGRAM = 'OC'
+               DATA OCONV(PROG.ACTION,'G1,1')
+               GO 1212
+            END
+            GO 1000
+         END ELSE
+1700:       XMISC = IVM:STR('*',7):SPACE(13)
+            XMISC<10> = 23 ; XMISC<4> = 1 ; XMISC<5> = 'Search'
+            CALL CIP(7,1,20,'',CUSTNO,ESCFLG,XMISC)
+            IF XMISC<6> = 1 THEN CUSTNO = 'X ':CUSTNO
+1710:       IF CUSTNO[1,2]='X ' ! CUSTNO[1,2]='Z ' THEN
+               X.KEY=CUSTNO ; MFILE='CUSTOMER' ; MFILE.XREF='CUSTOMER.XREF' ; FK='' ; XM=''
+               CALL SUB.CMC.XREF (X.KEY,MFILE,MFILE.XREF,FK,XM)
+               IF XM<1> THEN PRINT SCR:
+               IF FK='E' ! FK='END' ! TRIM(FK)='' THEN GO 1700
+               CUSTNO = FK
+            END
+            IF CUSTNO = 'E' ! ESCFLG THEN STOP
+            IF CUSTNO = '' THEN GO 1700
+            READ AXREC FROM AX,CUSTNO THEN
+               NEW = 0
+               CUSTNO = ''
+               CALL CUST.XREF(AXREC,CUSTNO,CUST,'5','20','1')
+               PRINT SCR:
+            END
+            READ CREC FROM CUST,CUSTNO JSTF ELSE
+               IF CUSTNO # '' THEN
+                  IF CUSTNO[1,2] # 'Z ' THEN CUSTNO='Z ':CUSTNO ; GO 1710
+               END
+               GO 1700
+            END
+            CUSTNO = CUSTNO JSTF
+            PRINT @(7,1):CUSTNO"L#7"
+            CRMISC = '' ; ORDERS = ''
+            IF SEEAR = 'Y' & NOT(INDEX(PROGRAM,'INQ',1)) THEN CALL CUST.CREDIT.SUB(CUSTNO,CRMISC)
+            IF PROGRAM = "INQ2" THEN
+               READ ORDERS FROM CUST.OPEN.ORD.XREF,CUSTNO ELSE ORDERS = ''
+               READ CLSD.ORDERS FROM CUST.CLOSED.ORD.XREF, CUSTNO ELSE CLSD.ORDERS = ''
+               IF CLSD.ORDERS<1> # '' THEN
+                  IF ORDERS<1> # '' THEN
+                     ORDERS<1> = CLSD.ORDERS<1>:IVM:ORDERS<1>
+                  END ELSE ORDERS<1> = CLSD.ORDERS<1>
+               END
+            END
+            MV = 1
+            XX = ''                      ; * USED IN OEINQ
+            MAX = DCOUNT(ORDERS<1>,CHAR(253))
+            CTR = (MAX + 1)
+            LOOP
+            UNTIL CTR = 0 ! XX = 'E' DO
+               CTR = CTR - 1
+               IF CTR LE 0 THEN PRINT SCR: ; GO 1700
+               ORDNO = ORDERS<1,CTR>
+               IF XX='E' THEN GO 1700
+               IF CTR # MAX THEN PRINT SCR:
+               READ HREC FROM OH,ORDNO THEN
+                  READ DREC FROM OD,ORDNO ELSE DREC = ""
+                  READ CREC FROM CUST,HREC<1> ELSE CREC = "NOT ON FILE"
+                  GOSUB 4000 ; PRINT SCR.HDR:
+                  GOSUB 3000
+175:              XMISC = '' ; XMISC<10> = 23
+                  IF HREC<38> # '' THEN XMISC<4>= 10 ; XMISC<5> = 'RevNotes'
+                  IF HREC<52> # '' THEN
+                     IF XMISC<4>='' THEN
+                        XMISC<4>='7' ; XMISC<5>='IntNotes'
+                     END ELSE XMISC<4>=XMISC<4>:IVM:7 ; XMISC<5>=XMISC<5>:IVM:'IntNotes'
+                  END
+                  IF HREC<32> # '' THEN
+                     IF XMISC<4>='' THEN
+                        XMISC<4>='8' ; XMISC<5>='ExtNotes'
+                     END ELSE XMISC<4>=XMISC<4>:IVM:8 ; XMISC<5>=XMISC<5>:IVM:'ExtNotes'
+                  END
+                  PRINT C22:DMON:'Press RETURN to Continue, ':DMOFF:'N':DMON:
+                  PRINT 'ext Order or ':DMOFF:LON:' ESCAPE ':LOFF:
+                  CALL CIP (77, 22, 1, '', A, ESCFLG, XMISC)
+                  IF ESCFLG THEN PRINT SCR: ; GO 1700
+                  IF XMISC<6> = 7 OR XMISC<6> = 8 THEN
+                     IF XMISC<6> = 7 THEN ATR.MARK=52 ELSE ATR.MARK=32
+                     COMMENTS = HREC<ATR.MARK>
+                     CMISC = ''
+                     CMISC<1> = 5
+                     CMISC<2> = 8
+                     CMISC<3> = 3
+                     CMISC<4> = 1
+                     CMISC<5> = 30
+                     IF XMISC<6> = 7 THEN
+                        CMISC<6> = 'OEH.INTER.NOTES'
+                     END ELSE CMISC<6> = 'OEH.EXTER.NOTES'
+                     CMISC<7> = 2
+                     IF INDEX(PROGRAM,'INQ',1) THEN CMISC<8> = 1
+                     CALL COMMENTS.SUB (3, COMMENTS, ESCFLG, CMISC)
+                     IF ESCFLG THEN
+                        PRINT SCR ; GOSUB 4000 ; PRINT SCR.HDR
+                        GO 175
+                     END
+                  END
+                  IF XMISC<6> = 10 THEN
+200:                 PRINT C22:'Enter REVISION NUMBER to view Notes':
+                     CALL CIP (76, 22, 2, '', REVNO, ESCFLG, '')
+                     IF ESCFLG THEN GO 175
+                     IF NUM(REVNO) ELSE GO 200
+                     IF REVNO GT 0 & REVNO LE HREC<38> ELSE GO 200
+                     GOSUB 9200 ; PRINT SCR:SCR.HDR: ; GO 175
+                  END
+                  IF A = '' ! A = 'N' ELSE GO 175
+                  IF A # 'N' THEN CALL OED
+               END
+            REPEAT
+            PRINT SCR:
+            GO 1700
+         END
+         BREAK ON
+      END
+2000: IF HREC<45> = 'N' THEN
+         TEXT = 'Confirmed for Shippping, No Add-Ons Allowed, Press ESCAPE...'
+         PRINT BELL
+         CALL MESSAGE.SUB (TEXT, ' ', '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+      END
+2005: XMISC = ''
+      IF HREC<37> >= 2 THEN
+         XMISC<4> = 2:IVM:3:IVM:4:IVM:5:IVM:6:IVM:7:IVM:8:IVM:9:IVM:10:IVM:11
+         XMISC<5> ='FastKey':IVM:'Cancel':IVM:'NxtCycle':IVM:'PrvCycle':IVM:'ChgHdr':IVM:'IntrNotes':IVM:'ExtrNotes':IVM:'Done':IVM:'FasTrack':IVM:'ShpTrack' ; XMISC<10> = 23
+      END ELSE
+         XMISC<4> = 2:IVM:3:IVM:6:IVM:7:IVM:8:IVM:9:IVM:10:IVM:11
+         XMISC<5> ='FastKey':IVM:'Cancel':IVM:'ChgHdr':IVM:'IntrNotes':IVM:'ExtrNotes':IVM:'Done':IVM:'FasTrack':IVM:'ShpTrack' ; XMISC<10> = 23
+      END
+      IF PROGRAM = 'OC' & HREC<67> = 'Y' THEN
+         *        XMISC<4> = XMISC<4>:IVM:12
+         *S*      LOCATE 4 IN XMISC<4> BY 'AR' SETTING XVAL ELSE NULL
+         LOCATE 4 IN XMISC<4> BY 'AR' SETTING XVAL THEN
+            *S*         INS '4' BEFORE XMISC<4,XVAL>
+            XMISC<5,XVAL> = "ShipScrn"
+         END ELSE
+            INS '4' BEFORE XMISC<4,XVAL>
+            INS 'ShipScrn' BEFORE XMISC<5,XVAL>
+         END
+         *        XMISC<5> = XMISC<5>:IVM:'ShipScrn'
+      END
+      IF HREC<13> = 'BI' THEN
+         DEL XMISC<4,1>
+         DEL XMISC<5,1>
+      END
+      IF PROGRAM = "OE" THEN
+         DEL XMISC<4,2>
+         DEL XMISC<5,2>
+      END
+      IF EDOCS = 'S' & ORDNO # 0 & ORDNO # '' THEN
+         LOCATE 12 IN XMISC<4> BY 'AR' SETTING VM ELSE
+            INS 12 BEFORE XMISC<4,VM>
+            INS 'eDocScan' BEFORE XMISC<5,VM>
+         END
+      END
+      CALL CIP(78,23,1,'','',ESCFLG,XMISC)
+2003: !
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2005
+      END
+      IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'SO', ORDNO, '', '', '')
+         GO 2005
+      END
+      IF XMISC<6>=10 THEN
+         IF FASTRACKS = '' THEN FASTRACKS = HREC<80>
+         IF TRACK1.B = '' & FASTRACKS<1,1> # '' THEN
+            READ TRACK1.B FROM F.FASTRACK, FASTRACKS<1,1> ELSE TRACK1.B = ''
+         END
+         IF TRACK2.B = '' & FASTRACKS<1,2> # '' THEN
+            READ TRACK2.B FROM F.FASTRACK, FASTRACKS<1,2> ELSE TRACK2.B = ''
+         END
+         IF TRACK3.B = '' & FASTRACKS<1,3> # '' THEN
+            READ TRACK3.B FROM F.FASTRACK, FASTRACKS<1,3> ELSE TRACK3.B = ''
+         END
+         CALL FASTRACK.ENTRY (MASTER, CONTROL, SCREENS, F.FASTRACK, OH, 80, '', ORDNO, 'SO', FASTRACKS, TRACK1.B, TRACK2.B, TRACK3.B, 'E')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2005
+      END
+      IF XMISC<6> = 11 THEN
+         CALL UPS.TRACK.INQ (ORDNO, HREC, SCREENS,'*')
+         PRINT SCR ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2005
+      END
+      IF XMISC<6> = 4 AND INDEX(XMISC<5>,'NxtCycle',1) THEN
+         IF DISP.CYCLE = "" THEN DISP.CYCLE = HREC<37> ELSE DISP.CYCLE = DISP.CYCLE + 1
+         IF DISP.CYCLE = 0 THEN DISP.CYCLE = HREC<37>
+         IF DISP.CYCLE > HREC<37> THEN DISP.CYCLE = 1
+         GOSUB 5000
+         GO 2005
+      END
+      IF XMISC<6> = 5 THEN
+         IF DISP.CYCLE = "" THEN DISP.CYCLE = HREC<37> ELSE DISP.CYCLE = DISP.CYCLE - 1
+         IF DISP.CYCLE > HREC<37> THEN DISP.CYCLE = 1
+         IF DISP.CYCLE = 0 THEN DISP.CYCLE = HREC<37>
+         GOSUB 5000
+         GO 2005
+      END
+      IF ESCFLG THEN GO 8780
+      IF XMISC<6> = 7 OR XMISC<6>= 8 THEN
+         IF XMISC<6>= 7 THEN ATR.MARK=52 ELSE ATR.MARK=32
+         COMMENTS = HREC<ATR.MARK>
+         CMISC = ''
+         CMISC<1> = 5
+         CMISC<2> = 8
+         CMISC<3> = 3
+         CMISC<4> = 1
+         CMISC<5> = 30
+         IF XMISC<6>= 7 THEN
+            CMISC<6> = 'OEH.INTER.NOTES'
+         END ELSE CMISC<6> = 'OEH.EXTER.NOTES'
+         CMISC<7> = 2
+         IF INDEX(PROGRAM,'INQ',1) THEN CMISC<8> = 1
+         CALL COMMENTS.SUB (3, COMMENTS, ESCFLG, CMISC)
+         IF ESCFLG THEN
+            PRINT SCR ; GOSUB 4000 ; PRINT SCR.HDR
+            GO 2005
+         END
+         IF INDEX(PROGRAM,'INQ1',1) ELSE
+            CHECK.CMTS = COMMENTS
+            CONVERT IVM TO '' IN CHECK.CMTS
+            IF CHECK.CMTS = '' THEN COMMENTS = ''
+            HREC<ATR.MARK> = COMMENTS
+            PRINT SCR ; GOSUB 4000 ; PRINT SCR.HDR
+            GO 2005
+         END
+      END
+      IF XMISC<6>=6 THEN GOSUB 1002.1 ; GO 2000
+      IF XMISC<6> = 9 THEN
+         GOSUB 8900                      ; * Validate Fields
+         IF MSG # '' THEN GO 2005
+         READV CUSTOM.PGM FROM CONTROL, 'OEH.CUSTOM2', 1 THEN
+            CALL @CUSTOM.PGM
+         END
+         RETURN
+      END
+      IF XMISC<6>=4 THEN PROG.ACTION = 'SHIP.SCRN' ; RETURN
+      IF XMISC<6>=3 THEN
+         IF HREC<67> = 'Y' THEN
+            DEPCT = DCOUNT(HREC<58>,CHAR(253)) ; DCTR = 0
+            CASHTD = 0 ; BILLAMT = 0
+            LOOP
+               DCTR = DCTR + 1
+            WHILE DCTR LE DEPCT DO
+               CASHTD = CASHTD + HREC<58,DCTR>
+               BILLAMT= BILLAMT+ HREC<60,DCTR>
+            REPEAT
+            IF (CASHTD-BILLAMT) + 0 # 0 THEN
+               TEXT = 'DEPOSIT Balance exists, NO Cancelation Permitted, Press ESCAPE..'
+               PRINT BELL
+               CALL MESSAGE.SUB (TEXT, ' ', '', '')
+               PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+               GO 2005
+            END
+         END
+         SHIP.BILL.ONLY = DFLT.SHIP.BILL.ONLY
+         READ BRANCH.B FROM BRANCH, HREC<31> ELSE BRANCH.B = ''
+         IF BRANCH.B<84> # '' THEN SHIP.BILL.ONLY = BRANCH.B<84>
+         IF SHIP.BILL.ONLY = 'Y' THEN
+            ITEMS = DCOUNT(DREC<1>,CHAR(253)) ; CTR = 0
+            FOUND = FALSE
+            LOOP
+               CTR = CTR + 1
+            WHILE CTR LE ITEMS AND NOT(FOUND) DO
+               IF DREC<5,CTR> + 0 # DREC<52,CTR> + 0 THEN FOUND = TRUE
+            REPEAT
+            IF FOUND THEN
+               TEXT = 'Quantity Shipped & Billed Must be same, Press ESCAPE...'
+               PRINT BELL
+               CALL MESSAGE.SUB (TEXT, ' ', '', '')
+               PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+               GO 2005
+            END
+         END
+         VERIFY = 'Y':IVM:'N'
+         TEXT = 'CANCEL & VOID Unshipped Balances ? (Y)es/(N)o ..'
+         PRINT BELL:
+         TMISC = ''
+         CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+         RESP=TMISC<10>
+         IF ESCFLG THEN RESP='N'
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         IF RESP = 'N' THEN GO 2005
+ *+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          READ HREC FROM OH,OH
+         HREC<89> = CREASON
+         IF HREC<67> = 'Y' & DREC<7>[1,1] = 'P' THEN
+            READ POS.B FROM F.POS, DREC<7> THEN
+               CC.VAL = DCOUNT(POS.B<120>,CHAR(253))
+               CC.TOTAL = 0
+               CTR = 0
+               LOOP
+                  CTR = CTR + 1
+               WHILE CTR LE CC.VAL DO
+                  TR.VAL = DCOUNT(POS.B<120,CTR>,ISVM) ; TCTR = 0
+                  LOOP
+                     TCTR = TCTR + 1
+                  WHILE TCTR LE TR.VAL DO
+                     IF POS.B<130,CTR,TCTR> = 'S' ! POS.B<130,CTR,TCTR> = 'CV' THEN
+                        CC.TOTAL = CC.TOTAL + POS.B<129,CTR,TCTR>
+                     END ELSE
+                        CC.TOTAL = CC.TOTAL - POS.B<129,CTR,TCTR>
+                     END
+                  REPEAT
+               REPEAT
+               IF CC.TOTAL + 0 # 0 THEN
+                  TEXT = 'Previous Credit Card charges of ':OCONV(CC.TOTAL,'MD2,$'):' exist! This charge must be VOIDED in the Cash Tendered screen, by entering cash tendered of ZERO.    (Press ESCAPE to Continue)'
+                  PRINT BELL:
+                  CALL MESSAGE.SUB (TEXT, ' ', '', '')
+                  PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+                  GO 2005
+               END
+            END
+            PATH = 'DELETE POS/ONE STEP INVOICE'
+            CALL ACCESS.SUB (CONTROL, PATH, VALID, REDISPLAY)
+            IF REDISPLAY THEN PRINT SCR:SCR.HDR
+            IF NOT(VALID) THEN GO 2005
+         END
+         CANCEL = TRUE
+         MV = DCOUNT(DREC<1>,CHAR(253)) ; TOT.WEIGHT = 0 ; PLRECAP.B = ''
+         FOR X = 1 TO MV
+            IF DREC<6,X> # 'Y' THEN
+               DREC<24,X> = DATE()       ; * CANCELED DATE
+               DREC<25,X> = INTLS        ; * OPERATOR CANCELING THIS ORDER
+            END
+            DREC<39,X> = 0
+            DREC<40,X> = 0
+            IF DREC<1,X> # '!SP' THEN
+               READ PROD.B FROM PRODUCT, DREC<1,X> THEN
+                  WEIGHT = DREC<3,X> * PROD.B<87>
+                  LOCATE PROD.B<26> IN PLRECAP.B<1> BY 'AL' SETTING VM ELSE
+                     INS PROD.B<26> BEFORE PLRECAP.B<1,VM>
+                     INS '' BEFORE PLRECAP.B<2,VM>
+                     INS '' BEFORE PLRECAP.B<3,VM>
+                  END
+                  PLRECAP.B<2,VM> = PLRECAP.B<2,VM> + WEIGHT
+                  LMISC=DET<1,X> ; LMISC<2>='S' ; LMISC<3> = DET<6,X> ; LMISC<4> = DET<58,X> ; LMISC<5> = DET<59,X>
+                  CALL LINE.EXT (DET<13,X>, DET<4,X>, DET<3,X>, EXT, LMISC)
+                  PLRECAP.B<3,VM> = PLRECAP.B<3,VM> + EXT
+                  TOT.WEIGHT = TOT.WEIGHT + WEIGHT
+               END
+            END
+            IF DET<22,X> # '' THEN
+               LOCATE DET<22,X> IN PO.LIST<1> BY 'AL' SETTING PVAL ELSE
+                  INS DET<22,X> BEFORE PO.LIST<1,PVAL>
+               END
+            END
+         NEXT X
+         DELETE BO.PICK,ORDNO
+         HREC<13> = 'CO'
+         HREC<14> = DATE()
+         HREC<43> = 'Y'
+         HREC<44> = INTLS
+         DREC<11> = ''
+         DREC<18> = ''
+         IF HREC<67> = 'Y' & DREC<7> # '' THEN
+            READ POS.B FROM F.POS, DREC<7> THEN
+               SJMON = OCONV('SJMON','TGLNUM;X;1;1')
+               SJYR = OCONV('SJYR','TGLNUM;X;1;1')
+               POS.B<21> = SJMON:SJYR
+               POS.B<88> = INTLS
+               POS.B<89> = DATE()
+               WRITE POS.B ON DELETED.INVOICE, DREC<7>
+               DELETE F.POS, DREC<7>
+               READU INVX.B FROM INV.MON.X, 'DELETED.':SJMON:SJYR ELSE INVX.B = ''
+               LOCATE DREC<7> IN INVX.B<1> BY 'AL' SETTING VM ELSE
+                  INS DREC<7> BEFORE INVX.B<1,VM>
+               END
+               WRITE INVX.B ON INV.MON.X, 'DELETED.':SJMON:SJYR
+            END
+         END
+         DELETE PICKING,ORDNO
+         DELETE ORDHOLD,ORDNO
+         DELETE OPEN.ORD, ORDNO
+         GOSUB 9400                      ; * BACKOUT ORIGINAL COMMITTED FIELDS
+         RETURN TO 1600
+      END
+      GO 2005
+1999: *
+
+
+
+      SHIP.B = ''
+      IF PROGRAM = 'OC' AND (ORIG.SHIPTO=SHIPTO) THEN RETURN
+      IF HREC<53> = '' THEN HREC<53> = CREC<122>   ; * Bill-To Att
+      IF HREC<31> = '' THEN HREC<31> = CREC<114>
+      IF HREC<2> = '' THEN
+         HREC<2> = DATE()
+         PRINT @(43,7):OCONV(HREC<2>,'D2/')
+      END
+      IF HREC<35> = '' AND DFLT.SHIP.DATE = 'Y' THEN
+         HREC<35> = DATE()
+         PRINT @(43,10):OCONV(HREC<35>,'D2/')
+      END
+      IF HREC<35> = '' AND DFLT.SHIP.DATE = 'NB' THEN
+         TEMP.DATE = DATE()+ 1
+         IF OCONV(TEMP.DATE,'DW') = 6 THEN TEMP.DATE = TEMP.DATE + 2
+         IF OCONV(TEMP.DATE,'DW') = 7 THEN TEMP.DATE = TEMP.DATE + 1
+         HREC<35> = TEMP.DATE
+         PRINT @(43,10):OCONV(HREC<35>,'D2/')
+      END
+      IF DFLTENTBY # 'N' THEN
+         HREC<28> = INTLS
+         PRINT @(75,5):INTLS
+      END
+      IF CREC<100> = 'Y' THEN PRINT @(65,6):FLON:' CASH SALE ':FLOFF:BELL:
+      IF HREC<15> = '' THEN TC = CREC<25> ELSE TC = HREC<15>
+      READV TDES FROM TERMS,TC,1 ELSE TDES=''
+      PRINT @(43,11):TDES 'L#14'
+      HREC<15>=TC
+      IF HREC<48> = '' THEN HREC<48> = CREC<152>
+      PRINT @(43,16):HREC<48>
+      PT.TEXT = SHIP<14,1>:SHIP<14,2>:SHIP<14,3>
+      IF PT.TEXT # '' THEN PT.NOTE = SHIP<14> ELSE PT.NOTE = CREC<22>
+      IF PT.NOTE = '' AND CUSTNO # CREC<15> THEN
+         READV PT.NOTE FROM CUST,CREC<15>,22 ELSE PT.NOTE = ''
+      END
+      IF HREC<11,1> = '' THEN HREC<11> = PT.NOTE
+      PRINT @(1,10):HREC<11,1>
+      PRINT @(1,11):HREC<11,2>
+      PRINT @(1,12):HREC<11,3>
+      IF DCOUNT(HREC<11>,IVM) GT 3 THEN
+         PRINT @(22,13):LULON:' More ':LULOFF:
+      END ELSE PRINT @(22,13):STR(HORZLN,6):
+      ROUTELIST = ''
+      IF HREC<9> = "MAN" THEN HREC<6> = CREC<18> ELSE
+         IF SHIP<1> = 'SAME' THEN
+            HREC<6> = CREC<18>
+            HREC<68> = SHIP<17>
+         END ELSE
+            READ SHIP.B FROM SHIPTOFILE, CUSTNO:'!':HREC<9> ELSE SHIP.B = ''
+            STX.CDE = SHIP.B<10>
+            IF STX.CDE = '' THEN STX.CDE = CREC<18>
+            SLM.CDE=SHIP.B<20>
+            IF SLM.CDE = '' THEN SLM.CDE=CREC<7>
+            SVC = SHIP.B<15>
+            IF SVC = '' THEN SVC = CREC<78>
+            IF QUOTE = '' THEN
+               HREC<4> = SVC
+               HREC<12> = SLM.CDE        ; * Salesman
+            END
+            HREC<6>=STX.CDE
+            HREC<68> = SHIP.B<17>        ; * Ship-To Att
+            IF TRIM(CHANGE(SHIP.B<24>,IVM,'')) # '' THEN
+               ROUTELIST<1> = SHIP.B<24> ; ROUTELIST<2> = SHIP.B<25>
+            END
+         END
+      END
+      READV TXDES FROM TAX, HREC<6>, 1 ELSE TXDES = ''
+      IF DCOUNT(CREC<67>,CHAR(253))+0 > 1 THEN
+         PRINT @(38,6):FLON:"MULTIPLE SHIP-TO'S":FLOFF:
+      END
+      PRINT @(43,12):TXDES 'L#14'
+      IF ROUTELIST = '' THEN
+         IF TRIM(CHANGE(CREC<148>,IVM,'')) # '' THEN
+            ROUTELIST<1> = CREC<148> ; ROUTELIST<2> = CREC<149>
+         END
+      END
+      IF ROUTELIST # '' & MULT.SHIPMENTS # 'Y' THEN
+         ROUTE.FOUND = FALSE ; CTR = 0
+         IF RSIT = 'Y' THEN CTR = -1
+         IF BYPASS.TIME # '' AND TIME() > BYPASS.TIME THEN CTR = CTR + 1
+         LOOP
+            CTR = CTR + 1
+         UNTIL ROUTE.FOUND DO
+            ROUTE.DAY = MOD(DATE()+CTR,7) + 1
+            IF ROUTELIST<1,ROUTE.DAY> # '' THEN
+               HREC<4> = ROUTELIST<1,ROUTE.DAY>
+               HREC<35> = DATE()+CTR
+               HREC<96> = ROUTELIST<2,ROUTE.DAY>
+               ROUTE.FOUND = TRUE
+            END
+         REPEAT
+      END
+      IF HREC<4> = '' THEN
+         SVC = CREC<78>
+         HREC<4> = SVC
+      END
+      SVC=HREC<4>
+      READV SVC.DESC FROM SHIP.VIA, SVC, 1 ELSE SVC.DESC = ''
+      PRINT @(43,9):SVC.DESC 'L#14':
+      PRINT @(43,10):OCONV(HREC<35>,'D2/')
+      SLMN=CREC<7>
+      IF HREC<12> = '' THEN
+         HREC<12>=CREC<7>
+      END ELSE SLMN=HREC<12>
+      READ SREC FROM SMAN,SLMN ELSE SREC = ''
+      SALESMAN = SREC<1>
+      PRINT @(10,14):HREC<53>
+      PRINT @(10,15):HREC<68>
+      PRINT @(43,8):SALESMAN 'L#14'
+      HREC<36>=CREC<102>
+      PRINT @(43,14):HREC<36>
+      IF HREC<42> = '' THEN HREC<42> = 'N'
+      PRINT @(43,15):HREC<42>:
+      PRINT @(43,17):HREC<50>
+      IF HREC<67> = '' THEN
+         IF CASHSALE = 'Y' THEN
+            IF CREC<100> = 'Y' THEN HREC<67> = 'Y' ELSE HREC<67> = 'N'
+         END ELSE HREC<67> = 'N'
+      END
+      PRINT @(43,18):HREC<67>:
+      PRINT @(43,19):HREC<98>:
+      RETURN
+2101: *
+      IF MSG = '' THEN MSG1 = " or ":LON:" E ":LOFF:"nd" ELSE MSG1 = ''
+      PRINT C22:'Enter the SHIPTO NUMBER or ':LON:' M ':LOFF:'anual':
+      XMISC = IVM:STR('*',8):SPACE(12) ; XMISC<10> = 23 ; XMISC<4> = 1:IVM:2:IVM:9:IVM:10 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Done':IVM:'OrdInq'
+      XMISC<2>='Y':IVM:'Y'
+      IF HREC<9> = '' THEN ORIG.SHIPTO = '' ELSE ORIG.SHIPTO = HREC<9>
+      SHIP.B = ''
+      CALL CIP (40,1,20,ORIG.SHIPTO,SHIPTO,ESCFLG,XMISC)
+      PRINT @(40,1):SPACE(20):
+21011: !
+      IF SHIPTO = 'M' THEN SHIPTO = 'MAN'
+      IF SHIPTO = 'MAN' THEN
+         SHIPTO = 'MAN'
+         PRINT @(40,1):SHIPTO 'L#8'
+      END
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6> = 10 THEN
+         DATA CUSTNO
+         EXECUTE 'CUST.ORD.INQ'
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2101
+      END
+      IF XMISC<6> = 1 THEN
+         WORK.B = ''
+         SCT = 0 ; SHIPTOS = DCOUNT(CREC<67>,CHAR(253))
+         LOOP
+            SCT = SCT + 1
+         WHILE SCT LE SHIPTOS DO
+            SID = CUSTNO:'!':CREC<67,SCT>
+            READ SHIP.B FROM SHIPTOFILE, SID THEN
+               IF DISPL.SHIPTO.ADDR2 = 'Y' THEN
+                  *L*              IF SHIP.B<3>='' THEN SADDR=SHIP.B<2> ELSE SADDR=SHIP.B<3>
+                  SADDR = SHIP.B<3>
+                  IF SADDR = '' THEN SADDR = SHIP.B<2>
+               END ELSE SADDR=SHIP.B<2>
+               IF DISPL.SHIPTO.CONTACT = 'Y' THEN
+                  IF SHIP.B<7> # '' THEN SADDR = SHIP.B<7>
+               END
+               IF SHIPTO.SBY = 'Y' OR SHIPTO.SBY = 'A' THEN
+                  IF SHIPTO.SBY = 'Y' THEN
+                     LOCATE SHIP.B<1> IN WORK.B<3> BY 'AL' SETTING SHVAL ELSE NULL
+                  END
+                  IF SHIPTO.SBY = 'A' THEN
+                     LOCATE SHIP.B<2> IN WORK.B<4> BY 'AL' SETTING SHVAL ELSE NULL
+                  END
+                  SDISPL = CREC<67,SCT> 'L#8 ':SHIP.B<1>'L#20 ':SADDR 'L#22 ':SHIP.B<4> 'L#11 ':SHIP.B<5> 'L#2'
+                  INS SDISPL BEFORE WORK.B<1,SHVAL>
+                  INS CREC<67,SCT> BEFORE WORK.B<2,SHVAL>
+                  INS SHIP.B<1> BEFORE WORK.B<3,SHVAL>
+                  INS SHIP.B<2> BEFORE WORK.B<4,SHVAL>
+               END ELSE
+                  IF SHOW.FULL.SHIPTO.NAME # 'Y' THEN
+                     WORK.B<1,-1> = CREC<67,SCT> 'L#8 ':SHIP.B<1> 'L#20 ':SADDR 'L#22 ':SHIP.B<4> 'L#11 ':SHIP.B<5> 'L#2'
+                  END ELSE
+                     WORK.B<1,-1> = CREC<67,SCT> 'L#8 ':SHIP.B<1> 'L#34 ':SHIP.B<2> 'L#20 '
+                  END
+                  WORK.B<2,-1> = CREC<67,SCT>
+               END
+            END
+         REPEAT
+         SITEMS = DCOUNT(WORK.B<1>,CHAR(253))
+         IF NOT(SITEMS) THEN
+            PRINT C22:BELL:"NO SHIPTO'S FOUND FOR THIS CUSTOMER, <RET>...":
+            INPUT NL,1:_
+            GO 2101
+         END
+         SMISC = "CUSTOMER SHIPTO SELECTOR"
+         IF SHOW.FULL.SHIPTO.NAME # 'Y' THEN
+            SMISC<5> = "SHIPTO#  SHIPTO NAME          ADDRESS                CITY        ST"
+         END ELSE
+            SMISC<5> = "SHIPTO#     SHIPTO NAME"
+         END
+         SMISC<7> = 3
+         CALL SELECTOR (WORK.B, SMISC)
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         IF SMISC<2> = '' THEN GO 2101
+         SHIPTO = WORK.B<2,SMISC<2>>
+      END
+      IF XMISC<6> = 2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2101
+      END
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2101
+      IF SHIPTO = "E" & MSG1 # '' THEN RETURN
+      IF SHIPTO = '' THEN SHIPTO = HREC<9>
+      *** KEYWORD SEARCH **
+      READ SKEY.B FROM F.SHIPTO.FIND, SHIPTO THEN
+         FK = ''
+         CALL SHIPTO.XREF (SKEY.B, FK, SHIPTOFILE, 5, 20, 1, HREC<1>, 'A')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         IF FK = '' THEN GO 2101
+2101.1:  IF OCONV(FK,'G!1') # HREC<1> THEN
+            READ SHIP.B FROM SHIPTOFILE, FK ELSE GO 2101
+            PRINT @(32,2):SHIP.B<1>'L#30'
+            PRINT @(32,3):SHIP.B<2>'L#30'
+            PRINT @(32,4):SHIP.B<3>'L#30'
+            PRINT @(32,5):SHIP.B<4>'L#17':SHIP.B<5>"L#3":SHIP.B<6>"L#9"
+            PRINT C22:BELL:DMON:'This Shipto Belongs to Customer ':DMOFF:' ':LON:OCONV(OCONV(FK,"G!1"),"TCUSTOMER;X;1;1")'L#25':LOFF:' - OK ? (Y/N) [ ]':STR(BS,2): ; INPUT ANS,1:
+            PRINT C22:
+            IF ANS = 'Y' OR ANS='N' THEN NULL ELSE GO 2101.1
+            IF ANS='N' THEN GO 2101
+            IF SHIP.B<20> # '' THEN HREC<12> = SHIP.B<20>    ; * Salesman
+            HREC<9>='MAN'
+            HREC<79>=FK
+            SHIPTO='MAN'
+            READ SHIP.B FROM SHIPTOFILE, FK ELSE
+               PRINT C22:BELL:LON:'SHIPTO FILE FOR THIS CUSTOMER AND SHIPTO MISSING , - Hit RETURN..':LOFF: ; INPUT RT,1:
+               GO 2101
+            END
+            PRINT @(40,1):HREC<9>'L#8'
+            PRINT @(32,2):SHIP.B<1>'L#30'
+            PRINT @(32,3):SHIP.B<2>'L#30'
+            PRINT @(32,4):SHIP.B<3>'L#30'
+            PRINT @(32,5):SHIP.B<4>'L#17':SHIP.B<5>"L#3":SHIP.B<6>"L#9"
+            HREC<68> = SHIP.B<17>
+            PRINT @(10,15):HREC<68>      ; * Ship-To Att
+            IF SHIP.B<15> # '' THEN
+               HREC<4> = SHIP.B<15>
+               READV SVDESC FROM SHIP.VIA, HREC<4>, 1 ELSE SVDESC = ''
+               PRINT @(43,9):SVDESC 'L#13'
+            END
+            FOR X = 1 TO 6 ; HREC<10,X> = SHIP.B<X> ; NEXT X
+            GO 2101.2
+         END ELSE SHIPTO=OCONV(FK,'G1!1')
+      END
+      IF SHIPTO = 'MAN' ! SHIP.B # '' THEN
+         HREC<9>=SHIPTO
+      END ELSE
+         READ SHIP.B FROM SHIPTOFILE, CUSTNO:'!':SHIPTO'R%8' THEN
+            SHIPTO = SHIPTO 'R%8'
+            HREC<9> = SHIPTO
+            HREC<79>= ''
+         END ELSE
+            XK='Z ':SHIPTO ; MF='SHIPTO' ; MFX = 'SPTO.XREF' ; FK='' ; XM=''
+            CALL SUB.CMC.XREF(XK, MF, MFX, FK, XM)
+            IF XM<1> THEN PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+            IF FK='' THEN GO 2101
+            GO 2101.1
+         END
+      END
+1050: **
+      IF HREC<9> = 'MAN' THEN
+         IF SUP.COMP.HDR='Y' THEN
+            HREC<42>='Y'
+            PRINT @(43,15):HREC<42>
+         END
+         SHIP.B = ''
+         IF DFLTSP = 'Y' THEN
+            IF ORIG.SHIPTO = '' THEN ORIG.SHIPTO = '00000001'
+            READ SHIP.B FROM SHIPTOFILE,HREC<1>:'!':ORIG.SHIPTO ELSE SHIP.B = ''
+            IF SHIP.B<1> = "SAME" THEN
+               FOR X = 1 TO 6
+                  HREC<10,X> = CREC<X>
+               NEXT X
+            END ELSE
+               IF SHIP.B<1> # '' ! SHIP.B<2> # '' THEN
+                  FOR X = 1 TO 6 ; HREC<10,X> = SHIP.B<X> ; NEXT X
+               END
+            END
+         END ELSE
+         IF HREC<10> = '' THEN FOR X = 2 TO 5 ; PRINT @(32,X):SPACE(30) ; NEXT X
+      END
+      IF DFLT.SHIPTO.COMPANY = "Y" AND PROGRAM = "OE" THEN
+         SHIP.B<1> = COMP.B<1> ; SHIP.B<2> = COMP.B<2> ; SHIP.B<4> = COMP.B<3> ; SHIP.B<5> = COMP.B<4> ; SHIP.B<6> = COMP.B<5>
+         HREC<10,1> = COMP.B<1> ; HREC<10,2> = COMP.B<2> ; HREC<10,4> = COMP.B<3> ; HREC<10,5> = COMP.B<4> ; HREC<10,6> = COMP.B<5>
+         PRINT @(32,2):HREC<10,1> 'L#30':
+         PRINT @(32,3):HREC<10,2> 'L#30':
+         PRINT @(32,4):HREC<10,3> 'L#30':
+         PRINT @(32,5):HREC<10,4> 'L#16':
+         PRINT @(49,5):HREC<10,5> 'L#2':
+         PRINT @(52,5):HREC<10,6> 'L#10':
+      END
+      GO 2222
+      END
+      SHIPTO = STR("0",8-LEN(SHIPTO)):SHIPTO
+      IF SHIPTO = 'MAN' ! SHIPTO = '00000001' ! SHIP.B # '' THEN
+         HREC<9>=SHIPTO
+      END
+      PRINT @(40,1):SHIPTO
+      READ SHIP FROM SHIPTOFILE,CUSTNO:"!":SHIPTO ELSE GO 2101
+      IF SHIPTO # 'MAN' THEN HREC<79> = ''
+      IF SHIP<1> = 'SAME' THEN
+         PRINT @(32,2):CREC<1>'L#30'
+         PRINT @(32,3):CREC<2>'L#30'
+         PRINT @(32,4):CREC<3>'L#30'
+         PRINT @(32,5):CREC<4>'L#17':CREC<5>"L#3":CREC<6>"L#9"
+         RETURN
+      END ELSE
+         IF SHIPTO = 'MAN' THEN
+2222:       *
+            PRINT @(40,1):SHIPTO"L#8"
+2220:       PRINT C22:'Enter Manual ShipTo Name'
+            XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+            CALL CIP (32, 2, 30, HREC<10,1>, SNAME, ESCFLG, XMISC)
+            IF ESCFLG THEN GOSUB 8780
+            HREC<10,1> = SNAME
+            IF XMISC<3,1> = 'Y' THEN GO 2270
+2230:       PRINT C22:'Enter Manual ShipTo Street Address'
+            XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+            CALL CIP (32, 3, 30, HREC<10,2>, ADD1, ESCFLG, XMISC)
+            IF ESCFLG THEN GOSUB 8780
+            HREC<10,2> = ADD1
+            IF XMISC<3,1> = 'Y' THEN GO 2220
+2240:       PRINT C22:'Enter Manual ShipTo 2nd Line Street Address'
+            XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+            CALL CIP (32, 4, 30, HREC<10,3>, ADD2, ESCFLG, XMISC)
+            IF ESCFLG THEN GOSUB 8780
+            HREC<10,3> = ADD2
+            IF XMISC<3,1> = 'Y' THEN GO 2230
+2250:       PRINT C22:'Enter Manual ShipTo City'
+            XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+            CALL CIP (32, 5, 16, HREC<10,4>, CITY, ESCFLG, XMISC)
+            IF ESCFLG THEN GOSUB 8780
+            HREC<10,4> = CITY
+            IF XMISC<3,1> = 'Y' THEN GO 2240
+2260:       PRINT C22:'Enter Manual ShipTo State'
+            XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+            CALL CIP (49, 5, 2, HREC<10,5>, ST, ESCFLG, XMISC)
+            IF ESCFLG THEN GOSUB 8780
+            HREC<10,5> = ST
+            IF XMISC<3,1> = 'Y' THEN GO 2250
+2270:       PRINT C22:'Enter Manual ShipTo Zip Code'
+            XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+            CALL CIP (52, 5, 10, HREC<10,6>, ZIP, ESCFLG, XMISC)
+            IF ESCFLG THEN GOSUB 8780
+            HREC<10,6> = ZIP
+            IF XMISC<3,1> = 'Y' THEN GO 2260
+            IF RECORD.SHIPTO = 'Y' AND CREC<100> # 'Y' THEN
+               *            SHMISC=''
+               *            CALL CIP(65,22,1,'N',PR,ESCFLG,SHMISC)
+22701:         VERIFY = 'Y':IVM:'N'
+               TEXT = 'Save this SHIPTO as a PERMANENT Record (Y)es/(N)o..'
+               PRINT BELL:
+               TMISC = ''
+               CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+               PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+               PR=TMISC<10>
+               IF ESCFLG THEN PR='N'
+               IF PR = 'Y' THEN
+                  READU CREC FROM CUST, CUSTNO ELSE
+                     PRINT C22:BELL:LON:'Customer  ':CUSTNO:' Missing in Customer File - <RETURN> to continue...':LOFF: ; INPUT RT,1:
+                     STOP
+                  END
+                  STOS=DCOUNT(CREC<67>,CHAR(253))
+                  NEWSTON=STOS+1
+22702:            NEWSTON=STOS'R%8'
+                  READV DUMMY FROM SHIPTOFILE, CUSTNO:'!':NEWSTON,1 THEN
+                     STOS=STOS+1
+                     GO 22702
+                  END
+                  STO.REC=''
+                  STO.REC<1>=SNAME
+                  STO.REC<2>=ADD1
+                  STO.REC<3>=ADD2
+                  STO.REC<4>=CITY
+                  STO.REC<5>=ST
+                  STO.REC<6>=ZIP
+                  STO.REC<10>=CREC<18>
+                  STO.REC<11>=CREC<68>
+                  STO.REC<12>=CREC<69>
+                  CREC<67,-1>=NEWSTON
+                  CREC<129>=DATE() ; CREC<130>=TIME()
+                  WRITE CREC ON CUST, CUSTNO
+                  STO.REC<21>=DATE() ; STO.REC<22>=TIME()
+                  WRITE STO.REC ON SHIPTOFILE, CUSTNO:'!':NEWSTON
+                  XK='' ; MF='SHIPTO' ; MFX = 'SPTO.XREF' ; FK = CUSTNO:'!':NEWSTON
+                  CALL SUB.CMC.XREF (XK, MF, MFX, FK, '')
+                  HREC<10>=''
+                  HREC<9>=NEWSTON
+                  PRINT @(40,1):HREC<9> ; SHIPTO=HREC<9>
+                  GO 21011
+               END
+22073: !
+            END
+         END ELSE
+            READ SHIP FROM SHIPTOFILE,CUSTNO:"!":SHIPTO ELSE GO 2101
+            PRINT @(32,2):SHIP<1>'L#30'
+            PRINT @(32,3):SHIP<2>'L#30'
+            PRINT @(32,4):SHIP<3>'L#30'
+            PRINT @(32,5):SHIP<4>'L#17':SHIP<5>"L#3":SHIP<6>"L#9"
+            IF PROGRAM = 'OC' AND (ORIG.SHIPTO=SHIPTO) THEN NULL ELSE
+               IF SHIP<15> # '' THEN
+                  HREC<4> = SHIP<15>
+                  READV SVDESC FROM SHIP.VIA, HREC<4>, 1 ELSE SVDESC = ''
+                  PRINT @(43,9):SVDESC 'L#13'
+               END
+               PT.TEXT = SHIP<14,1>:SHIP<14,2>:SHIP<14,3>
+               IF PT.TEXT # '' THEN PT.NOTE = SHIP<14> ELSE PT.NOTE = HREC<11>
+               HREC<11> = PT.NOTE
+            END
+         END
+      END
+      HREC<9> = SHIPTO
+2101.2: **
+      GOSUB 1999
+      * LS 08-04-03*RETURN TO 1002.2
+      RETURN
+1800: PRINT C22:
+      XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<10> = 23 ; XMISC<4> = 1:IVM:2:IVM:9 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Done'
+      IF BRANCH.AR = "Y" THEN
+         OV = CREC<114>
+         HREC<31> = CREC<114>
+      END ELSE
+         OV = HREC<31>
+         IF OV = '' THEN OV = MBRANCH
+         IF OV = '' THEN
+            OV = SBD
+         END
+      END
+      IF BRANCHES = 1 & OV # '' THEN DATA OV
+      CALL CIP (70, 0, 5, OV, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF BRANCH.AR = "Y" AND (A # HREC<31> OR XMISC<6> = 1) THEN
+         PRINT C22:BELL:LON:'This Customer is Marked for Branch ':CREC<114>:' Press Escape...':LOFF:
+         CALL CIP (77, 22, 1, '', RESP, ESCFLG, '')
+         RETURN TO 1002.2
+      END
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         GO 1800
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'BRANCH CODE SELECTOR'
+         SMISC<3> = 0:IVM:1:IVM:2
+         SMISC<4> = 'L#5':IVM:'L#30':IVM:'L#20'
+         SMISC<6> = 2:IVM:2
+         SMISC<7> = 'CODE   BRANCH NAME                     ADDRESS'
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (BRANCH, REDISPLAY, SMISC)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GOTO 1800
+      END
+      READ BRANCH.B FROM BRANCH, A ELSE PRINT BELL: ; GO 1800
+      PRINT @(70,0):A 'L#5'
+      HREC<31> = A
+      MBRANCH = A
+      IF HREC<50> = '' THEN
+         HREC<50> = BRANCH.B<50>
+         IF HREC<50> = '' THEN HREC<50> = 'N'
+         PRINT @(43,17):HREC<50>
+      END
+      *JS*IF HREC<34> = '' THEN
+      IF A # OV THEN
+         READV DFLT.WHSE FROM BRANCH, HREC<31>, 11 ELSE DFLT.WHSE = ''
+         IF FORCE.WHSE.ENTRY # "Y" THEN HREC<34> = DFLT.WHSE
+         IF HREC<34> = '' THEN HREC<34> = '01'
+         LOCATE HREC<34> IN WHSE.B<1> SETTING POS THEN
+            PRINT @(43,13):WHSE.B<2,POS> 'L#14'
+         END
+      END
+      IF HREC<4> = '' THEN
+         READV DFLT.SHIP.VIA FROM BRANCH, HREC<31>, 29 THEN
+            HREC<4> = DFLT.SHIP.VIA
+            READV SVIA.DESC FROM SHIP.VIA, DFLT.SHIP.VIA, 1 ELSE SVIA.DESC = ''
+            PRINT @(43,9):SVIA.DESC 'L#14':
+         END
+      END
+      IF HREC<4> # '' THEN
+         READ SHIP.VIA.B FROM SHIP.VIA, HREC<4> THEN
+            IF SHIP.VIA.B<2> # '' THEN
+               READV JUR FROM TAX, SHIP.VIA.B<2>, 1 THEN
+                  READV TX.PRC FROM TAX, HREC<6>,2 ELSE TX.PRC = 0
+                  IF TX.PRC+0 # 0 THEN
+                     HREC<6> = SHIP.VIA.B<2>
+                     PRINT @(43,12):FLON:OCONV(HREC<6>,'TTAX;X;1;1') 'L#14':FLOFF:
+                  END
+                  PRINT @(43,12):FLON:OCONV(HREC<6>,'TTAX;X;1;1') 'L#14':FLOFF:
+               END
+            END
+         END
+      END
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 1800
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1002.1
+      RETURN
+      !
+      ! ENTERED BY
+      !
+1810: PRINT C22:
+      XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<10> = 23 ; XMISC<4> = 2:IVM:9 ; XMISC<5> = 'FastKey':IVM:'Done'
+      *S*IF DFLTENTBY = 'N' AND PROGRAM = "OE" ELSE
+      IF DFLTENTBY # 'N' AND PROGRAM ="OE" THEN
+         IF HREC<28> # '' THEN DATA HREC<28> ELSE DATA INTLS
+      END
+      CALL CIP (75, 5, 3, HREC<28>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         GO 1810
+      END
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 1810
+      IF A = '' THEN GO 1810
+      LOCATE A IN USERS.B<4> SETTING VM ELSE GO 1810
+      PRINT @(75,5):A 'R#3'
+      HREC<28> = A
+      LOCATE A IN SLMLIST<2> SETTING VM THEN WRTSLM = SLMLIST<1,VM> ELSE WRTSLM = ''
+      IF (WRITER.AS.SALESMAN = 'Y' ! WRITER.AS.SALESMAN = 'H') & WRTSLM # '' THEN
+         USE.WRITER = FALSE
+         IF WRITER.AS.SALESMAN = 'H' THEN
+            READV SNAME FROM SMAN, HREC<12>, 1 ELSE SNAME = ''
+            IF HREC<12> = '' THEN SNAME = 'HOUSE'
+            IF INDEX(OCONV(SNAME,'MCU'),'HOUSE',1) THEN USE.WRITER = TRUE
+         END ELSE USE.WRITER = TRUE
+         IF USE.WRITER & HREC<12> # WRTSLM & HREC<32,1>[1,7] # 'QUOTE :' THEN
+            HREC<12> = WRTSLM
+            READV SALENAME FROM SMAN,HREC<12>,1 ELSE SALENAME = "NOT ON FILE"
+            PRINT @(43,8):SALENAME 'L#14':
+         END
+      END
+      IF XMISC<3,1> = 'Y' THEN
+         IF BRANCHES = 1 THEN RETURN TO 1002.1 ELSE RETURN TO 1002.2
+      END
+      RETURN
+2102: *
+      PRINT C22:'Enter Customer Purchase Order Number'
+      XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<10>=23 ; XMISC<4>=2:IVM:9 ; XMISC<5>='FastKey':IVM:'Done'
+      CALL CIP (12, 7, 15, HREC<3>, PON, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2102
+      END
+      IF TRIM(PON) # '' & CPO.VERIFY # 'N' & PON # HREC<3> THEN
+         READ XREC FROM CUST.PO,HREC<1>:"!":PON ELSE GO 4441
+         TEXT = 'Order ':XREC<1,1>:' entered for this P/O#, Continue ? (Y)es/(N)o...'
+         VERIFY = 'Y':IVM:'N'
+         PRINT BELL:
+         TMISC = ''
+         CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         IF ESCFLG ! TMISC<10> = 'N' THEN GO 2102
+      END
+      IF TRIM(PON) # "" & CPO.VERIFY # "N" AND PON # HREC<3> THEN
+         CALL CUST.PO.CONTROL.SUB (HREC<1>,CREC,PON,'','','')
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+      END
+4441: ***
+      *      IF PON='' & CREC<75>='Y' THEN
+      *        TEXT = 'PURCHASE ORDER is Required for this Customer, Press ESCAPE..'
+      *        PRINT BELL:
+      *        CALL MESSAGE.SUB (TEXT, ' ', '', '')
+      *        PRINT SCR:; GOSUB 4000; PRINT SCR.HDR:
+      *        GO 2102
+      *      END
+      HREC<3> = PON
+      PRINT @(12,7):PON 'L#15':
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2102
+      IF XMISC<3,1> = 'Y' THEN
+         IF BRANCHES = 1 THEN RETURN TO 1002.1 ELSE RETURN TO 1002.2
+      END
+      RETURN
+2102.1: * JOB NUMER
+      PRINT C22:'Enter JOB ID or CONTACT NAME'
+      XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      IF VAL.JOB.NUM = "Y" THEN
+         XMISC<10>=23 ; XMISC<4>=1:IVM:2:IVM:9 ; XMISC<5>='Search':IVM:'FastKey':IVM:'Done'
+      END ELSE
+         XMISC<10>=23 ; XMISC<4>=2:IVM:9 ; XMISC<5>='FastKey':IVM:'Done'
+      END
+      **
+      CUST.CONTACTS = ''
+      FOR X = 1 TO DCOUNT(CREC<145>,IVM)
+         K.CONTACTS = "C|":CUSTNO:"|":CREC<145,X>
+         READ CONT.B FROM F.CONTACTS,K.CONTACTS THEN
+            CUST.CONTACTS<1,X> = CONT.B<1>'L#15':SPACE(5):CONT.B<2> 'L#15'
+            CUST.CONTACTS<2,X> = CONT.B<1>
+         END
+      NEXT X
+      **
+      IF CUST.CONTACTS # "" THEN
+         XMISC<4,-1> = 10
+         XMISC<5,-1> = "Contacts"
+      END
+      CALL CIP (8, 8, 23, HREC<30>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2102.1
+      END
+      IF XMISC<6>= 10 THEN
+         SMISC = 'CONTACT SELECTOR'
+         SMISC<5> = "Contact Name":SPACE(8):"Title"
+         SMISC<7> = 3
+         CALL SELECTOR (CUST.CONTACTS, SMISC)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF SMISC<2> # '' THEN
+            A = CUST.CONTACTS<2,SMISC<2>>
+         END ELSE
+            GO 2102.1
+         END
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'JOB NUMBER SELECTOR'
+         SMISC<5> = "Job# ":SPACE(6):"Job Desc ":SPACE(22):"Recv Dte":SPACE(1):"Due Date":SPACE(1):"Stat"
+         SMISC<7> = 3
+         CALL SELECTOR (JOBS.DAT, SMISC)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF SMISC<2> # '' THEN
+            A = JOBS.DAT<2,SMISC<2>>
+         END ELSE
+            GO 2102.1
+         END
+      END
+      IF VAL.JOB.NUM = "Y" THEN
+         READ JOB.B FROM F.JOB, A THEN
+            IF JOB.B<6> # "O" THEN PRINT C22:@(2,22):"Job has been completed." ; GO 2102.1
+            JOB.DESC = JOB.B<1>
+         END ELSE
+            IMISC = '' ; CALL INDEX.SEARCH (A, 'JOB', 'INDEX', FK, IMISC)
+            IF IMISC<1> THEN GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+            IF FK # '' THEN A = FK ELSE GO 2102.1
+            READV JOB.DESC FROM F.JOB, A , 1 ELSE JOB.DESC = ''
+         END
+      END
+      HREC<30> = A
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2102.1
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1003
+      IF VAL.JOB.NUM = "Y" AND HREC<30> = "" THEN GO 2102.1
+      IF VAL.JOB.NUM = "Y" THEN
+         PRINT @(8,8):HREC<30>:" ":JOB.DESC[1,10]
+      END ELSE
+         PRINT @(8,8):HREC<30> 'L#23':
+      END
+      RETURN
+2103: *
+      DMISC = ''
+      DMISC<1> = 3
+      DMISC<2> = 12
+      DMISC<3> = 1
+      DMISC<4> = 1
+      DMISC<5> = 30
+      DMISC<7> = 0
+      DMISC<9> = 'Done'
+      SPIN = HREC<11>
+      CALL COMMENTS.SUB (9, SPIN, ESCLFG, DMISC)
+      IF NOT(ESCFLG) THEN HREC<11> = SPIN
+      GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+      IF DMISC<10> = 'Y' THEN RETURN TO 1004
+      IF DMISC<9,2> = 'Y' THEN GOSUB 8900 ; GO 2103
+      RETURN
+      * BILL-TO ATTENTION
+2103.5: XMISC = '' ; XMISC<2> = 'Y':IVM:'Y' ; XMISC<10> = 23
+      XMISC<4> = 2:IVM:9 ; XMISC<5> = 'FastKey':IVM:'Done'
+      PRINT C22:
+      CALL CIP (10, 14, 20, HREC<53>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780 ; GO 2103.5
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2103.5
+      END
+      HREC<53> = A
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2103.5
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1005
+      RETURN
+      * SHIP-TO ATTENTION
+2103.6: XMISC = '' ; XMISC<2> = 'Y':IVM:'Y' ; XMISC<10> = 23
+      XMISC<4> = 2:IVM:9 ; XMISC<5> = 'FastKey':IVM:'Done'
+      CALL CIP (10, 15, 20, HREC<68>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780 ; GO 2103.6
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2103.6
+      END
+      HREC<68> = A
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2103.6
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1005.1
+      RETURN
+2104: *
+      PRINT C22:'Enter Order Date or RETURN for System Date':
+      IF HREC<2> = '' THEN HREC<2> = DATE()
+      OV = OCONV(HREC<2>,'D2/')
+      XMISC = 2:IVM:'MM/DD/YY' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<10>=23 ; XMISC<4>=2:IVM:9 ; XMISC<5>='FastKey':IVM:'Done'
+      CALL CIP (43, 7, 8, OV, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2104
+      END
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2104
+      IF A = '' THEN GO 2104
+      HREC<2> = ICONV(A,'D')
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1005.2
+      RETURN
+2106: *
+      PRINT @(43,8):SPACE(14):
+      XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:2:IVM:9 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Done' ; XMISC<10> = 23
+      CALL CIP (43, 8, 14, HREC<12>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2106
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'SALESMAN CODE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        NAME            '
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (SMAN, REDISPLAY, SMISC)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GOTO 2106
+      END
+      READV SALENAME FROM SMAN, A, 1 ELSE
+         IMISC = '' ; CALL INDEX.SEARCH (A, 'SALESMAN', 'INDEX', FK, IMISC)
+         IF IMISC<1> THEN GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF FK # '' THEN A = FK ELSE GO 2106
+         READV SALENAME FROM SMAN, A , 1 ELSE SALENAME = ''
+      END
+      PRINT @(43,8):SALENAME 'L#14'
+      IF A # '' AND HREC<12> # '' AND (A # HREC<12>) AND (CHANGE.SLMN.CORR.ONLY # "Y" OR PROGRAM # "OE") THEN
+         PATH = 'CHANGE SALESMAN IN S/O'
+         CALL ACCESS.SUB (CONTROL, PATH, VALID, REDISPLAY)
+         IF REDISPLAY THEN PRINT SCR:SCR.HDR
+         IF NOT(VALID) THEN GO 2106
+      END
+      HREC<12> = A
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2106
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1006
+      RETURN
+2107: *
+      XMISC = IVM:STR('*',5) ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:2:IVM:6:IVM:9 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Ship-Via':IVM:'Done' ; XMISC<10> = 23
+      PRINT @(43,9):SPACE(14):
+      CALL CIP (43, 9, 14, HREC<4,1>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2107
+      END
+      IF XMISC<6> = 6 THEN
+         EXECUTE "SHIP.VIA.MAINT"
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2107
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'SHIP VIA CODE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        NAME/DESCRIPTION'
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (SHIP.VIA, REDISPLAY, SMISC)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GOTO 2107
+      END
+      IF A # '' THEN
+         READ SHIP.VIA.B FROM SHIP.VIA, A ELSE
+            IMISC = '' ; CALL INDEX.SEARCH (A, 'SHIP.VIA', 'INDEX', FK, IMISC)
+            IF IMISC<1> THEN GOSUB 4000 ; PRINT SCR:SCR.HDR:
+            IF FK # '' THEN A = FK ELSE GO 2107
+            READ SHIP.VIA.B FROM SHIP.VIA, A ELSE SHIP.VIA.B = ''
+         END
+         IF SHIP.VIA.B<5> # '' THEN
+            LOCATE SHIP.VIA.B<5> IN WHSE.B<1> SETTING POS THEN
+               HREC<34>=SHIP.VIA.B<5>
+               PRINT @(43,13):WHSE.B<2,POS> 'L#14'
+            END
+         END
+         IF SHIP.VIA.B<8> = '' THEN HREC<96> = '' ELSE
+            IF A # HREC<4,1> THEN
+               CALL WINDOW (32,11,23,1,'','')
+               PRINT @(34,12):BELL:DMON:'Route Stop Number ':DMOFF:
+2108:          CALL CIP (52, 12, 3, HREC<96>, RS, ESCFLG, '')
+               IF NOT(ESCFLG) THEN
+                  IF NUM(RS) ! RS = '' ELSE GO 2108
+                  IF RS + 0 = 0 THEN RS = '' ELSE RS = RS 'R%3'
+                  HREC<96> = RS
+               END
+               PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+            END
+         END
+         VIA.DESCR = SHIP.VIA.B<1>
+         HREC<4,1> = A
+         PRINT @(43,9):VIA.DESCR 'L#14'
+         IF SHIP.VIA.B<2> # '' THEN
+            READV JUR FROM TAX, SHIP.VIA.B<2>, 1 THEN
+               READV TX.PRC FROM TAX, HREC<6>,2 ELSE TX.PRC = 0
+               IF TX.PRC+0 # 0 THEN
+                  HREC<6> = SHIP.VIA.B<2>
+                  PRINT @(43,12):FLON:OCONV(HREC<6>,'TTAX;X;1;1') 'L#14':FLOFF:
+               END
+               PRINT @(43,12):FLON:OCONV(HREC<6>,'TTAX;X;1;1') 'L#14':FLOFF:
+            END
+         END
+      END ELSE HREC<96> = ''
+      HREC<4,1> = A
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2107
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1007
+      RETURN
+2109: *
+      PRINT C22:'Enter Shipping Date'
+      XMISC = 2:IVM:'MM/DD/YY' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<10>=23 ; XMISC<4>=2:IVM:9 ; XMISC<5>='FastKey':IVM:'Done'
+      CALL CIP (43, 10, 8, OCONV(HREC<35>,'D2/'), A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2109
+      END
+      A = ICONV(A,'D2/')
+      PRINT @(43,10):OCONV(A,'D2/') 'L#8'
+      HREC<35> = A
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2109
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1008
+      RETURN
+2110: *
+      PRINT C22:'ENTER FOB':MSG
+      PRINT @(44,11):STR('*',7):' ':@(44):
+      INPUT FOB,8
+      IF LEN(2110) GT 7 THEN GO 2110
+      IF MSG # "" & FOB = '' THEN FOB = HREC<8>
+      IF FOB = '' THEN FOB = DEF
+      PRINT @(44,11):FOB'L#7'
+      HREC<8> = FOB
+      RETURN
+2113: ***   TERMS CODE
+      PRINT @(43,11):SPACE(14):
+      XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:2:IVM:6:IVM:9 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Terms':IVM:'Done' ; XMISC<10> = 23
+      CALL CIP (43, 11, 14, HREC<15>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6> = 6 THEN
+         EXECUTE 'AR.TERMS'
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2113
+      END
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2113
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'TERMS CODE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        DESCR           '
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (TERMS, REDISPLAY, SMISC)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GOTO 2113
+      END
+      READV TDES FROM TERMS, A, 1 ELSE
+         IMISC = '' ; CALL INDEX.SEARCH (A, 'TERMS', 'INDEX', FK, IMISC)
+         IF IMISC<1> THEN GOSUB 4000 ; PRINT SCR:SCR.HDR:
+         IF FK # '' THEN A = FK ELSE GO 2113
+         READV TDES FROM TERMS, A, 1 ELSE TDESC = ''
+      END
+      PRINT C22:
+      PRINT @(43,11):TDES 'L#14'
+      HREC<15>=A
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2113
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1009
+      RETURN
+2114: *** TAX CODE
+      PRINT @(43,12):SPACE(14):
+      XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:2:IVM:9 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Done' ; XMISC<10> = 23
+      CALL CIP (43, 12, 14, HREC<6>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2114
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'TAX CODE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        JURISDICTION    '
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (TAX, REDISPLAY, SMISC)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GOTO 2114
+      END
+      READV TXDES FROM TAX, A, 1 ELSE
+         IMISC = '' ; CALL INDEX.SEARCH (A, 'TAX', 'INDEX', FK, IMISC)
+         IF IMISC<1> THEN GOSUB 4000 ; PRINT SCR:SCR.HDR:
+         IF FK # '' THEN A = FK ELSE GO 2114
+         READV TXDES FROM TAX, A, 1 ELSE TXDES = ''
+      END
+      PRINT C22:
+      PRINT @(43,12):TXDES 'L#14'
+      HREC<6> = A
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2114
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1010
+      RETURN
+2114.2: *WAREHOUSE
+      IF HREC<34> = '' THEN
+         READV DFLT.WHSE FROM BRANCH, HREC<31>, 11 ELSE DFLT.WHSE = ''
+         IF FORCE.WHSE.ENTRY # "Y" THEN HREC<34> = DFLT.WHSE
+      END
+      IF HREC<34> = '' AND FORCE.WHSE.ENTRY # "Y" THEN HREC<34> = '01'
+      XMISC = IVM:STR('*',2) ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:2:IVM:9 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Done' ; XMISC<10> = 23
+      PRINT @(43,13):SPACE(14)
+      CALL CIP(43,13,2,HREC<34>,WHSE,ESCFLG,XMISC)
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2114.2
+      END
+      IF XMISC<3,1>='Y' THEN RETURN TO 1011
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6> = 1 THEN
+         CALL WHSE.SELECTOR (WHSE.B,WHSE,45,2,30,8,'SHIPPED FROM WHSE',1)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+      END
+      LOCATE WHSE IN WHSE.B<1> SETTING POS ELSE GO 2114.2
+      HREC<34>=WHSE
+      PRINT @(43,13):WHSE.B<2,POS> 'L#14'
+      *S*   CHECK FOR CHANGE FROM ORIGINAL WHSE AND IF CHANGED UPDATE ALL
+      *S*   LINES IN OD  THAT HAVE NOT BEEN COMPLETED.
+      IF HREC<34> # ORIG.WHSE THEN
+         FOR WHLP = 1 TO DCOUNT(DREC<1>,IVM)
+            IF DREC<6,WHLP> # "Y" THEN DREC<72,WHLP> = HREC<34> ; DET<62,WHLP> = HREC<34>
+         NEXT WHLP
+      END
+      *S*
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2114.2
+      RETURN
+      !
+2114.3: !
+      !  SHIP EXACT ?
+      !
+      IF HREC<36>='' THEN HREC<36>='Y'
+      XMISC='' ; XMISC<2>='Y':IVM:'Y'
+      XMISC<10>=23 ; XMISC<4>=2:IVM:9 ; XMISC<5>='FastKey':IVM:'Done'
+      CALL CIP(43,14,1,HREC<36>,SHIP.EXACT,ESCFLG,XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2114.3
+      END
+      IF SHIP.EXACT = 'Y' OR SHIP.EXACT='N' THEN NULL ELSE GO 2114.3
+      HREC<36>=SHIP.EXACT
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2114.3
+      IF XMISC<3,1>='Y' THEN RETURN TO 1011.2
+      RETURN
+      !
+      ! SUPPRESS COMPANY HEADER ON P/T
+      !
+2114.4: IF SUP.COMP.HDR = 'Y' AND HREC<9> = 'MAN' THEN
+         HREC<42> = 'Y'
+      END
+      IF HREC<42>='' THEN HREC<42>='N'
+      PRINT C22:'Suppress Company Header Info. on Pick Ticket/Sales Order PRINT ? (Y)es/(N)o...':
+      XMISC='' ; XMISC<2>='Y':IVM:'Y'
+      XMISC<10>=23 ; XMISC<4>=2:IVM:9 ; XMISC<5>='FastKey':IVM:'Done'
+      CALL CIP (43,15,1,HREC<42>,SUPCOHDR,ESCFLG,XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2114.4
+      END
+      PRINT C22:
+      IF SUPCOHDR = 'Y' ! SUPCOHDR = 'N' ELSE GO 2114.4
+      HREC<42>=SUPCOHDR
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2114.4
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1011.3
+      RETURN
+      !
+      ! ORDER TYPE
+      !
+2114.5: XMISC='' ; XMISC<2>='Y':IVM:'Y'
+      XMISC<10>=23
+      XMISC<4> = 1:IVM:2:IVM:6:IVM:9 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Ord Type':IVM:'Done' ; XMISC<10> = 23
+      PRINT @(43,16):SPACE(14):
+      CALL CIP (43,16,14,HREC<48>,ORDTYPE,ESCFLG,XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2114.5
+      END
+      IF XMISC<6>=6 THEN
+         EXECUTE 'ORDER.TYPE.MAINT'
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2114.5
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'ORDER TYPE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        DESC            '
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (ORDER.TYPE, REDISPLAY, SMISC)
+         GOSUB 4000 ; PRINT SCR ; PRINT SCR.HDR
+         IF SMISC<2> # '' THEN
+            ORDTYPE = SMISC<2>
+         END ELSE GOTO 2114.5
+      END
+      IF ORDTYPE # '' THEN
+         READV DUMMY FROM ORDER.TYPE,ORDTYPE,1 ELSE
+            IMISC = '' ; CALL INDEX.SEARCH (ORDTYPE, 'ORDER.TYPE', 'INDEX', FK, IMISC)
+            IF IMISC<1> THEN GOSUB 4000 ; PRINT SCR:SCR.HDR:
+            IF FK # '' THEN ORDTYPE = FK ELSE GO 2114.5
+            READV DUMMY FROM ORDER.TYPE,ORDTYPE,1 ELSE DUMMY = ''
+         END
+         PRINT @(43,16):DUMMY 'L#14':
+      END
+      IF ORDTYPE # HREC<48> THEN
+         PATH = 'S/O ORDER TYPE FIELD'
+         CALL ACCESS.SUB (CONTROL, PATH, VALID, REDISPLAY)
+         IF REDISPLAY THEN
+            PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+            PRINT @(43,16):DUMMY 'L#14':
+         END
+         IF NOT(VALID) THEN GO 2114.5
+      END
+      HREC<48>=ORDTYPE
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2114.5
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1011.4
+      RETURN
+      !
+      ! PO TYPE
+      !
+2116: PRINT C22:ULON:'P/O LINK TYPES:':ULOFF:'  D':DMON:'rop Shipment, ':DMOFF:'S':DMON:'pecial Order, ':DMOFF:'R':DMON:'equisition, ':DMOFF:'T':DMON:'ransfer or ':DMOFF:'N':DMON:'o Link':DMOFF:
+      XMISC='' ; XMISC<2>='Y':IVM:'Y'
+      XMISC<10>=23
+      XMISC<4> = 1:IVM:2:IVM:9 ; XMISC<5> = 'Search':IVM:'FastKey':IVM:'Done' ; XMISC<10> = 23
+      IF HREC<50> = '' THEN HREC<50> = 'N'
+      CALL CIP (43,17,1,HREC<50>,POTYPE,ESCFLG,XMISC)
+      IF ESCFLG THEN GOSUB 8780
+      PRINT C22:
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2116
+      END
+      IF POTYPE = 'D' ! POTYPE = 'S' ! POTYPE = 'N' ! POTYPE = 'R'! POTYPE = 'T' ELSE GO 2116
+      IF POTYPE = 'D' ! POTYPE = 'S' THEN
+         IF POTYPE # HREC<50> THEN
+            PATH = 'LINK P/O IN SALES ORDERS'
+            CALL ACCESS.SUB (CONTROL, PATH, VALID, REDISPLAY)
+            IF REDISPLAY THEN PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR
+            IF NOT(VALID) THEN GO 2116
+         END
+      END
+      HREC<50>=POTYPE
+      PRINT @(43,17):HREC<50> 'L#1'
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2116
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1011.5
+      RETURN
+      !
+      ! CASH SALE ?
+      !
+2117: PRINT C22:'Is this a CASH SALE ? (Y)es/(N)o...':
+      XMISC='' ; XMISC<2>='Y':IVM:'Y'
+      XMISC<10>=23
+      XMISC<4> = 2:IVM:9 ; XMISC<5> = 'FastKey':IVM:'Done' ; XMISC<10> = 23
+      IF HREC<67> = '' THEN
+         IF CASHSALE = 'Y' THEN
+            IF CREC<100> = 'Y' THEN HREC<67> = 'Y' ELSE HREC<67> = 'N'
+         END ELSE HREC<67> = 'N'
+      END
+      CALL CIP (43,18,1,HREC<67>,CS,ESCFLG,XMISC)
+      PRINT C22:
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2117
+      END
+      IF CS = 'Y' ! CS = 'N' ELSE GO 2117
+      IF CS = 'N' & CREC<100> = 'Y' THEN PRINT BELL: ; GO 2117
+      IF CS = 'N' & HREC<67> = 'Y' & HREC<56> # '' & HREC<43> # 'Y' THEN
+         *        PRINT C22:BELL:LON:' Prior Cash Sale Releases/Deposits exists, Hit RETURN...':LOFF:; INPUT NL,1:
+         TEXT = 'Prior Cash Sale Release/Deposit Exist, Press ESCAPE...'
+         PRINT BELL:
+         CALL MESSAGE.SUB (TEXT, ' ', '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2117
+      END
+      IF HREC<67> = 'Y' & CS = 'N' & DREC<7>[1,1] = 'P' & HREC<43> # 'Y' THEN
+         TEXT = 'P.O.S./Cash Sale already exist !, Are you Sure ? (Y)es/(N)o '
+         VERIFY = 'Y':IVM:'N'
+         PRINT BELL:
+         TMISC = ''
+         CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR
+         RESP=TMISC<10>
+         IF ESCFLG THEN RESP='N'
+         IF RESP = 'N' THEN GO 2117
+         PATH = 'DELETE POS/ONE STEP INVOICE'
+         CALL ACCESS.SUB (CONTROL, PATH, VALID, REDISPLAY)
+         IF REDISPLAY THEN PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR
+         IF NOT(VALID) THEN GO 2117
+      END
+      IF CS = 'Y' AND CASHSALE # 'Y' THEN GO 2117
+      HREC<67>=CS
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2117
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1013
+      RETURN
+      !
+      ! PRINT B/O LINE ITEMS ON ORDER & INVOICE ?
+      !
+2118: PRINT C22:'Print B/O line items on Order & Invoice (Y)es/(N)o...':
+      XMISC='' ; XMISC<2>='Y':IVM:'Y'
+      XMISC<10>=23
+      XMISC<4> = 2:IVM:9 ; XMISC<5> = 'FastKey':IVM:'Done' ; XMISC<10> = 23
+      IF HREC<98> = '' THEN HREC<98> = 'Y'
+      CALL CIP (43,19,1,HREC<98>,PRT.BO.LI,ESCFLG,XMISC)
+      PRINT C22:
+      IF ESCFLG THEN GOSUB 8780
+      IF XMISC<6>=2 THEN
+         CALL FASTKEY.MENU ('ORDER ENTRY', CUSTNO, '', '')
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         GO 2117
+      END
+      IF PRT.BO.LI = 'Y' ! PRT.BO.LI = 'N' ELSE GO 2118
+      HREC<98>=PRT.BO.LI
+      IF XMISC<6> = 9 THEN GOSUB 8900 ; GO 2118
+      IF XMISC<3,1> = 'Y' THEN RETURN TO 1014
+      RETURN
+      !
+3000: *
+      FOR X = 1 TO 4
+         DET<X> = DREC<X>
+      NEXT X
+      DET<5> = DREC<12>                     ; * DESC
+      DET<6> = DREC<13>                     ; * UOM
+      DET<7> = DREC<14>                     ; * SPECIAL COST
+      DET<8> = DREC<5>                      ; * TOTAL SHIPPED
+      DET<9> = DREC<6>                      ; * LINE COMP
+      DET<10> = DREC<9>                     ; * INVOICE #'S
+      DET<11> = DREC<10>                    ; * INVOICE DATES
+      DET<12> = DREC<11>                    ; * QTY ALLOC
+      DET<13> = DREC<15>                    ; * DISCOUNT
+      DET<17> = DREC<16>                    ; * COMMISSION
+      DET<18> = DREC<17>                    ; * PRICE OVERRIDE FLAG
+      DET<19> = DREC<28>                    ; * LINE ITEM COMMENTS
+      DET<61> = DREC<71>                    ; * LINE ITEM COMMENTS (INTERNAL)
+      DET<62> = DREC<72>                    ; * WHSE FOR LINE ITEM
+      DET<63> = DREC<73>                    ; * RETURN INVOICE NUMBER
+      DET<64> = DREC<74>                    ; * SHIP CYCLE QTY PICK
+      DET<21> = DREC<29>                    ; * P/O TYPE
+      DET<22> = DREC<30>                    ; * LINK P/O #
+      DET<23> = DREC<31>                    ; * PROM DEL DATE
+      DET<24> = DREC<32>                    ; * PRODUCT TAXABLE?
+      DET<25> = DREC<33>                    ; * PBS (PCS, BOX, CTN)
+      DET<26> = DREC<34>                    ; * ORIGINAL ORDER QUANTITY
+      DET<27> = DREC<35>                    ; * CHAIN DISCOUNT
+      DET<28> = DREC<39>                    ; * QUANTITY TO PICK
+      DET<29> = DREC<40>                    ; * QUANTITY BACK ORDER
+      DET<31> = DREC<41>                    ; * COMMIT INVENTORY ?
+      DET<35> = DREC<42>                    ; * SHOW (D)isc, (M)ult, (B)oth, (N)on
+      DET<36> = DREC<43>                    ; * Price Matrix Method
+      DET<37> = DREC<44>                    ; * Cost  Matrix Method
+      DET<38> = DREC<45>                    ; * Serial Number
+      DET<39> = DREC<46>                    ; * Ship as Product Number
+      DET<40> = DREC<47>                    ; * Quantity Scanned
+      DET<43> = DREC<53>                    ; * Transfer Warehouse
+      DET<44> = DREC<54>                    ; * Stock Transfer Number
+      DET<45> = DREC<55>                    ; * Transfer Quantity
+      DET<46> = DREC<56>                    ; * Returned Goods Auth Code
+      DET<47> = DREC<57>                    ; * Line Update Demand
+      DET<48> = DREC<58>                    ; * S/O Assembly Product
+      DET<49> = DREC<59>                    ; * S/O Assembly Quantity
+      DET<50> = DREC<60>                    ; * Repair Item ?
+      DET<51> = DREC<61>                    ; * Drop Ship Receiving#
+      DET<52> = DREC<62>                    ; * Drop Ship Receiving Quantity
+      DET<53> = DREC<63>                    ; * Commissionable?
+      DET<54> = DREC<64>                    ; * Quantity Staged
+      DET<55> = DREC<65>                    ; * Apply Restocking Charge
+      DET<57> = DREC<67>                    ; * P/O Req Red Alert
+      DET<58> = DREC<68>                    ; * Price Factor
+      DET<59> = DREC<69>                    ; * Quantity Factor
+      DET<60> = DREC<70>
+      ** DO NOT USE DET<33> = VENDOR CODE ** LEON
+      ** DO NOT USE DET<34> = P/O # (ADD-ON ONLY) ** LEON
+      * DET<30> IS QUANTITY OPEN AT BILLING (INQUIRY ONLY)
+      CT = COUNT(DET<1>,CHAR(253))+1
+      TOT = 0
+      FOR LINE = 1 TO CT
+         IF OCONV(DET<1,LINE>,"G1!1") # "SP" THEN
+            READ PRODREC FROM PRODUCT,DET<1,LINE> ELSE PRODREC = "NOT ON FILE"
+            DET<5,LINE> = PRODREC<1>
+         END
+      NEXT LINE
+      IF PROGRAM[1,3] = "INQ" THEN RETURN
+      *L*      READU POREC FROM CUST.PO,HREC<1>:"!":HREC<3> ELSE POREC = ''
+      *L*      LOCATE(ORDNO,POREC,1;POS) ELSE NULL
+      *L*      POREC = DELETE(POREC,1,POS,0)
+      *L*      IF POREC = '' ! HREC<3> = '' THEN
+      *L*        DELETE CUST.PO,HREC<1>:"!":HREC<3>
+      *L*      END ELSE
+      *L*        WRITE POREC ON CUST.PO,HREC<1>:"!":HREC<3>
+      *L*      END
+      RETURN
+      !
+4000: *
+      TEXT='' ; SCR.HDR = ''
+      IF HREC<13>='CO' THEN TEXT='CRED HOLD'
+      IF HREC<13>='CO' THEN
+         IF HREC<43> = 'Y' THEN TEXT = 'CANCELLED' ELSE TEXT = 'COMPLETED'
+      END
+      IF HREC<13>='BO' THEN TEXT='BACKORDER'
+      IF ORDNO # 0 THEN SCR.HDR = SCR.HDR:@(40,0):LON:ORDNO:'-':HREC<37> 'R%2':'-':HREC<38> 'R%3':LOFF
+      SCR.HDR=SCR.HDR:@(70,0):HREC<31>
+      IF HREC<13> = '' THEN TEXT='OPEN'
+      IF HREC<13>='BI' THEN TEXT='BILLING'
+      SCR.HDR=SCR.HDR:@(69,1):TEXT'R#9'
+      IF HREC<43> = 'Y' THEN
+         SCR.HDR = SCR.HDR:@(63,2):FLON:OCONV(HREC<14>,'D2/'):' by ':HREC<44>:FLOFF
+      END
+      IF HREC<16> # '' THEN
+         SCR.HDR=SCR.HDR:@(68,3):OCONV(HREC<16>,'MR2,$')'R#10'
+      END
+      SCR.HDR=SCR.HDR:@(70,4):DREC<7> 'R#8'
+      SCR.HDR=SCR.HDR:@(69,5):HREC<28>'R#9'
+      IF HREC<67> = 'Y' ! CREC<100> = 'Y' THEN
+         SCR.HDR=SCR.HDR:@(65,6):FLON:' CASH SALE ':FLOFF
+      END
+      IF CREC<9> # '' THEN SCR.HDR=SCR.HDR:@(3,6):'Tel ':CREC<9>
+      IF CREC<14> # '' THEN SCR.HDR=SCR.HDR:@(34,6):'Fax ':CREC<14>
+      IF HREC<96,(HREC<37>+1)> # "" THEN
+         LASTPRINT = HREC<37> + 1
+         PRINTED = OCONV(HREC<97,HREC<37>+1>,'G1*1')
+         PRINTED = OCONV(PRINTED,'MT')
+         LDP = OCONV(HREC<97,HREC<37>+1>,'G*1')
+         LDP = OCONV(LDP,'D2/')
+         OLDP = LDP[1,2]:LDP[4,2]:LDP[7,2]
+         PRINTBY = OCONV(HREC<97,HREC<37>+1>,'G2*1')
+         PRINTED = PRINTED:' ':OLDP:PRINTBY
+      END ELSE
+         LASTPRINT = DCOUNT(HREC<26>,CHAR(253))
+         PRINTED = OCONV(HREC<26,LASTPRINT>,'MT')
+         LDP = OCONV(HREC<27,LASTPRINT>,'D2/')
+         OLDP = LDP[1,2]:LDP[4,2]:LDP[7,2]
+         PRINTED = PRINTED:' ':OLDP
+         PRINTED = PRINTED:HREC<29,LASTPRINT>
+      END
+      SCR.HDR = SCR.HDR:@(63,7):PRINTED 'L#15'
+      BEGIN CASE
+         CASE CREC<52> = 'G' ! CREC<52> = '' ; STATUS = 'GOOD'
+         CASE CREC<52> = 'W' ; STATUS = 'WATCH !'
+         CASE CREC<52> = 'C' ; STATUS = 'COD'
+         CASE CREC<52> = 'H' ; STATUS = 'CREDIT HOLD'
+         CASE CREC<52> = 'R' ; STATUS = 'CREDIT CARD'
+         CASE CREC<52> = 'L' ; STATUS = 'LEGAL'
+         CASE 1 ; STATUS = 'CASH IN ADVANCE'
+      END CASE
+      SCR.HDR=SCR.HDR:@(18,1):LON:STATUS:LOFF
+      SCR.HDR=SCR.HDR:@(7,1):HREC<1>
+      SCR.HDR=SCR.HDR:@(1,2):CREC<1>'L#30'
+      SCR.HDR=SCR.HDR:@(1,3):CREC<2>'L#30'
+      SCR.HDR=SCR.HDR:@(1,4):CREC<3>'L#30'
+      SCR.HDR=SCR.HDR:@(1,5):CREC<4>'L#18':CREC<5>"L#3":CREC<6>"L#9"
+      SCR.HDR=SCR.HDR:@(40,1):HREC<9>
+      IF HREC<9> = "MAN" THEN
+         SCR.HDR=SCR.HDR:@(32,2):HREC<10,1>"L#30"
+         SCR.HDR=SCR.HDR:@(32,3):HREC<10,2>"L#30"
+         SCR.HDR=SCR.HDR:@(32,4):HREC<10,3>"L#30"
+         SCR.HDR=SCR.HDR:@(32,5):HREC<10,4>:@(49):HREC<10,5>:@(52):HREC<10,6>
+      END ELSE
+         READ SHIP FROM SHIPTOFILE,HREC<1>:"!":HREC<9> ELSE SHIP = ""
+         IF SHIP<1> = "SAME" THEN
+            FOR X = 1 TO 6
+               SHIP<X> = CREC<X>
+            NEXT X
+         END
+         SCR.HDR=SCR.HDR:@(32,2):SHIP<1>"L#30"
+         SCR.HDR=SCR.HDR:@(32,3):SHIP<2>"L#30"
+         SCR.HDR=SCR.HDR:@(32,4):SHIP<3>"L#30"
+         SCR.HDR=SCR.HDR:@(32,5):SHIP<4>:@(49):SHIP<5>:@(52):SHIP<6>
+      END
+      SCR.HDR=SCR.HDR:@(12,7):HREC<3>"L#15"
+      SCR.HDR=SCR.HDR:@(8,8):HREC<30> 'L#23'
+      FOR X = 10 TO 12
+         SCR.HDR=SCR.HDR:@(1,X):HREC<11,X-9>"L#30"
+      NEXT X
+      IF DCOUNT(HREC<11>,IVM) GT 3 THEN
+         SCR.HDR = SCR.HDR:@(22,13):LULON:' More ':LULOFF
+      END ELSE SCR.HDR = SCR.HDR:@(22,13):STR(HORZLN,6)
+      SCR.HDR=SCR.HDR:@(10,14):HREC<53>
+      SCR.HDR=SCR.HDR:@(10,15):HREC<68>
+      SCR.HDR=SCR.HDR:@(43,7):OCONV(HREC<2>,"D2/")
+      READV SALENAME FROM SMAN,HREC<12>,1 ELSE SALENAME = "NOT ON FILE"
+      SCR.HDR=SCR.HDR:@(43,8):SALENAME"L#14"
+      READV VIA.DESCR FROM SHIP.VIA,HREC<4,1>,1 ELSE VIA.DESCR=''
+      SCR.HDR=SCR.HDR:@(43,9):VIA.DESCR'L#13'
+      SCR.HDR=SCR.HDR:@(43,10):OCONV(HREC<35>,'D2/')
+      TC=HREC<15>
+      READV TDES FROM TERMS,TC,1 ELSE TDES=''
+      SCR.HDR=SCR.HDR:@(43,11):TDES'L#14'
+      READV TXDES FROM TAX, HREC<6>, 1 ELSE TXDES = ''
+      SCR.HDR=SCR.HDR:@(43,12):TXDES'L#14'
+      IF HREC<34> # '' THEN
+         LOCATE HREC<34> IN WHSE.B<1> SETTING VAL THEN
+            SCR.HDR = SCR.HDR:@(43,13):WHSE.B<2,VAL> 'L#14'
+         END
+      END
+      SCR.HDR = SCR.HDR:@(43,14):HREC<36>
+      SCR.HDR = SCR.HDR:@(43,15):HREC<42>
+      READV OTDESC FROM ORDER.TYPE, HREC<48>, 1 ELSE OTDESC = ''
+      SCR.HDR = SCR.HDR:@(43,16):OTDESC 'L#14'
+      SCR.HDR = SCR.HDR:@(43,17):HREC<50> 'L#1'
+      SCR.HDR = SCR.HDR:@(43,18):HREC<67> 'L#1'
+      SCR.HDR = SCR.HDR:@(43,19):HREC<98> 'L#1'
+      BOCYCLE = HREC<37> + 1
+      DISP.CYCLE = HREC<37>
+4100: CHECK.PICK.PACK = FALSE
+      SENT.ITEMS = DCOUNT(HREC<94>,CHAR(253))
+      SENT.BY = HREC<94,SENT.ITEMS>
+      SENT.DATE = OCONV(OCONV(HREC<95,SENT.ITEMS>,'G*1'),'D2/')
+      SENT.TIME = OCONV(OCONV(HREC<95,SENT.ITEMS>,'G1*1'),'MT')
+      SENT.DATE = SENT.DATE[1,2]:SENT.DATE[4,2]:SENT.DATE[7,2]
+      SENT.MSG = SENT.TIME:' ':SENT.DATE:SENT.BY
+      SCAN.DATE = OCONV(HREC<70,BOCYCLE>,'D2/')
+      SCAN.DATE = SCAN.DATE[1,2]:SCAN.DATE[4,2]:SCAN.DATE[7,2]
+      SCAN.TIME = OCONV(HREC<71,BOCYCLE>,'MT')
+      SCAN.BY = HREC<69,BOCYCLE>
+      SCAN.MSG = SCAN.TIME:' ':SCAN.DATE:SCAN.BY
+      PICK.DATE = OCONV(HREC<18,BOCYCLE>,'G*1')
+      PICK.DATE = OCONV(PICK.DATE,'D2/')
+      PICK.DATE = PICK.DATE[1,2]:PICK.DATE[4,2]:PICK.DATE[7,2]
+      PICK.TIME = OCONV(HREC<18,BOCYCLE>,'G1*1')
+      PICK.TIME = OCONV(PICK.TIME,'MT')
+      PICK.BY = HREC<17,BOCYCLE>
+      PICK.MSG = PICK.TIME:' ':PICK.DATE:PICK.BY
+      PACK.DATE = OCONV(HREC<20,BOCYCLE>,'G*1')
+      PACK.DATE = OCONV(PACK.DATE,'D2/')
+      PACK.DATE = PACK.DATE[1,2]:PACK.DATE[4,2]:PACK.DATE[7,2]
+      PACK.TIME = OCONV(HREC<20,BOCYCLE>,'G1*1')
+      PACK.TIME = OCONV(PACK.TIME,'MT')
+      PACK.BY = HREC<19,BOCYCLE>
+      PACK.MSG = PACK.TIME:' ':PACK.DATE:PACK.BY
+      CHECK.DATE = OCONV(HREC<100,BOCYCLE>,'G*1')
+      CHECK.DATE = OCONV(CHECK.DATE,'D2/')
+      CHECK.DATE = CHECK.DATE[1,2]:CHECK.DATE[4,2]:CHECK.DATE[7,2]
+      CHECK.TIME = OCONV(HREC<100,BOCYCLE>,'G1*1')
+      CHECK.TIME = OCONV(CHECK.TIME,'MT')
+      CHECK.BY = HREC<99,BOCYCLE>
+      CHECK.MSG = CHECK.TIME:' ':CHECK.DATE:CHECK.BY
+      LOAD.DATE = OCONV(HREC<102,BOCYCLE>,'G*1')
+      LOAD.DATE = OCONV(LOAD.DATE,'D2/')
+      LOAD.DATE = LOAD.DATE[1,2]:LOAD.DATE[4,2]:LOAD.DATE[7,2]
+      LOAD.TIME = OCONV(HREC<102,BOCYCLE>,'G1*1')
+      LOAD.TIME = OCONV(LOAD.TIME,'MT')
+      LOAD.BY = HREC<101,BOCYCLE>
+      LOAD.MSG = LOAD.TIME:' ':LOAD.DATE:LOAD.BY
+      IF PICK.DATE = '' & PACK.DATE = '' & NOT(CHECK.PICK.PACK) & BOCYCLE # 1 THEN
+         BOCYCLE = BOCYCLE - 1 ; CHECK.PICK.PACK = TRUE
+         GO 4100
+      END
+      IF TRIM(SENT.MSG) # '' THEN SCR.HDR=SCR.HDR:@(63,8):DLULON:SENT.MSG:DLULOFF
+      IF TRIM(SCAN.MSG) # '' THEN SCR.HDR=SCR.HDR:@(63,9):LULON:SCAN.MSG:LULOFF
+      IF TRIM(PICK.MSG) # '' THEN SCR.HDR=SCR.HDR:@(63,10):DLON:PICK.MSG:DLOFF
+      IF TRIM(PACK.MSG) # '' THEN SCR.HDR=SCR.HDR:@(63,11):LON:PACK.MSG:LOFF
+      IF TRIM(CHECK.MSG) # '' THEN SCR.HDR=SCR.HDR:@(63,12):DLULON:CHECK.MSG:DLULOFF
+      IF TRIM(LOAD.MSG) # '' THEN SCR.HDR=SCR.HDR:@(63,13):LULON:LOAD.MSG:LULOFF
+      SCR.HDR=SCR.HDR:@(61,15):HREC<21,BOCYCLE>'L#5'
+      SCR.HDR=SCR.HDR:@(68,15):HREC<46,BOCYCLE>'L#2'
+      SCR.HDR=SCR.HDR:@(74,15):HREC<22,BOCYCLE>'L#4'
+      SCR.HDR=SCR.HDR:@(63,16):HREC<49,BOCYCLE>
+      YY=14
+      IF SEEAR = 'Y' & NOT(INDEX(PROGRAM,'INQ',1)) THEN
+         SCR.HDR=SCR.HDR:@(22,18):OCONV(CRMISC<6>,"MD2")'R#9'
+         IF CRMISC<7>+0 > 0 THEN
+            SCR.HDR=SCR.HDR:@(22,19):LON:OCONV(CRMISC<7>,"MD2")'R#9':LOFF
+         END ELSE
+            SCR.HDR=SCR.HDR:@(22,19):OCONV(CRMISC<7>,"MD2")'R#9'
+         END
+         OBAL=CRMISC<8>+CRMISC<9>+CRMISC<10>
+         IF OBAL+0 > 0 THEN
+            SCR.HDR=SCR.HDR:@(22,20):LON:OCONV(OBAL,"MD2")'R#9':LOFF
+         END ELSE
+            SCR.HDR=SCR.HDR:@(22,20):OCONV(OBAL,"MD2")'R#9'
+         END
+         SCR.HDR=SCR.HDR:@(6,18):OCONV(CRMISC<1>,"MD2")'R#9'
+         SCR.HDR=SCR.HDR:@(6,19):OCONV(CRMISC<2>,"MD2")'R#9'
+         IF CRMISC<4> < 0 THEN
+            SCR.HDR=SCR.HDR:@(6,20):LON:OCONV(CRMISC<4>,"MD2")'R#9':LOFF
+         END ELSE
+            SCR.HDR=SCR.HDR:@(6,20):OCONV(CRMISC<4>,"MD2")'R#9'
+         END
+      END
+      NOTIFY = ''
+      IF HREC<52> # '' THEN
+         IF NOTIFY # '' THEN NOTIFY = NOTIFY:DHORZLN
+         NOTIFY = NOTIFY:LULON:' Internal Notes ':LULOFF
+         *l*        SCR.HDR = SCR.HDR:@(8,21):LULON:' Internal Notes ':LULOFF
+      END
+      IF HREC<32> # '' THEN
+         IF NOTIFY # '' THEN NOTIFY = NOTIFY:DHORZLN
+         NOTIFY = NOTIFY:LULON:' External Notes ':LULOFF
+      END
+      IF HREC<80> # '' ! FASTRACKS # '' THEN
+         IF NOTIFY # '' THEN NOTIFY = NOTIFY:DHORZLN
+         FCTR = DCOUNT(HREC<80>,CHAR(253))
+         IF FASTRACKS # '' THEN
+            FCTR = 0
+            FOR I = 1 TO 3
+               IF FASTRACKS<1,I> # '' THEN FCTR = FCTR + 1
+            NEXT I
+         END
+         NOTIFY = NOTIFY:FLON:' ':FCTR:' FasTrack(s) ':FLOFF
+      END
+      SCR.HDR = SCR.HDR:@(3,21):NOTIFY
+      IF HREC<54> # '' AND HREC<13> # 'CH' THEN
+         SCR.HDR = SCR.HDR:@(44,21):LULON:' CH-Released by ':HREC<54>:' ':OCONV(HREC<115>,'D2/'):' ':OCONV(HREC<116>,'MT'):LULOFF
+      END
+      RETURN
+8000: *
+      IF PROGRAM='OC' OR PROGRAM[1,3]='INQ' THEN GO 8005
+      READV MANUAL.ORDNO FROM ORDER.TYPE, HREC<48>, 3 ELSE MANUAL.ORDNO = ''
+      IF MANUAL.ORDNO = 'Y' ! MANSONO = 'Y' THEN
+         LOOP
+802:        PRINT C22:BELL:'Enter MANUAL SALES ORDER NUMBER ... ':
+            ZMISC = '' ; ZMISC<10> = 23
+            ZMISC<4> = 9 ; ZMISC<5>='SysS/O#'
+            CALL CIP (50, 22, 7, '', MORDNO, ESCFLG, ZMISC)
+            IF ZMISC<6> = 9 THEN GO 806
+            IF NOT(ESCFLG) AND MORDNO = '' THEN GO 802
+            IF ESCFLG THEN
+               GOSUB 8780
+               IF RESP = 'Y' THEN RELEASE ; STOP
+            END ELSE
+               IF MORDNO # '' THEN
+                  IF LEN(MORDNO) LE 6 THEN MORDNO = MORDNO 'R%6'
+                  READV DUMMY FROM OH, MORDNO, 1 THEN
+                     PRINT C22:BELL:LON:' Sales Order already exists, Hit RETURN...':LOFF: ; INPUT NL,1:
+                  END ELSE
+                     PRINT C22:'Sales Order ':LON:MORDNO:LOFF:' Not-On-File, OK to CREATE ? (Y)es/(N)o ':
+                     LOOP
+                        CALL CIP (77, 22, 1, '', RESP, ESCFLG, '')
+                        IF ESCFLG THEN
+                           GOSUB 8780
+                           IF RESP = 'Y' THEN RELEASE ; STOP
+                        END
+                     UNTIL RESP = 'Y' ! RESP = 'N' DO REPEAT
+                     PRINT C22:
+                     IF RESP = 'Y' THEN ORDNO = MORDNO ; GO 8005
+                  END
+               END
+            END
+         REPEAT
+      END
+806:  !
+      READV PRE.INVOICE FROM CONTROL,'PRE.INVOICE',1 ELSE PRE.INVOICE='N'
+      IF PRE.INVOICE = 'Y' AND HREC<91>='' THEN
+         READV ORD.TYPE.PARAM FROM ORDER.TYPE,HREC<48>,2 ELSE ORD.TYPE.PARAM=''
+         IF ORD.TYPE.PARAM # '$' THEN
+            READVU INVNO FROM CONTROL,'INVOICE',1 ELSE INVNO=0
+            INVNO=INVNO+1
+            WRITEV INVNO ON CONTROL,'INVOICE',1
+            INVNO=INVNO'R%6'
+         END ELSE
+            READVU INVNO FROM CONTROL,'QINVOICE',1 ELSE INVNO=0
+            INVNO=INVNO+1
+            WRITEV INVNO ON CONTROL,'QINVOICE',1
+            INVNO='Q':INVNO'R%6'
+         END
+         HREC<91>=INVNO
+      END
+      READV BRPRFX FROM BRANCH, HREC<31>, 23 ELSE BRPRFX = ''
+      READU ORDNO FROM CONTROL, BRPRFX:'ORDER.NUM' ELSE ORDNO = '000001'
+      ORDNO = ORDNO + 1
+8001: NORDNO = BRPRFX:(ORDNO 'R%6')
+      READ XREC FROM OH,NORDNO ELSE GO 8002
+      ORDNO = ORDNO +1
+      GO 8001
+8002: WRITE ORDNO ON CONTROL, BRPRFX:'ORDER.NUM'
+      ORDNO = NORDNO
+8005: GOSUB 9000
+8003: HOLD = '' ; PO.CONTROL.HOLD = ''
+      LAST.STATION.ORDNO = ORDNO
+      READV OEH.CUSTOM FROM CONTROL, 'OEH.CUSTOM', 1 THEN
+         CALL @OEH.CUSTOM
+      END
+      !
+      ! IF CANCEL THEN SET COMPLETE FLAG TO 'Y'; IN EVERY VALUE !
+      !
+      IF CANCEL THEN
+         PROD.CT = DCOUNT(DET<1>,CHAR(253))
+         DET<9> = STR('Y':CHAR(253),(PROD.CT-1)):'Y'
+      END
+      IF HREC<67> = '' THEN                 ; * Cash Sale ?
+         IF CREC<100> = 'Y' & CASHSALE = 'Y' THEN HREC<67> = 'Y' ELSE HREC<67> = 'N'
+      END
+      IF HREC<67> # 'Y' THEN
+         IF HREC<13> # 'CO' THEN
+            CRMISC = '' ; CALL CUST.CREDIT.SUB (CUSTNO, CRMISC)
+            IF (CRMISC<1> + OTOT + CRMISC<2>) GT (CREC<12>:"00") THEN
+               HOLD<2> = 'Y'
+               HOLD<5> = 'Exceeds Credit Limit'
+            END ELSE
+               IF CREC<52> = 'W' ! CREC<52> = 'H' ! CREC<52> = 'A' THEN
+                  HOLD<2> = 'Y'
+                  HOLD<5> = 'Customer Status = ':CREC<52>
+               END
+            END
+            IF CRMISC<13> = 'Y' THEN
+               HOLD<2>='Y'
+               HOLD<5>='COD Customer with Credit Invoice'
+            END
+            READ AR.B FROM CUST.AR, HREC<1> ELSE AR.B = ''
+            OLD.INVDT = ''
+            CALL OLD.OI (AR.B, OI.F, '', OLD.INVDT)
+            IF OLD.INVDT = '' THEN GOTO 15
+            IF DATE()-OLD.INVDT GT CREC<13> THEN
+               HOLD<3> = 'Y'
+               HOLD<5> = 'Past Due Invoice ':DATE()-OLD.INVDT:' Days'
+            END
+15:         IF CREC<12> = 99999 THEN HOLD = ""
+            IF PROGRAM # "OE" THEN READ HOLD FROM ORDHOLD , ORDNO ELSE HOLD = ''
+            ** CHECK FOR CUST.PO.CONTROL $ VALUE **
+            READ CPO.B FROM CUST.PO.CONTROL, HREC<1>:'!':HREC<3> THEN
+               IF CPO.B<1>+0 > 0 THEN
+                  TOT.ORD.VAL=0
+                  CALL CALC.CUST.PO.CONTROL(HREC<1>,HREC<3>,ORDNO,CPO.B, TOT.ORD.VAL)
+                  IF (TOT.ORD.VAL+OTOT) > CPO.B<1> THEN
+                     PO.CONTROL.HOLD<3>='Y'
+                     PO.CONTROL.HOLD<5>='Customer PO$ Exceeded By ':OCONV(CPO.B<1>-(TOT.ORD.VAL+OTOT),"MD2")
+                     IF HREC<13> # 'CH' THEN
+                        HREC<55,-1>='Customer PO$ Exceeded By ':OCONV(CPO.B<1>-(TOT.ORD.VAL+OTOT),"MD2")
+                        HREC<112,-1> = 'DDI'
+                        HREC<113,-1> = DATE()
+                        HREC<114,-1> = TIME()
+                     END
+                     HREC<13> = 'CH'
+                     WRITE PO.CONTROL.HOLD ON ORDHOLD,ORDNO
+                  END
+               END
+            END
+            **
+            IF CRHLDV # 'Y' & CREC<52> = 'W' & PROGRAM = "OE" THEN
+               SUBJECT = 'WATCH! S/O ':ORDNO:' ':OCONV(CREC<1>,'MCT')
+               SUBJECT<1,2> = 'OEH*OC*':ORDNO
+               NOTE = 'Sales Order received for customer marked WATCH!'
+               NOTE<1,3> = 'Order Total is ':OCONV(OTOT,'MD2,$')
+               EMAIL.DEPT = 'AR'
+               CALL SEND.EMAIL ('I', EMAIL.DEPT, SUBJECT, NOTE)
+            END
+            IF HOLD # '' & CRHLDV # 'N' THEN
+               HOLD<1> = OTOT
+               HOLD<4> = CREC<12>:"00"
+               IF HREC<13> # 'CH' THEN
+                  HREC<55,-1> = HOLD<5>
+                  HREC<112,-1> = INTLS
+                  HREC<113,-1> = DATE()
+                  HREC<114,-1> = TIME()
+               END
+               HREC<13> = "CH"
+               WRITE HOLD ON ORDHOLD,ORDNO
+               IF PROGRAM = 'OE' THEN
+                  SUBJECT = 'Credit Hold on S/O ':ORDNO:' ':OCONV(CREC<1>,'MCT')
+                  SUBJECT<1,2> = 'OEH*OC*':ORDNO
+                  NOTE = 'Order was placed on CREDIT HOLD for the following reason:'
+                  NOTE<1,3> = HOLD<5>
+                  NOTE<1,5> = 'Order Total is ':OCONV(OTOT,'MD2,$')
+                  EMAIL.DEPT = 'AR'
+                  IF CREC<123> # '' THEN
+                     LOCATE CREC<123> IN USERS.B<4> SETTING VM THEN EMAIL.DEPT = CREC<123>
+                  END
+                  CALL SEND.EMAIL ('I', EMAIL.DEPT, SUBJECT, NOTE)
+               END
+            END ELSE
+               IF PROGRAM = "OE" AND PO.CONTROL.HOLD = "" THEN
+                  WRITE "" ON PICKING,ORDNO
+               END
+            END
+         END
+      END
+      IF PROGRAM = "OE" THEN
+         WRITE "" ON OPEN.ORD, ORDNO
+         WRITE "" ON DAILY.ORD,ORDNO
+         READU CREC FROM CUST, HREC<1> THEN
+            CREC<24> = DATE()
+            CREC<129>=DATE() ; CREC<130>=TIME()
+            WRITE CREC ON CUST,HREC<1>
+         END
+      END
+      IF HREC<3> # '' THEN
+         READU POREC FROM CUST.PO,HREC<1>:"!":HREC<3> ELSE POREC = ""
+         LOCATE ORDNO IN POREC<1> SETTING POS ELSE POREC<1,POS> = ORDNO
+         WRITE POREC ON CUST.PO,HREC<1>:"!":HREC<3>
+      END
+      IF HREC<13> = 'CO' THEN
+         READU OXREC FROM CUST.OPEN.ORD.XREF, HREC<1> THEN
+            LOCATE ORDNO IN OXREC<1> SETTING POS THEN DEL OXREC<1,POS>
+            WRITE OXREC ON CUST.OPEN.ORD.XREF, HREC<1>
+         END ELSE RELEASE CUST.OPEN.ORD.XREF, HREC<1>
+         READU CXREC FROM CUST.CLOSED.ORD.XREF, HREC<1> ELSE CXREC = ''
+         LOCATE ORDNO IN CXREC<1> SETTING POS ELSE CXREC<1,POS> = ORDNO
+         WRITE CXREC ON CUST.CLOSED.ORD.XREF, HREC<1>
+      END ELSE
+         READU OXREC FROM CUST.OPEN.ORD.XREF, HREC<1> ELSE OXREC = ''
+         LOCATE ORDNO IN OXREC<1> SETTING POS ELSE OXREC<1,POS> = ORDNO
+         WRITE OXREC ON CUST.OPEN.ORD.XREF, HREC<1>
+      END
+      FOR X = 1 TO 4
+         DREC<X> = DET<X>
+      NEXT X
+      DREC<5> = DET<8>                      ; * QTY SHIPPED
+      DREC<6> = DET<9>                      ; * LINE COMPLETE
+      DREC<9> = DET<10>                     ; * LAST INV #
+      DREC<10> = DET<11>                    ; * LAST INV DT
+      DREC<11> = DET<12>                    ; * QTY ALLOC
+      DREC<12> = DET<5>                     ; * SPECIAL DESC
+      DREC<13> = DET<6>                     ; * SPECIAL UOM
+      DREC<14> = DET<7>                     ; * SPECIAL COSTS
+      DREC<15> = DET<13>                    ; * DISCOUNT
+      DREC<16> = DET<17>                    ; * COMMISSION PERCENTAGE
+      DREC<17> = DET<18>                    ; * PRICE OVERRIDE FLAG
+      DREC<28> = DET<19>                    ; * LINE ITEM COMMENTS
+      DREC<71> = DET<61>                    ; * LINE ITEM COMMENTS (INTERNAL)
+      DREC<72> = DET<62>                    ; * WHSE FOR LINE ITEM
+      DREC<73> = DET<63>                    ; * RETURN INVOICE NUMBER
+      DREC<74> = DET<64>                    ; * SHIP CYCLE QTY PICK
+      DREC<29> = DET<21>                    ; * P/O TYPE
+      DREC<30> = DET<22>                    ; * LINK P/O #
+      DREC<31> = DET<23>                    ; * PROM DEL DATE
+      DREC<32> = DET<24>                    ; * PRODUCT TAXABLE?
+      DREC<33> = DET<25>                    ; * PBS (PCS, BOX, CTN)
+      DREC<34> = DET<26>                    ; * ORIGINAL ORDER QUANTITY
+      DREC<35> = DET<27>                    ; * CHAIN DISCOUNT
+      DREC<39> = DET<28>                    ; * QUANTITY TO PICK
+      DREC<40> = DET<29>                    ; * QUANTITY BACK ORDER
+      DREC<41> = DET<31>                    ; * COMMIT INVENTORY ?
+      DREC<42> = DET<35>                    ; * SHOW (D)isc, (M)ult, (B)oth, (N)on
+      DREC<43> = DET<36>                    ; * Price Matrix Method
+      DREC<44> = DET<37>                    ; * Cost  Matrix Method
+      DREC<45> = DET<38>                    ; * Serial Nuber
+      DREC<46> = DET<39>                    ; * Ship as Product Number
+      DREC<47> = DET<40>                    ; * Quantity Scanned
+      DREC<53> = DET<43>                    ; * Transfer Warehouse
+      DREC<54> = DET<44>                    ; * Stock Transfer Number
+      DREC<55> = DET<45>                    ; * Transfer Quantity
+      DREC<56> = DET<46>                    ; * Returned Goods Auth Code
+      DREC<57> = DET<47>                    ; * Line Update Demand
+      DREC<58> = DET<48>                    ; * S/O Assembly Product
+      DREC<59> = DET<49>                    ; * S/O Assembly Quantity
+      DREC<60> = DET<50>                    ; * Repair Item ?
+      DREC<61> = DET<51>                    ; * Drop Ship Receiving#
+      DREC<62> = DET<52>                    ; * Drop Ship Receiving Quantity
+      DREC<63> = DET<53>                    ; * Commissionable?
+      DREC<64> = DET<54>                    ; * Quantity Staged
+      DREC<65> = DET<55>                    ; * Apply Restocking Charge
+      DREC<67> = DET<57>                    ; * P/O Req Red Alert
+      DREC<68> = DET<58>                    ; * Price Factor
+      DREC<69> = DET<59>                    ; * Quantity Factor
+      DREC<70> = DET<60>
+      * DET<30> IS QUANTITY OPEN AT BILLING (INQUIRY ONLY)
+      * DET<33> VENDOR CODE *
+      * DET<34> P/O # (ADD-ON ONLY) *
+      IF HREC<28> = '' THEN HREC<28> = INTLS
+      !
+      ! UPDATE TRUCK INFO
+      !
+      READ ORIG.HREC FROM OH, ORDNO ELSE ORIG.HREC = ''
+      IF ORIG.HREC<4> # '' & ORIG.HREC<35> # '' & ((ORIG.HREC<4> # HREC<4> ! ORIG.HREC<35> # HREC<35>) ! HREC<13> = 'CO') & MULT.SHIPMENTS # "Y" THEN
+         READV TRKNO FROM SHIP.VIA, ORIG.HREC<4>, 8 ELSE TRKNO = ''
+         IF TRKNO # '' & ORIG.HREC<35> GE DATE() THEN
+            READU TSCHD.B FROM F.TRUCK.SCHED, TRKNO:'!':ORIG.HREC<35> THEN
+               LOCATE ORDNO IN TSCHD.B<1> SETTING VM THEN
+                  FOR I = 1 TO 5 ; DEL TSCHD.B<I,VM> ; NEXT I
+                  HREC<49,HREC<37>+1> = ''
+               END
+               IF TSCHD.B<1> = '' THEN
+                  DELETE F.TRUCK.SCHED, TRKNO:'!':ORIG.HREC<35>
+               END ELSE
+                  WRITE TSCHD.B ON F.TRUCK.SCHED, TRKNO:'!':ORIG.HREC<35>
+               END
+            END ELSE RELEASE F.TRUCK.SCHED, TRKNO:'!':ORIG.HREC<35>
+         END
+      END
+      IF HREC<4> # '' & HREC<35> # '' & HREC<13> # 'CO' & MULT.SHIPMENTS # "Y" THEN
+         READV TRKNO FROM SHIP.VIA, HREC<4>, 8 THEN
+            IF TRKNO # '' THEN
+               READU TSCHD.B FROM F.TRUCK.SCHED, TRKNO:'!':HREC<35> ELSE TSCHD.B = ''
+               LOCATE ORDNO IN TSCHD.B<1> SETTING VM ELSE
+                  LAST.STOPNO = 0
+                  FOR I = 1 TO DCOUNT(TSCHD.B<1>,CHAR(253))
+                     IF HREC<96> # '' THEN
+                        IF HREC<96> LT TSCHD.B<5,I> THEN VM = I
+                     END
+                     IF TSCHD.B<5,I> GT LAST.STOPNO THEN LAST.STOPNO = TSCHD.B<5,I>
+                  NEXT I
+                  IF HREC<96> # '' THEN
+                     FOR I = 1 TO 5
+                        INS '' BEFORE TSCHD.B<I,VM>
+                     NEXT I
+                  END
+                  LAST.STOPNO = LAST.STOPNO + 1 'R%3'
+                  IF HREC<96> = '' THEN HREC<96> = LAST.STOPNO
+                  TSCHD.B<1,VM> = ORDNO
+                  TSCHD.B<2,VM> = HREC<1>
+                  TSCHD.B<3,VM> = '' ; TSCHD.B<4,VM> = ''
+                  TSCHD.B<5,VM> = HREC<96>
+                  WRITE TSCHD.B ON F.TRUCK.SCHED, TRKNO:'!':HREC<35>
+                  HREC<49,HREC<37>+1> = 'TR# ':TRKNO:' ':OCONV(HREC<35>,'D2/')
+               END
+               RELEASE F.TRUCK.SCHED, TRKNO:'!':HREC<35>
+            END
+         END
+      END
+      WRITE DREC ON OD,ORDNO
+      HREC<77>=DATE() ; HREC<78>=TIME()
+      IF HREC<67> = 'Y' & DREC<7> # '' THEN
+         READV ORIG.BRANCH FROM OH, ORDNO, 31 THEN
+            IF HREC<31> # ORIG.BRANCH THEN
+               READU POS.B FROM F.POS, DREC<7> THEN
+                  POS.B<63> = ''
+                  WRITE POS.B ON F.POS, DREC<7>
+               END ELSE RELEASE F.POS, DREC<7>
+            END
+         END
+      END
+      WRITE HREC ON OH,ORDNO
+      IF FASTRACKS = '' THEN FASTRACKS = HREC<80>
+      IF TRACK1.B = '' & FASTRACKS<1,1> # '' THEN
+         READ TRACK1.B FROM F.FASTRACK, FASTRACKS<1,1> ELSE TRACK1.B = ''
+      END
+      IF TRACK2.B = '' & FASTRACKS<1,2> # '' THEN
+         READ TRACK2.B FROM F.FASTRACK, FASTRACKS<1,2> ELSE TRACK2.B = ''
+      END
+      IF TRACK3.B = '' & FASTRACKS<1,3> # '' THEN
+         READ TRACK3.B FROM F.FASTRACK, FASTRACKS<1,3> ELSE TRACK3.B = ''
+      END
+      CALL FASTRACK.ENTRY (MASTER, CONTROL, SCREENS, F.FASTRACK, OH, 80, '', ORDNO, 'SO', FASTRACKS, TRACK1.B, TRACK2.B, TRACK3.B, 'U')
+      FTRKS = ''
+      FOR I = 1 TO 3
+         IF FASTRACKS<1,I> # '' THEN FTRKS<1,-1> = FASTRACKS<1,I>
+      NEXT I
+      HREC<80> = FTRKS
+      FASTRACKS = FTRKS ; TRACK1.B = '' ; TRACK2.B = '' ; TRACK3.B = ''
+      IF QUOTE # '' THEN
+         READ QUOTE.B FROM F.PRICE.QUOTE,QUOTE THEN
+            QUOTE.B<18>=ORDNO
+            WRITE QUOTE.B ON F.PRICE.QUOTE,QUOTE
+         END
+      END
+      IF NOT(CANCEL) & PROGRAM = 'OE' THEN
+         FRT.TERMS = CREC<108>
+         IF FRT.TERMS = '' THEN FRT.TERMS = 'P'
+         IF (FRT.TERMS = 'C' OR FRT.TERMS = 'B') AND CREC<109>+0 = 0 AND CREC<110>+0 = 0 ELSE
+            IF FRT.TERMS = 'B' ! FRT.TERMS = 'C' THEN
+               IF OTOT LT CREC<109> ELSE
+                  IF TOT.WEIGHT LT CREC<110> ELSE
+                     FRT.TERMS = CREC<111>
+                     IF FRT.TERMS = '' THEN FRT.TERMS = CREC<108>
+                  END
+               END
+            END
+         END
+         IF FRT.TERMS = '' THEN FRT.TERMS = 'P'
+         HREC<7> = FRT.TERMS
+         WRITEV FRT.TERMS ON OH, ORDNO, 7
+      END
+      CALL OEF (OH, OD, PO.F, F.VM, PICKING, BRANCH, ORDHOLD, POINTER.FILE, ORD.B, SHIP, PO.LIST, SCR.FINAL, TAXPCNT, TXBLAMT, SHIP.TXBLAMT, GST.TAXPCNT, PST.TAXPCNT, GST.TXBLAMT, GST.SHIP.TXBLAMT, TITLE, TOT.WEIGHT, PLRECAP.B, MINGP)
+      RETURN
+      !
+9999: *
+      PRINT @(1,2):CREC<1>'L#30'
+      PRINT @(1,3):CREC<2>'L#30'
+      PRINT @(1,4):CREC<3>'L#30'
+      PRINT @(1,5):CREC<4>'L#18':CREC<5>"L#3":CREC<6>"L#9"
+      ZMISC = ''
+      CALL CUST.VERIFY.SUB (CUSTNO, ZMISC)
+      IF ZMISC<1> = 'N' THEN PRINT SCR: ; RETURN TO 99
+      RETURN
+9000: **** UPDATE COMMITTED, PRICE HISTORY, ORDER VALUE ****
+      PRINT C22:EOS:
+      TEXT = 'F I L E S   U P D A T I N G . . .'
+      XMISC = '' ; XMISC<4> = FON
+      CALL MESSAGE.SUB (TEXT, '', '', XMISC)
+      GOSUB 9400                            ; * BACKOUT COMMITTED FROM ORIGINAL DETAIL RECORD
+      LINE.ITEMS = DCOUNT(DET<1>,CHAR(253))
+      PO.LIST = '' ; ZERO.COST = FALSE ; ZERO.SELL = FALSE
+      LINE = 0 ; OTOT = 0 ; CTOT = 0 ; GP = 0 ; TOT.WEIGHT = 0 ; PLRECAP.B = ''
+      TXBLAMT = 0 ; GST.TXBLAMT = 0
+      SHIP.AMT = 0
+      SHIP.TXBLAMT = 0 ; GST.SHIP.TXBLAMT = 0
+      QTYOPEN = '' ; QTYSHIPABLE = ''
+      TAX.PROD.FREIGHT = 'Y'
+      REQLIST = ''
+      LOOP
+         LINE = LINE + 1
+      WHILE LINE LE LINE.ITEMS DO
+         IF DET<21,LINE> = 'R' THEN
+            REQFOUND = FALSE
+            LOCATE DET<1,LINE> IN ORIG.DET<1> SETTING OVAL THEN
+               IF ORIG.DET<21,OVAL> = 'R' THEN REQFOUND = TRUE
+            END
+            IF NOT(REQFOUND) THEN
+               LOCATE DET<1,LINE> IN REQLIST<1> SETTING RVAL ELSE
+                  REQLIST<1,RVAL> = DET<1,LINE>
+                  REQLIST<2,RVAL> = OCONV(DET<1,LINE>,'TPRODUCT;X;1;1')
+                  REQLIST<3,RVAL> = DET<3,LINE>
+                  REQLIST<4,RVAL> = DET<23,LINE>
+                  REQLIST<5,RVAL> = DET<57,LINE>
+               END
+            END
+         END
+         IF DET<9,LINE> # 'Y' THEN
+            COMM.QTY = (DET<28,LINE> + DET<29,LINE>)
+            IF NOT(CANCEL) THEN
+               USE.WH = ''
+               IF DET<21,LINE> = 'D' THEN
+                  LOCATE 'Y' IN WHSE.B<9> SETTING DSVL THEN USE.WH = WHSE.B<1,DSVL>
+               END ELSE
+                  IF DET<46,LINE> # '' THEN
+                     LOCATE 'Y' IN WHSE.B<14> SETTING RGVL THEN USE.WH = WHSE.B<1,RGVL>
+                  END ELSE
+                     USE.WH = HREC<34>
+                     IF DET<62,LINE> # '' THEN USE.WH = DET<62,LINE>
+                  END
+               END
+               IF USE.WH # '' & DET<31,LINE> # 'N' THEN
+                  CMISC = ''
+                  IF DET<48,LINE,1> # '' THEN
+                     CMISC<2> = CHANGE(DET<48,LINE>,ISVM,IVM)
+                     CMISC<3> = CHANGE(DET<49,LINE>,ISVM,IVM)
+                  END
+                  CALL CMTD.UPD (PRODUCT,INVENTORY,DET<1,LINE>,COMM.QTY,USE.WH,1,CMISC)
+               END
+               PMISC = 1 ; PMISC<2> = 'S'
+               IF DET<48,LINE,1> # '' THEN
+                  PMISC<3> = CHANGE(DET<48,LINE>,ISVM,IVM)
+                  PMISC<4> = CHANGE(DET<49,LINE>,ISVM,IVM)
+               END
+               CALL PROD.POINTER.UPD (F.PROD.POINTER,DET<1,LINE>,ORDNO,LINE,PMISC)
+            END
+         END
+         LMISC=DET<1,LINE> ; LMISC<2>='S' ; LMISC<3> = DET<6,LINE> ; LMISC<4> = DET<58,LINE> ; LMISC<5> = DET<59,LINE>
+         CALL LINE.EXT (DET<13,LINE>, DET<4,LINE>, DET<29,LINE>+DET<28,LINE>, EXT, LMISC)
+         QTYOPEN<1,LINE> = DET<29,LINE> + DET<28,LINE>
+         CALL LINE.EXT (DET<13,LINE>, DET<4,LINE>, DET<28,LINE>, SHIP.EXT, LMISC)
+         QTYSHIPABLE<1,LINE> = DET<28,LINE>
+         QTY.FACTOR = 1
+         IF OCONV(DET<1,LINE>,"G1!1") # "SP" THEN
+            DET<5,LINE> = ""
+            READ PROD.B FROM PRODUCT, DET<1,LINE> THEN
+               IF PROD.B<169> # '' THEN TAX.PROD.FREIGHT = PROD.B<169>
+               QTY.FACTOR = OCONV(PROD.B<140>,'TUOM;X;1;1')
+               IF QTY.FACTOR + 0 = 0 THEN QTY.FACTOR = 1
+               WEIGHT = ((DET<28,LINE> + DET<29,LINE>) * PROD.B<87>)
+               LOCATE PROD.B<26> IN PLRECAP.B<1> BY 'AL' SETTING VM ELSE
+                  INS PROD.B<26> BEFORE PLRECAP.B<1,VM>
+                  INS '' BEFORE PLRECAP.B<2,VM>
+                  INS '' BEFORE PLRECAP.B<3,VM>
+               END
+               PLRECAP.B<2,VM> = PLRECAP.B<2,VM> + WEIGHT
+               PLRECAP.B<3,VM> = PLRECAP.B<3,VM> + EXT
+               TOT.WEIGHT = TOT.WEIGHT + WEIGHT
+            END
+         END
+         PRICE.FACTOR = OCONV(DET<6,LINE>,'TUOM;X;1;1')
+         IF PRICE.FACTOR = '' THEN PRICE.FACTOR = 1
+         OTOT = OTOT + EXT
+         SHIP.AMT = SHIP.AMT + SHIP.EXT
+         IF DET<7,LINE> + 0 = 0 THEN ZERO.COST = TRUE
+         IF DET<4,LINE> + 0 = 0 THEN ZERO.SELL = TRUE
+         CTOT = CTOT + ((DET<28,LINE> + DET<29,LINE>) * (DET<7,LINE>/PRICE.FACTOR*QTY.FACTOR))
+         CALL BUILD.SO.PO (F.PROD.POINTER, PO.LIST, COMP.B, WHSE.B, DSWH, LINE, INTLS)
+      REPEAT
+      !
+      INARGS = ''
+      INARGS<1> = HREC<1>
+      INARGS<2> = HREC<9>
+      INARGS<3> = HREC<6>
+      INARGS<9> = DREC<1>
+      INARGS<10> = QTYOPEN
+      INARGS<11> = DREC<4>
+      INARGS<12> = DREC<15>
+      INARGS<13> = DREC<14>
+      INARGS<14> = DREC<68>
+      INARGS<15> = DREC<69>
+      INARGS<16> = DREC<32>
+      CALL TAX.SUB (INARGS, OUTARGS, '')
+      TAXAMT = OUTARGS<1>
+      !
+      INARGS<10> = QTYSHIPABLE
+      CALL TAX.SUB (INARGS, OUTARGS, '')
+      SHIP.TAXAMT = OUTARGS<1>
+      HREC<72> = TAXAMT
+      HREC<73> = SHIP.AMT
+      HREC<74> = SHIP.TAXAMT
+      CALL GENPO.SUB (MASTER, CONTROL, PRODUCT, INVENTORY, F.PROD.POINTER, F.VM.PO.XREF, F.GENPO, PO.F, DET, PO.LIST, ORDNO)
+      IF ABS(OTOT) # 0 THEN GP = (ABS(OTOT) - OCONV(ABS(CTOT),'MR2')) / ABS(OTOT) ELSE GP = 0
+      GP = (GP * 100)
+      HREC<16>=OTOT
+      HREC<25>=GP
+      IF PROGRAM = 'OE' THEN
+         REPAIR.ORDER = FALSE
+         LOCATE 'Y' IN DREC<60> SETTING RVM THEN REPAIR.ORDER = TRUE
+         MAIL.SENT=0 ; NOTE=''
+         IF GP < OCONV(MINGP,'MD2') & NOT(REPAIR.ORDER) THEN    ; * LOW GP WARNING MESSAGE
+            SUBJECT = 'Low GP% on ':OCONV(CREC<1>,'MCT')[1,20]:' order'
+            SUBJECT<1,2> = 'OEH*OC*':ORDNO
+            NOTE<1,1> = 'An order was entered on ':OCONV(DATE(),'D2/'):' for ':OCONV(CREC<1>,'MCT')
+            NOTE<1,2> = 'with a GP% of ':GP:'%.'
+            NOTE<1,3> = ''
+            NOTE<1,4> = 'The order value was ':OCONV(OTOT,'MD2$,'):', number ':ORDNO:'.'
+            CALL SEND.EMAIL ('I', 'EX',SUBJECT,NOTE)
+            IF COMP.B<237> = 'Y' THEN
+               READV SLM.INTLS FROM SMAN, HREC<12>, 34 THEN
+                  IF SLM.INTLS # HREC<28> AND SLM.INTLS # '' THEN
+                     CALL SEND.EMAIL ('I', SLM.INTLS,SUBJECT,NOTE)
+                  END
+               END
+            END
+            MAIL.SENT=1
+         END
+         IF OTOT > LARGE.ORDER.VALUE & MAIL.SENT = 0 THEN
+            SUBJECT = 'Large order from ':OCONV(CREC<1>,'MCT'):'.'
+            SUBJECT<1,2> = 'OEH*OC*':ORDNO
+            NOTE<1,1> = 'We received a large order from ':OCONV(CREC<1>,'MCT'):' on ':OCONV(DATE(),'DWA'):'.'
+            NOTE<1,2> = 'The total order value is ':OCONV(OTOT,'MD2,$'):', with a GP% of ':GP:'%.'
+            NOTE<1,3> = ''
+            NOTE<1,4> = 'The order number is ':ORDNO:'.'
+            CALL SEND.EMAIL ('I','EX',SUBJECT,NOTE)
+         END
+         IF ZERO.COST ! ZERO.SELL THEN
+            READ BRANCH.B FROM BRANCH, HREC<31> THEN
+               IF (BRANCH.B<63> = 'B' ! (BRANCH.B<63> = 'C' & ZERO.COST) ! (BRANCH.B<63> = 'S' & ZERO.SELL)) & BRANCH.B<64> # '' THEN
+                  IF ZERO.COST & ZERO.SELL THEN WORD = 'Zero Cost & Sell' ELSE
+                     IF ZERO.COST THEN WORD = 'Zero Cost' ELSE WORD = 'Zero Sell'
+                  END
+                  SUBJECT = 'S/O: ':ORDNO:' w/ ':WORD:' items rcvd.'
+                  SUBJECT<1,2> = 'OEH*OC*':ORDNO
+                  NOTE = 'An order was entered on ':OCONV(DATE(),'D2/'):' for ':OCONV(CREC<1>,'MCT')
+                  NOTE<1,2> = 'with ':WORD:' item(s).'
+                  NOTE<1,4> = 'The total order value is ':OCONV(OTOT,'MD2,$'):', with a GP% of ':GP:'%.'
+                  CALL SEND.EMAIL ('I',BRANCH.B<64>,SUBJECT,NOTE)
+               END
+            END
+         END
+      END
+      IF REQLIST # '' THEN
+         SW.RED.ALERT = 0
+         SUBJECT = 'P/O Requisition Received' ; SUBJECT<1,2> = 'PO.REQ' ; SUBJECT<1,3> = 'P/O-Req'
+         NOTE = 'A purchase requisition was received for the following item(s):'
+         NOTE<1,2> = ' '
+         NOTE<1,3> = 'Product........  Description':STR('.',19):'  Quantity':SPACE(2):'Prom-Date'
+         FOR I = 1 TO DCOUNT(REQLIST<1>,IVM)
+            NOTE<1,-1> = OCONV(REQLIST<1,I>,'G1!1') 'L#15  ':REQLIST<2,I> 'L#30':REQLIST<3,I> 'R#7':SPACE(5):OCONV(REQLIST<4,I>,'D2/')'L#8'
+            IF REQLIST<5,I> = "Y" THEN
+               SW.RED.ALERT = 1
+               IF COUNT(NOTE,IVM) = 0 THEN NOTE.FLD = 1 ELSE NOTE.FLD = DCOUNT(NOTE,IVM)
+               NOTE<1,NOTE.FLD> = NOTE<1,NOTE.FLD>:FON:' R':FOFF
+            END
+         NEXT I
+         IF SW.RED.ALERT THEN SUBJECT<1,4> = "Y"
+         NOTE<1,-1> = ' '
+         NOTE<1,-1> = 'Sales Order: ':ORDNO:'    Writer: ':HREC<28>
+         CALL SEND.EMAIL ('I','PO',SUBJECT,NOTE)
+      END
+      RETURN
+      !
+      ! IS THIS A NEW REVISION ?
+      !
+9150: CALL WINDOW (21, 10, 34, 3, '', 3)
+      PRINT @(23,12):DLON:'New Order Revision ? (Y)es/(N)o':DLOFF:
+      LOOP
+         CALL CIP (55, 12, 1, '', RESP, '', '')
+      UNTIL RESP = 'Y' ! RESP = 'N' DO REPEAT
+      IF RESP = 'Y' THEN
+         REVCT = DCOUNT(HREC<39>,CHAR(253))
+         REVNO = REVCT + 1
+         GOSUB 9200                         ; * REVISIONS
+      END
+      RETURN
+      !
+      ! REVISIONS
+      !
+9200: MSK = '' ; NEWREV = TRUE
+      IF HREC<39,REVNO> # '' THEN
+         MSK = 'Entered ':OCONV(HREC<39,REVNO>,'D2/'):' by ':HREC<40,REVNO>
+         NEWREV = FALSE
+      END
+      MSK = ' Rev # ':REVNO 'R%3 ':MSK
+      PRINT @(21,5):LON:MSK 'L#36':LOFF:
+      CMISC = ''
+      CMISC<2> = 16
+      CMISC<3> = 24
+      CMISC<4> = 1
+      CMISC<5> = 30
+      CMISC<6> = 'ORDER.REVISIONS'
+      CMISC<7> = 2
+      IF NOT(NEWREV) THEN CMISC<8> = 1
+      COMMENTS = HREC<41,REVNO>
+      CONVERT ISVM TO IVM IN COMMENTS
+      CALL COMMENTS.SUB (6, COMMENTS, ESCFLG, CMISC)
+      IF ESCFLG THEN RETURN
+      CONVERT IVM TO ISVM IN COMMENTS
+      IF NEWREV THEN
+         HREC<38> = HREC<38> + 1
+         HREC<39,REVNO> = DATE()
+         HREC<40,REVNO> = INTLS
+         HREC<41,REVNO> = COMMENTS
+         WRITE '' ON PICKING, ORDNO
+      END
+      RETURN
+      !
+      ! BACKOUT ORIGINAL COMMITTED QIANTITIES
+      !
+9400: LINE.ITEMS = DCOUNT(ORIG.DET<1>,CHAR(253)) ; LINE = 0
+      LOOP
+         LINE = LINE + 1
+      WHILE LINE LE LINE.ITEMS DO
+         IF DET<9,LINE> # 'Y' THEN
+            COMM.QTY = (ORIG.DET<28,LINE> + ORIG.DET<29,LINE>)
+            USE.WH = ''
+            IF ORIG.DET<21,LINE> = 'D' THEN
+               LOCATE 'Y' IN WHSE.B<9> SETTING DSVL THEN USE.WH = WHSE.B<1,DSVL>
+            END ELSE
+               IF ORIG.DET<46,LINE> # '' THEN
+                  LOCATE 'Y' IN WHSE.B<14> SETTING RGVL THEN USE.WH = WHSE.B<1,RGVL>
+               END ELSE
+                  IF ORIG.DET<62,LINE> # '' THEN USE.WH = ORIG.DET<62,LINE> ELSE USE.WH = ORIG.WHSE
+                  IF USE.WH = '' THEN USE.WH = HREC<34>
+               END
+            END
+            IF USE.WH # '' & ORIG.DET<31,LINE> # 'N' THEN
+               CMISC = ''
+               IF ORIG.DET<48,LINE,1> # '' THEN
+                  CMISC<2> = CHANGE(ORIG.DET<48,LINE>,ISVM,IVM)
+                  CMISC<3> = CHANGE(ORIG.DET<49,LINE>,ISVM,IVM)
+               END
+               CALL CMTD.UPD (PRODUCT,INVENTORY,ORIG.DET<1,LINE>,COMM.QTY,USE.WH,0,CMISC)
+            END
+            PMISC = 0 ; PMISC<2> = 'S'
+            IF ORIG.DET<48,LINE,1> # '' THEN
+               PMISC<3> = CHANGE(ORIG.DET<48,LINE>,ISVM,IVM)
+               PMISC<4> = CHANGE(ORIG.DET<49,LINE>,ISVM,IVM)
+            END
+            CALL PROD.POINTER.UPD (F.PROD.POINTER, ORIG.DET<1,LINE>, ORDNO, LINE, PMISC)
+         END
+      REPEAT
+      RETURN
+8780: VERIFY = 'Y':IVM:'N'
+      TEXT = 'Do you wish to EXIT ? (Y)es/(N)o...'
+      PRINT BELL:
+      TMISC = ''
+      CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+      RESP=TMISC<10>
+      IF RESP = 'Y' OR ESCFLG THEN DEMAND.SCR.FLG = '' ; RETURN TO 1212
+      IF DEMAND.SCR.FLG # 1 THEN
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+      END
+      DEMAND.SCR.FLG = ''
+      RETURN
+      !
+      ! VERIFY FIELDS ENTERED ON HEADER SCREEN
+      !
+8900: PRINT C22:
+      MSG = ''
+      BEGIN CASE
+         CASE HREC<9> = '' ; MSG = 'SHIPTO'
+         CASE HREC<31>= '' ; MSG = 'BRANCH'
+         CASE HREC<28>= '' ; MSG = 'ENTERED BY'
+         CASE HREC<2> = '' ; MSG = 'ORDER DATE'
+         CASE HREC<12>= '' ; MSG = 'SALESMAN'
+         CASE HREC<15>= '' ; MSG = 'TERMS CODE'
+         CASE HREC<6> = '' ; MSG = 'TAX CODE'
+         CASE HREC<34>= '' ; MSG = 'WAREHOUSE'
+         CASE HREC<48> = '' & MAND.ORDER.TYPE = 'Y'
+            MSG = 'ORDER TYPE'
+         CASE 1 ; MSG = ''
+      END CASE
+      IF MSG # '' THEN
+         PRINT C22:BELL:LON:' ':MSG:' Must be entered before pressing F9, Hit RETURN...':LOFF:
+         CALL CIP (77, 22, 1, '', '', ESCFLG, '')
+         PRINT C22:
+         IF MSG = 'SHIP VIA' THEN RETURN TO 1008
+         IF MSG = 'SHIP DATE' THEN RETURN TO 1009
+         RETURN
+      END
+      LOCATE 'ChgHdr' IN XMISC<5> SETTING ANYTHING THEN RETURN
+      RETURN TO 1060
+2650: !
+      MANDATORY = FALSE
+      IF HREC<3> = '' AND CREC<75> = 'Y' THEN MANDATORY = TRUE
+      IF HREC<4,1> = '' & MAND.SHIP.VIA = 'Y' THEN MANDATORY = TRUE
+      IF HREC<35> = '' & MAND.SHIP.DATE = 'Y' THEN MANDATORY = TRUE
+      IF MANDATORY = FALSE THEN RETURN
+      *JS*      PRINT SCR:; GOSUB 4000; PRINT SCR.HDR:
+2700: !
+      CALL WINDOW (22,14,40,6,'Mandatory Entry','')
+      PRINT @(24,16):DMON:'Cust P/O# ':DMOFF:
+      PRINT @(24,17):DMON:'Ship Via  ':DMOFF:
+      PRINT @(24,18):DMON:'Ship Date ':DMOFF:
+      PRINT @(34,16):HREC<3>
+      PRINT @(34,17):HREC<4>'L#5  ':OCONV(HREC<4>,'TSHIP.VIA;X;1;1')'L#20'
+      PRINT @(34,18):OCONV(HREC<35>,'D2/')
+      IF DEMAND.SCR.FLG THEN RETURN
+      !
+      !
+2710: PRINT C22:'Enter Customer Purchase Order Number'
+      XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<10> = 23
+      XMISC<4> = 6:IVM:9 ; XMISC<5> = 'ChgHdr': IVM:'Save'
+      CALL CIP (34, 16, 15, HREC<3>, PON, ESCFLG, XMISC)
+      PRINT C22:
+      IF XMISC<6> = 6 THEN
+         PROG.ACTION = 'HEADER'
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         RETURN TO 1099
+      END
+      IF ESCFLG THEN
+         DEMAND.SCR.FLG = 1
+         GOSUB 8780
+         GOSUB 2700
+         DEMAND.SCR.FLG = ''
+         GO 2710
+      END
+      IF TRIM(PON) # '' & CPO.VERIFY # 'N' & PON # HREC<3> THEN
+         READ XREC FROM CUST.PO,HREC<1>:"!":PON ELSE GO 2712
+2711:    PRINT C22:LON:BELL:'Order ':XREC<1,1>:' entered for ths P/O#, Continue ? (Y)es/(N)o...':LOFF: ; INPUT RT,1:
+         IF RT = 'Y' OR RT = 'N' THEN NULL ELSE GO 2711
+         PRINT C22:
+         IF RT = 'N' THEN GO 2710
+      END
+2712: ***
+      IF PON='' & CREC<75>='Y' THEN
+         PRINT C22:BELL:LON:'Customer PURCHASE ORDER Required, Press any key...':LOFF: ; INPUT RT,1:
+         PRINT C22:
+         GO 2710
+      END
+      HREC<3> = PON
+      PRINT @(34,16):PON 'L#15':
+      *JS*      PRINT @(12,7):PON 'L#15':
+      IF XMISC<6> = 9 THEN GOSUB 2800 ; GO 2900
+      IF XMISC<3,1> = 'Y' THEN GO 2730
+2720: !
+      XMISC = IVM:STR('*',5) ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:6:IVM:8:IVM:9
+      XMISC<5> = 'Search':IVM:'ChgHdr':IVM:'Ship-Via':IVM:'Save'
+      XMISC<10> = 23
+      PRINT @(41,17):SPACE(20):
+      CALL CIP (34, 17, 5, HREC<4,1>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         DEMAND.SCR.FLG = 1 ; GOSUB 8780 ; DEMAND.SCR.FLG = ''
+         DEMAND.SCR.FLG = 1 ; GOSUB 2700 ; DEMAND.SCR.FLG = ''
+         GO 2720
+      END
+      IF XMISC<6> = 8 THEN
+         EXECUTE "SHIP.VIA.MAINT"
+         *JS*        PRINT SCR:; GOSUB 4000; PRINT SCR.HDR:
+         DEMAND.SCR.FLG = 1 ; GOSUB 2700 ; GO 2720
+      END
+      IF XMISC<6> = 6 THEN
+         PROG.ACTION = 'HEADER'
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         RETURN TO 1099
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'SHIP VIA CODE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        NAME/DESCRIPTION'
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (SHIP.VIA, REDISPLAY, SMISC)
+         *JS*        GOSUB 4000; PRINT SCR;PRINT SCR.HDR
+         DEMAND.SCR.FLG = 1 ; GOSUB 2700 ; DEMAND.SCR.FLG = 0
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GOTO 2720
+      END
+      IF A # '' THEN
+         READ SHIP.VIA.B FROM SHIP.VIA, A ELSE
+            IMISC = '' ; CALL INDEX.SEARCH (A, 'SHIP.VIA', 'INDEX', FK, IMISC)
+            IF IMISC<1> THEN
+               DEMAND.SCR.FLG = 1 ; GOSUB 2700 ; DEMAND.SCR.FLG = 0
+            END
+            IF FK # '' THEN A = FK ELSE GO 2720
+            READ SHIP.VIA.B FROM SHIP.VIA, A ELSE SHIP.VIA.B = ''
+         END
+         IF SHIP.VIA.B<5> # '' THEN
+            LOCATE SHIP.VIA.B<5> IN WHSE.B<1> SETTING POS THEN
+               HREC<34>=SHIP.VIA.B<5>
+               *JS*            PRINT @(43,13):WHSE.B<2,POS> 'L#14'
+            END
+         END
+         IF SHIP.VIA.B<8> = '' THEN HREC<96> = '' ELSE
+            IF A # HREC<4,1> THEN
+               CALL WINDOW (32,11,23,1,'','')
+               PRINT @(34,12):BELL:DMON:'Route Stop Number ':DMOFF:
+2721:          CALL CIP (52, 12, 3, HREC<96>, RS, ESCFLG, '')
+               IF NOT(ESCFLG) THEN
+                  IF NUM(RS) ! RS = '' ELSE GO 2721
+                  IF RS + 0 = 0 THEN RS = '' ELSE RS = RS 'R%3'
+                  HREC<96> = RS
+               END
+               DEMAND.SCR.FLG = 1 ; GOSUB 2700 ; DEMAND.SCR.FLG = 0
+            END
+         END
+         VIA.DESCR = SHIP.VIA.B<1>
+         HREC<4,1> = A
+         IF HREC<4,1> = '' THEN HREC<96> = ''
+         IF HREC<4,1> = '' & MAND.SHIP.VIA = 'Y' THEN GO 2720
+         *JS*        PRINT @(43,9):VIA.DESCR 'L#13'
+         PRINT @(34,17):HREC<4,1>'L#5  ':VIA.DESCR 'L#20'
+         IF SHIP.VIA.B<2> # '' THEN
+            READV JUR FROM TAX, SHIP.VIA.B<2>, 1 THEN
+               *JS*            PRINT @(43,12):FLON:JUR 'L#14':FLOFF:
+               HREC<6> = SHIP.VIA.B<2>
+            END
+         END
+      END
+      IF HREC<4,1> = '' & MAND.SHIP.VIA = 'Y' THEN
+         PRINT C22:LON:BELL:"Ship Via Must be entered - Hit 'Return' to Continue..":LOFF: ; INPUT RT,1:
+         PRINT C22:
+         GO 2720
+      END
+      IF XMISC<6> = 9 THEN GOSUB 2800 ; GO 2900
+      IF XMISC<3,1> = 'Y' THEN GO 2710
+2730: !
+      PRINT C22:'Enter Shipping Date'
+      XMISC = 2:IVM:'MM/DD/YY' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 6:IVM:9 ; XMISC<5> = 'ChgHdr':IVM:'Save'
+      XMISC<10>=23
+      CALL CIP (34, 18, 8, OCONV(HREC<35>,'D2/'), A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         DEMAND.SCR.FLG = 1 ; GOSUB 8780 ; DEMAND.SCR.FLG =''
+         DEMAND.SCR.FLG = 1 ; GOSUB 2700 ; DEMAND.SCR.FLG = ''
+         GO 2730
+      END
+      A = ICONV(A,'D2/')
+      PRINT @(43,10):OCONV(A,'D2/') 'L#8'
+      HREC<35> = A
+      PRINT @(34,18):OCONV(A,'D2/') 'L#8'
+      IF HREC<35> = '' & MAND.SHIP.DATE = 'Y' THEN
+         PRINT C22:LON:BELL:"Shipping Date Must be entered - Hit 'Return' to Continue ...":LOFF: ; INPUT RT,1:
+         GO 2730
+      END
+      IF XMISC<6> = 6 THEN
+         PROG.ACTION = 'HEADER'
+         PRINT SCR: ; GOSUB 4000 ; PRINT SCR.HDR:
+         RETURN TO 1099
+      END
+      IF XMISC<6> = 9 THEN GOSUB 2800 ; GO 2900
+      IF XMISC<3,1> = 'Y' THEN GO 2720
+      GOSUB 2800 ; GO 2900
+      *JS*      GO 2710
+2900: !
+      RETURN
+      !
+2800: ! CHECK FOR MANDATORY FIELDS
+      IF HREC<3> = '' AND CREC<75> = 'Y' THEN
+         PRINT C22:LON:BELL:'Customer Purchase Order Must be entered - Hit "Enter" to Continue...':LOFF: ; INPUT RT,1:
+         RETURN TO 2710
+      END
+      !
+      IF HREC<4,1> = '' & MAND.SHIP.VIA = 'Y' THEN
+         PRINT C22:LON:BELL:'Ship - Via Must be entered - Hit Return to Continue..':LOFF: ; INPUT RT,1_
+         RETURN TO 2720
+      END
+      IF HREC<35> = '' & MAND.SHIP.DATE = 'Y' THEN
+         PRINT C22:LON:BELL:"Shipping Date Must be entered - Hit Return to Continue ...":LOFF: ; INPUT RT,1:
+         RETURN TO 2730
+      END
+      RETURN
+5000: !  DISPLAY B/O CYCLE FIELDS ON CYCLE CHANGE
+      PRINT @(40,0):LON:ORDNO:"-":DISP.CYCLE 'R%2':'-':HREC<38> 'R%3':LOFF
+      SCAN.DATE = OCONV(HREC<70,DISP.CYCLE>,'D2/')
+      SCAN.DATE = SCAN.DATE[1,2]:SCAN.DATE[4,2]:SCAN.DATE[7,2]
+      SCAN.TIME = OCONV(HREC<71,DISP.CYCLE>,'MT')
+      SCAN.BY = HREC<69,DISP.CYCLE>
+      SCAN.MSG = SCAN.TIME:' ':SCAN.DATE:SCAN.BY
+      PICK.DATE = OCONV(HREC<18,DISP.CYCLE>,'G*1')
+      PICK.DATE = OCONV(PICK.DATE,'D2/')
+      PICK.DATE = PICK.DATE[1,2]:PICK.DATE[4,2]:PICK.DATE[7,2]
+      PICK.TIME = OCONV(HREC<18,DISP.CYCLE>,'G1*1')
+      PICK.TIME = OCONV(PICK.TIME,'MT')
+      PICK.BY = HREC<17,DISP.CYCLE>
+      PICK.MSG = PICK.TIME:' ':PICK.DATE:PICK.BY
+      PACK.DATE = OCONV(HREC<20,DISP.CYCLE>,'G*1')
+      PACK.DATE = OCONV(PACK.DATE,'D2/')
+      PACK.DATE = PACK.DATE[1,2]:PACK.DATE[4,2]:PACK.DATE[7,2]
+      PACK.TIME = OCONV(HREC<20,DISP.CYCLE>,'G1*1')
+      PACK.TIME = OCONV(PACK.TIME,'MT')
+      PACK.BY = HREC<19,DISP.CYCLE>
+      PACK.MSG = PACK.TIME:' ':PACK.DATE:PACK.BY
+      CHECK.DATE = OCONV(HREC<100,DISP.CYCLE>,'G*1')
+      CHECK.DATE = OCONV(CHECK.DATE,'D2/')
+      CHECK.DATE = CHECK.DATE[1,2]:CHECK.DATE[4,2]:CHECK.DATE[7,2]
+      CHECK.TIME = OCONV(HREC<100,DISP.CYCLE>,'G1*1')
+      CHECK.TIME = OCONV(CHECK.TIME,'MT')
+      CHECK.BY = HREC<99,DISP.CYCLE>
+      CHECK.MSG = CHECK.TIME:' ':CHECK.DATE:CHECK.BY
+      LOAD.DATE = OCONV(HREC<102,DISP.CYCLE>,'G*1')
+      LOAD.DATE = OCONV(LOAD.DATE,'D2/')
+      LOAD.DATE = LOAD.DATE[1,2]:LOAD.DATE[4,2]:LOAD.DATE[7,2]
+      LOAD.TIME = OCONV(HREC<102,DISP.CYCLE>,'G1*1')
+      LOAD.TIME = OCONV(LOAD.TIME,'MT')
+      LOAD.BY = HREC<101,DISP.CYCLE>
+      LOAD.MSG = LOAD.TIME:' ':LOAD.DATE:LOAD.BY
+      PRINT@(63,8):SPACE(15)
+      IF TRIM(SENT.MSG) # "" THEN PRINT @(63,8):DLULON:SENT.MSG:DLULOFF
+      PRINT@(63,9):SPACE(15)
+      IF TRIM(SCAN.MSG) # "" THEN PRINT @(63,9):LULON:SCAN.MSG:LULOFF
+      PRINT@(63,10):SPACE(15)
+      IF TRIM(PICK.MSG) # "" THEN PRINT @(63,10):DLON:PICK.MSG:DLOFF
+      PRINT@(63,11):SPACE(15)
+      IF TRIM(PACK.MSG) # "" THEN PRINT @(63,11):LON:PACK.MSG:LOFF
+      PRINT@(63,12):SPACE(15)
+      IF TRIM(CHECK.MSG) # "" THEN PRINT @(63,12):DLULON:CHECK.MSG:DLULOFF
+      PRINT@(63,13):SPACE(15)
+      IF TRIM(LOAD.MSG) # "" THEN PRINT @(63,13):LULON:LOAD.MSG:LULOFF
+      PRINT @(61,15):HREC<21,DISP.CYCLE>'L#5'
+      PRINT @(68,15):HREC<46,DISP.CYCLE>'L#2'
+      PRINT @(74,15):HREC<22,DISP.CYCLE>'L#4'
+      PRINT @(63,16):HREC<49,DISP.CYCLE>
+      IF HREC<97,DISP.CYCLE> # "" THEN
+         PRINTED = OCONV(HREC<97,DISP.CYCLE>,'G1*1')
+         PRINTED = OCONV(PRINTED,'MT')
+         LDP = OCONV(HREC<97,DISP.CYCLE>,'G*1')
+         LDP = OCONV(LDP,'D2/')
+         OLDP = LDP[1,2]:LDP[4,2]:LDP[7,2]
+         PRINTBY = OCONV(HREC<97,DISP.CYCLE>,'G2*1')
+         PRINTED = PRINTED:' ':OLDP:PRINTBY
+         PRINT @(63,7):PRINTED 'L#15'
+      END
+      RETURN

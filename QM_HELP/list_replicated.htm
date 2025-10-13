@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LIST.REPLICATED</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LIST.REPLICATED" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "list_replicated.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LIST.REPLICATED</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="list_readu.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="list_servers.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LIST.REPLICATED</span> command displays a summary of all replicated files within an account.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LIST.REPLICATED</span> {<span style="font-weight: bold;">NO.PAGE</span>} {<span style="font-weight: bold;">LPTR</span> {<span style="font-style: italic;">n</span>}} {<span style="font-weight: bold;">LOCAL</span>} {<span style="font-style: italic;">server</span> ...}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">LPTR</span> {<span style="font-style: italic;">n</span>}</td><td style="border:none;padding:0">directs output to print unit <span style="font-style: italic;">n</span>. If <span style="font-style: italic;">n</span> is omitted, it defaults to zero, the default print unit.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">NO.PAGE</span></td><td style="border:none;padding:0">suppresses display pagination.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">LOCAL</span></td><td style="border:none;padding:0">omits files referenced via Q-pointers.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">server</span></td><td style="border:none;padding:0">is a list of one or more server names. Only files replicated to the named server(s) will be reported.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LIST.REPLICATED</span> command displays a summary of all replicated files that are referenced by F or Q type VOC entries unless the <span style="font-weight: bold;">LOCAL</span> option is used to omit Q-pointer files. Dictionaries are included for F-type VOC entries.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For each file that has a replication target defined, the command shows the file name and a list of the replication targets.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -120px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">File Name............... Targets..........................</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ORDERS &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; REPORTING:SALES:ORDERS</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">INVOICES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; REPORTING:SALES:INVOICES</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the above report, the ORDERS and INVOICES files are replicated to files of the same names in the SALES account on the REPORTING server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="replication.htm" class="topiclink">Replication</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ECHO</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ECHO" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_echo.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ECHO</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_echar.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_element_exists.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ECHO</span> statement enables or disables echoing of keyboard input.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ECHO</span> <span style="font-weight: bold;">OFF</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">ECHO ON</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">ECHO </span><span style="font-style: italic;">expr</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">evaluates to a number.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Keyboard input is normally echoed to the display when it is processed by an <span style="font-weight: bold;"><a href="qmb_input.htm" class="topiclink">INPUT</a></span> statement. Use of <span style="font-weight: bold;">ECHO OFF</span> will suppress this echo until a subsequent <span style="font-weight: bold;">ECHO ON</span> statement. Typically, <span style="font-weight: bold;">ECHO OFF</span> is used to prevent display of passwords, etc. Turning off echo does not suppress display of the input prompt character, if enabled (see <span style="font-weight: bold;"><a href="qmb_prompt.htm" class="topiclink">PROMPT</a></span>).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ECHO</span> <span style="font-style: italic;">expr</span> format of this statement is equivalent to <span style="font-weight: bold;">ECHO ON</span> if the value of <span style="font-style: italic;">expr</span> is non-zero and <span style="font-weight: bold;">ECHO OFF</span> if <span style="font-style: italic;">expr</span> is zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY &quot;Enter password &quot; :</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ECHO OFF</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">INPUT PASSWORD</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ECHO ON</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment requests entry of a password with echoing inhibited. The HIDDEN option of the <span style="font-weight: bold;"><a href="qmb_input.htm" class="topiclink">INPUT</a></span> statement may be a better way to do this as it echoes asterisks back to the terminal.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_input.htm" class="topiclink">INPUT</a></span>, <span style="font-weight: bold;"><a href="qmb_input_at.htm" class="topiclink">INPUT @</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

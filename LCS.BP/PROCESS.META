@@ -1,0 +1,152 @@
+      SUBROUTINE PROCESS.META(MET.REC)
+      * Open the main file and dictionary file
+      OPEN FileName TO FILES(FileNumber) ELSE
+         PRINT "Unable to open file ":FileName
+         STOP
+      END
+
+      OPEN "DICT.":FileName TO DICT_FILES(FileNumber) ELSE
+         PRINT "Unable to open dictionary for file ":FileName
+         STOP
+      END
+
+      READ FILE.LIST FROM F.CONTROL,"FILE.LIST" ELSE FILE.LIST = ""
+      READ FILE.NUMS FROM F.CONTROL,"FILE.NUMS" ELSE FILE.NUMS = ""
+      READ FILE.ABBS FROM F.CONTROL,"FILE.ABBS" ELSE FILE.ABBS = ""
+      READ REQUIRED.DICT FROM F.CONTROL,"REQUIRED.DICTS" ELSE REQUIRED.DICT = ""
+      READ DEFDICT FROM F.CONTROL,"DEFDICT" ELSE DEFDICT = ""
+      FILE.CT = DCOUNT(FILE.LIST,@VM)
+
+READ.FILE.DATA:
+      LOCATE FILE.NAME IN FILE.LIST<1> BY "AL" SETTING POS THEN
+         READ EQU.REC FROM FILES(EQU.NM),MET.ID ELSE EQU.REC = ""
+         READ SCH.REC FROM FILES(SCH.NM),MET.ID ELSE SCH.REC = ""
+         *MET PREFIX.CODE
+         *MET ID SEED
+         *NEXT.ID
+      END ELSE
+         GOSUB INSERT.NEW.FILE:
+      END
+      LX = 1
+      FILE.NAME = FIELD(MET.REC<1>," ",1)
+      Abbr = FIELD(MET.REC<1>," ",2)
+      FILE.NUMBER = FIELD(MET.REC<1>," ",3)
+
+      * Build the include file content
+      inc.rec = ""
+      inc.rec<-1> = "EQU ":Abbreviation:".fn TO ":FileNumber
+      inc.rec<-1> = "EQU f.":Abbreviation:" TO FILE(":FileNumber:")"
+      inc.rec<-1> = "EQU d.":Abbreviation:" TO DICT.FILE(":FileNumber:")"
+
+READ.FIELD.DATA:
+      * Set default values
+      Type = "D"
+      Description = ""
+      Conversion = ""
+      Format = "20L"
+      S_M_Indicator = "S"
+      Association = ""
+      IndexInfo = ""
+      LOOP
+         LX+=1
+         METARECORD = MET.REC<LX>
+         IF FieldName = "@ID" THEN
+            AttrNumber = 0
+         END ELSE
+            AttrNumber += 1
+         END
+
+         IF INDEX(FieldName, ".dt", 1) THEN
+            Conversion = "D4-"
+            Format = "10R"
+            IndexInfo = "X"
+         END
+
+         IF INDEX(FieldName, ".id", 1) THEN
+            IndexInfo = "X"
+         END
+
+         * Parse meta data overrides
+         IF INDEX(MetaRecord, "type:", 1) THEN
+            Type = FIELD(FIELD(MetaRecord, "type:", 2), " ", 1)
+         END
+
+         IF INDEX(MetaRecord, "desc:", 1) THEN
+            Description = FIELD(FIELD(MetaRecord, "desc:", 2), " conv:", 1)
+         END
+
+         IF INDEX(MetaRecord, "conv:", 1) THEN
+            Conversion = FIELD(FIELD(MetaRecord, "conv:", 2), " format:", 1)
+         END
+
+         IF INDEX(MetaRecord, "format:", 1) THEN
+            Format = FIELD(FIELD(MetaRecord, "format:", 2), " assoc:", 1)
+         END
+
+         IF INDEX(MetaRecord, "assoc:", 1) THEN
+            Association = FIELD(FIELD(MetaRecord, "assoc:", 2), " label:", 1)
+         END
+
+         IF INDEX(MetaRecord, "an:", 1) THEN
+            AttrNumber = FIELD(FIELD(MetaRecord, "an:", 2), " ", 1)
+         END
+
+         IF INDEX(MetaRecord, "index:", 1) THEN
+            IndexInfo = FIELD(FIELD(MetaRecord, "index:", 2), " ", 1)
+         END
+
+CREATE.DICT:
+         * Write dictionary entry
+         DictRec = Type:" ":Description:VM:AttrNumber:VM:Conversion:VM:Format:VM:S_M_Indicator:VM:Association:VM:IndexInfo
+         WRITE DictRec ON DICT_FILES(FileNumber), FieldName
+         CALL CREATE.INDEXES
+
+CREATE.EQU:
+         inc.rec<-1> = "EQU ":Abbreviation:".":FieldName:".a TO ":AttrNumber
+         inc.rec<-1> = "EQU ":Abbreviation:".":FieldName:" TO ":Abbreviation:".rec<":AttrNumber:">"
+      REPEAT
+
+
+UPDATE.SCHEMA:
+
+
+INSERT.FILE:
+      INS FILE.NAME BEFORE FILE.LIST<1,POS>
+      INS FILE.ABB BEFORE FILE.ABBS<1,POS>
+      INS FILE.NUM BEFORE FLE.NUMS<1,POS>
+      FILE.NEW = FILE.NAME
+      EQU.REC = ""
+      SCH.REC=""
+      MET.REC = ""
+      *MET PREFIX.CODE
+      *MET ID SEED
+      *NEXT.ID
+      RETURN
+
+      RETURN
+
+
+      * Read the metadata file
+      MetaFileName = FileName:".meta"
+      OPENSEQ MetaFileName TO META.FILE ELSE
+         PRINT "Unable to open metadata file ":MetaFileName
+         STOP
+      END
+
+      AttrNumber = 0
+
+      READSEQ MetaRecord FROM META.FILE THEN
+         * Skip the header line
+         MetaHeader = MetaRecord
+
+         * Read field definitions
+         LOOP
+            READSEQ MetaRecord FROM META.FILE ELSE
+               FieldName = FIELD(MetaRecord, " ", 1)
+            REPEAT
+
+            PRINT "Files initialized successfully"
+         END
+
+      END
+

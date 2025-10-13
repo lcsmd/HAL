@@ -1,0 +1,420 @@
+     !BP PRINTER.HOLD.FILES                            >PRINTER HOLD FILES
+     !
+     !CREATED BY> LEON SHOYKHETBROD               DATE >02/25/98
+     !CHANGED BY>                                      >
+     !
+     !
+     !-------------------------------------------------------------------------
+     SCREENVIEWID = ''
+     IF SYSTEM(10) THEN
+          INPUT SCREENVIEWID
+     END
+     !
+     INCLUDE UTLSBP ASSIGN.VAR
+     !
+     ! OPEN FILES
+     !
+     F = ''
+     OPEN 'PRINTFILES' TO F.PRINTFILES ELSE F = F:', PRINTFILES'
+     OPEN 'SCREENS' TO F.SCREENS ELSE F = F:', SCREENS'
+     OPEN 'CONTROL' TO F.CONTROL ELSE F = F:', CONTROL'
+     !
+     IF F # '' THEN PRINT FILE.ERRORS:F:BCK:; INPUT NL,1:; STOP
+     !
+     READ SCR.B FROM F.SCREENS, 'PRINTER.HOLD.FILES' ELSE
+          PRINT C22:BELL:'SCREENS PRINTER.HOLD.FILES Record Missing, Hit RETURN...':; INPUT NL,1:; STOP
+     END
+     !
+     ! USER INFORMATION
+     !
+     CALL USERINFO (F.CONTROL, ONAME, OPER, ULEVEL, INTLS, '')
+     !
+     IF SCREENVIEWID # '' THEN
+          HOLD.LIST = SCREENVIEWID; VALUE = 1
+          ITEM = HOLD.LIST<1,VALUE>
+          NAME = OCONV(ITEM,'G|1')
+          USER = OCONV(ITEM,'G1|1')
+          DATE = OCONV(ITEM,'G2|1')
+          TIME = OCONV(ITEM,'G3|1')
+          STNO = OCONV(ITEM,'G4|1')
+          LASER= OCONV(ITEM,'G5|1')
+          M132 = OCONV(ITEM,'G6|1')
+          PAGES= OCONV(ITEM,'G7|1')
+          PRT  = OCONV(ITEM,'G8|1')
+          GO 1050
+     END
+     !
+     ! ACCESS LEVELS
+     !
+     PATH = 'HOLD FILES'
+     CALL ACCESS.SUB (F.CONTROL, PATH, VALID, REDISPLAY)
+     IF NOT(VALID) THEN STOP
+     !
+     PATH = 'SEE ALL USERS HOLDFILES'
+     PATH<1,2> = 'Y';* VERIFY ONLY
+     CALL ACCESS.SUB (F.CONTROL, PATH, SEEALL, REDISPLAY)
+     !
+     ! DISPLAY SCREEN
+     !
+     SCR = CLS
+     CALL SCREEN.PAINTER (SCR.B, SCR, '')
+     PRINT SCR:
+     !
+     CLRDET = ''
+     FOR I = 1 TO 19
+          CLRDET = CLRDET:@(1,I+1):SPACE(77)
+     NEXT I
+     !
+1    MAXLN = 19; STL = 1; EDL = MAXLN; PG = 1; VALUE = 1
+     !
+     PRINT C22:@(30):FON:'S e l e c t i n g ':FOFF:
+     CMND = 'SSELECT PRINTFILES WITH PORT # "" '
+     CMND = CMND:'AND WITH NAME # "*SCR*]" AND WITH NAME # "SCR_]" '
+     IF NOT(SEEALL) THEN CMND = CMND:'AND WITH INTLS "':INTLS:'" '
+     CMND = CMND:'BY-DSND DATE BY-DSND TIME '
+     EXECUTE CMND CAPTURING OUTPUT
+     CALL ITEMS.SELECTED (OUTPUT, TOT.ITEMS, '')
+     EOF = FALSE
+     HOLD.LIST = ''; CMISC = ''; COUNT = 0
+     LOOP
+          READNEXT ID THEN
+               HOLD.LIST<1,-1> = ID
+          END ELSE EOF = 1
+          COUNT = COUNT + 1
+          CALL COMPLETE.TOOL.BAR (TOT.ITEMS, COUNT, 22, CMISC)
+     UNTIL EOF DO REPEAT
+     PRINT C22:
+     ITEMS = DCOUNT(HOLD.LIST<1>,CHAR(253))
+     IF NOT(ITEMS) THEN
+          PRINT C22:BELL:LON:' No Hold files, Hit RETURN...':LOFF:
+          INPUT NL,1:
+          STOP
+     END
+     IF ITEMS LE MAXLN THEN PGS = 1 ELSE
+          IF ITEMS/MAXLN GT INT(ITEMS/MAXLN) THEN PGS = INT(ITEMS/MAXLN) + 1 ELSE
+               PGS = ITEMS/MAXLN
+          END
+     END
+     GOSUB 5000 ;* DISPLAY INFO
+     !
+     ! SELECTION
+     !
+1000 XMISC = ''; XMISC<2> = 'Y':IVM:'Y'; XMISC<10> = 23
+     XMISC<4> = 1:IVM:3:IVM:4:IVM:5:IVM:6:IVM:10:IVM:12
+     XMISC<5> = 'ReFresh':IVM:'Delete':IVM:'Pg Down':IVM:'Pg Up':IVM:'Scrn Inq':IVM:'Make PDF':IVM:'PrintOut'
+     ROW = MOD(VALUE,MAXLN)
+     IF NOT(ROW) THEN ROW = MAXLN
+     ROW = ROW + 1
+     ITEM = HOLD.LIST<1,VALUE>
+     NAME = OCONV(ITEM,'G|1')
+     USER = OCONV(ITEM,'G1|1')
+     DATE = OCONV(ITEM,'G2|1')
+     TIME = OCONV(ITEM,'G3|1')
+     STNO = OCONV(ITEM,'G4|1')
+     LASER= OCONV(ITEM,'G5|1')
+     M132 = OCONV(ITEM,'G6|1')
+     PAGES= OCONV(ITEM,'G7|1')
+     PRT  = OCONV(ITEM,'G8|1')
+     PRINT @(1,ROW):LON:NAME 'L#25 ':USER 'L#5':
+     PRINT OCONV(TIME,'MTH') 'L#9':OCONV(DATE,'D2/') 'L#9':
+     PRINT SPACE(1):STNO 'L#5':SPACE(2):LASER 'L#6':M132 'L#5':PAGES 'R#5  ':PRT 'L#1 ':LOFF:
+     CALL CIP (78, 23, 1, '', '', ESCFLG, XMISC)
+     PRINT @(1,ROW):NAME 'L#25 ':USER 'L#5':
+     PRINT OCONV(TIME,'MTH') 'L#9':OCONV(DATE,'D2/') 'L#9':
+     PRINT SPACE(1):STNO 'L#5':SPACE(2):LASER 'L#6':M132 'L#5':PAGES 'R#5  ':PRT 'L#1 ':
+     IF ESCFLG THEN STOP
+     IF XMISC<6> # '' THEN
+          IF XMISC<6> = 1 THEN
+               PRINT SCR:; GO 1
+          END ELSE IF XMISC<6> = 4 ! XMISC<6> = 5 THEN
+               IF XMISC<6> = 4 THEN
+                    PG = PG + 1
+                    IF PG GT PGS THEN PG = 1
+               END ELSE
+                    PG = PG - 1
+                    IF PG LT 1 THEN PG = PGS
+               END
+               STL = (((PG - 1) * MAXLN) + 1); EDL = STL + (MAXLN-1); GOSUB 5000
+               VALUE = STL; GO 1000
+          END ELSE IF XMISC<6> = 3 THEN
+               DELETE F.PRINTFILES, HOLD.LIST<1,VALUE>
+               PRINT SCR:; GO 1
+          END ELSE IF XMISC<6> = 10 THEN
+               READ PTR.B FROM F.PRINTFILES, HOLD.LIST<1,VALUE> ELSE
+                    PRINT C22:BELL:LON:' Can not access Hold file, Hit RETURN...':
+                    PRINT LOFF:; INPUT NL,1:
+                    PRINT C22:
+                    GO 1000
+               END
+               ITEM = HOLD.LIST<1,VALUE>
+               SOURCE.ITEM.NAME = ITEM
+               DEST.ITEM.NAME = ITEM[1,INDEX(ITEM,"|",2)-1]
+               CONVERT " |*\/" TO "_~#--" IN DEST.ITEM.NAME
+               CALL PRINT.TO.PDF.SUB(SOURCE.ITEM.NAME,DEST.ITEM.NAME,INTLS)
+               GO 1000
+          END ELSE IF XMISC<6> = 12 THEN
+               READ PTR.B FROM F.PRINTFILES, HOLD.LIST<1,VALUE> ELSE
+                    PRINT C22:BELL:LON:' Can not access Hold file, Hit RETURN...':
+                    PRINT LOFF:; INPUT NL,1:
+                    PRINT C22:
+                    GO 1000
+               END
+               CALL WINDOW (50, 8, 26, 2, 'Page Selection', 0)
+               PRINT @(52,9):DMON:'Starting Page Number ':DMOFF:
+               PRINT @(52,10):DMON:'Ending Page Number   ':DMOFF:PAGES
+2000           CALL CIP (73, 9, 4, 1, STPGNO, ESCFLG, '')
+               IF ESCFLG THEN PRINT SCR:; GOSUB 5000; GO 1000
+               IF NUM(STPGNO) ELSE GO 2000
+               IF STPGNO GE 1 & STPGNO LE PAGES ELSE GO 2000
+2100           CALL CIP (73, 10, 4, PAGES, ENDPGNO, ESCFLG, '')
+               IF ESCFLG THEN PRINT SCR:; GOSUB 5000; GO 1000
+               IF NUM(ENDPGNO) ELSE GO 2100
+               IF ENDPGNO LT STPGNO THEN GO 2100
+               IF ENDPGNO GT PAGES THEN GO 2100
+               PMISC = 'O'; PMISC<2> = LASER; PMISC<3> = M132
+               CALL PRINTER.CONTROL (F.CONTROL, DEVICE, ESCFLG, PMISC)
+               IF ESCFLG THEN PRINT SCR:; GOSUB 5000; GO 1000
+               PRINTER ON
+               PITEMS = DCOUNT(PTR.B,IAMC)
+               CURPAGE = 0
+               FOR I = 1 TO PITEMS
+                    IF PTR.B<I>[1,1] = CHAR(12) OR I = 1 THEN CURPAGE = CURPAGE + 1
+                    IF CURPAGE GE STPGNO & CURPAGE LE ENDPGNO THEN
+                         IF PTR.B<I>[1,1] = CHAR(12) THEN PRINT PTR.B<I>: ELSE
+                              PRINT PTR.B<I>
+                         END
+                    END
+               NEXT I
+               PRINTER CLOSE; PRINTER OFF
+               PMISC = 'C'; PMISC<2> = 'H'
+               CALL PRINTER.CONTROL (F.CONTROL, DEVICE, ESCFLG, PMISC)
+               IF PRT = '' THEN
+                    ITEM = HOLD.LIST<1,VALUE>:'|Y'
+                    DELETE F.PRINTFILES, HOLD.LIST<1,VALUE>
+                    WRITE PTR.B ON F.PRINTFILES, ITEM
+               END
+               PRINT SCR:; GO 1
+          END ELSE IF XMISC<6> = 6 THEN
+1050           IF LASER = 'Y' ! LASER = 'D' THEN
+                    PRINT C22:BELL:LON:' Screen Inquiry NOT Permitted this is a ':
+                    IF LASER = 'Y' THEN PRINT 'LASER': ELSE PRINT 'DOT MATRIX':
+                    PRINT ' Job, Hit RETURN...':LOFF:; INPUT NL,1:
+                    PRINT C22:
+                    IF SCREENVIEWID # '' THEN
+                         DELETE F.PRINTFILES, SCREENVIEWID
+                         STOP
+                    END
+                    GO 1000
+               END
+               READ PTR.B FROM F.PRINTFILES, HOLD.LIST<1,VALUE> ELSE
+                    PRINT C22:BELL:LON:' Can not access Hold file, Hit RETURN...':
+                    PRINT LOFF:; INPUT NL,1:
+                    PRINT C22:
+                    IF SCREENVIEWID # '' THEN
+                         DELETE F.PRINTFILES, SCREENVIEWID
+                         STOP
+                    END
+                    GO 1000
+               END
+               CONVERT CHAR(12) TO '~' IN PTR.B
+               GOSUB 6000
+               IF SCREENVIEWID # '' THEN
+                    DELETE F.PRINTFILES, SCREENVIEWID
+                    STOP
+               END
+               PRINT SCR:; GOSUB 5000
+          END
+     END
+     IF XMISC<3,1> = 'Y' ! XMISC<3,2> = 'Y' THEN
+          IF XMISC<3,1> = 'Y' THEN
+               VALUE = VALUE - 1
+               IF VALUE LT 1 THEN VALUE = ITEMS
+          END ELSE
+               VALUE = VALUE + 1
+               IF VALUE GT ITEMS THEN VALUE = 1
+          END
+          IF VALUE LE MAXLN THEN NPG = 1 ELSE
+               IF VALUE/MAXLN GT INT(VALUE/MAXLN) THEN NPG = INT(VALUE/MAXLN) + 1 ELSE
+                    NPG = VALUE/MAXLN
+               END
+          END
+          IF NPG # PG THEN
+               PG = NPG
+               STL = (((PG - 1) * MAXLN) + 1); EDL = STL + (MAXLN-1); GOSUB 5000
+               VALUE = STL
+               GO 1000
+          END
+     END
+     GO 1000
+     !
+     ! DISPLAY INFO
+     !
+5000 DISPLAY = CLRDET; CTR = STL - 1; LINE = 1
+     LOOP
+          CTR = CTR + 1
+          LINE= LINE+ 1
+     WHILE CTR LE ITEMS & CTR LE EDL DO
+          ITEM = HOLD.LIST<1,CTR>
+          NAME = OCONV(ITEM,'G|1')
+          USER = OCONV(ITEM,'G1|1')
+          DATE = OCONV(ITEM,'G2|1')
+          TIME = OCONV(ITEM,'G3|1')
+          STNO = OCONV(ITEM,'G4|1')
+          LASER= OCONV(ITEM,'G5|1')
+          M132 = OCONV(ITEM,'G6|1')
+          PAGES= OCONV(ITEM,'G7|1')
+          PRT  = OCONV(ITEM,'G8|1')
+          DISPLAY = DISPLAY:@(1,LINE):NAME 'L#25 ':USER 'L#5'
+          DISPLAY = DISPLAY:OCONV(TIME,'MTH') 'L#9':OCONV(DATE,'D2/') 'L#9'
+          DISPLAY = DISPLAY:SPACE(1):STNO 'L#5':SPACE(2):LASER 'L#6':M132 'L#5':PAGES 'R#5  ':PRT
+     REPEAT
+     DISPLAY = DISPLAY:@(33,21):STR(HORZLN,30):@(33):LON:' Page ':PG:' of ':PGS:' ':LOFF
+     PRINT DISPLAY:
+     RETURN
+     !
+     ! SCREEN INQUIRY
+     !
+6000 HITEMS = DCOUNT(PTR.B,IAMC)
+     MODE.132 = FALSE
+     CLMLEN = 80
+     IF TERM.TYPE<7> = 'Y' & M132 = 'Y' THEN
+          EXECUTE 'MODE.132'
+          MODE.132 = TRUE
+          CLMLEN = 132
+     END
+     SFOUND = 0; M.KEYWORD = ''
+     SI.STL = 1; SI.EDL = 20; SI.PG = 1; STCLM = 1; GOSUB 6500
+     LSTPGVAL = ''
+     !
+     ! OPTIONS
+     !
+7000 XMISC = ''; XMISC<10> = 23; XMISC<2,3> = 'Y':IVM:'Y'
+     XMISC<4> = 1:IVM:4:IVM:5:IVM:6:IVM:10
+     XMISC<5> = 'Search':IVM:'Next':IVM:'Previous':IVM:'Shift Clm':IVM:'GoTo Pg'
+     PRINT C22:DMON:'To shift columns move right & left arrow keys: ':DMOFF:
+     PRINT ULON:'Columns Shown:':ULOFF:DMON:' ':STCLM:' through ':STCLM+(CLMLEN-1):DMOFF:
+     CALL CIP (77, 23, 1, '', '', ESCFLG, XMISC)
+     PRINT C22:
+     IF ESCFLG THEN
+          IF MODE.132 THEN EXECUTE 'MODE.80'
+          RETURN
+     END
+     IF XMISC<3,3> = 'Y' ! XMISC<3,4> = 'Y' THEN
+          IF CLMLEN = 132 THEN GO 7000
+          IF MODE.132 THEN GO 7000
+          IF XMISC<3,4> = 'Y' THEN
+               STCLM = STCLM + 13
+               IF STCLM GT 53 THEN STCLM = 1
+          END ELSE
+               STCLM = STCLM - 13
+               IF STCLM LT 1 THEN STCLM = 53
+          END
+          GOSUB 6500
+          GO 7000
+     END
+     IF XMISC<6> = 1 THEN
+          PRINT C22:'Search for ? ':
+          CALL CIP (13, 22, 65, M.KEYWORD, KEYWORD, ESCFLG, '')
+          IF ESCFLG ! KEYWORD = '' THEN GO 7000
+          PRINT C22:@(30):FON:'S e a r c h i n g ':FOFF:DMON:'  Page ':DMOFF:
+          CTR = 0; FPGNO = 0
+          IF M.KEYWORD # '' & M.KEYWORD = KEYWORD THEN
+               IF SI.STL LE SFOUND & SFOUND LE SI.EDL THEN
+                    CTR = SFOUND; FPGNO = SI.PG
+               END
+          END
+          SFOUND = FALSE
+          LOOP
+               CTR = CTR + 1
+          WHILE CTR LE HITEMS AND NOT(SFOUND) DO
+               IF PTR.B<CTR>[1,1] = '~' THEN
+                    FPGNO = FPGNO + 1
+                    PRINT @(55):FPGNO:
+               END
+               IF INDEX(PTR.B<CTR>,KEYWORD,1) THEN SFOUND = CTR
+          REPEAT
+          IF NOT(SFOUND) THEN
+               PRINT C22:BELL:LON:' Not Found, Hit RETURN...':LOFF:; INPUT NL,1:
+               PRINT C22:
+               GO 7000
+          END
+          M.KEYWORD = KEYWORD
+          IF SFOUND LE 20 THEN NPG = 1 ELSE
+               IF SFOUND/20 GT INT(SFOUND/20) THEN NPG = INT(SFOUND/20) + 1 ELSE
+                    NPG = SFOUND/20
+               END
+          END
+          SI.STL = (((NPG - 1) * 20) + 1); SI.EDL = SI.STL + 19; SI.PG = FPGNO
+          GOSUB 6500; GO 7000
+     END
+     IF XMISC<6> = 4 THEN
+          IF SI.EDL + 1 GT HITEMS THEN PRINT BELL:; GO 7000
+          SI.STL = SI.EDL + 1; SI.EDL = SI.STL + 19
+          FOR I = SI.STL TO SI.EDL
+               IF PTR.B<I>[1,1] = '~' THEN
+                    IF LSTPGVAL = '' ! LSTPGVAL # I THEN
+                         SI.PG = SI.PG + 1
+                         LSTPGVAL = I
+                    END
+               END
+          NEXT I
+          GOSUB 6500
+          GO 7000
+     END ELSE IF XMISC<6> = 5 THEN
+          IF SI.STL = 1 THEN PRINT BELL:; GO 7000
+          SI.EDL = SI.STL - 1; SI.STL = SI.EDL - 19
+          FOR I = SI.STL TO SI.EDL
+               IF PTR.B<I>[1,1] = '~' THEN
+                    IF LSTPGVAL = '' ! LSTPGVAL # I THEN
+                         SI.PG = SI.PG - 1
+                         LSTPGVAL = I
+                    END
+               END
+          NEXT I
+          GOSUB 6500
+          GO 7000
+     END ELSE IF XMISC<6> = 6 THEN
+          IF MODE.132 THEN GO 7000
+          STCLM = STCLM + 13
+          IF STCLM GT 53 THEN STCLM = 1
+          GOSUB 6500
+          GO 7000
+     END ELSE IF XMISC<6> = 10 THEN
+          PRINT C22:'GoTo what PAGE Number ?':
+          CALL CIP (25, 22, 5, '', PGNO, ESCFLG, '')
+          PRINT C22:
+          IF ESCFLG THEN GO 7000
+          IF NUM(PGNO) ELSE GO 7000
+          IF PGNO GE 1 AND PGNO LE PAGES ELSE GO 7000
+          PRINT C22:@(30):FON:'L o a d i n g . . . ':FOFF:
+          PGCT = 0; CTR = 0; FOUND = FALSE
+          LOOP
+               CTR = CTR + 1
+          WHILE CTR LE HITEMS & NOT(FOUND) DO
+               IF PTR.B<CTR>[1,1] = '~' THEN PGCT = PGCT + 1
+               IF PGCT = PGNO THEN FOUND = CTR
+          REPEAT
+          IF NOT(FOUND) THEN GO 7000
+          IF FOUND LE 20 THEN FPG = 1 ELSE
+               IF FOUND/20 GT INT(FOUND/20) THEN FPG = INT(FOUND/20) + 1 ELSE
+                    FPG = FOUND/20
+               END
+          END
+          SI.STL = (((FPG - 1) * 20) + 1); SI.EDL = SI.STL + 19; SI.PG = PGNO
+          GOSUB 6500
+          GO 7000
+     END
+     GO 7000
+6500 PRINT CLS:DLON:DLULON:' Screen Inquiry ':DLULOFF:DLON:' Name of Hold file ':DLOFF:LON:' ':NAME:' ':LOFF:ULON:' Page ':SI.PG:' of ':PAGES:' ':ULOFF:
+     CTR = SI.STL - 1; LINE = 0
+     LOOP
+          CTR = CTR + 1
+          LINE= LINE+ 1
+     WHILE CTR LE SI.EDL & CTR LE HITEMS DO
+          IF SFOUND & SFOUND = CTR THEN
+               PRINT @(0,LINE):LON:PTR.B<CTR>[STCLM,CLMLEN]:LOFF:
+          END ELSE
+               PRINT @(0,LINE):PTR.B<CTR>[STCLM,CLMLEN]:
+          END
+     REPEAT
+     RETURN

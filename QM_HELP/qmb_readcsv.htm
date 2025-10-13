@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>READCSV</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="READCSV" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_readcsv.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">READCSV</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_readblk.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_readl.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">READCSV</span> statement reads a CSV format line of text from a directory file record previously opened for sequential access and parses it into multiple variables.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">READCSV</span> {<span style="font-weight: bold;">ENCODING</span> <span style="font-style: italic;">name</span>} <span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">file.var</span> {<span style="font-weight: bold;">DELIMITER</span> <span style="font-style: italic;">delim</span>} <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">var1</span><span style="font-weight: bold;">,</span><span style="font-style: italic;"> var2</span><span style="font-weight: bold;">,</span>..<span style="font-style: italic;">.</span></p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">encoding</span></td><td style="border:none;padding:0">is the ECS character encoding to be used for the data.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with the record by a previous <span style="font-weight: bold;">OPENSEQ</span> statement.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">delim</span></td><td style="border:none;padding:0">is the delimiter separating data elements. This defaults to a comma if omitted. Only the first character of <span style="font-style: italic;">delim</span> is significant.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">var1</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">var2</span> ...</td><td style="border:none;padding:0">are the variables to receive the data read from the file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statement(s) to be executed depending on the outcome of the <span style="font-weight: bold;">READCSV</span>.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">ENCODING</span> element to this statement sets the character encoding to be used, overriding any encoding set in the <a href="voc_f.htm" class="topiclink">VOC F-type</a> record or when the file was opened.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A line of text is read from the file. It is then parsed according to the CSV format rules as defined in RFC 4180, placing the elements into the data items identified by <span style="font-style: italic;">var1</span>, <span style="font-style: italic;">var2</span>, etc. If successful, the <span style="font-weight: bold;">THEN</span> clause is executed and the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function would return zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If there are fewer data items in the line of text than the number of variables supplied, the remaining variables will be set to null strings. If the line of text has more data items than the number of variables supplied, the excess data is ignored. See <span style="font-weight: bold;"><a href="qmb_csvdq.htm" class="topiclink">CSVDQ()</a></span> for a way to parse the CSV string into a dynamic array.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If there are no further fields to be read, the <span style="font-weight: bold;">ELSE</span> clause is executed and the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function would return ER$RNF (record not found). The target variables will be unchanged.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The CSV rules are described under the <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READCSV FROM DELIVERY.F TO PROD.NO, QTY ELSE EXIT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; GOSUB PROCESS.DELIVERY.DETAILS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment reads CSV format lines of text from the record open for sequential access via the DELIVERY.F file variable, placing the elements of the line into PROD.NO and QTY. It then calls the PROCESS.DELIVERY.DETAILS subroutine to process the new item. The loop terminates when the <span style="font-weight: bold;">ELSE</span> clause is executed when all fields have been processed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_closeseq.htm" class="topiclink">CLOSESEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_create.htm" class="topiclink">CREATE</a></span>, <span style="font-weight: bold;"><a href="qmb_csvdq.htm" class="topiclink">CSVDQ()</a></span>, <span style="font-weight: bold;"><a href="qmb_dparse.htm" class="topiclink">DPARSE.CSV</a></span>,<span style="font-weight: bold;"> <a href="qmb_nobuf.htm" class="topiclink">NOBUF</a></span>, <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_readblk.htm" class="topiclink">READBLK</a></span>, <span style="font-weight: bold;"><a href="qmb_readseq.htm" class="topiclink">READSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_seek.htm" class="topiclink">SEEK</a></span>, <span style="font-weight: bold;"><a href="qmb_weofseq.htm" class="topiclink">WEOFSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a></span>, <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span>, <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQF</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ADD.DF</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ADD.DF" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "add_df.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ADD.DF</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="account_save.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="admin.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ADD.DF</span> command adds a part file to a <a href="distributed_files.htm" class="topiclink">distributed file</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-weight: bold;">ADD.DF</span>  <span style="font-style: italic;">dist.file &nbsp;part.file &nbsp;part.no  </span>{<span style="font-style: italic;">algorithm</span>} {<span style="font-weight: bold;">RELATIVE</span>}</p>
+<p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">dist.file</span></td><td style="border:none;padding:0">is the name of the distributed file.</td></tr></table></div><p class="p_Normal" style="text-indent: -94px; margin: 0 0 0 123px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">part.file</span></td><td style="border:none;padding:0">is the name of the part file to be added.</td></tr></table></div><p class="p_Normal" style="text-indent: -94px; margin: 0 0 0 123px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">part.no</span></td><td style="border:none;padding:0">is the part number associated with this part file.</td></tr></table></div><p class="p_Normal" style="text-indent: -94px; margin: 0 0 0 123px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">algorithm</span></td><td style="border:none;padding:0">is the name of the partitioning algorithm in the dictionary of <span style="font-style: italic;">part.file</span>.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">First use of the <span style="font-weight: bold;">ADD.DF</span> command will create the distributed file, compiling the partitioning algorithm and adding the named part file. The newly created distributed file will share the dictionary of the first part file. Subsequent use of the <span style="font-weight: bold;">ADD.DF</span> command will add further part files. The <span style="font-style: italic;">algorithm</span> need not be specified for the second and subsequent parts and will be ignored if present.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the <span style="font-style: italic;">part.file</span> is stored in the same directory as <span style="font-style: italic;">dist.file</span> or a subdirectory of it, the <span style="font-weight: bold;">RELATIVE</span> keyword causes the <span style="font-style: italic;">part.file</span> pathname to be stored internally relative to that directory. This can simplify copying distributed files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When creating a new distributed file, the dictionary reference in the VOC F-pointer created to define this file is copied from the VOC entry for <span style="font-style: italic;">part.file</span>. Again, use of the <span style="font-weight: bold;">RELATIVE</span> keyword will create the VOC entry with a relative pathname for the dictionary if it is in the same directory as <span style="font-style: italic;">dist.file</span> or a subdirectory of it.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that the partitioning algorithm is copied into the distributed file. Changing the expression in the dictionary will not have any effect. It will be necessary to reconstruct the distributed file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">ADD.DF ORDERS ORDERS-08 8 PART.ALG</span></p>
+<p class="p_Normal" style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">ADD.DF ORDERS ORDERS-09 9</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This pair of commands creates a distributed file named ORDERS that consists of two parts, ORDERS-08 and ORDERS-09, perhaps corresponding to orders taken in a specific year. The part numbers are 8 and 9 respectively. The partitioning algorithm is named PART.ALG in the dictionary of ORDERS-08.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="distributed_files.htm" class="topiclink">Distributed files</a>, <span style="font-weight: bold;"><a href="list_df.htm" class="topiclink">LIST.DF</a></span>, <span style="font-weight: bold;"><a href="remove_df.htm" class="topiclink">REMOVE.DF</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+     OPEN 'INVENT' TO INVENT ELSE PRINT 'INVENT';STOP
+     CT = 0
+
+     SELECT INVENT
+
+     READLIST IKEYS THEN
+          IKC = DCOUNT(IKEYS,@FM)
+          FOR X2 = 1 TO IKC
+               IK = IKEYS<X2>
+               PRINT "     ":IK
+               READ IBUFF FROM INVENT,IK THEN
+                    CT += 1
+                    IBUFF<28> = ""
+                    CATNUM = ""
+                    IBUFF<6> = CATNUM
+                    PRINT "    ":IK:"    ":CATNUM
+                    WRITE IBUFF ON INVENT,IK
+                    WRITE.CT+=1
+               END
+          NEXT X2
+     END
+     PRINT "READ ":CT
+     STOP

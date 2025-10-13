@@ -1,0 +1,38 @@
+      DEFFUN PAD(X,N)
+      OPEN 'LCS.TEXT' TO F.LCS.TEXT ELSE PRINT 'LCS.TEXT';STOP
+      OPEN 'FACTS' TO F.FACTS ELSE PRINT 'FACTS';STOP
+      OPEN 'EXHIBITS' TO F.EXHIBITS ELSE PRINT 'EXHIBITS';STOP
+      OPEN 'PEXX' TO F.PEXX ELSE PRINT 'PEXX';STOP
+      select f.facts
+      loop
+         readnext fac.id then
+            READ FAC.B FROM F.FACTS,FAC.ID THEN
+               if fac.b<8> = "" then
+                  writev "" on f.facts,fac.id,9
+               end
+            end 
+         end else exit
+      repeat
+      stop
+      *fac.b<9> = ""
+      *read pex.id from f.pexx,fac.id then
+      *pex.PDF = pex.ID:".PDF"
+      *EXH.ID = FAC.B<8>
+      *print fac.id
+      *print exh.id
+      *IF pex.ID THEN
+      *WRITEV pex.ID ON F.FACTS,FAC.ID,9
+      *if exh.id then WRITEV pex.PDF ON F.EXHIBITS,EXH.ID,10
+      *CMD = "SH COPY E:\RAW.FILES\":pex.PDF:" E:\EXHIBITS\"
+      *PRINT CMD
+      *EXECUTE CMD
+      *END ELSE
+      *WRITEV "" ON F.FACTS,FAC.ID,9
+      *if exh.id then WRITEV "" ON F.EXHIBITS,EXH.ID,10
+      *END
+      *END
+      *end
+      *end else exit
+      *repeat
+      END
+

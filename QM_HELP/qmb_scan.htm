@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SCAN</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SCAN (QMBasic)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_scan.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SCAN</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_savelist.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_scmp.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">SCAN</span> statement scans the elements of a data collection.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SCAN </span><span style="font-style: italic;">collection</span> <span style="font-weight: bold;">RESET</span></p>
+<p class="p_Normal" style="margin: 8px 0 0 30px;"><span style="font-weight: bold;">SCAN </span><span style="font-style: italic;">collection </span>{<span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">start</span>} <span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">name</span> {<span style="font-weight: bold;">, </span><span style="font-style: italic;">value</span>} {<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>} {<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:114px"><span style="font-style: italic;">collection</span></td><td style="border:none;padding:0">is a data collection variable.</td></tr></table></div><p class="p_Normal" style="text-indent: -114px; margin: 0 0 0 143px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:114px"><span style="font-style: italic;">start</span></td><td style="border:none;padding:0">is the name of the collection element at which the scan is to begin.</td></tr></table></div><p class="p_Normal" style="text-indent: -114px; margin: 0 0 0 143px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:114px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the variable that will be set to the name of the next element found by the scan.</td></tr></table></div><p class="p_Normal" style="text-indent: -114px; margin: 0 0 0 143px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:114px"><span style="font-style: italic;">value</span></td><td style="border:none;padding:0">is the variable that will be set to the value of the element.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The first form of the <span style="font-weight: bold;">SCAN</span> statement resets the scan position to be at the first element of the collection in collating sequence order.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The second form of the <span style="font-weight: bold;">SCAN</span> statement returns the next collection element. The optional <span style="font-weight: bold;">FROM</span> clause specifies the position of the first item to be returned. if there is no exact match, the scan position commences from where the <span style="font-style: italic;">start</span> element would be in collating sequence order. Scanning a data collection does not descend into lower levels of nested collections.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present. The <span style="font-weight: bold;">THEN</span> clause will be executed if the scan is successful and <span style="font-style: italic;">name</span> will be set to the name of the element. The optional <span style="font-style: italic;">value</span> variable will be set to the value of that element. The <span style="font-weight: bold;">ELSE</span> clause will be executed if there are no further items to be extracted. The <span style="font-style: italic;">name</span> and <span style="font-style: italic;">value</span> variables will be returned as null strings.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">SCAN COL RESET</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; SCAN COL SETTING NAME, VALUE ELSE EXIT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY 'Element ' : NAME : ' has value ' : VALUE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This program fragment prints the name and value of each element of the data collection.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="qmbasic_collections.htm" class="topiclink">Data collections</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>The Command Environment</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Command Parsing,VOC file" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "commandparsing.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">The Command Environment</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="profiling.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="commandstack.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although applications commonly use the graphical interface capabilities of QM via Visual Basic, AccuTerm or web browsers, developers normally work from the character mode interface command prompt using a terminal emulator or directly from the system console. Commands can also originate from within application programs.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Commands entered at the terminal or generated from within a QM application are processed by the command processor. This uses the <a href="voc.htm" class="topiclink">vocabulary file</a> (VOC) to determine the meaning of each word or symbol within the command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default command prompt is the colon character. Whenever this is displayed at the start of a line, QM is ready to accept a new command. The command prompt changes to a double colon if the default <a href="selectlists.htm" class="topiclink">select list</a> is active. This serves as a warning that the select list may impact execution of the next command. The prompt characters may be modified using the <span style="font-weight: bold;"><a href="pterm.htm" class="topiclink">PTERM</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">By default, QM operates with &quot;case inversion&quot; - that is, characters entered in lowercase letters are displayed in uppercase and vice versa. The original multivalue systems date back to a time when many terminals did not have lowercase letters and hence the command language was written to work in uppercase. To make it easy to operate in situations where a user may be switching between a QM session and, for example, a Word document, QM normally applies case inversion so that the user does not need to keep hitting the caps lock key.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Actually, QM is largely case insensitive but this feature is retained for compatibility with other systems. It can be disabled by typing</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PTERM CASE NOINVERT</span></p>
+<p class="p_Normal">and this would usually be done as an automated part of the login process for an end user of the application. Alternatively, the default state may be changed by use of the <a href="configparams.htm#invcase" class="topiclink">INVCASE</a> configuration parameter.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>A command consists of a number of tokens separated by spaces. Where a token includes spaces, it must be enclosed in quotes. QM allows use of single quotes, double quotes or backslashes interchangeably though recognition of backslashes as quotes in the command processor can be disabled with the BACKSLASH.NOT.QUOTE mode of the <span style="font-weight: bold;"><a href="or.htm" class="topiclink">OPTION </a></span>command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first token of a command normally corresponds to the name of an executable item within the VOC. This will be the name of a verb, sentence, paragraph, menu or Proc (terms that will be defined in the following sections). It is also possible to run a program from the <a href="catalogue.htm" class="topiclink">system catalogue</a> by typing its name as a command. Other valid actions at the command prompt are:</p>
+<p style="margin: 10px 0 10px 30px;"><a href="commandstack.htm" class="topiclink">Command stack operations</a>, prefixed by a dot character</p>
+<p style="margin: 0 0 10px 30px;"><a href="commandeditor.htm" class="topiclink">Command editor keystrokes</a></p>
+<p style="margin: 0 0 0 30px;">Save the command without execution by appending a question mark</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command processor performs the VOC look-up for a command in three stages; firstly by looking for a record with a name matching the first token in the command exactly as entered. If this fails, it then tries again with the name mapped to uppercase. All system verbs have uppercase names and can therefore be entered in lowercase, uppercase or a mix. For compatibility with Pick databases, a third attempt is made with any hyphens in the uppercase version of the name replaced by dots. Thus a command such as <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> can be entered as <span style="font-weight: bold;">create.file</span> or <span style="font-weight: bold;">CREATE-FILE</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the command is not found in the VOC, a check is made in the private and global catalogues. If the name exists here, the catalogued program is executed. The names of catalogued programs executed in this way must commence with a letter or an asterisk. When executing a catalogued program in this manner, the command processor will look for and handle the <span style="font-weight: bold;">LPTR</span> and <span style="font-weight: bold;">NO.PAGE</span> keywords in the same way as the <span style="font-weight: bold;"><a href="run.htm" class="topiclink">RUN</a></span> command, leaving them in place so that the executed program will also see them if it performs its own command line scan.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Finally, if the command has still not been located, the command processor looks in the <a href="voc.htm#pvoc" class="topiclink">private vocabulary</a>, if this exists.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Many commands perform the first two phases of this look-up for the remaining tokens on the command line (file names, keywords, etc), however, commands that might have a detrimental effect if used in error (<span style="font-weight: bold;"><a href="delete_file.htm" class="topiclink">DELETE.FILE</a></span>, for example) either insist on the file name being entered exactly as it appears in the VOC or prompt for confirmation if the name is not an exact match.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Command lines commencing with an asterisk followed by at least one space are treated as comments and are ignored except that <a href="inlineprompts.htm" class="topiclink">inline prompts</a> are still processed. Although comments are primarily of use within paragraphs, they can be entered directly at the keyboard when they will appear in any active <a href="como.htm" class="topiclink">como file</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Many QM commands return status values via the <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a><span style="font-weight: bold;"> </span>variable. In general, a positive or zero value indicates success. A negative value is an error code and the actual value is the negative of the codes listed in the ERR.H include record in SYSCOM.</p>
+
+</td></tr></table>
+
+</body>
+</html>

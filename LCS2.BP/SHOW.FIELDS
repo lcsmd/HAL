@@ -1,0 +1,21 @@
+*---> Recovered document: show.fields
+function show.fields(file.name,keys,field.list)
+
+new.field.list = ""
+conv = ""
+values=""
+headers=""t
+
+open file.name to f.file else print file.name;stop
+open "DICT",file.name to d.file else print "DICT,":file,name;stop
+
+field.ct = dcount(field.list,@FM)
+
+for x = 1 to field.ct
+
+   key=keys<x>
+   read dbuff from d.file,key then
+      header<x> = 
+
+
+

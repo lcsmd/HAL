@@ -1,0 +1,16 @@
+     OPEN 'TS.VEND' TO TS.VEND ELSE PRINT 'TS.VEND';STOP
+     OPEN 'TS.VEND.XREF' TO TS.VEND.XREF ELSE PRINT 'TS.VEND.XREF';STOP
+
+     SELECT TS.VEND
+
+     LOOP
+     WHILE READNEXT AA DO
+          READ TSB FROM TS.VEND,AA THEN
+               TX = TSB<3>
+               READ TSB2 FROM TS.VEND.XREF,TX ELSE TSB2 = ""
+               LOCATE AA IN TSB2<1> BY 'AL' SETTING POS ELSE
+                    INS AA BEFORE TSB2<1,POS>
+                    WRITE TSB2 ON TS.VEND.XREF,TX
+               END
+          END
+     REPEAT

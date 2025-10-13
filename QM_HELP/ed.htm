@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ED</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ED" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "ed.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ED, EDIT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="ecs_map.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="edit_config.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ED</span> command enters the QM line editor. The synonym <span style="font-weight: bold;">EDIT</span> can be used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ED</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span> {<span style="font-style: italic;">record.id</span> | <span style="font-weight: bold;">CREATING.SEQKEY</span>} {<span style="font-weight: bold;">NO.QUERY</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">DICT</span></td><td style="border:none;padding:0">indicates that records from the dictionary portion of the file are to be edited.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">file.name</span></td><td style="border:none;padding:0">is the name of the file holding the record(s) to be edited.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">record.id</span></td><td style="border:none;padding:0">is the name of the record to be edited. Multiple record ids may be given in which case each record is edited in turn. Use of <span style="font-weight: bold;">CREATING.SEQKEY</span> instead of a record id automatically generates the next sequential key for the file.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">NO.QUERY</span></td><td style="border:none;padding:0">suppresses the confirmation prompt if a select list is used. The NO.SEL.LIST.QUERY mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command can be used to imply this option.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If no <span style="font-style: italic;">record.id</span> is specified and the default select list is active, this list is used to identify the records to be edited. If no <span style="font-style: italic;">record.id</span> is specified and the default select list is not active, the <span style="font-weight: bold;">ED</span> command prompts for the <span style="font-style: italic;">record.id</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A <span style="font-style: italic;">record.id</span> of * either on the command line or as the first <span style="font-style: italic;">record.id</span> entered in response to the prompt will cause <span style="font-weight: bold;">ED</span> to select all records of the file and edit each in turn.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The editor maintains an update lock on the record that is being edited.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When editing a compiled dictionary item (C-type, I-type, or A/S type with a correlative), <span style="font-weight: bold;">ED</span> removes the compiled code thus forcing recompilation when the modified item is first referenced in a query.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Overview</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The editor takes its commands from the keyboard or the <a href="data.htm" class="topiclink">DATA</a> queue. Each command line contains one editor command. Commands are retained in a stack similar to the command processor stack and can be repeated without complete retyping. Commands that take arguments specifying their exact function can be repeated by entering just the command name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>ED normally rejects commands and input text that contain non-printing characters. Where a non-printing character is to be entered, it can be typed as ^<span style="font-style: italic;">nnn</span> where <span style="font-style: italic;">nnn</span> is the decimal value of the character, or ^X<span style="font-style: italic;">nnnn</span> where <span style="font-style: italic;">nnnn</span> is the hexadecimal value of the character. Alternatively, the NPRINT command can be used to enable entry of non-printing characters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The editor operates in two modes; edit and input. In edit mode, commands affect the current line (field). In input mode, new data is entered into the record. The editor numbers lines from one and the line number is displayed as a four digit number followed by a colon whenever lines are displayed or during input. The editor command prompt is four hyphens followed by a colon.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Positioning Commands</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The commands listed below alter the position of the current line. In addition, entering a blank line at the command prompt advances the current position by one line, displaying the newly selected line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-style: italic; font-weight: bold;">n</span></p>
+<p style="margin: 0 0 0 30px;">Entering a number at the command prompt positions the current line to line <span style="font-style: italic;">n</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">+</span><span style="font-style: italic; font-weight: bold;">n</span></p>
+<p style="margin: 0 0 0 30px;">Moves the current line position forward by <span style="font-style: italic;">n</span> lines.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">-</span><span style="font-style: italic; font-weight: bold;">n</span></p>
+<p style="margin: 0 0 0 30px;">Moves the current line position backward by <span style="font-style: italic;">n</span> lines.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">B</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">B</span> (bottom) command moves to the last line of the record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">F</span>{<span style="font-style: italic;">n</span>} {<span style="font-style: italic;">string</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">F</span> (find) command moves forward to the next line containing <span style="font-style: italic;">string</span> starting at column position <span style="font-style: italic;">n</span> (from one). If <span style="font-style: italic;">n</span> is omitted, <span style="font-style: italic;">string</span> must occur at the start of the line.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-style: italic;">string</span> must be preceded by a single space or a delimiter chosen from &nbsp;</p>
+<p style="margin: 10px 0 10px 60px;">! &quot; # $ % &amp; ( ) * + , - . / : = @ [ ] \ _ ` ' { } |</p>
+<p style="margin: 0 0 0 30px;">All characters after the delimiter will be treated as part of the string to be located. The string is case sensitive by default but the <span style="font-weight: bold;">CASE</span> command can be used to select case insensitive searches. See the <span style="font-weight: bold;">W</span> command for a description of wildcards.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">string</span> is omitted, the string used by the most recent <span style="font-weight: bold;">F</span> command is used. If no <span style="font-weight: bold;">F</span> command has been executed, the editor moves forward by one line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">G</span><span style="font-style: italic;">n</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">G</span><span style="font-style: italic;">n</span> (go to) command moves to line <span style="font-style: italic;">n</span>. This is identical to the <span style="font-style: italic;">n</span> command described above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">G&lt;</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">G&lt;</span> command moves to the first line of the currently defined block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">G</span>&gt;</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">G&gt;</span> command moves to the last line of the currently defined block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">L</span>{<span style="font-style: italic;">n</span>} {<span style="font-style: italic;">string</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">L</span> (locate) command moves forward to the next line containing <span style="font-style: italic;">string</span> which must be preceded by a single space or a delimiter chosen from &nbsp;</p>
+<p style="margin: 10px 0 10px 60px;">! &quot; # $ % &amp; ( ) * + , - . / : = @ [ ] \ _ ` ' { } |</p>
+<p style="margin: 0 0 0 30px;">All characters after the delimiter will be treated as part of the string to be located. The string is case sensitive by default but the <span style="font-weight: bold;">CASE</span> command can be used to select case insensitive searches. See the <span style="font-weight: bold;">W</span> command for a description of wildcards.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The optional line count, <span style="font-style: italic;">n</span>, limits the search to <span style="font-style: italic;">n</span> lines from the current position. If <span style="font-style: italic;">n</span> is present, all occurrences of <span style="font-style: italic;">string</span> in the region to be searched are displayed and the current position is left at the end of the search region.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">string</span> is omitted, the string used by the most recent <span style="font-weight: bold;">L</span> command is used. If no <span style="font-weight: bold;">L</span> command has been executed, the editor moves forward by one line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">M</span> {<span style="font-style: italic;">pattern</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">M</span> (match) command moves forward to the next line matching <span style="font-style: italic;"><a href="patterns.htm" class="topiclink">pattern</a></span>. The <span style="font-style: italic;">pattern</span> argument is any valid pattern as used for the query processor <span style="font-weight: bold;"><a href="like.htm" class="topiclink">LIKE</a></span> operator. There must be a space before <span style="font-style: italic;">pattern</span>.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">pattern</span> is omitted, the string used by the most recent <span style="font-weight: bold;">M</span> command is used. If no <span style="font-weight: bold;">M</span> command has been executed, the editor moves forward by one line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">PO</span><span style="font-style: italic;">n</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">PO</span><span style="font-style: italic;">n</span> (position) command moves to line <span style="font-style: italic;">n</span>. This is identical to the <span style="font-style: italic;">n</span> command described above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">T</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">T</span> (top) command moves to before line 1. There is no current line after this action.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Displaying Text</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">L</span><span style="font-style: italic;">n</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">L</span><span style="font-style: italic;">n</span> (list) command displays <span style="font-style: italic;">n</span> lines, moving the current line forward to the final displayed line. It is similar to the <span style="font-weight: bold;">P</span> command except that <span style="font-style: italic;">n</span> must be included. Omitting <span style="font-style: italic;">n</span> results in execution of a locate command as described above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">P</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">P</span> (print) command displays <span style="font-style: italic;">n</span> lines starting at the current line, moving the current line forward to the final displayed line. The value of <span style="font-style: italic;">n</span> defaults to 23 on first use of the <span style="font-weight: bold;">P</span> command and to the value of <span style="font-style: italic;">n</span> for the most recently executed <span style="font-weight: bold;">P</span> command thereafter. There must be no space between <span style="font-weight: bold;">P</span> and <span style="font-style: italic;">n</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">PL</span>{{<span style="font-weight: bold;">-</span>}<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">PL</span> (print lines) command displays <span style="font-style: italic;">n</span> lines relative to the current line position. Negative values of <span style="font-style: italic;">n</span> print lines before the current line. The value of <span style="font-style: italic;">n</span> defaults to 23 on first use of the <span style="font-weight: bold;">PL</span> command and to the value of <span style="font-style: italic;">n</span> for the most recently executed <span style="font-weight: bold;">PL</span> command thereafter. There must be no space between <span style="font-weight: bold;">PL</span> and <span style="font-style: italic;">n</span>. The current line position is not changed by this command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">PP</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">PP</span> (print position) command displays <span style="font-style: italic;">n</span> lines surrounding the current line position. The value of <span style="font-style: italic;">n</span> defaults to 23 on first use of the <span style="font-weight: bold;">PP</span> command and to the value of <span style="font-style: italic;">n</span> for the most recently executed <span style="font-weight: bold;">PP</span> command thereafter. There must be no space between <span style="font-weight: bold;">PP</span> and <span style="font-style: italic;">n</span>.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Inserting Text</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">I</span> {<span style="font-style: italic;">text</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">I</span> (insert) command inserts <span style="font-style: italic;">text</span> after the current line, making this the current line. There must be a single space before <span style="font-style: italic;">text</span>. Any additional spaces are treated as part of the inserted text. To insert a blank line type <span style="font-weight: bold;">I</span> followed by a single space.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If the <span style="font-weight: bold;">I</span> command is entered with no <span style="font-style: italic;">text</span> and no space after the <span style="font-weight: bold;">I</span>, the editor enters input mode. It will prompt for successive lines until a blank line is entered at which point it returns to edit mode. Entering a line containing just a single space inserts a blank line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IB</span> {<span style="font-style: italic;">text</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">IB</span> (insert before) command is similar to the <span style="font-weight: bold;">I</span> command described above except that <span style="font-style: italic;">text</span> is inserted before the current line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">IX</span>{<span style="font-style: italic;">c</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">IX</span> command is similar to the <span style="font-weight: bold;">I</span> command described above except that blank lines in the inserted data are not treated as a special case. &nbsp;Input is terminated by entry of a line containing just the single character <span style="font-style: italic;">c</span>. If <span style="font-style: italic;">c</span> is omitted it defaults to a backslash.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">LOAD</span> {{<span style="font-style: italic;">filename</span>} <span style="font-style: italic;">record.id</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">LOAD</span> command inserts part or all of the specified record into the record being edited after the current line position. If <span style="font-style: italic;">filename</span> is omitted, it defaults to the file associated with the current record. After the operation is complete, the current line is the first line of the newly inserted text.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The editor prompts for the start and end line numbers to be inserted. These default to the first and last lines respectively.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Deleting Lines</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">D</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">D</span><span style="font-style: italic;">n</span> (delete) command deletes <span style="font-style: italic;">n</span> lines starting at the current line position. If <span style="font-style: italic;">n</span> is not specified, only the current line is deleted. The line after the last line deleted becomes current.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">D</span><span style="font-style: italic;">n</span><span style="font-weight: bold;">/</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">/</span></p>
+<p style="margin: 0 0 0 30px;">Deletes all lines containing <span style="font-style: italic;">string</span> within the next <span style="font-style: italic;">n</span> lines starting at the current line position.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DE</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">Same as <span style="font-weight: bold;">D</span><span style="font-style: italic;">n</span> described above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Commands that Edit the Current Line</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">A</span> {<span style="font-style: italic;">string</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">A</span> (append) command appends <span style="font-style: italic;">string</span> to the current line. A single space must separate <span style="font-style: italic;">string</span> from the command. Any further spaces are treated as part of the inserted text.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">string</span> is omitted, the most recent <span style="font-weight: bold;">A</span> command is repeated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">B</span> <span style="font-style: italic;">string</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">B</span> (break) command splits the current line into two after <span style="font-style: italic;">string</span>. The <span style="font-style: italic;">string</span> argument must be present and is preceded by a single space. Any additional spaces are treated as part of <span style="font-style: italic;">string</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">C/</span><span style="font-style: italic;">old.string</span><span style="font-weight: bold;">/</span><span style="font-style: italic;">new.string</span><span style="font-weight: bold;">/</span>{<span style="font-style: italic;">n</span>}{<span style="font-weight: bold;">G</span>}{<span style="font-weight: bold;">B</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">C</span> (change) command changes <span style="font-style: italic;">old.string</span> to <span style="font-style: italic;">new.string</span> in the current line. The delimiter around the strings may be any of</p>
+<p style="margin: 10px 0 10px 60px;">! &quot; # $ % &amp; ( ) * + , - . / : = @ [ ] \ _ ` ' { } |</p>
+<p style="margin: 0 0 0 30px;">The optional <span style="font-style: italic;">n</span> component specifies that <span style="font-style: italic;">n</span> lines starting at the current line are to be changed.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">G</span> causes all occurrences of <span style="font-style: italic;">old.string</span> to be replaced. Without <span style="font-weight: bold;">G</span> only the first occurrence on the line is changed.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">B</span> applies the change to the currently defined block rather than the current line. <span style="font-weight: bold;">B</span> and <span style="font-style: italic;">n</span> may not be used together.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-style: italic;">n</span>, <span style="font-weight: bold;">G</span>, and <span style="font-weight: bold;">B</span>, qualifiers can be placed before the first string delimiter as an alternative to the syntax shown above.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Entering <span style="font-weight: bold;">C</span> with no strings repeats the last substitution.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Searches for <span style="font-style: italic;">old.string</span> are case sensitive by default. See the <span style="font-weight: bold;">CASE</span> command for a way to select case insensitive searches. See the <span style="font-weight: bold;">W</span> command for a description of wildcards.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">CAT</span> {<span style="font-style: italic;">string</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">CAT</span> command concatenates the current line, <span style="font-style: italic;">string</span> and the following line to form a single line. Omitting <span style="font-style: italic;">string</span> merges the lines with no intervening characters. There must be a single space between the command and the <span style="font-style: italic;">string</span>. Any additional spaces are treated as part of <span style="font-style: italic;">string</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DUP</span> {<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">DUP</span> command duplicates the current line <span style="font-style: italic;">n</span> times. The value of <span style="font-style: italic;">n</span> defaults to one. The first line added by <span style="font-weight: bold;">DUP</span> becomes the current line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">R/</span><span style="font-style: italic;">old.string</span><span style="font-weight: bold;">/</span><span style="font-style: italic;">new.string</span><span style="font-weight: bold;">/</span>{<span style="font-style: italic;">n</span>}{<span style="font-weight: bold;">G</span>}{<span style="font-weight: bold;">B</span>}</p>
+<p style="margin: 0 0 0 30px;">Identical to <span style="font-weight: bold;">C</span> described above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">R</span> {<span style="font-style: italic;">text</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">R</span> (replace) command replaces the current line with the specified <span style="font-style: italic;">text</span>. There must be a single space before <span style="font-style: italic;">text</span>. Any additional spaces are treated as part of the replacement text. To replace a line by a blank line, type <span style="font-weight: bold;">R</span> with no <span style="font-style: italic;">text</span>. The space may be omitted in this case.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Working with Multivalued Data</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">EV</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">EV</span> (edit values) command enters a mode where each value of the current line becomes a line of its own in a new editable item. To edit subvalues, use the <span style="font-weight: bold;">EV</span> command when already in EV mode. Used with a dictionary <a href="dict_i.htm" class="topiclink">I-type</a> entry, the <span style="font-weight: bold;">EV</span> command breaks compound I-types into separate lines to simplify editing.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">QV</span></p>
+<p style="margin: 0 0 0 30px;">Exits from EV mode and returns to the previous edit text, discarding any changes made while in EV mode.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">SV</span></p>
+<p style="margin: 0 0 0 30px;">Exits from EV mode and returns to the previous edit text, saving any changes made while in EV mode.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Block Edit Commands</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Blocks are defined by two pointers; the start and end line. Block operations enable the entire block to be deleted, moved or copied.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">&lt;</span></p>
+<p style="margin: 0 0 0 30px;">Sets the current line to be the start line of the block. When used at the top of the record (above the first line), the &lt; command clears the block pointers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">&gt;</span></p>
+<p style="margin: 0 0 0 30px;">Sets the current line to be the end line of the block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">&lt;&gt;</span></p>
+<p style="margin: 0 0 0 30px;">Sets the block to be just the current line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">BLOCK</span></p>
+<p style="margin: 0 0 0 30px;">Toggles block verification mode. When enabled, <span style="font-weight: bold;">COPY</span>, <span style="font-weight: bold;">DROP</span> and <span style="font-weight: bold;">MOVE</span> commands cause a prompt for confirmation prior to performing the operation. Block verification mode is enabled by default.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">COPY</span></p>
+<p style="margin: 0 0 0 30px;">Copies the currently defined block to immediately after the current line position without affecting the original block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DROP</span></p>
+<p style="margin: 0 0 0 30px;">Deletes the currently defined block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">MOVE</span></p>
+<p style="margin: 0 0 0 30px;">Copies the currently defined block to immediately after the current line position and deletes the original block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">PB</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">PB</span> (print block) command displays the currently defined block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">File Handling Commands and Leaving the Editor</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DELETE</span></p>
+<p><span style="font-weight: bold;">FD</span></p>
+<p style="margin: 0 0 0 30px;">Prompts for confirmation and then deletes the entire record from the file.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">After the record has been deleted, the editor either terminates, continues with the next record from a select list or prompts for a new record id depending on the way in which it was entered.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The confirmation prompt can be suppressed using the ED.NO.QUERY.FD mode of the <span style="font-weight: bold;">OPTION</span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">FILE</span> {{<span style="font-weight: bold;">DICT</span>} {<span style="font-style: italic;">filename</span>} <span style="font-style: italic;">record.id</span>}</p>
+<p style="margin: 0 0 0 30px;">If no arguments are included, the <span style="font-weight: bold;">FILE</span> command (which may be abbreviated to <span style="font-weight: bold;">FI</span>) writes the record being edited back to its file.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">record.id</span> is specified, the modified record is saved under the new name. A confirmation prompt will be issued if a record of this name already exists.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If both <span style="font-style: italic;">filename</span> and <span style="font-style: italic;">record.id</span> are given, the record is saved to the specified file and record. Again, a confirmation prompt will be issued if a record of this name already exists.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">After the record has been saved, the editor either terminates, continues with the next record from a select list or prompts for a new record id depending on the way in which it was entered.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Two extended forms of the FI command are available for use when editing QMBasic programs:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">FIB {{<span style="font-style: italic;">filename</span>} <span style="font-style: italic;">record.id</span>}</td><td style="border:none;padding:0">Files the record and then runs the QMBasic compiler.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">FIBR {{<span style="font-style: italic;">filename</span>} <span style="font-style: italic;">record.id</span>} </td><td style="border:none;padding:0">Files the record, runs the QMBasic compiler and, if the compilation is successful, runs the compiled program.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">N</span></p>
+<p style="margin: 0 0 0 30px;">When using a select list, the <span style="font-weight: bold;">N </span>command moves to the next record in the list. A confirmation prompt is issued if there are unsaved changes.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">QUIT</span></p>
+<p><span style="font-weight: bold;">EX</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">QUIT</span> command (which may be abbreviated to <span style="font-weight: bold;">Q</span>) and its synonym <span style="font-weight: bold;">EX</span> terminates editing of the current record. A confirmation prompt is issued if there are unsaved changes.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If a select list is in use or further record ids were supplied on the command line, the editor will move on to the next record. Use the <span style="font-weight: bold;">X</span> command described below to terminate the entire edit in this case.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">SAVE</span> {{<span style="font-weight: bold;">DICT</span>} {<span style="font-style: italic;">filename</span>} <span style="font-style: italic;">record.id</span>}</p>
+<p style="margin: 0 0 0 30px;">If no arguments are included, the <span style="font-weight: bold;">SAVE</span> command writes the record being edited back to its file.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">record.id</span> is specified, the modified record is saved under the new name. A confirmation prompt will be issued if a record of this name already exists.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If both <span style="font-style: italic;">filename</span> and <span style="font-style: italic;">record.id</span> are given, the record is saved to the specified file and record. Again, a confirmation prompt will be issued if a record of this name already exists.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Unlike the <span style="font-weight: bold;">FILE</span> command, editing continues after saving the record. The <span style="font-weight: bold;">SAVE</span> command does not change the names associated with the record being edited. A subsequent <span style="font-weight: bold;">SAVE</span> or <span style="font-weight: bold;">FILE</span> with the file and record names omitted will use the original names, not those of an intermediate <span style="font-weight: bold;">SAVE</span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">UNLOAD</span> {{{<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">filename</span>} <span style="font-style: italic;">record.id</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">UNLOAD</span> command saves part or all of the record being edited into the named file and record. If <span style="font-style: italic;">filename</span> is omitted, it defaults to the file associated with the current record.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The editor prompts for the start and end line numbers to be saved. These default to the first and last lines respectively.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">X</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">X</span> command aborts an edit without saving any changes made to the record if a select list is in use or further record ids were supplied on the command line. A confirmation prompt is issued if there are unsaved changes. Any further items are ignored and the editor terminates.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Miscellaneous Commands</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">?</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">?</span> command displays status information about the editor and the record being edited. This includes</p>
+<p style="margin: 0 0 0 60px;">The file name and record id</p>
+<p style="margin: 0 0 0 60px;">The current line number</p>
+<p style="margin: 0 0 0 60px;">The item size (lines and bytes)</p>
+<p style="margin: 0 0 0 60px;">Block start and end line positions</p>
+<p style="margin: 0 0 0 60px;">The command, if any, which will be reverted by OOPS.</p>
+<p style="margin: 0 0 0 60px;">Non-printing character expansion mode status (^)</p>
+<p style="margin: 0 0 0 60px;">Non-printing character entry mode status (NPRINT)</p>
+<p style="margin: 0 0 0 60px;">Block verify mode status (BLOCK)</p>
+<p style="margin: 0 0 0 60px;">The setting of search case sensitivity (CASE)</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">^</span></p>
+<p style="margin: 0 0 0 30px;">Toggles non-printing character expansion mode. When this mode is enabled, non-printing characters are displayed as ^<span style="font-style: italic;">nnn</span> where <span style="font-style: italic;">nnn</span> is the decimal character number. On ECS mode systems, characters outside the 8 bit set will be displayed as ^X<span style="font-style: italic;">nnnn</span> where <span style="font-style: italic;">nnnn</span> is the hexadecimal character number.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">CASE OFF</span></p>
+<p style="margin: 0 0 0 30px;">Sets case insensitive mode for the <span style="font-weight: bold;">C</span>, <span style="font-weight: bold;">F</span> and <span style="font-weight: bold;">L</span> commands.</p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">CASE ON</span></p>
+<p style="margin: 0 0 0 30px;">Sets case sensitive mode for the <span style="font-weight: bold;">C</span>, <span style="font-weight: bold;">F</span> and <span style="font-weight: bold;">L</span> commands. This is the default mode of the editor.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">COL</span></p>
+<p style="margin: 0 0 0 30px;">Displays a column number ruler to aid alignment of inserted text</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">HELP</span> {<span style="font-style: italic;">topic</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">HELP</span> command displays a short description associated with the command identified by <span style="font-style: italic;">topic</span>. If <span style="font-style: italic;">topic</span> is omitted, this command enters the full help system. If <span style="font-style: italic;">topic</span> is present but not recognised, <span style="font-weight: bold;">ED</span> tries to find a help page on this topic from the full help system.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">NPRINT</span></p>
+<p style="margin: 0 0 0 30px;">Toggles non-printing character entry mode. When this mode is enabled, non-printing characters may be included in commands and input text. When disabled, non-printing characters are rejected but may still be entered using the ^<span style="font-style: italic;">nnn</span> notation where <span style="font-style: italic;">nnn</span> is the decimal character number. This command is not available on ECS mode systems.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">OOPS</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">OOPS</span> command undoes the most recent function that modified the record. It cannot be used to forget positioning functions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">STAMP</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">STAMP</span> command inserts a single comment line below the current line indicating the account name, user name, date and time of the modification.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">SPOOL</span> {<span style="font-style: italic;">lines</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">SPOOL</span> command prints a copy of the record on the default printer. If changes have been made but not yet written to the file, the printed version includes these changes. The optional <span style="font-style: italic;">lines</span> qualifier specifies the number of lines to be printed starting at the current line. If this is omitted, the entire record is printed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">W</span>{<span style="font-style: italic;">char</span>}</p>
+<p style="margin: 0 0 0 30px;">Specifies a wildcard character that may be used in the <span style="font-weight: bold;">C</span> and  <span style="font-weight: bold;">R</span> text replacement commands or the <span style="font-weight: bold;">F</span> and <span style="font-weight: bold;">L</span> search commands. Use of char within the search string of these commands will match against any single character. The wildcard character may not be a letter or the caret symbol (^). Use of the <span style="font-weight: bold;">W</span> command with no <span style="font-style: italic;">char</span> qualifier turns off the wildcard.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">XEQ</span> {<span style="font-style: italic;">command</span>}</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">XEQ</span> command executes the specified <span style="font-style: italic;">command</span> which may be any command valid at the command prompt. The <span style="font-style: italic;">command</span> may include any of the following items to substitute text into the command:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">@FILE</td><td style="border:none;padding:0">The file name</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">@ID</td><td style="border:none;padding:0">The record id</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">@LINE</td><td style="border:none;padding:0">The text of the current line</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">@FM</td><td style="border:none;padding:0">A field mark (to separate multiple commands)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">@VM</td><td style="border:none;padding:0">A value mark</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">@SM</td><td style="border:none;padding:0">A subvalue mark</td></tr></table></div><p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Pre-Stored Edit Commands</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Frequently used sequences of editor commands may be saved in a file and subsequently executed by entering just one command. Pre-stored command sequences can also include loops to repeat a series of commands.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Command sequences are saved using the <span style="font-weight: bold;">.S</span> command. This has several different syntaxes:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-weight: bold;">.S</span> <span style="font-style: italic;">item</span></td><td style="border:none;padding:0">Save the most recent command</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-weight: bold;">.S</span><span style="font-style: italic;">n</span> <span style="font-style: italic;">item</span></td><td style="border:none;padding:0">Save command <span style="font-style: italic;">n</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-weight: bold;">.S</span> <span style="font-style: italic;">item</span> <span style="font-style: italic;">n</span><span style="font-weight: bold;">,</span><span style="font-style: italic;">m</span></td><td style="border:none;padding:0">Save commands <span style="font-style: italic;">n</span> to <span style="font-style: italic;">m</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-weight: bold;">.S</span> <span style="font-style: italic;">item</span> <span style="font-style: italic;">n</span> <span style="font-style: italic;">m</span> </td><td style="border:none;padding:0">Save commands <span style="font-style: italic;">n</span> to <span style="font-style: italic;">m</span></td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In each case, <span style="font-style: italic;">item</span> may be given as either a record id to be created in the default $ED file or as a file name and record id separated by a space. The values <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> may be given in either order. The commands are always saved in the same sequence as they appear on the editor command stack. The first line in the saved item has a type code of E as its first character followed by text describing when it was created.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The $ED file will be created automatically first time that the <span style="font-weight: bold;">.S</span> command is used to save commands in this file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Multi-line inserts cannot be repeated from a saved command sequence, will cause the <span style="font-weight: bold;">.S</span> command to fail and, if edited into the pre-stored sequence manually, will be cause a warning message to be displayed when the command sequence is executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Alternatively, a user can create a $ED pre-stored item by using the editor:</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ED $ED </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">item.name</span></p>
+<p>The first field of the item must contain E as its first character. Subsequent fields each contain one editor instruction in the sequence that the user requires the operations to be performed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A saved command sequence is executed by a command of the form</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-weight: bold;">.X</span> <span style="font-style: italic;">item</span></p>
+<p>where <span style="font-style: italic;">item</span> is either a record id in $ED or a file name and record id separated by a space. Unlike other command stack operations,  <span style="font-weight: bold;">.X</span> <span style="font-style: italic;">item</span> command is added to the command stack so that <span style="font-weight: bold;">.X</span> <span style="font-style: italic;">n</span> can be used to repeat the pre-stored sequence.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Other useful command stack extensions for use with stored edit commands are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">.D</span> <span style="font-style: italic;">item</span></td><td style="border:none;padding:0">Delete the specified item</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">.L</span> <span style="font-style: italic;">item</span></td><td style="border:none;padding:0">List the item. If the record id is given as an asterisk, a list of stored edit sequences in the file is displayed.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">.R</span> <span style="font-style: italic;">item</span></td><td style="border:none;padding:0">Recall a previously saved set of commands to the stack.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A stored edit sequence may include the <span style="font-weight: bold;">PAUSE</span> command. Execution stops and the user may decide whether to continue by entering <span style="font-weight: bold;">.XR</span> or to terminate the sequence by entering <span style="font-weight: bold;">.XK</span>. Other editing commands may be executed before either of these responses is entered.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LOOP</span> command can be used to repeat a series of steps in the stored commands. The format is</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-weight: bold;">LOOP</span> <span style="font-style: italic;">lineno</span> <span style="font-style: italic;">count</span></p>
+<p>The edit continues with the command on <span style="font-style: italic;">lineno</span>. The <span style="font-weight: bold;">LOOP</span> will be jump back to the specified line <span style="font-style: italic;">count</span> times before dropping through to the next command. Both <span style="font-style: italic;">lineno</span> and <span style="font-style: italic;">count</span> default to 1 if omitted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that a sequence such as</p>
+<p style="margin: 0 0 0 30px;">001 &nbsp;I xyz</p>
+<p style="margin: 0 0 0 30px;">002 &nbsp;LOOP 1 3</p>
+<p>executes the insert command four times because the <span style="font-weight: bold;">LOOP</span> jumps back three times. Note also that although the first edit command is on line 2 of the pre-stored sequence, the first line (type code and description) is discarded by the editor and the edit commands are numbered from one when setting <span style="font-style: italic;">lineno</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A loop may validly include use of the <span style="font-weight: bold;">FI</span> command to file the record. When processing records from a select list, the pre-stored sequence continues execution from one record to the next.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold; text-decoration: underline;">Editor Command Stack</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following commands manipulate the editor command stack. Unless otherwise stated, the stack position argument, <span style="font-style: italic;">n</span>, defaults to one.</p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">.A</span>{<span style="font-style: italic;">n</span>} <span style="font-style: italic;">string</span></p>
+<p style="margin: 0 0 0 30px;">Append <span style="font-style: italic;">string</span> to entry <span style="font-style: italic;">n</span> of the editor command stack.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">.C</span>{<span style="font-style: italic;">n</span>}/<span style="font-style: italic;">old.string</span>/<span style="font-style: italic;">new.string</span>/</p>
+<p style="margin: 0 0 0 30px;">Change <span style="font-style: italic;">old.string</span> to <span style="font-style: italic;">new.string</span> in line <span style="font-style: italic;">n</span> of the editor command stack.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">.D</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">Delete line <span style="font-style: italic;">n</span> of the editor command stack.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">.I</span>{<span style="font-style: italic;">n</span>} <span style="font-style: italic;">string</span></p>
+<p style="margin: 0 0 0 30px;">Insert <span style="font-style: italic;">string</span> as entry <span style="font-style: italic;">n</span> of the editor command stack.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">.L</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">List <span style="font-style: italic;">n</span> lines of the editor command stack. The value of <span style="font-style: italic;">n</span> defaults to nine.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">.R</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">Recall line <span style="font-style: italic;">n</span> of the editor command stack to the top of the stack.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">.X</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">Execute line <span style="font-style: italic;">n</span> of the editor command stack.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>See also <span style="font-weight: bold;">ED Pre-Stored Commands</span> above for additional command stack features.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal"><span style="font-weight: bold; text-decoration: underline;">External Commands</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The editor includes a facility whereby users can implement additional commands using catalogued subroutines. External commands are identified by use of <a href="patterns.htm" class="topiclink">pattern matching</a>, comparing the command line with patterns specified in the $ED.OPTIONS record (see below) in a case insensitive manner. Commands defined in this way can override standard ED commands, allowing alternative or extended functionality to be added very easily.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When an external command is recognised, the editor calls a user written subroutine with two arguments, INFO and ERROR. The INFO argument is an 8 element dimensioned array containing:</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">INFO(1) = full file name, including possible DICT prefix</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">INFO(2) = record id</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">INFO(3) = data being edited</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">INFO(4) = current line number, zero if at the top</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">INFO(5) = block start line number, zero if not set</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">INFO(6) = block end line number, zero if not set</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">INFO(7) = command line in casing as typed</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">INFO(8) = edit value depth (0 = normal, 1 = editing values, 2 = editing subvalues)</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The ERROR argument is used to return an error status to the editor. It should be set to True if processing of the command fails.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If ERROR is not set True, the editor will examine the INFO array on return from the subroutine, updating its own status variables to correspond with changes made by the subroutine to the data in INFO(3) or the position information in INFO elements 4, 5 and 6. Positional data is subject to validation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold; text-decoration: underline;">Setting Default Modes</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On entry, <span style="font-weight: bold;">ED</span> looks for an X-type VOC record named $ED.OPTIONS and, if this exists, examines fields 2 onwards of this record for options that set the default modes for the editor. These may be:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px"><span style="font-weight: bold;">BLOCK</span> {<span style="font-weight: bold;">ON</span> | <span style="font-weight: bold;">OFF</span>}</td><td style="border:none;padding:0">Turn on/off prompting for confirmation on <span style="font-weight: bold;">COPY</span>, <span style="font-weight: bold;">DROP</span> and <span style="font-weight: bold;">MOVE</span>. Default is ON.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px"><span style="font-weight: bold;">CASE</span> {<span style="font-weight: bold;">ON</span> | <span style="font-weight: bold;">OFF</span>}</td><td style="border:none;padding:0">Turn on/off case sensitivity for searches (<span style="font-weight: bold;">C</span>, <span style="font-weight: bold;">F</span>, <span style="font-weight: bold;">L</span>). Default is ON.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px"><span style="font-weight: bold;">EXTERNAL</span> <span style="font-style: italic;">name cmd</span></td><td style="border:none;padding:0"> &nbsp; &nbsp; &nbsp; &nbsp;Defines catalogued subroutine <span style="font-style: italic;">name</span> as the handler for external command <span style="font-style: italic;">cmd</span> where <span style="font-style: italic;">cmd</span> is a pattern match template or simple constant value.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px"><span style="font-weight: bold;">FIT.SCREEN </span>{<span style="font-weight: bold;">ON</span> | <span style="font-weight: bold;">OFF</span>}</td><td style="border:none;padding:0">If on, the default display size of the <span style="font-weight: bold;">P</span>, <span style="font-weight: bold;">PL</span> and <span style="font-weight: bold;">PP</span> commands is chosen to fit the screen size. Default is OFF.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px"><span style="font-weight: bold;">NO.EV.POSITION</span></td><td style="border:none;padding:0">Suppress display of higher level line numbers when in edit values mode.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px"><span style="font-weight: bold;">NPRINT</span> {<span style="font-weight: bold;">ON</span> | <span style="font-weight: bold;">OFF</span>}</td><td style="border:none;padding:0">Turn on/off acceptance of non-printing characters on input. Default is OFF. This option is ignored on ECS mode systems.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Unrecognised options or qualifiers are ignored.</p>
+
+</td></tr></table>
+
+</body>
+</html>

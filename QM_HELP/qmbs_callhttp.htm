@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>!CALLHTTP()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="!CALLHTTP()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbs_callhttp.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">!CALLHTTP()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbs_atvar.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbs_ced.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!CALLHTTP</span> class module allows an application to initiate HTTP style requests to a remote server.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The object is instantiated with a statement of the form</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">SESSION = OBJECT('!CALLHTTP')</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Five HTTP request message types are supported; GET, POST, HEAD, PUT and DELETE. Each has a corresponding public function in the class that takes the request message as its only argument and returns a Boolean value indicating whether the action was successful.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The connection details are set using the following properties prior to calling the request function:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">HOST</td><td style="border:none;padding:0">The server name or IP address.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">PORT</td><td style="border:none;padding:0">The server port number. Defaults to 80 if not specified.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">PARAMS</td><td style="border:none;padding:0">For a GET or HEAD action, if the request message does not contain a &quot;?&quot; character and the PARAMS property is not a null string, a &quot;?&quot; and the PARAMS property value are appended to the request message. For a POST message, if the PARAMS property is not a null string, it is sent as the message body. The PARAMS property is reset to a null string after all request messages.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">EXT.HDR</td><td style="border:none;padding:0">Additional message header items for GET or HEAD as a dynamic array with a field for each item containing a name/value pair in the form &quot;name: value&quot;. The header items will be transmitted in the order in which they appear in the dynamic array. Alternatively, the additional items may be set as a single level data collection in which case the order of transmission is the collating sequence of the names in the collection.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">AUTH</td><td style="border:none;padding:0">Authentication details in the form &quot;user:password&quot; for a request requiring authentication.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The server and port can alternatively be specified as part of instantiating the object though actual connection does not occur until a request is submitted.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">SESSION = OBJECT('!CALLHTTP', </span><span class="f_CodeTopLine" style="font-style: italic;">host</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">port</span><span class="f_CodeTopLine">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: -13px; margin: 0 0 8px 13px;">The parameters to a GET, HEAD, POST or PUT message can be provided in three mutually exclusive manners using public functions that return a true/false status:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 39px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>As part of the request message argument</p><p class="p_CodeBottomLine" style="margin: 0 0 6px 26px;"><span class="f_CodeBottomLine">SESSION-&gt;GET('/?t0=h&amp;t1=openqm')</span></p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 39px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>As the second argument to the GET message</p><p class="p_CodeBottomLine" style="margin: 0 0 6px 26px;"><span class="f_CodeBottomLine">SESSION-&gt;GET('/', '?t0=h&amp;t1=openqm')</span></p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 39px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>By use of the PARAMS property</p><p class="p_CodeBody" style="margin: 0 0 0 26px;"><span class="f_CodeBody">SESSION-&gt;PARAMS = 't0=h&amp;t1=openqm'</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 26px;"><span class="f_CodeBody">SESSION-&gt;GET('/')</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On return from a GET, HEAD or POST request, the following properties contain information returned from the server:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px">HEADER</td><td style="border:none;padding:0">The HTTP response header as a data collection with each item as a name/value pair.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px">HTTP.STATUS</td><td style="border:none;padding:0">The HTTP status code (e.g. 404 for item not found), zero if no HTTP error.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px">BODY</td><td style="border:none;padding:0">For a GET or POST request, this is the response body.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the request returns False, the error message is available via the ERROR property.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">SESSION = OBJECT('!CALLHTTP')</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">SESSION-&gt;HOST = 'www.openqm.com'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF SESSION-&gt;GET('/downloads.htm') THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY SESSION-&gt;BODY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END ELSE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY SESSION-&gt;ERROR</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above program fragment uses the !CALLHTTP class to retrieve an item from the OpenQM web site (actually just a redirection link). If successful, the page body is displayed. If an error occurs, the error message is displayed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">SESSION = OBJECT('!CALLHTTP', 'www.openqm.com')</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF SESSION-&gt;GET('/?t0=h&amp;t1=openqm') THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY SESSION-&gt;BODY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END ELSE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY SESSION-&gt;ERROR</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above program fragment uses a GET message that includes parameters. It also shows how the host name can be passed in the object instantiation rather than by explicitly setting the HOST property.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">SESSION = OBJECT('!CALLHTTP', 'www.openqm.com')</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">SESSION-&gt;PARAMS = 't0=h&amp;t1=openqm'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF SESSION-&gt;GET('/') THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY SESSION-&gt;BODY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END ELSE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY SESSION-&gt;ERROR</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above program fragment is a variation on the preceding example, using the PARAMS property to define the parameters to be appended to the request message. Substituting POST for GET as the session method on the third line of this example would send the request as a POST message.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="qmbasic_collections.htm" class="topiclink">Data collections</a>, <a href="simple_web_services.htm" class="topiclink">Simple Web Services</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FILELOCK</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FILELOCK" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_filelock.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FILELOCK</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_fileinfo.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_fileunlock.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FILELOCK</span> statement sets a file lock on a file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FILELOCK</span> <span style="font-style: italic;">file.var</span> {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">LOCKED</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with the file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statements to be executed depending on the outcome of the operation.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FILELOCK</span> statement sets a file lock which prevents other users from obtaining read or update locks on records within the file or a file lock on the whole file. File access operations that do not obtain locks are can still be performed by other users. These are <span style="font-weight: bold;"><a href="qmb_clearfile.htm" class="topiclink">CLEARFILE</a></span>, <span style="font-weight: bold;"><a href="qmb_delete.htm" class="topiclink">DELETE</a></span>, <span style="font-weight: bold;"><a href="qmb_delete.htm" class="topiclink">DELETEU</a></span>, <span style="font-weight: bold;"><a href="qmb_matread.htm" class="topiclink">MATREAD</a></span>, <span style="font-weight: bold;"><a href="qmb_matwrite.htm" class="topiclink">MATWRITE</a></span>, <span style="font-weight: bold;"><a href="qmb_matwrite.htm" class="topiclink">MATWRITEU</a></span>, <span style="font-weight: bold;"><a href="qmb_read.htm" class="topiclink">READ</a></span>, <span style="font-weight: bold;"><a href="qmb_readv.htm" class="topiclink">READV</a></span>, <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span>, <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITEU</a></span>, <span style="font-weight: bold;"><a href="qmb_writev.htm" class="topiclink">WRITEV</a></span> and <span style="font-weight: bold;"><a href="qmb_writev.htm" class="topiclink">WRITEVU</a></span>. Correct application design avoids accidental deletion or overwriting of locked records.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A file lock does not prevent access by the user that owns the lock.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LOCKED</span> clause is executed if another user holds a file lock or a read or update lock on any record in the file. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return the user id of a process holding a lock. If the <span style="font-weight: bold;">LOCKED</span> clause is omitted, the program will wait for any lock to be released.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses are both optional and neither need be present. The <span style="font-weight: bold;">THEN</span> clause will be executed if the file lock is successfully obtained. The <span style="font-weight: bold;">ELSE</span> clause will be executed if the lock cannot be obtained for a reason other than it being held by some other user. There are currently no conditions that would execute the <span style="font-weight: bold;">ELSE</span> clause.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FILELOCK STOCK</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SELECT STOCK</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">TOTAL = 0</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READNEXT ID ELSE EXIT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READ REC FROM STOCK, ID ELSE ABORT &quot;Cannot read &quot; : ID</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; TOTAL += REC&lt;QTY&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FILEUNLOCK STOCK</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment obtains a file lock on the file open as STOCK and then reads all records from the file, forming a total of the values in the QTY field. The lock prevents other users obtaining update locks when they might be updating this field in some record. The lock ensures that the total value represents a true picture of the file when the file lock was obtained. The lock is released on leaving the main processing loop.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="locking.htm" class="topiclink">Locking</a>, <span style="font-weight: bold;"><a href="qmb_fileunlock.htm" class="topiclink">FILEUNLOCK</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>TERMINFO(), TERMINFO.EX()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="TERMINFO(),TERMINFO.EX()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_terminfo.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">TERMINFO(), TERMINFO.EX()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_tclread.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_testlock.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">TERMINFO()</span> function returns information from the terminfo database. The <span style="font-weight: bold;">TERMINFO.EX()</span> function returns extended data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">TERMINFO()</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">TERMINFO(</span><span style="font-style: italic;">cap.name</span><span style="font-weight: bold;">)</span></p>
+<p style="line-height: 1.38; margin: 10px 0 0 30px;"><span style="font-weight: bold;">TERMINFO.EX()</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">TERMINFO.EX(</span><span style="font-style: italic;">cap.name</span><span style="font-weight: bold;">)</span></p>
+<p style="text-align: right;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">cap.name</span></td><td style="border:none;padding:0">evaluates to the name of a terminfo capability.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">TERMINFO()</span> function enables programs to examine the <a href="terminfo.htm" class="topiclink">terminfo database</a> to establish capabilities of the currently selected terminal type.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the first form, <span style="font-weight: bold;">TERMINFO()</span> returns a dynamic array containing a wide range of capability information about the terminal. The structure of this dynamic array is defined in the TERMINFO.H include record in the SYSCOM file. Additional entries may be added in future releases but existing entries will not be moved. The terminfo database capability name to which each item corresponds is shown in the comment text in this include record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The second form of the <span style="font-weight: bold;">TERMINFO()</span> function returns the value of the named capability. The <span style="font-style: italic;">cap.name</span> argument should evaluate to a capability name as used in terminfo source files. This name is case sensitive. Unrecognised capabilities and those for which the terminfo database has no entry will be returned as null strings.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM extends the terminfo system to allow a string capability to have multiple definitions as alternative codes that might be received from the terminal device. For compatibility with earlier releases, the <span style="font-weight: bold;">TERMINFO() </span>function returns only the first string associated with a capability name. The <span style="font-weight: bold;">TERMINFO.EX()</span> function returns all strings defined for the capability, separating them by value marks.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As an example, the vt100-at terminfo entry has two alternative strings defined for the kmous capability, corresponding to a single click and a double click of the left mouse button. A program using the <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODEV()</a></span> function to decode incoming data would see both of these as KV$MOUSE.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="term.htm" class="topiclink">TERM</a></span>, <a href="terminfo.htm" class="topiclink">The Terminfo database</a>, <span style="font-weight: bold;"><a href="qmb_at_fun.htm" class="topiclink">@()</a></span>, <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODEV()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

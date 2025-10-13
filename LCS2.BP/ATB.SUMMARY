@@ -1,0 +1,445 @@
+     *
+     INCLUDE UTLSBP ASSIGN.VAR
+     OPEN '',"OPEN-ITEMS" TO OI ELSE STOP
+     OPEN '','INVOICE' TO INVOICE ELSE STOP
+     OPEN '','CONTROL' TO F.CONTROL ELSE STOP
+     OPEN '','VOC' TO F.VOC ELSE STOP
+     OPEN '','TERMS' TO F.TERMS ELSE STOP
+     OPEN 'CONTROL' TO CONTROL ELSE STOP
+     OPEN '','CUSTOMER' TO CUSTOMER ELSE STOP
+     OPEN '','SALESMAN' TO F.SALESMAN ELSE STOP
+     OPEN 'CUST.AR' TO CUST.AR ELSE STOP
+     OPEN 'GLNUM' TO F.GLNUM ELSE STOP
+     READV DOWNLOAD.FLAG FROM CONTROL,"DOWNLOAD.AR",1 ELSE DOWNLOAD.FLAG=''
+     READV SHOW.TERMS FROM CONTROL,'SHOW.TERMS.AGING',1 ELSE SHOW.TERMS='N'
+     READV EXPATH FROM F.CONTROL, 'ATB.EXPORT.PATH', 1 ELSE EXPATH = ''
+     IF DOWNLOAD.FLAG = 'Y' THEN
+          OPEN "","DOWNLOAD.AR" TO DOWNLOAD.AR ELSE PRINT 'CANT OPEN DOWNLOAD.AR FILE': ; INPUT ERR ; STOP
+          CLEARFILE DOWNLOAD.AR
+     END
+     DOWNLOAD.ATR = ''
+     EXP.DAT = ''
+     DIM CTOT(6),GTOT(6),LINE(6),BTOT(6)
+     !
+     READ CASH.B FROM CONTROL, 'CUST.CASH.RCVD':PORT THEN
+          DELETE CONTROL, 'CUST.CASH.RCVD':PORT
+     END ELSE CASH.B = ''
+     READV DBLSPACE FROM CONTROL,"DBLSPACE",1 ELSE DBLSPACE=''
+     READV PRT.SLMN FROM CONTROL,"PRT.SLMN.ATB.SUMM",1 ELSE PRT.SLMN = ''
+     CUST.LIST = ''
+     !
+     READV SJMON FROM F.GLNUM, 'SJMON', 1 ELSE SJMON = ''
+     READV SJYR FROM F.GLNUM, 'SJYR', 1 ELSE SJYR = ''
+     SJPERIOD = SJMON:SJYR
+     !
+     READV AGING.BY.MASTER FROM CONTROL, 'AGING.BY.MASTER', 1 ELSE AGING.BY.MASTER = ''
+     !
+     READ COMP.B FROM CONTROL, 'COMPANY' ELSE COMP.B = ''
+     IF COMP.B<22> = 'D' THEN ATTR = 8 ELSE ATTR = 2
+     MAT GTOT=0 ; MAT BTOT=0
+     TOT.FC=0
+     GAR=0 ; BAR=0
+     PRIOR.SKIP.CUST.OVDUE = ''
+     PROCREAD BUFFER ELSE STOP
+     CALL AR.AGING.DAYS ('', '', ADMISC)
+     IF ADMISC<1,1> = 'Future' THEN DEL ADMISC<1>
+     RDATE = ICONV(OCONV(BUFFER,'G 1'),'D')
+     DATES=OCONV(BUFFER,'G2 1')
+     DCUR = ICONV(OCONV(DATES,'G*1'),'D')
+     D30 = ICONV(OCONV(DATES,'G1*1'),'D')
+     D60 = ICONV(OCONV(DATES,'G2*1'),'D')
+     D90 = ICONV(OCONV(DATES,'G3*1'),'D')
+     D120 = ICONV(OCONV(DATES,'G4*1'),'D')
+     AGE.B = DCUR:IAMC:D30:IAMC:D60:IAMC:D90:IAMC:D120
+     IF COMP.B<36> = 'Y' THEN AGE.B = AGE.B:IAMC:DCUR
+     MRKCUST = OCONV(BUFFER,'G3 1')
+     SLMN = OCONV(BUFFER,'G4 1')
+     CRMGR = OCONV(BUFFER,'G5 1')
+     OVRDUE = OCONV(BUFFER,'G6 1')
+     OVDAYS = OCONV(BUFFER,'G7 1')
+     RPTSBY = OCONV(BUFFER,'G8 1')
+     QAR = OCONV(BUFFER,'G9 1')
+     SUBSHIPTO = OCONV(BUFFER,'G10 1')
+     BRANCH = OCONV(BUFFER,'G11 1')
+     CSV = OCONV(BUFFER,'G12 1')
+     RSDATE = OCONV(RDATE,'D2/')
+     !
+     ! SELECT FILE
+     !
+     ARSMISC = ''
+     FILENAME = 'OPEN-ITEMS'
+     IF QAR = '$' THEN FILENAME = 'QOPEN-ITEMS' ELSE
+          ARSMISC<1> = RDATE
+          ARSMISC<3> = COMP.B<36>
+          ARSMISC<4> = COMP.B<12>
+          ARSMISC<5> = SJPERIOD
+          CALL AR.SNAPSHOT (ERRORS, F.WOPEN.ITEMS, F.WCUST.AR, ARSMISC)
+          IF ERRORS # '' THEN
+               CRT ERRORS
+               STOP
+          END
+          IF ARSMISC<6> = 'Y' THEN
+               FILENAME = 'OI.SNAPSHOT/':PORT:' USING DICT OPEN-ITEMS'
+          END
+     END
+     CMND = 'SSELECT ':FILENAME:' WITH KEY '
+     IF MRKCUST = 'Y' THEN
+          CMND = CMND:'AND WITH SUPP.ATB.PRINT # "Y" '
+     END
+     IF CRMGR # '*' THEN
+          CMND = CMND:'AND WITH CR.MGR = "':CRMGR:'" '
+     END
+     IF SLMN # '*' THEN
+          CMND = CMND:'AND WITH SLMN = "':SLMN:'" '
+     END
+     IF RPTSBY = 'S' THEN CMND = CMND:'BY SLMN '
+     IF RPTSBY = 'M' THEN CMND = CMND:'BY CR.MGR '
+     IF AGING.BY.MASTER = 'Y' THEN CMND = CMND:'BY PARENT.ACCOUNT '
+     CMND = CMND:'BY CUST.SORT BY CUST# '
+     IF SUBSHIPTO # 'N' THEN
+          CMND = CMND:'BY CUST.SUB# BY SHIPTO.SORT '
+     END
+     CMND = CMND:'BY INV.DTE'
+     EXECUTE CMND CAPTURING OUTPUT
+     IF CSV # 'Y' THEN
+          PRINTER ON
+     END
+     H = ADMISC<1,1> 'L#11':OCONV(DCUR,'D2/') 'L#8'
+     H = H:SPACE(20):COMP.B<1> 'L#50':"'T'":SPACE(5):"Page 'PL'"
+     H1 = ADMISC<2,1> 'L#11':OCONV(D30,'D2/') 'L#8'
+     H1 = H1:SPACE(20):"ACCOUNTS RECEIVABLE AGING - SUMMARY"'L#42':"AS OF ":OCONV(RDATE,"D2-"):"'L'"
+     H2 = ADMISC<3,1> 'L#11':OCONV(D60,'D2/') 'L#28'
+     IF COMP.B<36> = 'N' THEN
+          H2 = H2:'Overdue Only ? :':OVRDUE:'   Overdue Days :':OVDAYS
+     END ELSE
+          OVDAYS.DESC = ""
+          IF OVDAYS = 1 THEN OVDAYS.DESC = "Over Current"
+          IF OVDAYS = 2 THEN OVDAYS.DESC = "Over 30"
+          IF OVDAYS = 3 THEN OVDAYS.DESC = "Over 60"
+          IF OVDAYS = 4 THEN OVDAYS.DESC = "Over 90"
+          H2 = H2:'Overdue Only ? :':OVRDUE:'   Overdue Days :':OVDAYS.DESC
+     END
+     IF BRANCH # '*' THEN
+          H2 = H2:'   Branch :':BRANCH
+     END
+     H2 = H2:"'L'"
+     H3 = ADMISC<4,1> 'L#11':OCONV(D90,'D2/') 'L#28'
+     H3 = H3:'      Salesman :':SLMN:"'L'"
+     H4 = ADMISC<5,1> 'L#11':OCONV(D120,'D2/') 'L#28'
+     H4 = H4:'Credit Manager :':CRMGR:SPACE(25):'(Report Sorted by '
+     IF RPTSBY = 'C' THEN H4 = H4:'Customer)' ELSE
+          IF RPTSBY = 'S' THEN H4 = H4:'Salesman)' ELSE H4 = H4:'Credit Manager)'
+     END
+     H4 = H4:"'LL'"
+     H5 = "CUSTOMER   NAME"
+     H6 = SPACE(24):'             PERIOD-$-PAID  TOTAL A/R'
+     FOR I = 1 TO 5
+          H6 = H6:ADMISC<I,1> 'R#11'
+     NEXT I
+     IF CSV = 'Y' THEN
+          EXPORT.LINE = ''
+          EXPORT.LINE = '"CNO","NAME","TOT A/R"'
+          FOR I = 1 TO 5
+               EXPORT.LINE = EXPORT.LINE:',"':ADMISC<I,1>:'"'
+          NEXT I
+          EXP.DAT = EXPORT.LINE
+     END
+     IF CSV # 'Y' THEN
+          PRINTER ON
+          HEADING H:H1:H2:H3:H4:H5:H6
+     END
+     !
+     EOF=0 ; PRIOR.INFO = ''
+     SHOW.CREDITS.OVER90 = OCONV('SHOW.CREDITS.OVER90','TCONTROL;X;1;1')
+     CREDITS.OVER90 = 0
+     GOSUB 100
+     FCAMT = 0
+50:  LOOP
+     UNTIL EOF DO
+          CUST=EXTRACT(REC,1,0,0)
+          MAT CTOT=0
+          AR=0
+          READ CREC FROM CUSTOMER,CUST ELSE CREC='UNKNOWN'
+          READ SLMN.B FROM F.SALESMAN,CREC<7> ELSE SLMN.B = ''
+          SKIP.CUST.OVDUE = 0
+          IF OVRDUE = 'Y' AND COMP.B<36> = "N" THEN
+               IF COMP.B<22> = 'I' THEN
+                    IF CREC<23> # '' & DATE()-CREC<23> GE OVDAYS ELSE GOSUB 100 ; GO 50
+               END ELSE
+                    OLD.DUE.DATE = ''
+                    READ CUST.AR.B FROM CUST.AR,CUST THEN
+                         FOR CARLP = 1 TO DCOUNT(CUST.AR.B<2>,IVM)
+                              READV I.DUE.DATE FROM OI,CUST.AR.B<2,CARLP>,8 ELSE I.DUE.DATE = ''
+                              IF ((I.DUE.DATE < OLD.DUE.DATE) OR (OLD.DUE.DATE = '')) AND I.DUE.DATE # '' THEN OLD.DUE.DATE = I.DUE.DATE
+                         NEXT CARLP
+                    END
+                    IF OLD.DUE.DATE # '' AND (OLD.DUE.DATE+OVDAYS) > DATE() THEN GOSUB 100 ; GO 50
+               END
+          END
+          IF RPTSBY # 'C' THEN
+               IF RPTSBY = 'S' THEN
+                    IF IREC<22> = '' THEN COMPARE.INFO = CREC<7> ELSE COMPARE.INFO = IREC<22>
+               END ELSE COMPARE.INFO = CREC<123>
+               *JS*            IF RPTSBY = 'S' THEN COMPARE.INFO = CREC<7> ELSE COMPARE.INFO = CREC<123>
+               IF PRIOR.INFO # COMPARE.INFO & BAR + 0 # 0 THEN
+                    IF CSV # 'Y' THEN
+                         PRINT
+                         PRINT
+                         IF RPTSBY = 'S' THEN WORD = 'Salesman' ELSE WORD = 'Credit Manager'
+                         LN = '* * Total for ':WORD:': ':PRIOR.INFO:' * *':SPACE(20):OCONV(BTOT(1),'MD2')
+                         PRC.STRING=''
+                         LN2=''
+                         PRINT LN 'R#65':
+                         PRINT OCONV(BAR,'MD2') 'R#11':
+                         FOR I = 2 TO 6
+                              PRINT OCONV(BTOT(I),'MR2') 'R#11':
+                              PRC.STRING<I>=BTOT(I)/BAR*100
+                              PRC.STRING<I>=OCONV(ICONV(PRC.STRING<I>,"MD2"),"MD2")
+                         NEXT I
+                         PRINT
+                         PRINT
+                         PRINT LN2'R#65':
+                         PRINT '100.00%'"R#11":
+                         FOR I = 2 TO 6
+                              PRINT PRC.STRING<I>'R#10':'%':
+                         NEXT I
+                         MAT BTOT = '' ; BAR = ''
+                         PAGE
+                    END
+                    *S*            PRIOR.INFO = COMPARE.INFO
+               END
+          END
+          READV TERMS.DISC FROM F.TERMS,CREC<25>,5 ELSE TERMS.DISC=''
+          IF TERMS.DISC+0 = 0 THEN TERMS.DISC='N'
+          IF DBLSPACE # '' AND (PRIOR.SKIP.CUST.OVDUE = 0) THEN
+               IF CSV # 'Y' THEN
+                    PRINT ; PRINT
+               END
+          END
+          DOWNLOAD.ATR=''
+          DOWNLOAD.KEY=CUST
+          DOWNLOAD.ATR<1>=CREC<1>
+          IF CREC<9> # '' THEN
+               PHONE=CREC<9>
+          END ELSE PHONE=CREC<11>
+          PHONE = ""
+          AMTPD = 0
+          LOCATE CUST IN CASH.B<1> SETTING VAL THEN AMTPD = CASH.B<2,VAL>
+          LOCATE CUST IN CUST.LIST<1> SETTING VAL ELSE
+               CUST.LIST<1,VAL> = CUST
+               CTOT(1) = CTOT(1) + AMTPD
+          END
+          TOT = 0
+          LOOP
+          UNTIL EOF OR CUST#EXTRACT(REC,1,0,0) DO
+               MAT LINE=''
+               DATE=EXTRACT(REC,ATTR,0,0)
+               AMT=EXTRACT(REC,3,0,0)
+               *L*          PAID=0
+               *L*          A=1
+               *L*          LOOP
+               *L*          UNTIL REC<5,A> = '' DO
+               *L*            PAID=PAID+EXTRACT(REC,4,A,0)+REC<6,A>+REC<7,A>
+               *L*            A=A+1
+               *L*          REPEAT
+               ABMISC = ''
+               CALL AR.AGING.BUCKETS (AGE.B, REC, COMP.B<22>, COMP.B<36>, ABMISC)
+               ABMISC<2> = ABMISC<2> + ABMISC<1> ; DEL ABMISC<1>
+               FOR I = 1 TO 5
+                    CTOT(I+1) = CTOT(I+1) + ABMISC<I>
+               NEXT I
+               BAL = SUM(ABMISC)
+               AR=AR+BAL
+               TOT = TOT + BAL
+               IF ID[1,1]='F' THEN TOT.FC=TOT.FC+BAL ; FCAMT = FCAMT + BAL
+               CT=RDATE-DATE
+               *L*          IF COMP.B<22> = 'D' THEN AGEDT = REC<8> ELSE AGEDT = REC<2> + 31
+               IF BAL+0 < 0 AND (RDATE-REC<2>) GE 90 THEN
+                    CREDITS.OVER90 = CREDITS.OVER90 + BAL
+               END
+               *L*          BEGIN CASE
+               *L*            CASE AGEDT LE DCUR & AGEDT GT D30 ; I = 3
+               *L*            CASE AGEDT LE D30 & AGEDT GT D60 ; I = 4
+               *L*            CASE AGEDT LE D60 & AGEDT GT D90; I = 5
+               *L*            CASE AGEDT LE D90               ; I = 6
+               *L*            CASE 1                           ; I = 2
+               *L*          END CASE
+               *L*40        CTOT(I)=CTOT(I)+BAL
+               GOSUB 100
+          REPEAT
+          SKIP.CUST.OVDUE = 0
+          IF COMP.B<36> = "Y" AND OVRDUE = "Y" THEN
+               IF OVDAYS = 1 THEN
+                    IF CTOT(3) + CTOT(4) + CTOT(5) + CTOT(6) <= 0 THEN SKIP.CUST.OVDUE = 1
+               END ELSE
+                    IF OVDAYS = 2 THEN
+                         IF CTOT(4) + CTOT(5) + CTOT(6) <= 0 THEN SKIP.CUST.OVDUE = 1
+                    END ELSE
+                         IF OVDAYS = 3 THEN
+                              IF CTOT(5) + CTOT(6) <= 0 THEN SKIP.CUST.OVDUE = 1
+                         END ELSE
+                              IF OVDAYS = 4 THEN
+                                   IF CTOT(6) <= 0 THEN SKIP.CUST.OVDUE = 1
+                              END
+                         END
+                    END
+               END
+          END
+          IF NOT(SKIP.CUST.OVDUE) THEN
+               IF CSV # 'Y' THEN
+                    *PRINT CUST 'L#8':CREC<1> 'L#43 ':PHONE 'L#13 ':
+                    PRINT CUST 'L#8':CREC<1> 'L#43 ':
+                    PRINT OCONV(AMTPD,'MD2') 'R#12':
+                    PRINT OCONV(AR,'MR2')'R#11':
+               END
+               DOWNLOAD.ATR<2>=AR
+               DOWNLOAD.ATR<3>=CTOT(2)
+               DOWNLOAD.ATR<4>=CTOT(3)
+               DOWNLOAD.ATR<5>=CTOT(4)
+               DOWNLOAD.ATR<6>=CTOT(5)+CTOT(6)
+               IF CSV = 'Y' THEN
+                    CNAME = CREC<1>
+                    CONVERT '"' TO '' IN CNAME
+                    EXPORT.LN = '"':CUST:'","':CNAME:'","':OCONV(AR,'MD2'):'","':OCONV(CTOT(2),'MD2')
+                    EXPORT.LN = EXPORT.LN:'","':OCONV(CTOT(3),'MD2'):'","':OCONV(CTOT(4),'MD2') : '","':OCONV(CTOT(5),'MD2')
+                    EXPORT.LN = EXPORT.LN:'","':OCONV(CTOT(6),'MD2'):'"'
+                    EXP.DAT<-1> = EXPORT.LN
+               END
+               IF DOWNLOAD.FLAG='Y' THEN
+                    WRITE DOWNLOAD.ATR ON DOWNLOAD.AR,DOWNLOAD.KEY
+               END
+               BAR=BAR+AR
+               GAR=GAR+AR
+               FOR I = 2 TO 6
+                    IF CSV # 'Y' THEN
+                         PRINT OCONV(CTOT(I),'MR2') 'R#11':
+                    END
+                    BTOT(I)=BTOT(I)+CTOT(I)
+                    GTOT(I)=GTOT(I)+CTOT(I)
+               NEXT I
+               BTOT(1) = BTOT(1) + CTOT(1)
+               GTOT(1) = GTOT(1) + CTOT(1)
+               IF CSV # 'Y' THEN
+                    IF SHOW.TERMS='Y' THEN
+                         PRINT TERMS.DISC'L#1'
+                    END ELSE PRINT
+               END
+               IF FCAMT+0 # 0 THEN FMSG='Finance Charges: ':OCONV(FCAMT,"MD2,$") ELSE FMSG=''
+               IF PRT.SLMN = "Y" THEN
+                    SLMN.LINE = "Slm: ":CREC<7>:" ":SLMN.B<1>
+                    IF CREC<8> # "" THEN CNTCT.LINE = "Cntct: ":CREC<8> ELSE CNTCT.LINE = ""
+                    IF CSV # 'Y' THEN
+                         PRINT
+                         *PRINT SPACE(8):SLMN.LINE 'L#20':SPACE(1):CNTCT.LINE'L#28':SPACE(2):FMSG
+                    END
+               END ELSE
+                    IF CSV # 'Y' THEN
+                         *PRINT CREC<8>'R#51':SPACE(8):FMSG
+                         PRINT
+                    END
+               END
+               FCAMT = 0
+               *JS*IF CTOT(6) < 0 AND SHOW.CREDITS.OVER90 = "Y" THEN
+               *JS*CREDITS.OVER90 = CREDITS.OVER90 + CTOT(6)
+               *JS*END
+               PRIOR.INFO = COMPARE.INFO
+          END
+          PRIOR.SKIP.CUST.OVDUE = SKIP.CUST.OVDUE
+     REPEAT
+     IF RPTSBY # 'C' THEN
+          IF (SLMN = '*' & RPTSBY = 'S') ! (CRMGR = '*' & RPTSBY = 'M') THEN
+               IF CSV # 'Y' THEN
+                    PRINT
+                    PRINT
+                    IF RPTSBY = 'S' THEN WORD = 'Salesman' ELSE WORD = 'Credit Manager'
+                    LN = '* * Total for ':WORD:': ':PRIOR.INFO:' * *':SPACE(20):OCONV(BTOT(1),'MD2')
+                    PRC.STRING=''
+                    LN2=''
+                    PRINT LN 'R#65':
+                    PRINT OCONV(BAR,'MD2') 'R#11':
+                    FOR I = 2 TO 6
+                         PRINT OCONV(BTOT(I),'MR2') 'R#11':
+                         PRC.STRING<I>=BTOT(I)/BAR*100
+                         PRC.STRING<I>=OCONV(ICONV(PRC.STRING<I>,"MD2"),"MD2")
+                    NEXT I
+                    PRINT
+                    PRINT
+                    PRINT LN2'R#65':
+                    PRINT '100.00%'"R#11":
+                    FOR I = 2 TO 6
+                         PRINT PRC.STRING<I>'R#10':'%':
+                    NEXT I
+                    PAGE
+               END
+          END
+     END
+     IF CSV # 'Y' THEN
+          PRINT
+          PRINT
+          LN="GRAND TOTAL    >>>     ":OCONV(GTOT(1),'MR2')
+          PRC.STRING=''
+          LN2=''
+          PRINT LN 'R#65':
+          PRINT OCONV(GAR,'MD2') 'R#11':
+          FOR I = 2 TO 6
+               PRINT OCONV(GTOT(I),'MR2') 'R#11':
+               PRC.STRING<I>=GTOT(I)/GAR*100
+               PRC.STRING<I>=OCONV(ICONV(PRC.STRING<I>,"MD2"),"MD2")
+          NEXT I
+          PRINT
+          PRINT
+          PRINT LN2'R#65':
+          PRINT '100.00%'"R#11":
+          FOR I = 2 TO 6
+               PRINT PRC.STRING<I>'R#10':'%':
+          NEXT I
+          PRINT ; PRINT
+          PRINT 'TOTAL FINANCE CHARGES OPEN >>> ':OCONV(TOT.FC,"MD2")
+          IF SHOW.CREDITS.OVER90 = 'Y' THEN
+               PRINT 'TOTAL CREDITS OVER 90 DAYS >>> ':OCONV(CREDITS.OVER90,'MD2')
+          END
+          PRINTER CLOSE ; PRINTER OFF
+     END
+     ***********************************
+     IF CSV = 'Y' THEN
+          CALL WINDOW (10, 6, 60, 3, 'Export File Location Path', 3)
+10000:    CALL CIP (15, 8, 50, EXPATH, A, ESCFLG, '')
+          IF ESCFLG THEN STOP
+          IF A = '' THEN GO 10000
+          A = ICONV(A,'MCU')
+          BSL = DCOUNT(A,'\')
+          FILENAME = OCONV(A,'G':BSL-1:'\1')
+          IF FILENAME = '' THEN GO 10000
+          IF INDEX(FILENAME,'.CSV',1) ELSE GO 10000
+          K.VOC = "ATBEXP":@USERNO
+          VOC.B = "F"
+          *S*FOLDER.PATH = FIELD(EXPATH,'\',1,COUNT(EXPATH,'\'))
+          FOLDER.PATH = FIELD(A,'\',1,COUNT(A,'\'))
+          VOC.B<2> = FOLDER.PATH
+          VOC.B<3> = "D_VOC"
+          WRITE VOC.B ON F.VOC,K.VOC
+          OPEN '',K.VOC TO F.TEMPFILE THEN
+               WRITE EXP.DAT ON F.TEMPFILE,FILENAME
+               DELETE F.VOC,K.VOC
+               PRINT C22:"File ":FILENAME:" created.  Hit any key.":@(77): ; INPUT DUMMY
+          END ELSE
+               PRINT C22:"Cannot create file.  Re-enter path."
+               GO 10000
+          END
+     END
+     ***********************************
+     IF ARSMISC<6> = 'Y' THEN
+          CLOSE F.WOPEN.ITEMS
+          CLOSE F.WCUST.AR
+          EXECUTE 'DELETE-FILE OI.SNAPSHOT/':PORT
+          EXECUTE 'DELETE-FILE CUST.AR.SNAPSHOT/':PORT
+     END
+     STOP
+100: READNEXT ID ELSE EOF=1 ; RETURN
+     READ REC FROM F.WOPEN.ITEMS,ID ELSE GO 100
+     READ IREC FROM INVOICE,ID ELSE IREC = ''
+     IF BRANCH # '*' THEN
+          IF BRANCH # REC<30> THEN GO 100
+     END
+     RETURN
+     END

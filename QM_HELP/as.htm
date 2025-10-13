@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>AS</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="AS" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "as.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">AS</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="and.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="assoc.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">AS</span> keyword is a field qualifier which defines a synonym for a field and any qualifying information.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">field.name</span> {<span style="font-style: italic;">field.qualifier</span>} <span style="font-weight: bold;">AS</span> <span style="font-style: italic;">synonym</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field.name</span></td><td style="border:none;padding:0">is the name of the field (D or I-type) or an evaluated expression to be given a synonym.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field.qualifier</span></td><td style="border:none;padding:0">is any qualifying information such as  <span style="font-weight: bold;"><a href="conv.htm" class="topiclink">CONV</a></span>or <span style="font-weight: bold;"><a href="fmt.htm" class="topiclink">FMT</a></span> keywords.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">synonym</span></td><td style="border:none;padding:0">is the name by which the field and its qualifiers is to be known. This name must not correspond to an existing entry in the file's dictionary or in the VOC.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">AS</span> keyword creates a synonym for <span style="font-style: italic;">field.name</span> together with any <span style="font-style: italic;">field.qualifier</span>. It is normally only used in conjunction with a <span style="font-style: italic;">field.qualifier</span> or to name an evaluated expression.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES EVAL &quot;SUM(RECEIVED)&quot; AS AMT BY.DSND AMT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command processes records from the INVOICES file and reports the total of the multivalued RECEIVED field . The report is displayed in descending order of total received amount. The <span style="font-weight: bold;">AS</span> keyword is used to give the synonym AMT to the evaluated sum so that it can be referred to again in the sort clause after the <span style="font-weight: bold;"><a href="by_dsnd.htm" class="topiclink">BY.DSND</a></span> keyword without full expansion.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="eval.htm" class="topiclink">EVAL</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

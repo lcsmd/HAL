@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Multi-Language Applications</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LOAD.LANGUAGE,Non-English messages,SET.LANGUAGE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "language.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Multi-Language Applications</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="monitoring_the_system.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="command-logging.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM includes support for non-English languages in various ways. This section summarises the features available and links to more detailed descriptions elsewhere.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Character Sets</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are two variants of QM offered during installation; one supporting the 8-bit character set, the other (the ECS or Extended Character Set version) supporting all characters in the Unicode Basic Multilingual Plane.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using the 8-bit version, limited options for handling characters outside the standardised 7-bit ASCII set are provided by alternative definitions of characters 128 to 255 by use of <a href="codepage.htm" class="topiclink">Windows code pages</a>. These can be selected separately in individual QM sessions though this is likely to lead to confusion where the same character value might lead to different display.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <a href="ecs.htm" class="topiclink">ECS</a> version provides a single standardised representation for characters of many languages and includes a block of character values defined as the Private Use Area to allow mapping of characters outside the Basic Multilingual Plane into the usable character set if needed. The ECS character maps allow selection of features such as sort order such that different users might see the same reported sorted differently to comply with local language conventions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Both versions support <a href="character_encodings.htm" class="topiclink">character set encodings</a> such as UTF-8 on external interfaces though the capabilities of this are limited in the 8-bit version.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Message Texts</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">All message texts used by QM itself are stored in a file named MESSAGES in the QMSYS account. Users can add their own application specific messages to allow multi-language applications.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On first installation of QM, the messages file will be created in either ECS or non-ECS mode depending on the mode of the underlying QM system. Installing an ECS mode version of QM over a non-ECS mode version will automatically reconfigure the messages file to ECS mode. The reverse action, installing a non-ECS mode version of QM over an ECS mode version will delete and recreate the file, populating it only with the standard English messages. Any locally applied alternative messages would need to be reloaded.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The standard message library installed with QM contains English messages texts. Additional language libraries may be available for download or from QM resellers. Users can also perform their own translations of the source text downloaded from the product web site. New message sets are added using the <span style="font-weight: bold;"><a href="load_language.htm" class="topiclink">LOAD.LANGUAGE</a></span> command in the QMSYS account and the language to be used at run time is selected with the <span style="font-weight: bold;"><a href="set_language.htm" class="topiclink">SET.LANGUAGE</a></span> command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">National Language Conventions</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM has limited support for national language conventions such as alternative decimal and thousands separator characters in numbers or local currency symbols. These are selected using the <span style="font-weight: bold;"><a href="nls.htm" class="topiclink">NLS</a></span> command or the <span style="font-weight: bold;"><a href="qmb_setnls.htm" class="topiclink">SETNLS</a></span> QMBasic statement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">See also:</span><br />
+<span style="font-weight: bold;"><a href="qmb_sysmsg.htm" class="topiclink">SYSMSG()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

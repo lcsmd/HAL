@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>@(x,y) Function</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="@(x,y) function" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_at_fun.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">@(x, y) Function</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbasicbyname.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_abort.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">@(</span><span style="font-style: italic;">x</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">y</span><span style="font-weight: bold;">)</span> function is used to control the format of displayed output.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">@(</span><span style="font-style: italic;">col </span>{<span style="font-weight: bold;">, </span><span style="font-style: italic;">line</span>}<span style="font-weight: bold;">)</span></td><td style="border:none;padding:0">Cursor movement</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">@(</span><span style="font-style: italic;">mode</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">arg</span>}<span style="font-weight: bold;">)</span></td><td style="border:none;padding:0">Device control functions</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">col</span></td><td style="border:none;padding:0">evaluates to a display column position.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">line</span></td><td style="border:none;padding:0">evaluates to a display line position.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">mode</span></td><td style="border:none;padding:0">evaluates to a mode value as described below.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">arg</span></td><td style="border:none;padding:0">provides qualifying information for use with some <span style="font-style: italic;">mode</span> values.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">@(</span><span style="font-style: italic;">x</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">y</span><span style="font-weight: bold;">)</span> functions return string values which can be used in the same way as any other strings. They only take effect when the string is used in a <span style="font-weight: bold;"><a href="qmb_display.htm" class="topiclink">CRT</a></span>, <span style="font-weight: bold;"><a href="qmb_display.htm" class="topiclink">DISPLAY</a></span> or <span style="font-weight: bold;"><a href="qmb_print.htm" class="topiclink">PRINT</a></span> statements directed to the display. The actual value returned by the function is a control code to be sent to the terminal and is dependant on the type of terminal in use (see the <span style="font-weight: bold;"><a href="term.htm" class="topiclink">TERM</a></span> command). By using this function instead of hard coding control sequences into programs, applications can be portable across a wide range of terminal devices or emulations.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When output is directed to a printer or to a file for later printing rather than to the display, escape sequences relevant to the printer may be used for formatting, etc. Because the <span style="font-weight: bold;">@(</span><span style="font-style: italic;">x</span><span style="font-weight: bold;">,</span><span style="font-style: italic;">y</span><span style="font-weight: bold;">)</span> function returns codes specific for the terminal in use, it is unlikely that these codes are relevant for printers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Some functions are extensions to the standard terminal capability definitions and may require use of AccuTerm with terminal type that have a -at suffix or QMTerm in qmterm mode.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Cursor Positioning</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">@(</span><span style="font-style: italic;">col</span> {, <span style="font-style: italic;">line</span>}<span style="font-weight: bold;">)</span> format specifies that subsequent output is to appear at the given column and, optionally, line position. Columns and lines are numbered from zero where the top left of the screen is line 0, column 0. The effect of attempting to move to a cursor position outside the display area is undefined.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Some terminal emulations (e.g. vpa2-at) may not handle cursor positions correctly if set to a large screen size such as 132 column width. This is not a defect in QM but is caused by limitations of the control codes used by these terminals.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <span style="font-weight: bold;">@(</span><span style="font-style: italic;">col</span> {, <span style="font-style: italic;">line</span>}<span style="font-weight: bold;">)</span> function disables screen pagination (automatic display of the &quot;Press return to continue&quot; prompt after each screen of output). Pagination remains disabled until the program executes the <span style="font-weight: bold;">PRINTER RESET</span> statement or returns to the command prompt.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> statement enables screen pagination, executes the command(s) and then restores pagination to its state when the <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> was performed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Special Functions</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">@(</span><span style="font-style: italic;">x</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">y</span><span style="font-weight: bold;">)</span> functions with negative values of <span style="font-style: italic;">x</span> are used to provide a variety of control functions. These are largely in common with the functions defined for other systems. The token names shown in the table below are defined in the KEYS.H include record in the SYSCOM file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Functions not supported by the terminal device in use return a null string and hence will be ignored. Note that individual terminal types may place restrictions on use of display attributes such as flashing, underline, colour, etc. For example, although each attribute has a corresponding start and end control code pair, many terminals can only apply a single visual attribute to any particular screen region.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Display attributes are also implemented in two fundamentally distinct ways. Most modern terminals maintain an attribute for each character position on the display and data is stored by the terminal using the currently active attributes regardless of any intervening cursor movements. On some other terminals such as the Wyse50, the code sent by an <span style="font-weight: bold;">@()</span> function to set or clear an attribute occupies a character position on the screen. Starting at the top left of the screen and working row by row through each character position, the attributes of any particular character are determined by the most recent attribute setting encountered.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For example,</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY @(-1):@(-15):'ABC':@(-16):'DEF'</span></p>
+<p>on a terminal that stores the attribute for each character position would result in a display of</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; text-decoration: underline;">ABC</span><span style="font-family: 'Courier New',Courier,monospace;">DEF</span></p>
+<p>whereas a terminal that uses a character position to store the attribute would display</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; text-decoration: underline;">ABC</span><span style="font-family: 'Courier New',Courier,monospace;"> DEF</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Furthermore, if the program then executed</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY @(3,0):'X'</span></p>
+<p>the first terminal would display</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; text-decoration: underline;">ABC</span><span style="font-family: 'Courier New',Courier,monospace;">XEF</span></p>
+<p>but the second would display</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; text-decoration: underline;">ABCXDEF &nbsp; &nbsp; </span></p>
+<p>with the underline extending to the end of the screen or the next character position holding an attribute setting.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p><span style="font-weight: bold;">Value</span></p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p><span style="font-weight: bold;">Token</span></p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p><span style="font-weight: bold;">Function</span></p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-weight: bold;">Argument</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-1</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$CS</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Clear screen</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-2</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$CAH</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Cursor home</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-3</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$CLEOS</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Clear to end of screen</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-4</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$CLEOL</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Clear to end of line</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-5</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SBLINK</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Start flashing text</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-6</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$EBLINK</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>End flashing text</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-7</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SPA</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Start protected area</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-8</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$EPA</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>End protected area</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-9</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$CUB</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Backspace</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>No of characters (default 1)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-10</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$CUU</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Cursor up</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>No of lines (default 1)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-11</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SHALF</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Start half brightness</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-12</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$EHALF</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>End half brightness</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-13</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SREV</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Start reverse video</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-14</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$EREV</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>End reverse video</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-15</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SUL</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Start underline</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-16</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$EUL</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>End underline</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-17</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$IL</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Insert line</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>No of lines (default 1)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-18</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$DL</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Delete line</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>No of lines (default 1)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-19</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$ICH</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Insert character</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>No of characters (default 1)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-20</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SIRM</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Set insert/remove mode</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-21</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$RIRM</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Reset insert/remove mode</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-22</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$DCH</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Delete character</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>No of characters (default 1)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-23</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$AUXON</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Turn on printer</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-24</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$AUXOFF</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Turn off printer</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-29</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$E80</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Set 80 column mode</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-30</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$E132</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Set 132 column mode</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-31</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$RIC</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Reset inhibit cursor</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-32</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SIC</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Inhibit cursor</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-33</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$CUD</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Cursor down</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>No of lines (default 1)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-34</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$CUF</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Cursor forward</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>No of characters (default 1)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-37</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$FGC</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Set foreground colour</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>Colour</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-38</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$BGC</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Set background colour</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>Colour</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-54</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SLT</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Set line truncation</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-55</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$RLT</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Reset line truncation</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-58</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SBOLD</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Set bold mode</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-59</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$EBOLD</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Reset bold mode</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-60</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SAM</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Start automatic margin mode</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-61</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$EAM</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>End automatic margin mode</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-100 to -107</p>
+</td>
+<td colspan="3"  style="vertical-align:top; width:744px; padding:4px; border:none"><p>User definable via the u0 to u7 terminfo keys</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-108</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$ACMD</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Asynchronous command</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>Command to execute</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-109</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$SCMD</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Synchronous command</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>Command to execute</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-250</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$STYLUS</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Enable/disable stylus taps</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>0 = disable, 1 = enable (PDA, obsolete)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:102px; padding:4px; border:none"><p>-251</p>
+</td>
+<td style="vertical-align:top; width:167px; padding:4px; border:none"><p>IT$KEYS</p>
+</td>
+<td style="vertical-align:top; width:236px; padding:4px; border:none"><p>Display/hide screen keyboard</p>
+</td>
+<td style="vertical-align:top; width:322px; padding:4px; border:none"><p>0 = hide, 1 = display (PDA, obsolete)</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Descriptions</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Each of the descriptions below expands on the preceding table. There is also a reference to the <a href="terminfo.htm" class="topiclink">terminfo</a> element that is used to determine the control code sent to the terminal. Unless otherwise stated, where more than one terminfo element is shown, the first one defined for the current terminal device is used. The function will only operate correctly if the corresponding terminfo element is correctly defined.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">IT$CS (Clear screen)</span></p>
+<p>The screen is cleared to the current background colour. The cursor is positioned at the top left of the screen (position 0,0). Terminfo &quot;clear&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$CAH (Cursor home)</span></p>
+<p>The cursor is positioned at the top left of the screen (position 0,0). Terminfo &quot;home&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$CLEOS (Clear to end of screen)</span></p>
+<p>All screen positions between the current cursor position and the end of the screen are cleared. Some terminal devices/emulators set the cleared character positions to have the current background colour. Terminfo &quot;ed&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$CLEOL (Clear to end of line)</span></p>
+<p>All screen positions between the current cursor position and the end of the line are cleared. Some terminal devices/emulators set the cleared character positions to have the current background colour. Terminfo &quot;el&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SBLINK (Start flashing text)</span></p>
+<p>Displays subsequent text in flashing mode. Terminfo &quot;blink&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$EBLINK (End flashing text)</span></p>
+<p>Terminates flashing mode. Terminfo &quot;eblink&quot; or &quot;sgr0&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SPA (Start protected area)</span></p>
+<p>Displays subsequent text in protected mode. Characters displayed in this mode can only be updated by erasing them from the screen with modes IT$CS, IT$CLEOS or IT$CLEOL. Terminfo &quot;prot&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$EPA (End protected area)</span></p>
+<p>Terminates protected mode. Terminfo &quot;eprot&quot; or &quot;sgr0&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$CUB (Backspace)</span></p>
+<p>The cursor moves left by the number of positions specified in the second argument which defaults to one or until the left edge of the screen is reached. Terminfo &quot;cub1&quot; repeated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$CUU (Cursor up)</span></p>
+<p>The cursor moves up by the number of lines specified in the second argument which defaults to one or until the top line of the screen is reached. Terminfo &quot;cuu1&quot; repeated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SHALF (Start half brightness)</span></p>
+<p>Displays subsequent data in half brightness (dim) mode. Terminfo &quot;dim&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$EHALF (End half brightness)</span></p>
+<p>Terminates half brightness (dim) mode. Terminfo &quot;edim&quot; or &quot;sgr0&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SREV (Start reverse video)</span></p>
+<p>If not already in reverse video mode, the foreground and background colours are interchanged for subsequent output. Selecting this mode does not directly affect any data which is already displayed. Terminfo &quot;rev&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$EREV (End reverse video)</span></p>
+<p>If in reverse video mode, this operation reverts to the normal display colours for subsequent text output. Terminfo &quot;erev&quot; or &quot;sgr0&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SUL (Start underline)</span></p>
+<p>Displays subsequent data in underline mode. Terminfo &quot;smul&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$EUL (End underline)</span></p>
+<p>Terminates underline mode. Terminfo &quot;rmul&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$IL (Insert line)</span></p>
+<p>The number of lines specified in the second argument (default value one) are inserted at the current cursor position. Data at the bottom of the screen will be lost. The newly inserted lines are set to the background colour. Terminfo &quot;il1&quot; if inserting one line, otherwise &quot;il&quot; with qualifying line count.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$DL (Delete line)</span></p>
+<p>The number of lines specified in the second argument (default value one) are deleted at the current cursor position. Blank lines are inserted at the bottom of the screen. Terminfo &quot;dl1&quot; if inserting one line, otherwise &quot;dl&quot; with qualifying line count.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$ICH (Insert character)</span></p>
+<p>The number of characters specified in the second argument (default value one) are inserted at the current cursor position. Data at the right of the screen will be lost. Terminfo &quot;ich1&quot; repeated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$DCH (Delete character)</span></p>
+<p>The number of characters specified in the second argument (default value one) are deleted at the current cursor position. Blanks are inserted at the right edge of the screen. Terminfo &quot;dch1&quot; repeated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$AUXON (Turn on printer)</span></p>
+<p>For terminals with attached printers, this mode directs output to the printer. Terminfo &quot;mc5&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$AUXOFF (Turn off printer)</span></p>
+<p>For terminals with attached printers, this mode turns off output to the printer. Terminfo &quot;mc4&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$E80 (Set 80 column mode)</span></p>
+<p>The display window is set to be 80 characters wide. Terminfo &quot;set80&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$E132 (Set 132 column mode)</span></p>
+<p>The display window is set to be 132 characters wide. Terminfo &quot;set132&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$RIC (Reset inhibit cursor)</span></p>
+<p>The cursor is displayed if it was previously inhibited. Terminfo &quot;cvvis&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SIC (Inhibit cursor)</span></p>
+<p>Display of the cursor is inhibited. All cursor positioning functions continue to work whilst the cursor is not visible. Terminfo &quot;civis&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$CUD (Cursor down)</span></p>
+<p>The cursor moves down by the number of lines specified in the second argument which defaults to one or until the bottom line of the screen is reached. Terminfo &quot;cud1&quot; repeated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$CUF (Cursor forward)</span></p>
+<p>The cursor moves right by the number of positions specified in the second argument which defaults to one or until the right edge of the screen is reached. Terminfo &quot;cuf1&quot; repeated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$FGC (Set foreground colour)</span></p>
+<p>The foreground colour is set according to the value of the second argument. This may be set using the tokens listed below from the KEYS.H record of the SYSCOM file. Terminfo &quot;setf&quot; with colour value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BLACK</td><td style="border:none;padding:0">0</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BLUE </td><td style="border:none;padding:0">1</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$GREEN</td><td style="border:none;padding:0">2</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$CYAN</td><td style="border:none;padding:0">3</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$RED </td><td style="border:none;padding:0">4</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$MAGENTA</td><td style="border:none;padding:0">5</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BROWN</td><td style="border:none;padding:0">6</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$WHITE</td><td style="border:none;padding:0">7</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$GREY</td><td style="border:none;padding:0">8</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BRIGHT.BLUE</td><td style="border:none;padding:0">9</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BRIGHT.GREEN</td><td style="border:none;padding:0">10</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BRIGHT.CYAN</td><td style="border:none;padding:0">11</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BRIGHT.RED</td><td style="border:none;padding:0">12</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BRIGHT.MAGENTA</td><td style="border:none;padding:0">13</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$YELLOW</td><td style="border:none;padding:0">14</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:208px">IT$BRIGHT.WHITE</td><td style="border:none;padding:0">15</td></tr></table></div><p style="text-indent: -208px; margin: 0 0 0 239px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Some terminal emulators provide the ability to map these colour values to an alternative colour palette. The <a href="terminfo.htm" class="topiclink">terminfo</a> COLOURMAP setting can be used to translate the internal QM values listed above to an alternative set relevant to a specific terminal emulator.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$BGC (Set background colour)</span></p>
+<p>The background colour is set according to the value of the second argument. This may be set using the tokens from the KEYS.H record of the SYSCOM file as listed above. Terminfo &quot;setb&quot; with colour value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SLT (Set line truncation)</span></p>
+<p>With this mode enabled, the cursor does not automatically move to a new line when data is displayed in the final column of the screen. Any further output on the line will overwrite the final character. Terminfo &quot;slt&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$RLT (Reset line truncation)</span></p>
+<p>Clears line truncation mode so that the cursor automatically moves to a new line when data is displayed in the final column of the screen. Terminfo &quot;rlt&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SBOLD (Start bold)</span></p>
+<p>Displays subsequent data in bold mode. Terminfo &quot;bold&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$EBOLD (End bold)</span></p>
+<p>Terminates bold mode. Terminfo &quot;ebold&quot; or &quot;sgr0&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SAM (Start automatic margin)</span></p>
+<p>In this mode, writing data to the final character position of the line automatically moves to the start of the next line. Terminfo &quot;smam&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$EAM (End automatic margin)</span></p>
+<p>With this mode disabled, writing data to the final character position of the line does not automatically move to the start of the next line. Terminfo &quot;rmam&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$ACMD (Asynchronous command)</span></p>
+<p>Executes the given command on the client system without suspending the QM session. Terminfo &quot;u8&quot; with qualifying data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$SCMD (Synchronous command)</span></p>
+<p>Executes the given command on the client system, suspending the QM session until the command completes. Terminfo &quot;u9&quot; with qualifying data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$STYLUS (Enable/disable stylus taps)</span></p>
+<p>Applicable only to QM on a PDA, this operation is equivalent to use of the <span style="font-weight: bold;"><a href="qmb_mouse.htm" class="topiclink">MOUSE</a></span> statement and allows an application to receive stylus taps via input operations. When enabled, a stylus tap appears as char(200) (K$MOUSE) followed by the column and row coordinates separated by a comma and terminated with a carriage return. Set the second argument to a non-zero value to enable stylus taps, zero to disable them. Stylus input is disabled by default when QM starts. Terminfo &quot;stylus&quot; with qualifier. Use of the <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODE()</a></span> or <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODEV()</a></span> functions will automatically process the positional data related to the stylus tap, leaving the screen coordinates in <a href="at_variables.htm#mcol" class="topiclink">@MCOL</a> and <a href="at_variables.htm#mrow" class="topiclink">@MROW</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">IT$KEYS (Display/hide screen keyboard)</span></p>
+<p>Applicable only to QM on a PDA, this operation displays or hides the on screen keyboard. Set the second argument to a non-zero value to show the keyboard, zero to hide it. Terminfo &quot;pdakeys&quot; with qualifier.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY @(IT$CS) : @(34,10) : &quot;Please wait&quot; :</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement clears the screen and displays &quot;Please wait&quot; .</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY @(IT$FGC, IT$BRIGHT.RED) : &quot;Error &quot; : STATUS()</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement displays the value of the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function in bright red. Further output to the display will continue to be in this colour until the foreground colour is reset.</p>
+
+</td></tr></table>
+
+</body>
+</html>

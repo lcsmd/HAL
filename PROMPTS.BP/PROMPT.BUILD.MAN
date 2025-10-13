@@ -1,0 +1,174 @@
+      * Program: PROMPT.TEMPLATE.MAN
+      * Description: Manage prompt templates (.pt files) in the PROMPT.TEMP directory.
+
+      *$INCLUDE SYSPROG.INC
+      *PROGRAM
+      PROMPT ''
+      PROMPT_TEMP_DIR = "PROMPT.TEMP"
+      PROMPTS_DIR = "PROMPTS"
+      OPEN PROMPT_TEMP_DIR TO F.PROMPT_TEMP_DIR ELSE PRINT PROMPT_TEMP_DIR;STOP
+      OPEN PROMPTS_DIR TO F.PROMPT_DIR ELSE PRINT PROMPTS_DIR;STOP
+      DIR_SEP = "/"
+      EXECUTABLE_EDITOR = "WED"        ;* Change to "notepad" if running on Windows.
+      LOOP
+         CRT "Prompt Template Manager"
+         CRT "-----------------------"
+         CRT "1. List Templates"
+         CRT "2. Create/Edit Template"
+         CRT "3. Delete Template"
+         CRT "4. Compile Template"
+         CRT "5. Exit"
+         CRT
+         CRT "Select an option (1-5): "; INPUT OPTION,1
+
+         BEGIN CASE
+            CASE OPTION = "1"
+               GOSUB LIST_TEMPLATES
+            CASE OPTION = "2"
+               GOSUB CREATE_EDIT_TEMPLATE
+            CASE OPTION = "3"
+               GOSUB DELETE_TEMPLATE
+            CASE OPTION = "4"
+               GOSUB COMPILE_TEMPLATE
+            CASE OPTION = "5"
+               STOP
+            CASE 1
+               CRT "Invalid option. Please select between 1 and 5."
+         END CASE
+      REPEAT
+      *GOTO PROGRAM
+
+      ***************************************************************
+LIST_TEMPLATES:
+      SEL.CMD = "SORT PROMPT.TEMP"
+      EXECUTE SEL.CMD
+      INPUT ANS,1
+      RETURN
+
+      ***************************************************************
+CREATE_EDIT_TEMPLATE:
+      PRINT "Enter template name: "; INPUT TEMPLATE_NAME
+      TEMPLATE_FILE = TEMPLATE_NAME : ".pt"
+
+      EXECUTE "WED ":PROMPT_TEMP_DIR:" ":TEMPLATE_FILE
+      RETURN
+
+      ***************************************************************
+DELETE_TEMPLATE:
+      PRINT "Enter template name to delete: ";INPUT TEMPLATE_NAME
+      TEMPLATE_FILE = TEMPLATE_NAME : ".pt"
+      READ TEST FROM F.PROMPT_TEMP_DIR,TEMPLATE_FILE THEN
+         CRT "Are you sure you want to delete ": TEMPLATE_NAME : "? (Y/N): "
+         INPUT ANS
+         IF UPCASE(ANS[1,1]) = "Y" THEN
+            DELETE F.PROMPT_TEMP_DIR,TEMPLATE_FILE
+            CRT "Template deleted."
+         END ELSE
+            CRT "Deletion cancelled."
+         END
+      END ELSE
+         CRT "Template not found."
+      END
+      RETURN
+
+      ***************************************************************
+COMPILE_TEMPLATE:
+      PRINT "Enter template name to compile: "; INPUT TEMPLATE_NAME
+      TEMPLATE_FILE =  TEMPLATE_NAME : ".pt"
+      READ TEMPLATE_CONTENT FROM F.PROMPT_TEMP_DIR,TEMPLATE_FILE ELSE
+         CRT "Template not found."
+         RETURN
+      END
+
+      *GOSUB LOAD_TEMPLATE:
+      GOSUB PROCESS_NESTED_TEMPLATES:
+      GOSUB REPLACE_VARIABLES:
+
+      * Save the compiled prompt
+      PRINT "Prompt name:":; INPUT PROMPT_NAME
+      OUTPUT_FILE = PROMPT_NAME: ".pr"
+      WRITE FINAL_CONTENT ON F.PROMPT_DIR,OUTPUT_FILE
+
+      * Save the variables used
+      VARIABLE_FILE = PROMPT_NAME : ".vr"
+      VARIABLE_CONTENT = ""
+      VARIABLE_CONTENT<1> = TEMPLATE_NAME
+      FOR EACH VAR IN VARIABLES_USED
+         VARIABLE_CONTENT<-1> = VAR : "==" : VARIABLES_USED(VAR)
+      NEXT VAR
+      WRITE VARIABLE_CONTENT ON F.PROMPT_DIR,VARIABLE_FILE
+
+      CRT "Template compiled successfully."
+
+      RETURN
+
+      ***************************************************************
+      *LOAD_TEMPLATE:
+      *READ TEMPLATE_CONTENT FROM F.PROMPT_TEMP_DIR,TEMPLATE_NAME ELSE
+      *CRT "Error reading template."
+      *RETURN
+      *END
+      *RETURN
+
+      ***************************************************************
+PROCESS_NESTED_TEMPLATES:
+      PROCESSED_CONTENT = TEMPLATE_CONTENT
+      LOOP
+         POS_START = INDEX(PROCESSED_CONTENT, "[", 1)
+         POS_END = INDEX(PROCESSED_CONTENT, "]", POS_START)
+         IF POS_START THEN
+            NESTED_TEMPLATE_NAME = PROCESSED_CONTENT[POS_START+1, POS_END-POS_START-1]
+            NESTED_TEMPLATE_FILE = NESTED_TEMPLATE_NAME : ".pt"
+            READ NESTED_CONTENT FROM F.PROMPT_TEMP_DIR,NESTED_TEMPLATE_FILE THEN
+               PROCESSED_CONTENT = CHANGE(PROCESSED_CONTENT,NESTED_TEMPLATE_NAME,NESTED_CONTENT)
+               * Recursively process nested templates
+               *GOSUB PROCESS_NESTED_TEMPLATES:
+               * Replace placeholder with content
+               *PROCESSED_CONTENT = PROCESSED_CONTENT[1, POS_START-1] : NESTED_CONTENT : PROCESSED_CONTENT[POS_END+2, LEN(PROCESSED_CONTENT)]
+            END ELSE
+               CRT "Nested template ": NESTED_TEMPLATE_NAME : " not found."
+               RETURN
+            END
+         END ELSE EXIT
+      REPEAT
+      RETURN
+
+      ***************************************************************
+REPLACE_VARIABLES:
+      FINAL_CONTENT = PROCESSED_CONTENT
+      VARIABLES_USED = ""
+      LOOP
+         POS_START = INDEX(FINAL_CONTENT, "{", 1)
+         POS_END = INDEX(FINAL_CONTENT, "}", POS_START)
+         IF POS_START THEN
+            VARIABLE_NAME = FINAL_CONTENT[POS_START+1, POS_END-POS_START-1]
+            IF DCOUNT(VARIABLES_USED, @FM) THEN
+               FIND VARIABLE_NAME IN VARIABLES_USED THEN
+                  CRT "Enter value for variable '": VARIABLE_NAME : "': "
+                  INPUT VARIABLE_VALUE
+                  VARIABLES_USED<VARIABLE_NAME> = VARIABLE_VALUE
+               END
+            END
+            * Replace all instances of the variable
+            FINAL_CONTENT = CHANGE(FINAL_CONTENT, "{" : VARIABLE_NAME : "}", VARIABLE_VALUE)
+         END
+      REPEAT
+      RETURN
+
+
+
+      ***************************************************************
+      *FUNCTION FILE_EXISTS(FILE_PATH)
+      *RETURN FILEINFO(FILE_PATH, "EXISTS")
+      *END FUNCTION
+
+      ***************************************************************
+      *FUNCTION STRIP_EXTENSION(FILE_NAME)
+      *DOT_POS = INDEX(REVERSE(FILE_NAME), ".", 1)
+      *IF DOT_POS > 0 THEN
+      *RETURN FILE_NAME[1, LEN(FILE_NAME)-DOT_POS]
+      *END
+      *RETURN FILE_NAME
+      *END FUNCTION
+
+      END

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MODE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MODE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "mode.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MODE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="min.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="multi_value.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MODE</span> field qualifier keyword causes a field to be reported together with its mode value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MODE</span> <span style="font-style: italic;">field</span> {<span style="font-style: italic;">field.qualifiers</span>} {<span style="font-weight: bold;">NO.NULLS</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field</span></td><td style="border:none;padding:0">is the field or evaluated expression to be displayed.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field.qualifiers</span> </td><td style="border:none;padding:0">are other field qualifying keywords</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">NO.NULLS</span></td><td style="border:none;padding:0">causes null values to be ignored.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MODE</span> field qualifier keyword is placed before the field name to which it applies and causes the query processor to report the value of the field for each record processed and also to report the mode value (the most frequently occurring value) at the end of the report. Used with breakpoints, the <span style="font-weight: bold;">MODE</span> keyword will also report the mode value of the field at each breakpoint.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where more than more than one value shares the most frequent occurrence, it is not defined which one will be shown.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the field is defined as multivalued, the <span style="font-weight: bold;">MODE</span> keyword operates on each value in turn.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">NO.NULLS</span> keyword can be used to prevent null values being included in the calculation of the mode value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The sentence</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST SALES MODE ITEM DESCR</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>would produce a display such as that below in which the most frequently sold item code is shown at the bottom of the ITEM column.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST SALES MODE ITEM DESCR</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Sales &nbsp; &nbsp;Item &nbsp; &nbsp;Description....................</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">12140 &nbsp; &nbsp; 003 &nbsp; &nbsp;Pen, blue</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;122 &nbsp; &nbsp;Whiteboard, medium</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;234 &nbsp; &nbsp;Paper, 100g A4 5 x 500 sheets</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;121 &nbsp; &nbsp;Whiteboard, small</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">12347 &nbsp; &nbsp; 004 &nbsp; &nbsp;Pen, green</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;131 &nbsp; &nbsp;Flipchart paper</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;232 &nbsp; &nbsp;Paper, 80g A4 5 x</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">...etc...</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">12012 &nbsp; &nbsp; 031 &nbsp; &nbsp;Ruler, 6 inch</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;003 &nbsp; &nbsp;Pen, blue</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; ====</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;003</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="average.htm" class="topiclink">AVERAGE</a></span>, <span style="font-weight: bold;"><a href="median.htm" class="topiclink">MEDIAN</a></span>, <span style="font-weight: bold;"><a href="range.htm" class="topiclink">RANGE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

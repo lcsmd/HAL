@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FILE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FILE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_file.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FILE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_fieldstore.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_file_event.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FILE</span> statement provides a way to reference data in files using field names defined in the dictionary.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement is provided for compatibility with other systems and its use is discouraged. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FILE</span> <span style="font-style: italic;">name</span><span style="font-weight: bold;">,</span> ...</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is a comma separated list of files to be processed</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FILE</span> statement opens the named files for processing in the current program. The QMBasic compiler will process the associated dictionary to allow use of field names as described below. Note that any change to the dictionary may require the program to be recompiled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that the <span style="font-weight: bold;">FILE</span> statement has no error handling clause. If the file cannot be opened, any subsequent access to it will fail.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>After a file has been opened using the <span style="font-weight: bold;">FILE</span> statement, a record can be read using a modified form of the <span style="font-weight: bold;">READ</span> statement:</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">READ </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">name</span><span style="font-family: 'Courier New',Courier,monospace;"> FROM </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">id</span><span style="font-family: 'Courier New',Courier,monospace;"> </span></p>
+<p>where <span style="font-style: italic;">name</span> is the file name in the <span style="font-weight: bold;">FILE</span> statement and <span style="font-style: italic;">id</span> is the key of the record to be read. This form of the <span style="font-weight: bold;">READ</span> statement take the same optional clauses as a normal <span style="font-weight: bold;"><a href="qmb_read.htm" class="topiclink">READ</a></span>. The locking variants (<span style="font-weight: bold;"><a href="qmb_readl.htm" class="topiclink">READL</a></span> and <span style="font-weight: bold;"><a href="qmb_readu.htm" class="topiclink">READU</a></span>) are also supported.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>After a record has been read, data from that record can be accessed using a construct:</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">name</span><span style="font-family: 'Courier New',Courier,monospace; font-weight: bold;">(</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">field</span><span style="font-family: 'Courier New',Courier,monospace; font-weight: bold;">)</span></p>
+<p>where <span style="font-style: italic;">name</span> is the file name and <span style="font-style: italic;">field</span> is a field name defined in the dictionary. Note that QMBasic restricts this construct such that <span style="font-style: italic;">field</span> must be a D-type item or an A or S-type item with no correlative. Calculated values are not supported.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Records may be written to the file using a modified form of the <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> (or <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITEU</a></span>) statement:</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">WRITE </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">name</span><span style="font-family: 'Courier New',Courier,monospace;"> TO </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">id</span><span style="font-family: 'Courier New',Courier,monospace;"> </span></p>
+<p>where <span style="font-style: italic;">name</span> is the file name in the <span style="font-weight: bold;">FILE</span> statement and <span style="font-style: italic;">id</span> is the key of the record to be written.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Apart from the above special cases, use of <span style="font-style: italic;">name</span> in a file handling statement or function refers to the file variable associated with the file. Use of <span style="font-style: italic;">name</span> in any other context refers to the dynamic array that will be used implicitly by <span style="font-weight: bold;">READ</span> or <span style="font-weight: bold;">WRITE</span> statements.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <span style="font-weight: bold;">FILE</span> statement is not recommended in new developments as it requires that the file is opened separately in every program that will access it rather than using a file variable in a common block for best performance. The syntax of the associated statements is also likely to be confusing as the same name references either the file variable or the data depending on its context.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FILE 'ORDERS'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">READ ORDERS FROM ORDER.NO THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY ORDERS(CUSTOMER.NO)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">This program fragment opens the ORDERS file, reads the record for a given order number and displays the customer number from this record.</p>
+
+</td></tr></table>
+
+</body>
+</html>

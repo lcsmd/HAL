@@ -1,0 +1,12 @@
+      OPEN 'LCS.BP' TO F.LCS ELSE PRINT 'LCS';STOP
+      READ BUFF FROM F.LCS,"OUTPUT.CSV" ELSE STOP
+      PRINT BUFF
+      PRINT
+      CT = DCOUNT(BUFF,@FM)
+      FOR X = 1 TO CT
+         LINE = CHANGE(LINE,",",@FM)
+         PRINT LINE
+         IF LINE[1,7]="2024-06" THEN PRINT LINE<2>
+      NEXT X
+      END
+

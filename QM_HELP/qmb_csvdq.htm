@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>CSVDQ()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CSVDQ()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_csvdq.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">CSVDQ()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_crop.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_csv_mode.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CSVDQ()</span> function de-quotes a CSV (comma separated variable) string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CSVDQ(</span><span style="font-style: italic;">string</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">delimiter</span>})</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is the string to be processed.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">delimiter</span></td><td style="border:none;padding:0">is the delimiter character separating the elements of the string. This defaults to a comma if omitted.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CSVDQ()</span> function de-quotes a CSV string, removing outer double quotes, handling embedded quotes and returning the result as a dynamic array where each element of the original string is represented by a separate field. This is in accordance with the CSV format specification (RFC 4180).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = 'ABC,&quot;DEF&quot;,&quot;GHI,JKL&quot;,&quot;MN&quot;&quot;O&quot;'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY CSVDQ(S)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment would display</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ABC</span><span style="font-size: 6pt; font-family: 'Courier New',Courier,monospace;">FM</span><span style="font-family: 'Courier New',Courier,monospace;">DEF</span><span style="font-size: 6pt; font-family: 'Courier New',Courier,monospace;">FM</span><span style="font-family: 'Courier New',Courier,monospace;">GHI,JKL</span><span style="font-size: 6pt; font-family: 'Courier New',Courier,monospace;">FM</span><span style="font-family: 'Courier New',Courier,monospace;">MN&quot;O</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>ABC was unquoted and remains unchanged.</p>
+<p>DEF was quoted. The quotes have been removed.</p>
+<p>GHI,JKL contains a comma that has been preserved after removal of the quotes.</p>
+<p>MN&quot;O contains an embedded quote that has been preserved.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">READSEQ DATA FROM SEQ.F THEN REC = CSVDQ(DATA)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above program fragment reads a line of CSV format data into variable DATA and then uses <span style="font-weight: bold;">CSVDQ()</span> to parse the elements into a field mark delimited dynamic array.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_dparse.htm" class="topiclink">DPARSE.CSV</a></span>,<span style="font-weight: bold;"> <a href="qmb_formcsv.htm" class="topiclink">FORMCSV()</a></span>, <span style="font-weight: bold;"><a href="qmb_readcsv.htm" class="topiclink">READCSV</a></span>, <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

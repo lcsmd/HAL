@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>&nbsp;SED - Source control</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sed_sourcecontrol.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SED &nbsp;- &nbsp;Source Control</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sed_settingupdefaultmodes.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sed_dynamickeybindings.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>SED includes a mechanism that may be used to implement a source control system or other special processing when updated records are written to disk.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Whenever a write is attempted using the <span style="font-weight: bold;">save record</span> or <span style="font-weight: bold;">write record</span> functions, SED checks for a catalogued subroutine named SOURCE.CONTROL. If this is present, it is called to validate whether data may be written to the file. The subroutine is defined as:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SUBROUTINE SOURCE.CONTROL(</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">dict.flag</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">file.name</span><span style="font-family: 'Courier New',Courier,monospace;">,</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">record.name</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">rec</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">caller</span><span style="font-family: 'Courier New',Courier,monospace;">,</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span style="font-family: 'Courier New',Courier,monospace;"> </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">write.allowed</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">updated</span><span style="font-family: 'Courier New',Courier,monospace;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">dict.flag</span></td><td style="border:none;padding:0">is &quot;DICT&quot; if attempting to write to a dictionary, a null string otherwise.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.name</span></td><td style="border:none;padding:0">is the name of the file to be written.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">record.name</span></td><td style="border:none;padding:0">is the name of the record to be written.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">rec</span></td><td style="border:none;padding:0">is the record data.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">caller</span></td><td style="border:none;padding:0">is 1 to indicate a call from SED, 2 for a call from ED.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">write.allowed</span></td><td style="border:none;padding:0">should be returned by the subroutine as True if the write may be performed, False if not. This argument is 1 on calling the subroutine.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">updated</span></td><td style="border:none;padding:0">should be set True if the subroutine has made any changes to the data in <span style="font-style: italic;">rec</span>. This argument is 0 on calling the subroutine.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The source control subroutine may be used in any way you wish. Typical uses are simple validation of whether the record may be written or addition of edit history information prior to writing the data. In the latter case, where changes are made to the data passed via the <span style="font-style: italic;">rec</span> argument, the <span style="font-style: italic;">updated</span> flag should be set True so that SED rebuilds its working copy of the data on return.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following simple example appends a history entry to the end of any record edited in BP or a file with a name ending .BP but ignores dictionaries.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SUBROUTINE SOURCE.CONTROL(DICT.FLAG, FILE.NAME,</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RECORD.NAME, REC,</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;FULL.SCREEN, WRITE.ALLOWED,</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;UPDATED)</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IF LEN(DICT.FLAG) THEN RETURN &nbsp;;* No interest in dictionary</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IF FILE.NAME # 'BP' AND FILE.NAME[3] # '.BP' THEN RETURN</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY @(-1):</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY SPACE(27) : &quot;SOURCE CONTROL INFORMATION&quot; : @(-4)</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY &quot;Change description:&quot;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PROMPT &quot;&quot;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; HDR = &quot;&quot;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; TAG = OCONV(DATE(), &quot;D2EL&quot;)</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; LOOP</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DISPLAY @(67) : &quot;&lt;&quot; : @(0) :</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;INPUT S, 66_</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; WHILE LEN(S)</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;HDR&lt;-1&gt; = &quot;* &quot; : TAG : &quot; &nbsp;&quot; : S[1, 66]</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;TAG = SPACE(9)</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; REPEAT</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; REC&lt;-1&gt; = HDR</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; UPDATED = @TRUE</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RETURN</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

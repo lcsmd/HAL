@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMBasic overview</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMBasic overview" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbasic_overview.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMBasic Overview</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbasic.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbasic_variablenamesandvalues.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM applications are written using QMBasic. Unlike many other programming languages, the individual source modules are not linked together to form a single executable program but remain separate items that are loaded into memory dynamically when they are first needed. This approach generally results in lower memory usage and easier maintenance.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The program modules are stored as simple text records, normally in <a href="directoryfiles.htm" class="topiclink">directory files</a> though use of hashed files is allowed. Each field of the record represents a line of the program (a transformation that corresponds exactly to how directory file records are stored by the underlying operating system). Although you may place your program modules in any file you wish or scatter them over several files, by convention programmers often use a file named <span style="font-weight: bold;">BP</span> (Basic Programs). The <span style="font-weight: bold;"><a href="basic.htm" class="topiclink">BASIC</a></span> and <span style="font-weight: bold;"><a href="run.htm" class="topiclink">RUN</a></span> commands will look here for programs by default if no file name is given in the commands.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMBasic modules are of four types:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Programs</td><td style="border:none;padding:0">A program is a simple module that can be run directly from the command line. It can also be called from other programs using <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span> in the same way as a subroutine that has no arguments. A program optionally starts with a <span style="font-weight: bold;"><a href="qmb_program.htm" class="topiclink">PROGRAM</a></span> statement though this is implied if none of the statements used to start the module types below are present.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Subroutines</td><td style="border:none;padding:0">A subroutine is a module that is called from another QMBasic element using <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span>. Subroutines usually take <span style="font-weight: bold;">arguments</span>, variables that are passed in or out of the subroutine to transfer data between modules. A subroutine module starts with a <span style="font-weight: bold;"><a href="qmb_subroutine.htm" class="topiclink">SUBROUTINE</a></span> statement.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Functions</td><td style="border:none;padding:0">A function is very similar to a subroutine but returns a value to the program that executed it. A function module starts with a <span style="font-weight: bold;"><a href="qmb_function.htm" class="topiclink">FUNCTION</a></span> statement.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Class modules</td><td style="border:none;padding:0">A class module contains the property and method routines that are used for <a href="qmbasic_objects.htm" class="topiclink">object oriented programming</a>. A class module starts with a <span style="font-weight: bold;"><a href="qmb_class.htm" class="topiclink">CLASS</a></span> statement.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Throughout all documentation, the word program is used to refer to all of the above module types unless the context explicitly states otherwise.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Before a program can be executed, the source form written by the developer must be <span style="font-weight: bold;">compiled</span> (translated into corresponding executable program modules) using the <span style="font-weight: bold;"><a href="basic.htm" class="topiclink">BASIC</a></span> command. The executable items are written to records of the same name as the source in a separate directory file that has the same name as the source file but with a <span style="font-weight: bold;">.OUT</span> suffix added. For example, the compiled version of a program stored as MYPROG in BP will be in MYPROG in the BP.OUT file. Programs may be executed directly from the .OUT file or may be moved into the <span style="font-weight: bold;">system catalogue</span> using the <span style="font-weight: bold;"><a href="catalogue.htm" class="topiclink">CATALOGUE</a></span> command. Subroutines, functions and class modules must be catalogued before use.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Often, it is useful to place QMBasic source code elements that are used in more than one program in a separate record which is read during compilation as though it was part of the main program. In particular, common data structures or names representing keys to subroutines may be handled in this way to ensure that all components of the application have a common view of the information instead of needing to make changes in many places. The <span style="font-weight: bold;">SYSCOM</span> file is an example of this technique with records containing keys and other values that you may need in many programs. The QMBasic <span style="font-weight: bold;"><a href="qmbd_include.htm" class="topiclink">$INCLUDE</a></span> directive described later in this section is used to direct the compiler to include text from another record. Include records may be stored in any file and are not separately compiled as the text is imported into other programs. It is recommended that a suffix of <span style="font-weight: bold;">.H</span> is used on include record names as the compiler will automatically skip these when using a select list. This suffix has its origins in the C programming language where it is used to denote a &quot;header file&quot; that serves the same purpose as QMBasic include records.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A QMBasic program has a very simple to understand format. The program is made up of a series of <span style="font-weight: bold;">statements</span>. Each statement normally corresponds to a single line of source program text though it is possible to place multiple statements on a single line by separating them with semicolons. Some statements have a syntax which allows them to span multiple lines without special action. Any statement that includes a comma in its syntax may start a new line immediately after the comma. Other statements may be split over multiple lines by ending each line except the last with a tilde (~) character. Note that continuation lines are handled before any other analysis of the line and therefore a comment that ends with a tilde will be treated as continuing on the next line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Lines commencing with an asterisk or an exclamation mark are treated as comments and ignored by the compiler. Comments can be included on the same line as a source program statement by using a semicolon to start a new statement followed by an asterisk or an exclamation mark. Blank lines and leading spaces are ignored by the compiler.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">* A comment on a line of its own</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = 44 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ;* This is a trailing comment</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">B = &quot;abc&quot; ; C = LEN(B) &nbsp; &nbsp; ;* Two statements on a single line</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CALL MYSUBR(TITLE, &nbsp; &nbsp; &nbsp; &nbsp; ;* A subroutine call</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DATA, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;;* &nbsp; &nbsp; with each argument</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ITEM.COUNT) &nbsp; &nbsp;;* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;on a separate line</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM also support multi-line block comments. These start with a line that begins with &quot;/*&quot; and continue to a line that ends with &quot;*/&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The compiler is not case sensitive in language keywords. By default, variable names are also case insensitive but this can be altered using the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> directive or the <a href="basic.htm#basic.options" class="topiclink">$BASIC.OPTIONS</a> record. All program fragments in this documentation are shown in uppercase partly so that they stand out and partly because historically most multivalue software has been written in this way. Use of lowercase can make programs easier to read. Other conventions such as writing equated token names in uppercase can be used if desired.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A program usually commences with a <span style="font-weight: bold;">PROGRAM</span>, <span style="font-weight: bold;">SUBROUTINE</span>, <span style="font-weight: bold;">FUNCTION</span> or <span style="font-weight: bold;">CLASS</span> statement. This serves to identify the type of QMBasic item and to assign a name to it. If none of these statements is present it is assumed to be a program.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The formats of these statements are</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PROGRAM </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">name</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SUBROUTINE </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">name</span><span style="font-family: 'Courier New',Courier,monospace;">(</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">arg1</span><span style="font-family: 'Courier New',Courier,monospace;">,</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">arg2</span><span style="font-family: 'Courier New',Courier,monospace;">,...)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FUNCTION </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">name</span><span style="font-family: 'Courier New',Courier,monospace;">(</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">arg1</span><span style="font-family: 'Courier New',Courier,monospace;">,</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">arg2</span><span style="font-family: 'Courier New',Courier,monospace;">,...)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLASS </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">name</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where a subroutine may take up to 255 arguments, a function 254.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A program ends with an <span style="font-weight: bold;">END</span> statement. Only blank lines and comments may follow this final <span style="font-weight: bold;">END</span>. For compatibility with other multivalue database products there is a compiler directive to make this final <span style="font-weight: bold;">END</span> optional ($MODE OPTIONAL.FINAL.END).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On an ECS mode system, string constants may contain ECS characters. All other language elements are restricted to the 8-bit character set.</p>
+
+</td></tr></table>
+
+</body>
+</html>

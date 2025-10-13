@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Date Conversion (D)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Date conversion (D)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_d.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Date Conversion (D)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_c.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_e.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Inside QM, dates are stored as a number of days since 31 December 1967 (day zero). All dates after that point are represented by positive numbers. All dates before that point are represented by negative numbers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The date conversion code converts a date from its internal day number to one of a number of external formats or vice versa.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The full format of this conversion code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">D</span> {<span style="font-style: italic;">y</span>} {<span style="font-style: italic;">c</span>} {<span style="font-style: italic;">fmt</span>} {<span style="font-weight: bold;">[</span><span style="font-style: italic;">f1</span>, <span style="font-style: italic;">f2</span>, <span style="font-style: italic;">f3</span>, <span style="font-style: italic;">f4</span>, <span style="font-style: italic;">f5</span><span style="font-weight: bold;">]</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">y</span></td><td style="border:none;padding:0">is a digit in the range 0 to 4 specifying the number of digits to appear in the year number. This defaults to 4.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">c</span></td><td style="border:none;padding:0">is the character to be used to separate the year, month and day components of the converted date. If omitted, a space is used. Specifying <span style="font-style: italic;">c</span> as the digit 0 suppresses insertion of a separator between the year, month and day components. The same effect can be achieved by use of a null separator text string in the format modifiers (e.g. DYMD[&quot;&quot;,&quot;&quot;])</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">fmt</span></td><td style="border:none;padding:0">specifies the components to be present in the converted date. Multiple characters may be chosen from the following list subject to restrictions shown below. If <span style="font-style: italic;">fmt</span> is omitted it defaults to MDY if American date mode is in use or DMY if European date mode is in use.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">D</span></td><td style="border:none;padding:0">Day of month.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">DO</span></td><td style="border:none;padding:0">Ordinal day of month (1st, 2nd, 3rd, etc)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">E</span></td><td style="border:none;padding:0">Toggles European date format (day, month, year). See also <span style="font-weight: bold;"><a href="date_format.htm" class="topiclink">DATE.FORMAT</a></span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">J</span></td><td style="border:none;padding:0">Julian date (days since the start of the year).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">L</span></td><td style="border:none;padding:0">Alphabetic month and day names are to appear with only the first character in uppercase instead of entirely in uppercase.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">M</span></td><td style="border:none;padding:0">Month in format determined by format modifiers. If no format modifiers are present, a two digit month number is used unless <span style="font-style: italic;">c</span> is present in which case a three letter alphabetic month is used.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">MA</span></td><td style="border:none;padding:0">Month name.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">MB</span></td><td style="border:none;padding:0">Brief month name.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">Q</span></td><td style="border:none;padding:0">Quarter number (1 to 4).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">W</span></td><td style="border:none;padding:0">Day of week number. Monday is day 1, Sunday is day 7.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">WA</span></td><td style="border:none;padding:0">Weekday name.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">WB</span></td><td style="border:none;padding:0">Brief weekday name.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">WI</span></td><td style="border:none;padding:0">ISO week number.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">X</span></td><td style="border:none;padding:0">ANSI X12 format date (YYYYMMDD with no separators).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">Y</span></td><td style="border:none;padding:0">Year.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">YI</span></td><td style="border:none;padding:0">ISO year number. This is not always the same as the calendar year as a date may be in the last week of the previous ISO year or in the first week of the following ISO year.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">[<span style="font-style: italic;">f1</span>,<span style="font-style: italic;">f2</span>,<span style="font-style: italic;">f3</span>,<span style="font-style: italic;">f4</span>,<span style="font-style: italic;">f5</span>]</td><td style="border:none;padding:0">These format modifiers affect the way in which the above formats are handled. Up to five modifiers may be specified and they are associated with the formats in the order in which they appear in <span style="font-style: italic;">fmt</span>. Format modifiers are</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Use <span style="font-style: italic;">n</span> characters.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">A</span></td><td style="border:none;padding:0">Display as alphabetic (applies to month component only).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">A</span><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Display as <span style="font-style: italic;">n</span> alphabetic characters (applies to month component only).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">Z</span></td><td style="border:none;padding:0">Suppress leading zeros.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">Z</span><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Display as <span style="font-style: italic;">n</span> digits with leading zeros replaced by spaces.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">&quot;<span style="font-style: italic;">text</span>&quot;</td><td style="border:none;padding:0">Uses the supplied text as the separator after the associated component.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">n</span>&quot;<span style="font-style: italic;">text</span>&quot;</td><td style="border:none;padding:0">Use <span style="font-style: italic;">n</span> characters and then use the supplied text as the separator after the associated component.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following special codes are recognised as part of the D conversion code for ISO8601 format output. These may not be used with any other conversion elements:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px">ISO8601W</td><td style="border:none;padding:0"><span style="font-style: italic;">yyyy</span>W<span style="font-style: italic;">wwd</span></td></tr></table></div><p style="text-indent: -121px; margin: 0 0 0 150px;">Four digit year number, two digit ISO week number, one digit day of week.</p>
+<p style="text-indent: -121px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px">ISO8601W-</td><td style="border:none;padding:0"><span style="font-style: italic;">yyyy</span>-W<span style="font-style: italic;">ww</span>-<span style="font-style: italic;">d</span></td></tr></table></div><p style="text-indent: -121px; margin: 0 0 0 150px;">Four digit year number, two digit ISO week number, one digit day of week with hyphen separators.</p>
+<p style="text-indent: -121px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -121px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Output Conversion of Dates</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following examples show the result of output conversion of a value of 9649 with various conversion codes. Where affected by <span style="font-weight: bold;"><a href="date_format.htm" class="topiclink">DATE.FORMAT</a></span> setting, both forms are shown.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">Code</span></p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">Result</span></p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-weight: bold;">European date</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">01 JUN 1994</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D2'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">01 JUN 94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D4'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">01 JUN 1994</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D/'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">06/01/1994</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;">01/06/1994</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D '</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">06 01 1994</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;">01 06 1994</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D2/'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">06/01/94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;">01/06/94</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D/E'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">01/06/1994</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;">06/01/94</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D2 E'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">01 06 94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;">06 01 94</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D.YJ'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">1994.152</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D2:JY'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">152:94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D YMD'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">1994 06 01</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">D2YMD[&quot;&quot;,&quot;&quot;]</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">940601</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">D20YMD</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">940601</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DX'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">19940601</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D MY[A,2]'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">JUNE 94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D4DOMAYL'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">1st June 1994</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D DMY[,A3,2]'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">01 JUN 94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D DMY[,A9,2]'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">01 JUNE &nbsp; &nbsp; &nbsp;94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D/MDY[Z,Z,2]'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">6/1/94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'D DMYL[,A,]'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">01 June 1994</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DDMYL[Z,A,2]'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">1 June 94</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DYMD[2,2,2]'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">94 06 01</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DW'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">3</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DWA'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">WEDNESDAY</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DWAL'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">Wednesday</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DMA'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">JUNE</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DMAL'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">June</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">DMB</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">JUN</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p style="page-break-inside: avoid;">'DQ'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p style="page-break-inside: avoid;">2</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p>'D-YIWI'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p>1994-22</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p>'DISO8601W'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p>1994W223</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:154px; padding:4px; border:none"><p>'DISO8601W-'</p>
+</td>
+<td style="vertical-align:top; width:178px; padding:4px; border:none"><p>1994-W22-3</p>
+</td>
+<td style="vertical-align:top; width:155px; padding:4px; border:none"><br />
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Input Conversion of Dates</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Alphabetic month names may be supplied in the external format date. At least three letters must be present and conversion is not case sensitive. If more than three letters are present, the must correctly match the spelling of the month name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The date conversion system allows some flexibility to the order in which the components of the date may occur in the input data. Where an alphabetic month name is used, this is processed first. Numeric components are then assumed to be in the order of the remaining elements of the conversion code. Thus with a code of DDMY, '1 Jun 94' and 'Jun 1 94' would both convert to 9649, the internal representation of 1 June 1994.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A date that is entered as a simple digit sequence with no separators (e.g. 020609) will be treated as being day, month and year components in the order defined by the <span style="font-style: italic;">fmt</span> element of the conversion code, with a maximum of two digits in the day and month. The year component will be processed as having the number of digits in the conversion code, defaulting to 4. A trailing year with only two digits will follow the normal rules as described in the next paragraph.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For dates entered as two digits, year number values in the range 30 to 99 are assumed to be 1930 to 1999 and 0 to 29 are assumed to be 2000 to 2029. This 100 year window can be moved using the <span style="font-weight: bold;"><a href="configparams.htm#yearbase" class="topiclink">YEARBASE</a></span> configuration parameter.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where not included, the day number or month number is assumed to be one and the year number to be the current year.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with Information style multivalue products, a day number that exceeds the number of days in the month will roll forward into the next month and return a value of 3 from the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function. This feature can be suppressed by enabling the NO.DATE.WRAPPING mode of the <span style="font-weight: bold;">OPTION</span> command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Alphabetic Day and Month Names</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The strings used for the alphabetic day and month names are derived from the QM messages file and can be different based on <a href="language.htm" class="topiclink">language selection</a>. The relevant message numbers are</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:95px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Code</span></p>
+</td>
+<td style="vertical-align:top; width:88px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Message</span></p>
+</td>
+<td style="vertical-align:top; width:351px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Use</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:95px; padding:0; border:none"><p class="p_Normal">MA</p>
+</td>
+<td style="vertical-align:top; width:88px; padding:0; border:none"><p class="p_Normal">1500</p>
+</td>
+<td style="vertical-align:top; width:351px; padding:0; border:none"><p class="p_Normal">Alphabetic month</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:95px; padding:0; border:none"><p class="p_Normal">MB</p>
+</td>
+<td style="vertical-align:top; width:88px; padding:0; border:none"><p class="p_Normal">1503</p>
+</td>
+<td style="vertical-align:top; width:351px; padding:0; border:none"><p class="p_Normal">Brief alphabetic month</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:95px; padding:0; border:none"><p class="p_Normal">WA</p>
+</td>
+<td style="vertical-align:top; width:88px; padding:0; border:none"><p class="p_Normal">1501</p>
+</td>
+<td style="vertical-align:top; width:351px; padding:0; border:none"><p class="p_Normal">Alphabetic day of week</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:95px; padding:0; border:none"><p class="p_Normal">WB</p>
+</td>
+<td style="vertical-align:top; width:88px; padding:0; border:none"><p class="p_Normal">1504</p>
+</td>
+<td style="vertical-align:top; width:351px; padding:0; border:none"><p class="p_Normal">Brief alphabetic day of week</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In addition, message 1502 defines the ordinal numeric strings used by the DO code.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Calendar Differences</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The process of converting an external format date to its internal day number and vice versa is not as easy as it sounds. As well as the slightly complex rules that determine which years are leap years and hence have 29 days in February, there is a problem of calendar differences. Most of the world now uses the same calendar for business purposes but this has not always been the case. There were two significant realignments, one in 1752 and an earlier one in 1583 in different parts of the world. Prior to these changes, the date in one country could be several days different from that elsewhere.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QM date conversion operations assume the current calendar system and make no adjustment to handle these realignments. Some multivalue products implement one or other realignment. Whichever system is used, it will be incorrect in some contexts. Users who require specific handling of these changes or need to handle dates before 1 January 0001 will need to develop their own date conversion functions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="dates_times_and_epoch_values.htm" class="topiclink">Dates, Times and Epoch Values</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

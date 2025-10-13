@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Correlatives</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Correlatives" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "correlatives.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Correlatives</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="dict_a.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="acorrelatives.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A correlative is an expression in field 8 of an A or S-type dictionary item that derives a value from data in a database record. Although similar in concept to the preferred <a href="dict_i.htm" class="topiclink">I-type</a> dictionary items, correlatives are less powerful and more difficult to maintain. They are provided in QM to aid migration of applications from other multivalue environments. New developments should use I-type items instead and it is recommended that correlatives should be converted to I-types as part of the migration process.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are two styles of correlative:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><a href="acorrelatives.htm" class="topiclink">A-correlatives</a> are algebraic expressions and are relatively easy to understand.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><a href="fcorrelatives.htm" class="topiclink">F-correlatives</a> are written in reverse Polish notation which makes them difficult for less experienced developers to understand.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following additional items may be used in place of a correlative expression:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">CALL <span style="font-style: italic;">name</span></td><td style="border:none;padding:0">Calls a catalogued QMBasic subroutine with a single argument which contains the field value (possibly multivalued) and should be updated by the subroutine. The <a href="at_variables.htm#acall.fno" class="topiclink">@ACALL.FNO</a> variable contains the field number from the dictionary record.</td></tr></table></div><p style="text-indent: -122px; margin: 0 0 0 152px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">DI</td><td style="border:none;padding:0">Converts an external format date to an internal day number.</td></tr></table></div><p style="text-indent: -122px; margin: 0 0 0 152px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px"><span style="font-style: italic;">conv</span></td><td style="border:none;padding:0">An output conversion code. Applies the specified conversion code to the data.</td></tr></table></div><p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Field 8 of the dictionary may be multi-valued. The first value must be one of the items listed above. The remaining values may be conversion codes or format codes to be applied to the result of the correlative. Format codes must be enclosed in either single or double quotes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>String operations in correlatives are normally performed in a case sensitive manner. The type code for an A or F-correlative can be followed by NOCASE; to select case insensitive string operations for this specific correlative. Alternatively, the CORRELATIVE.NOCASE mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command can be used to make all correlatives use case insensitive string operations.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On other multivalue databases, correlatives are processed interpretively and A-correlatives are translated into their equivalent F-correlative format at the start of a query for improved performance. On QM, correlatives are compiled in much the same way as <a href="itypeexpressions.htm" class="topiclink">I-type expressions</a> so the potential minor performance advantage of writing an F-correlative directly is lost. The query processor will compile correlatives automatically when they are first used. The <span style="font-weight: bold;"><a href="compile_dict.htm" class="topiclink">COMPILE.DICT</a></span> (<span style="font-weight: bold;">CD</span>) command can be used to force a compilation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeSingleLine">A;N(TEL)<span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">VM</span>&quot;L(3#) 3#-4#&quot;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above correlative takes the contents of the field named TEL and then applies a format mask to it.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeSingleLine">A;NOCASE;N(CODE) = 'AX'</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above correlative tests whether the CODE field contains AX. The NOCASE prefix causes string comparisons to be case insensitive.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+      FUNCTION NextRec(FileNumber)
+      INCLUDE QM.INC COMMON
+
+      FileHandle = FILES(FileNumber)
+      Abbreviation = FIELD(FIELD(FileHandle, ".", 2), "(", 1)
+
+      * Find the next available record ID
+      LOOP
+         NextID = NEXT_IDS(FileNumber)
+         NextRecID = Abbreviation:STR(NextID, 9)
+
+         * Check if the record ID already exists
+         IF NOT(READ Dummy FROM FileHandle, NextRecID ELSE 0) THEN
+            NEXT_IDS(FileNumber) += 1
+            EXIT
+         END
+
+         NEXT_IDS(FileNumber) += 1
+      REPEAT
+
+      RETURN NextRecID
+      END FUNCTION
+

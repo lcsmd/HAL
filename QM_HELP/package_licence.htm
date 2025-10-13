@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>PACKAGE.LICENCE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="PACKAGE.LICENCE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "package_licence.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">PACKAGE.LICENCE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="oscopy.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="password.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PACKAGE.LICENCE </span>command, available only in the QMSYS account, applies new licence details for a registered package.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 22px;"><span style="font-weight: bold;">PACKAGE.LICENCE</span></p>
+<p style="margin: 10px 0 0 22px;"><span style="font-weight: bold;">PACKAGE.LICENCE</span>  <span style="font-style: italic;">pkg.name &nbsp;auth.code</span></p>
+<p style="margin: 10px 0 0 22px;"><span style="font-weight: bold;">PACKAGE.LICENCE  </span><span style="font-style: italic;">pkg.name</span><span style="font-weight: bold;"> &nbsp;CANCEL &nbsp;{NO.QUERY</span>}</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">pkg.name</span></td><td style="border:none;padding:0">is the name of a registered package.</td></tr></table></div><p class="p_Normal" style="text-indent: -90px; margin: 0 0 0 120px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">auth.code</span></td><td style="border:none;padding:0">is a licence authorisation code for the named package.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-weight: bold;">PACKAGE.LICENCE</span> command allows a user to inspect, install or remove package licences.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>With no command line options, the <span style="font-weight: bold;">PACKAGE.LICENCE</span> displays a list of currently installed package licences and allows the user to modify, delete, or add licence details. The cursor up and down keys are used to position on the line to be amended. Ctrl-P or ctrl-Z can also be used to move up and ctrl-N can be used to move down. The return key is then used to move between fields</p>
+<p class="p_Normal">&nbsp;</p>
+<p>Care should be taken to enter the information exactly as it appears on the licence information sheet.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To remove a package licence, clear the package name field.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">With the package name and authorisation code on the command line, the <span style="font-weight: bold;">PACKAGE.LICENCE</span> command applies this licence, possibly replacing a previous licence for the same package.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+With the <span style="font-weight: bold;">CANCEL</span> keyword in place of an authorisation code, the <span style="font-weight: bold;">PACKAGE.LICENCE</span> command deletes an existing licence. The NO.QUERY option suppresses the confirmation prompt.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">PACKAGE.LICENCE SJD JJHH-YJBF-MMND-HDKS</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above command would add a licence for the package named SJD using the authorisation code provided on the command line.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of interactive mode after this licence has been applied would initially show the screen below.</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PACKAGE LICENCE ADMINISTRATION</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; Package name... &nbsp;Authorisation code. &nbsp;Licence</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">01&gt;SJD &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;JJHH-YJBF-MMND-HDKS &nbsp;5 users, expires 12 Dec 13</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">02</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+<span style="font-weight: bold;">See also:</span><br />
+<a href="package_licensing.htm" class="topiclink">Package licensing</a>, <span style="font-weight: bold;"><a href="qmb_enter_package.htm" class="topiclink">ENTER.PACKAGE()</a></span>, <span style="font-weight: bold;"><a href="qmb_exit_package.htm" class="topiclink">EXIT.PACKAGE()</a></span><span style="font-weight: bold;"><a href="package_licence.htm" class="topiclink">,</a></span> <span style="font-weight: bold;"><a href="qmbs_package.htm" class="topiclink">!PACKAGE()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

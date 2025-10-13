@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>AND</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="&amp;,AND" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "and.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">AND, &amp;</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="all_match.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="as.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">AND</span> selection clause operator links two selection criteria where both must be True for the record to be selected. The synonym <span style="font-weight: bold;">&amp;</span> can be used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">WITH</span> <span style="font-style: italic;">condition.1</span> <span style="font-weight: bold;">AND</span> <span style="font-style: italic;">condition.2</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px"><span style="font-style: italic;">condition.1</span>, <span style="font-style: italic;">condition.2</span></td><td style="border:none;padding:0">are record selection criteria.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">AND</span> selection clause operator returns True if both <span style="font-style: italic;">condition.1</span> and <span style="font-style: italic;">condition.2</span> are True. Alternatively, multiple <span style="font-weight: bold;">WITH</span> clauses can be used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">AND</span> and <span style="font-weight: bold;"><a href="or.htm" class="topiclink">OR</a></span> operators are normally of equal priority and will be evaluated strictly left to right. Brackets may need to be used to enforce evaluation in an different order. Thus a query such as</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST CLIENTS WITH REGION = 1 AND VALUE &gt; 1000 OR REGION = 2 AND VALUE &gt; 500</span></p>
+<p>may need brackets to achieve the desired effect</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST CLIENTS WITH (REGION = 1 AND VALUE &gt; 1000) OR (REGION = 2 AND VALUE &gt; 500)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pick style multivalue database products give <span style="font-weight: bold;">AND</span> priority over <span style="font-weight: bold;"><a href="or.htm" class="topiclink">OR</a></span> such that the above query would not need the brackets. This behaviour can be enabled in QM by use of the QUERY.PRIORITY.AND mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command. It is strongly recommended that the brackets are included even if not strictly necessary.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST STOCK WITH QTY GT 100 AND REORDER LT 300</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command lists items found on the STOCK file with a QTY field of over 100 and a REORDER field of less than 300.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The same results can be achieved with</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST STOCK WITH QTY GT 100 WITH REORDER LT 300</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

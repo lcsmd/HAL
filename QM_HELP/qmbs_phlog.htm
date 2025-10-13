@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>!PHLOG()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="!PHLOG()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbs_phlog.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">!PHLOG()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbs_pcl.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbs_pick.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-weight: bold;">!PHLOG()</span> subroutine returns the name of the log record for a running phantom process.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CALL !PHLOG(</span><span style="font-style: italic;">name</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">userno</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the returned log record name.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 360px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">userno</span></td><td style="border:none;padding:0">is the user number of the phantom process.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 360px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A phantom process normally creates a log record in the $COMO file containing any output that would have gone to the screen if the command had been run in an interactive session. The name of this log record is PH<span style="font-style: italic;">n_date</span>_<span style="font-style: italic;">time</span> where n is the QM user number of the phantom process and <span style="font-style: italic;">date</span>_<span style="font-style: italic;">time</span> is the date/time at which the phantom started in the form <span style="font-style: italic;">ddmmyy</span>_<span style="font-style: italic;">hhmmss</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!PHLOG()</span> subroutine allows a process to determine the name of the log record within the $COMO file for a phantom so long as the phantom is still active. If the phantom is started using the NO.LOG option of the <span style="font-weight: bold;"><a href="phantom.htm" class="topiclink">PHANTOM</a></span> command or it has terminated, <span style="font-style: italic;">name</span> is returned as a null string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="phantom.htm" class="topiclink">PHANTOM</a></span> command provides a mechanism with which the logging data can be directed to an alternative location. When using this, the <span style="font-style: italic;">name</span> returned by the <span style="font-weight: bold;">!PHLOG()</span> subroutine is formed from the logging file name and record name separated by a single space.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Because the <span style="font-weight: bold;">!PHLOG()</span> subroutine returns the log name via its first argument, it can be declared as a function as in the example below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DEFFUN PHLOG(U) CALLING &quot;!PHLOG&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EXECUTE &quot;PHANTOM OVERNIGHT.REPORT&quot; SETTING UNO</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY &quot;Log is &quot; : PHLOG(UNO)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note how the SETTING clause of the <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> statement is used to capture the <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> value from the <span style="font-weight: bold;"><a href="phantom.htm" class="topiclink">PHANTOM</a></span> command. Simply using <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> as the argument to PHLOG() would not work as this would be the return status of the <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> operation, not the executed command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_child.htm" class="topiclink">CHILD()</a></span>, <span style="font-weight: bold;"><a href="list_phantoms.htm" class="topiclink">LIST.PHANTOMS</a></span>, <span style="font-weight: bold;"><a href="phantom.htm" class="topiclink">PHANTOM</a></span>, <span style="font-weight: bold;"><a href="status.htm" class="topiclink">STATUS</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

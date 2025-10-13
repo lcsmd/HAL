@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>STYLE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="STYLE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "style.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">STYLE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="strings.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="to.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">STYLE </span>keyword selects the report style to be used, overriding any other style selection methods.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">STYLE</span> <span style="font-style: italic;">name</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of a VOC style record. Use of <span style="font-weight: bold;">STYLE NONE</span> will disable other style selection mechanisms.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Each line of a report falls into one of the following classifications: Heading, Column heading, Detail, Subtotal, Total, Footing, Other. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Report styles allow users to attribute each of these classifications a colour for a displayed report or a font weight for a report directed to a PCL printer. An additional style, Exit, is used to determine how the screen is left on exit from the query processor. If this is absent, the query processor sends the <a href="terminfo.htm" class="topiclink">terminfo</a> sgr0 code to turn off all display attributes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Report styles are defined using an X-type record in either the dictionary or the VOC where fields 2 onwards consist of a line classification, foreground colour, background colour and font weight in the form:</p>
+<p style="margin: 10px 0 10px 30px;">Heading=Bright blue,Black,Bold</p>
+<p>Only the first character of the line classification name is used. Thus the above line could be written as</p>
+<p style="margin: 10px 0 0 30px;">H=Bright blue,Black,Bold</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The colour names are taken from the following list:</p>
+<p style="margin: 0 0 0 30px;">Black, Blue, Green, Cyan, Red, Magenta, Brown, White, Grey, Bright Blue, Bright Green, Bright Cyan, Bright Red, Bright Magenta, Yellow, Bright White</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Any non-alphabetic characters are ignored. Thus Bright Green can also be written as, for example, Bright.Green, Bright-Green or BrightGreen. Numeric colour values of 0 to 15 can be used where these correspond to the order of the colour names above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that the colour palette used by AccuTerm may need to be amended from its default settings to improve the rendering of the non-bright colours. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Font weights are taken from the list defined in SYSCOM $PCLDATA which defaults to:</p>
+<p style="margin: 0 0 0 30px;">Ultra-Thin, Extra-Thin, Thin, Extra-Light, Light, Demi-Light, Semi-Light, Medium, Semi-Bold, Demi-Bold, Bold, Extra-Bold, Black, Extra-Black, Ultra-Black</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Any non-alphabetic characters are ignored in the same way as for colour names. Numeric font weight values in the range -7 to +7 can be used where these correspond to the order of the font weight names above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>All components of a style definition are case insensitive. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Any classification not defined in the style record, or any omitted component within a classification, takes on the values of the Other classification which itself defaults to White foreground, Black background, Medium font weight if not defined.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When the <span style="font-weight: bold;"><a href="det_sup.htm" class="topiclink">DET.SUP</a></span> keyword is used, subtotals are reported using the detail line style.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Style selection uses the following sequence:</p>
+<p style="text-indent: 0; padding-left: 20px; margin: 0 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">1.</span>Use of the <span style="font-weight: bold;">STYLE</span> option on the command line to reference a VOC record</p><p style="text-indent: 0; padding-left: 20px; margin: 0 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">2.</span>The optional $STYLE dictionary record</p><p style="text-indent: 0; padding-left: 20px; margin: 0 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">3.</span>A style set for the print unit using the STYLE option of <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span></p><p style="text-indent: 0; padding-left: 20px; margin: 0 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">4.</span>A default style set using <span style="font-weight: bold;"><a href="report_style.htm" class="topiclink">REPORT.STYLE</a></span></p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">X</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">H=Bright Blue,,Bold</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">S=Blue</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">T=Bright Red,,Bold</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In this example, headings are displayed with bright blue foreground colour and the default background colour. When sent to a PCL printer, the headings will be in bold face. Subtotals are displayed in blue, using the default background colour and printer font weight. Totals are displayed with bright red foreground colour and the default background colour, using bold face when printed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p>See also:</p>
+<p><span style="font-weight: bold;"><a href="report_style.htm" class="topiclink">REPORT.STYLE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

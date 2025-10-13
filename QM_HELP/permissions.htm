@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Permissions</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Permissions,Security - permissions" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "permissions.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Permissions</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="application_level_security.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="backup_and_restore.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM uses the underlying operating system to manage processes, files, devices, etc. Therefore, all issues of access permissions ultimately lie with the operating system. This section gives some guidance on setting permissions within a QM system but individual application needs should be taken into account.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As an aid to establishing good security policies on Linux and Unix systems, the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> and <span style="font-weight: bold;"><a href="create_account.htm" class="topiclink">CREATE.ACCOUNT</a></span> commands include options to set the ownership and permissions of the newly created item.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The QMSYS Account</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The only users who should be working in the QMSYS account are system administrators. It is reasonable that these people should have write access to QMSYS. No other user ever needs to create a new item in the QMSYS directory itself. Therefore the directory can be protected so that only administrators can write to it.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">System administrators need write access to all items in the QMSYS account. The following table sets out the additional access rights needed for other users.</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<thead>
+<tr>
+<th style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><br />
+</th>
+<th style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><br />
+</th>
+<th style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p class="p_Normal"><span style="font-weight: bold;">Developers</span></p>
+</th>
+<th style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p class="p_Normal"><span style="font-weight: bold;">Others</span></p>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$FORMS</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Form queue definitions created with SET.QUEUE for use with SP.ASSIGN.</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$HOLD</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Hold file for QMSYS account</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$HOLD.DIC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Dictionary for $HOLD</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$IPC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Inter-process communication file</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$LOGINS</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">User name database</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$MAP</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Catalogue map</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full (note 1)</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$MAP.DIC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Dictionary for $MAP</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$SCREENS</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Screens database</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$SERVERS</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">QMNet server register</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$SVLISTS</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$SAVEDLISTS file</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">$VAULT</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Encryption key vault</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">ACCOUNTS</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Accounts database</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read (note 2)</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read (note 2)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">ACCOUNTS.DIC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Dictionary for ACCOUNTS</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">audit.log</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Encryption audit log</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">bin</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Executable files</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">BP</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Sample QMBasic items</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">cat</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Private catalogue of QMSYS account</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">DICT.DIC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Dictionary for dictionaries</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">DIR_DICT</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Dictionary for directory files</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">DOCS</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Documentation (Windows only)</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">errlog</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Optional error log file</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full (note 3)</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full (note 3)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">ERRMSG</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Pick style error message file</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read (note 4)</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read (note 4)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">ERRMSG.DIC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Dictionary for ERRMSG</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">gcat</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Global catalogue</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read (note 5)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">MESSAGES</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Message database</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">NEWVOC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Template VOC file</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">qmconfig</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Configuration parameter file</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">qmterm.ini</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">qmterm configuration parameters</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">QM.VOCLIB</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">VOC extension</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">stacks</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Command stack repository</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">SYSCOM</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">System include records</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">temp</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Temporary directory</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">terminfo</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Terminfo database</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">terminfo.src</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Terminfo definitions</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">VOC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Vocabulary file</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">VOC.DIC</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Dictionary for VOC</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">errlog</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Error log</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Full</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">qm.chm</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Help text (Windows only)</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">Read</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:166px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">QMSvc.log</p>
+</td>
+<td style="vertical-align:top; width:262px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">QMSvc log (Windows only)</p>
+</td>
+<td style="vertical-align:top; width:119px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+<td style="vertical-align:top; width:112px; padding:4px; border:solid 2px #000000;"><p style="margin: 10px 0 0 0;">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p style="text-indent: 0; padding-left: 30px; margin: 0 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:30px;margin-left:-30px">1.</span>Write access to $MAP is only needed by users who execute the <span style="font-weight: bold;"><a href="map.htm" class="topiclink">MAP</a></span> command to create a catalogue map with the default destination file name.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:30px;margin-left:-30px">2.</span>Any user who is to be allowed to create new accounts will need write access to this file. Restricting write access on this file closes a potential security risk by preventing users creating synonyms to existing accounts that might subvert application level security mechanisms.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:30px;margin-left:-30px">3.</span>If error logging is enabled (see the <a href="configparams.htm#errlog" class="topiclink">ERRLOG</a> configuration parameter), all users need full access to the optional errlog file. Any user that does not have write access will not log errors.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:30px;margin-left:-30px">4.</span>This file contains standard Pick style messages. Although rare, some applications may write to this file.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:30px;margin-left:-30px">5.</span>It is possible to restrict access to individual items in the gcat subdirectory. Users need read access (not execute access) to run a compiled QMBasic program.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Application Accounts</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In general, users should have free access to all files. Taking write access away on the VOC can be used to prevent users modifying its content but beware that some applications modify the VOC as part of their normal operation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">Replication</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Systems that have replication enabled as a publisher need permissions set such that all application users have full access to the replication directory (REPLDIR configuration parameter) and all of its content.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="application_level_security.htm" class="topiclink">Application level security</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

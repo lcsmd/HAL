@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SUBSTITUTE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SUBSTITUTE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_substitute.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SUBSTITUTE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_subroutine.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_substrdw.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SUBSTITUTE()</span> function performs substring replacement on successive elements of a dynamic array, returning a similarly structured dynamic array of results.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SUBSTITUTE(</span><span style="font-style: italic;">dyn.array</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">old.list</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">new.list</span> {<span style="font-weight: bold;">, </span><span style="font-style: italic;">delimiter</span>}<span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">dyn.array</span></td><td style="border:none;padding:0">is the dynamic array to be processed.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">old.list</span></td><td style="border:none;padding:0">is list of items to replace.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">new.list</span></td><td style="border:none;padding:0">is list of replacement items.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">delimiter</span></td><td style="border:none;padding:0">is the single character delimiter separating items in <span style="font-style: italic;">old.list</span> and <span style="font-style: italic;">new.list</span>. If omitted, this defaults to a value mark.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SUBSTITUTE()</span> function processes each element of dynamic array <span style="font-style: italic;">dyn.array </span>constructing an equivalently structured new dynamic array result. Where an element of <span style="font-style: italic;">dyn.array</span> contains a value in the <span style="font-style: italic;">old.list</span>, the result contains the corresponding item from <span style="font-style: italic;">new.list</span>. Where there is no match with an item in <span style="font-style: italic;">old.list</span>, the source data is copied to the result dynamic array.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although this function is defined to operate on dynamic array, it may be equally useful when <span style="font-style: italic;">dyn.array</span> is a simple single valued string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A contains &nbsp;D<span style="font-size: 6pt;">FM</span>D<span style="font-size: 6pt;">VM</span>F<span style="font-size: 6pt;">VM</span>P</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">B = SUBSTITUTE(A, 'D|P', 'Done|Pending', '|')</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>B will contain Done<span style="font-size: 6pt;">FM</span>Done<span style="font-size: 6pt;">VM</span>F<span style="font-size: 6pt;">VM</span>Pending</p>
+
+</td></tr></table>
+
+</body>
+</html>

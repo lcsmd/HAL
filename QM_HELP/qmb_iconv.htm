@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ICONV()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ICONV(),ICONVS()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_iconv.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ICONV(), ICONVS()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_hush.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_idiv.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="margin: 0 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ICONV() </span>function performs input conversion. Data is converted from its external representation to the internal form. This function is typically used to convert data entered at the keyboard. The <span style="font-weight: bold;">ICONVS()</span> function is identical to <span style="font-weight: bold;">ICONV()</span> except that it works on each element of a dynamic array, returning the result in a similarly delimited dynamic array.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 22px;"><span style="font-weight: bold;">ICONV(</span><span style="font-style: italic;">expr</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">conv.spec</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 23px;"><span style="font-weight: bold;">ICONVS(</span><span style="font-style: italic;">expr</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">conv.spec</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:127px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">evaluates to the data to be converted.</td></tr></table></div><p style="text-indent: -127px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:127px"><span style="font-style: italic;">conv.spec</span></td><td style="border:none;padding:0">evaluates to the <a href="conv_code.htm" class="topiclink">conversion specification. </a>This may be a multivalued string containing more than one conversion code separated by value marks. Each conversion will be carried out in turn on the result of the previous conversion.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ICONV()</span> function converts the value of <span style="font-style: italic;">expr</span> to its internal representation according to the <a href="conv_code.htm" class="topiclink">conversion codes</a> in <span style="font-style: italic;">conv.spec</span>. The result of <span style="font-weight: bold;">ICONV()</span> is stored internally as a string regardless of whether the value is a number or not except for the MO and MX conversions which always produce an integer value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ICONV()</span> function sets the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function value to indicate whether the conversion was successful. Possible values are</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">0</td><td style="border:none;padding:0">Successful conversion.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">1</td><td style="border:none;padding:0">Data to convert was invalid for the conversion specification. A null string is returned for all codes except ML and MR which result of conversion of the leading numeric portion of the input data or the entire input data if there is no leading numeric portion.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">2</td><td style="border:none;padding:0">The conversion code was invalid. A null string is returned.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">3</td><td style="border:none;padding:0">The conversion has been performed but the result is possibly incorrect. Examples are:</td></tr></table></div><p style="margin: 5px 0 0 120px;">The day number in a date conversion was beyond the end of the month. The returned value will be extended into the following month (e.g. 31 June becomes 1 July). This feature can be suppressed using the <a href="option.htm" class="topiclink">NO.DATE.WRAPPING</a> option.</p>
+<p style="margin: 5px 0 0 120px;">A character encoding conversion (<span style="font-weight: bold;"><a href="conv_x.htm" class="topiclink">X</a></span>) on a non-ECS system has returned data in which characters outside the 8 bit set have been replaced by some substitute character.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="conv_code.htm" class="topiclink">Conversion codes</a>, <span style="font-weight: bold;"><a href="qmb_oconv.htm" class="topiclink">OCONV()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

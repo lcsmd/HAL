@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FCONTROL()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FCONTROL()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_fcontrol.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FCONTROL()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_extract.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_field.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FCONTROL()</span> function performs control actions on an open file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FCONTROL(</span><span style="font-style: italic;">fvar</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">action</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">qualifier</span>}<span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">fvar</span></td><td style="border:none;padding:0">is the file variable associated with an open file.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">action</span></td><td style="border:none;padding:0">identifies the action to be performed.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">qualifier</span></td><td style="border:none;padding:0">is additional information relevant to the action.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FCONTROL()</span> function performs the action defined by <span style="font-style: italic;">action</span> against the file open as <span style="font-style: italic;">fvar</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">action</span> values are listed below using the tokens defined in the SYSCOM KEYS.H include record:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>FC$SYNC (1)</p>
+<p style="margin: 0 0 0 29px;">Controls or retrieves the state of forced writes for a hashed file. See synchronous (forced write) mode in the section that discusses <a href="dynamicfiles.htm" class="topiclink">dynamic files</a> for more details.</p>
+<p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 29px;">If <span style="font-style: italic;">qualifier</span> is False, forced writes are disabled. If qualifier is True, forced writes are enabled. For all values of <span style="font-style: italic;">qualifier</span>, the previous state of forced writes is returned as the result of the function. Use a <span style="font-style: italic;">qualifier</span> value of -1 to return the current state without updating it.</p>
+<p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 29px;">Note that, if the file is open to multiple file variables within the one process, this action affects all writes to the file regardless of which file variable is used. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">FC$SET.SEQ.KEY (2)</p>
+<p class="p_Normal" style="margin: 0 0 0 29px;">Sets the sequential number to be used as the record id of the next record written using the CREATING.SEQKEY option to the <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement. Applies only to hashed files. Returns True if successful.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">FC$GET.SEQ.KEY (3)</p>
+<p class="p_Normal" style="margin: 0 0 0 29px;">Retrieves the sequential number to be used as the record id of the next record written, incrementing this value. This allows a program to reserve a sequential id without using the CREATING.SEQKEY option to the <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement. Returns a null string if <span style="font-style: italic;">fvar</span> does not reference a hashed file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">FC$CRLF (4)</p>
+<p style="margin: 0 0 0 29px;">Controls or retrieves the line terminator mode to be used for a directory file or sequential file. If <span style="font-style: italic;">qualifier</span> is a valid mode setting, the file is switched into the specified mode. For all values of <span style="font-style: italic;">qualifier</span>, the previous state of the line terminator selection is returned as the result of the function. Use a <span style="font-style: italic;">qualifier</span> value of -1 to return the current state without updating it. See <a href="directoryfiles.htm" class="topiclink">directory files</a> for a discussion of the mode values. The SYSCOM KEYS.H record defines tokens for the mode settings:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:164px">0 &nbsp; FC$CRLF.LF</td><td style="border:none;padding:0">LF terminator, CR is data character</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:164px">1 &nbsp; FC$CRLF.CRLF</td><td style="border:none;padding:0">CRLF pair terminator, keep lone CR or LF</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:164px">2 &nbsp; FC$CRLF.BOTH</td><td style="border:none;padding:0">CRLF or LF terminator, keep lone CR</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:164px">3 &nbsp; FC$CRLF.NOCR</td><td style="border:none;padding:0">CRLF or LF terminator, discard all CR</td></tr></table></div><p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">FC$ACCESS (5)</p>
+<p style="margin: 0 0 0 29px;">Checks whether the user has access to the field position specified by <span style="font-style: italic;">qualifier</span>. If the file does not use data encryption, this action always returns True.</p>
+<p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">FC$VALID.ID (6)</p>
+<p style="margin: 0 0 0 29px;">Checks whether <span style="font-style: italic;">qualifier</span> is a valid record id for the file, returning a Boolean value.</p>
+<p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">FC$MINMOD (7)</p>
+<p style="margin: 0 0 0 29px;">Sets the minimum modulus value for a hashed file. Returns True if successful, False if not.</p>
+<p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPEN &quot;AUDIT&quot; TO AUD.F ELSE STOP &quot;Cannot open AUDIT file&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">VOID FCONTROL(AUD.F, FC$SYNC, @TRUE)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment opens the AUDIT file and sets forced write mode. The same effect could have been achieved with the SYNC option to the <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span>, <span style="font-weight: bold;"><a href="qmb_openpath.htm" class="topiclink">OPENPATH</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

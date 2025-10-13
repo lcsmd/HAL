@@ -1,0 +1,253 @@
+*---> Recovered document: PROD.UPDATE.SUB
+     SUBROUTINE PROD.UPDATE.SUB(UPDATE.TYPE,I2.PIK,LIB.B,PNO,PROD.B,XMISC,MAT OPEN.FILES)
+
+     ** INPUT:      UPDATE.TYPE              OUTPUT:  PNO
+     *              I2.PIK                            PROD.B
+     *              LIB.B
+     *              PNO
+     *              PROD.B
+     *              OPEN.FILES
+     *              XMISC
+
+
+     DIM OPEN.FILES(10)
+     EQU F.I2.PRODUCT TO OPEN.FILES(1)
+     EQU F.PROD.FIND TO OPEN.FILES(2)
+     EQU F.PSVNO TO OPEN.FILES(3)
+     EQU F.UPC.PSVNO.XREF TO OPEN.FILES(4)
+     EQU F.CATVNO TO OPEN.FILES(5)
+     EQU F.UPC.PRODUCT.XREF TO OPEN.FILES(6)
+     EQU F.PRODUCT TO OPEN.FILES(7)
+     EQU F.I2.PRODUCT.TRADE TO OPEN.FILES(8)
+
+     ***I2.PRICE.UPDATE.LOG
+     EQU UPDATE.TYPE.P TO XMISC<1>, UPDATEID TO XMISC<2>, USER TO XMISC<3>, UPDATE.NUM TO XMISC<4>
+     EQU UPDATE.CODE TO XMISC<5>,  UPDATE.NAME TO XMISC<6>
+     EQU NOTE TO XMISC<7>, MAST.EFFDATE TO XMISC<8>, MAST.EXPDATE TO XMISC<9>, UPDATE.MODE TO XMISC<10>
+     EQU UPDATE.SCOPE TO XMISC<11>
+     EQU FILE.NAME TO XMISC<12,1>, FILE.PATH TO XMISC<12,2>, ITEM.NAME TO XMISC<13>
+     EQU DELIM TO XMISC<14>
+     EQU COL.LABELS TO XMISC<15>
+     EQU COL.VALUES TO XMISC<16>
+     EQU UPC.COL TO XMISC<16,1>, CAT.COL TO XMISC<16,2>, EFFDATE.COL TO XMISC<16,3>,COST.COL TO XMISC<16,4>, UOM.COL TO XMISC<16,5>
+
+
+
+     EQU HEADER.LABELS TO XMISC<17>
+     EQU UPC.FORMAT TO XMISC<18,1>, DATA.START TO XMISC<18,2>
+     EQU CUSTOM.SUB TO XMISC<19>
+     EQU MAST.UOM TO XMISC<20>
+     EQU RUN.COUNT TO XMISC<21>
+     EQU V.NUM TO XMISC<22>, V.NAME TO XMISC<23>, V.NEW TO XMISC<24>
+     EQU V.UPDATE TO XMISC<25>, V.DELETE TO XMISC<26>, V.ZAP TO XMISC<27>
+     EQU V.TOTAL TO XMISC<28>
+     EQU T.NEW TO XMISC<29>, T.UPDATE TO XMISC<30>, T.DELETE TO XMISC<31>
+     EQU T.ZAPPED TO XMISC<32>, T.TOTAL TO XMISC<33>
+
+     *** DETAIL OF NEXT.PRICE.UPDATE
+     EQU NEXT.TRADE.UPDATE.LOG TO NEXT.PRICE.UPDATE.LOG<1,1>
+     EQU NEXT.VENDOR.UPDATE.LOG TO NEXT.PRICE.UPDATE.LOG<1,2>
+     EQU NEXT.MANUAL.UPDATE.LOG TO NEXT.PRICE.UPDATE.LOG<1,3>
+     EQU NEXT.REFRESH.UPDATE.LOG TO NEXT.PRICE.UPDATE.LOG<1,4>
+
+     **** CUSTOM.PRICES - START OF EQU section
+     EQU CUS.UP.DATE.H TO 1, CUS.UP.DATE TO CUS.B<1>
+     EQU CUS.TYPE.H TO 2, CUS.TYPE TO CUS.B<2>
+     EQU CUS.EFF.DATE.H TO 3, CUS.EFF.DATE TO CUS.B<3>
+     EQU CUS.EXP.DATE.H TO 4, CUS.EXP.DATE TO CUS.B<4>
+     EQU CUS.SP.COST.H TO 5, CUS.SP.COST TO CUS.B<5>
+     EQU CUS.SP.UOM.H TO 6, CUS.SP.UOM TO CUS.B<6>
+     EQU CUS.SOURCE.NUM.H TO 7, CUS.SOURCE.NUM TO CUS.B<7>
+     EQU CUS.C4.COST.H TO 8, CUS.C4.COST TO CUS.B<8>
+     EQU CUS.C4.UPDATE.TYPE.H TO 9, CUS.C4.UPDATE.TYPE TO CUS.B<9>
+     EQU CUS.C4.EFFDT.H TO 10 , CUS.C4.EFFDT TO CUS.B<10>
+     EQU CUS.C4.EXPDT.H TO 11 , CUS.C4.EXPDT TO CUS.B<11>
+     EQU CUS.PNO.H TO 12, CUS.PNO TO CUS.B<12>
+     EQU CUS.UPDATE.DATE.H TO 13, CUS.UPDATE.DATE TO CUS.B<13>
+     EQU CUS.APPLY.DATE.H TO 14, CUS.APPLY.DATE TO CUS.B<14>
+     ****CUSTOM.PRICES - END of EQU section
+
+     ***** I2.PRODUCT.VEND***
+     *EQU UPC TO PF.B2<1>, CATNUM TO PF.B2<2>, COST TO PF.B2<3>, UOM TO PF.B2<4>
+     *EQU PG TO PF.B2<5>, EFF.DATE TO PF.B2<6>, EXP.DATE TO PF.B2<7>, I2.PIK TO PF.B2<8>
+
+     IF UPDATE.TYPE = "T" THEN CUSTOM.COST.UOM.ATT = 71
+     IF UPDATE.TYPE = "V" THEN CUSTOM.COST.UOM.ATT = 72
+     IF UPDATE.TYPE = "M" THEN CUSTOM.COST.UOM.ATT = 73
+
+     UPDATE.PRODUCT.CT1 += 1
+     IF NOT(PNO) AND LIB.B THEN PNO = "!":LIB.B<1>
+     IF PNO THEN
+          IF NOT(PROD.B) THEN
+               READ PROD.B FROM F.PRODUCT,PNO THEN
+                    ORIG.B = PROD.B
+               END ELSE
+                    PROD.B = ""
+                    ORIG.B = ""
+               END
+          END
+          IF PROD.B THEN
+               EFFDATE = ""
+               IF LIB.B<44> THEN EFFDATE = ICONV(LIB.B<44>,"D4-") ELSE EFFDATE = MAST.EFFDATE
+               PRICE.SOURCE.LINE.ID = LIB.B<42>
+               PROD.B<61> = I2.PIK
+               PROD.B<141> = PRICE.SOURCE.LINE.ID
+               MFGUCC = LIB.B<4>
+               CATNUM = LIB.B<22>
+               ITEMNO= LIB.B<5>
+               MFGPNO= LIB.B<22>
+               UPC = MFGUCC:ITEMNO
+               MFG = LIB.B<18>
+               MFG.NAME = LIB.B<19>
+               COMM.PIK = LIB.B<33>
+               PROD.B<141> = PRICE.SOURCE.LINE.ID
+               GOSUB UPDATE.DESC            ; *** SET UPC KEYWORD IN PROD.FIND
+               GOSUB UPDATE.UPC             ; *** SET UP MFGPNO KEYWORD IN PROD.FIND
+               GOSUB UPDATE.MFGPNO          ; *** UPDATE LIST.PRICE IF NO PRICING TEMPLATE EXISTS
+               GOSUB UPDATE.PSVNO           ; *** UPDATE PSVNO
+               GOSUB CHECK.EOM              ; *** CHECK FOR UOM CHANGE & IF SO UPDATE PRICE UOM
+               GOSUB DO.ROLLUP:
+               IF PROD.B <> ORIG.B THEN
+                    PROD.B<152> = DATE() ; PROD.B<153> = TIME()
+                    WRITE PROD.B ON F.PRODUCT, PNO
+                    UPDATE.PRODUCT.CT2 += 1
+                    IF PROD.B<61> THEN
+                         WRITEV PNO ON F.I2.PRODUCT,PROD.B<61>,9
+                    END
+               END ELSE
+               END
+          END ELSE RELEASE F.PRODUCT, PNO
+     END
+     RETURN
+
+DO.ROLLUP:
+     NEW.B = ""
+     CALL PRICE.ROLLUP.SUB (F.PRODUCT, F.PROD.LINE, F.PRICE.GROUP, PNO, PROD.B, NEW.B, 1)     ; ****  Call PRICE.ROLLUP.SUB
+     PROD.B = NEW.B
+     RETURN
+
+UPDATE.DESC:
+     DESC = TRIM(LIB.B<68>)
+     PROD.B<151> = DESC
+     IF LEN(DESC) > 30 THEN
+          CALL CONVERT.LENGTH (DESC, 30, PXMISC)
+          PROD.B<1> = PXMISC<1,1>
+          DEL PXMISC<1,1>
+          IF PXMISC<1,1> # '' THEN
+               PROD.B<71> = PXMISC<1,1>
+               DEL PXMISC<1,1>
+          END
+     END
+     RETURN
+
+UPDATE.UPC:
+     IF PROD.B<18> # UPC & UPC # '' THEN
+          READU KW.B FROM F.PROD.FIND, PROD.B<18> THEN
+               LOCATE PNO IN KW.B<1> SETTING VM THEN DEL KW.B<1,VM>
+               IF KW.B<1> = '' THEN
+                    DELETE F.PROD.FIND, PROD.B<18>
+               END ELSE
+                    WRITE KW.B ON F.PROD.FIND, PROD.B<18>
+               END
+          END ELSE RELEASE F.PROD.FIND, PROD.B<18>
+          READU KW.B FROM F.PROD.FIND, UPC ELSE KW.B = ''
+          LOCATE PNO IN KW.B<1> SETTING VM ELSE KW.B<1,VM> = PNO
+          WRITE KW.B ON F.PROD.FIND, UPC
+          PROD.B<18> = UPC
+     END
+     RETURN
+
+
+CHECK.EOM:
+     FOR PRICE.INDEX = 46 TO 54
+          IF NOT(NUM(LIB.B<PRICE.INDEX>)) THEN LIB.B<PRICE.INDEX> = 0
+     NEXT PRICE.INDEX
+
+     MD=10000
+     CMD = 10000
+     UOM = LIB.B<39>
+     PUOM = 'EA'
+     CUOM = LIB.B<CUSTOM.COST.UOM.ATT>
+     IF CUOM = "EA" THEN CUOM = 'E'
+     IF UOM = "EA" THEN UOM = 'E'
+     BEGIN CASE
+          CASE CUOM = 'E' ; CMD = 10000
+          CASE CUOM = 'C' ; CMD = 100
+          CASE CUOM = 'M' ; CMD = 10
+     END CASE
+
+     BEGIN CASE
+          CASE UOM = 'E' ; MD = 10000 ; PUOM = 'EA'
+          CASE UOM = 'C' ; MD = 100 ; PUOM = 'C'
+          CASE UOM = 'M' ; MD = 10 ; PUOM = 'M'
+     END CASE
+     *      COL   PROD  LIB
+     *      C1    3     51
+     *      C2    5
+     *      C3    19
+     *      C4    62    53 OR 54
+     *      C5    120
+     *      C6    122
+     *      C7    124
+     *      L1    13    47
+     *      L2    64    48
+     *      L3    66    49
+     *      L4    126   46
+     PROD.B<3> = LIB.B<51> * MD
+     PROD.B<13> = LIB.B<47> * MD
+     PROD.B<64> = LIB.B<48> * MD
+     PROD.B<66> = LIB.B<49> * MD
+     PROD.B<126> = LIB.B<46> * MD
+     IF PROD.B<126>+0 = 0 THEN PROD.B<126> = PROD.B<66>
+     IF PROD.B<64>+0 = 0 THEN PROD.B<64> = PROD.B<66>
+     IF PROD.B<13>+0 = 0 THEN PROD.B<13> = PROD.B<64>
+     IF PROD.B<3>+0 = 0 THEN PROD.B<3> = PROD.B<62>+0
+     PROD.B<7> = PUOM
+     PROD.B<97> = 'EA'
+     PROD.B<98> = 'EA'
+     PROD.B<140> = 'EA'
+     RETURN
+
+
+UPDATE.MFGPNO:
+     IF PROD.B<25> # MFGPNO & MFGPNO # '' THEN
+          READU KW.B FROM F.PROD.FIND, PROD.B<25> THEN
+               LOCATE PNO IN KW.B<1> SETTING VM THEN DEL KW.B<1,VM>
+               IF KW.B<1> = '' THEN
+                    DELETE F.PROD.FIND, PROD.B<25>
+               END ELSE
+                    WRITE KW.B ON F.PROD.FIND, PROD.B<25>
+               END
+          END ELSE RELEASE F.PROD.FIND, PROD.B<25>
+          LOCATE PROD.B<25> IN PROD.B<73> SETTING VM THEN
+               PROD.B<73,VM> = MFGPNO
+          END
+          PROD.B<25> = MFGPNO
+          READU KW.B FROM F.PROD.FIND, MFGPNO ELSE KW.B = ''
+          LOCATE PNO IN KW.B<1> SETTING VM ELSE KW.B<1,VM> = PNO
+          WRITE KW.B ON F.PROD.FIND, MFGPNO
+     END
+     RETURN
+
+
+
+
+UPDATE.PSVNO:
+     READV TEST FROM F.PSVNO,I2.PIK,1 ELSE WRITEV PNO ON F.PSVNO,I2.PIK,1
+     READV TEST FROM F.UPC.PSVNO.XREF,UPC,1 ELSE
+          WRITEV I2.PIK ON F.UPC.PSVNO.XREF,UPC,1
+     END
+     IF CATNUM THEN
+          READ CATBUFF.O FROM F.CATVNO,MFG:CATNUM ELSE CATBUFF.O = ""
+          CATBUFF = CATBUFF.O
+          IF I2.PIK THEN
+               CATBUFF<1> = I2.PIK
+               CATBUFF<2> = "!":I2.PIK
+          END
+          IF UPC THEN CATBUFF<3> = UPC
+          CATKEY = MFG:CATNUM
+          IF CATBUFF.O <> CATBUFF THEN WRITE CATBUFF ON F.CATVNO,CATKEY
+     END
+     RETURN
+
+

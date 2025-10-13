@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>RPT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "rpt.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">RPT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="reporting.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="said.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RPT</span> keyword is a field qualifier that repeats a single-valued item on each line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">field</span> <span style="font-weight: bold;">RPT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">field</span></td><td style="border:none;padding:0">is the field or expression which is to be repeated.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RPT</span> field qualifier applied to a single-valued item causes the item value to be repeated on each line when the report includes multi-valued items in other columns. It is related to the <span style="font-weight: bold;"><a href="repeating.htm" class="topiclink">REPEATING</a></span> keyword which is equivalent to using <span style="font-weight: bold;">RPT</span> on every single-valued item included in the report.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of <span style="font-weight: bold;">RPT</span> with a data item that is defined in the dictionary as being multivalued either explicitly (C/D/E/I-type) or implicitly (A/S-type) forces the query processor to treat the data as single valued.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A file containing a multivalued list of order numbers corresponding to each customer might produce a report that includes the following section:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">LIST CUST.SALES DATE ORDER.NO HDR.SUP</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Customer &nbsp; Date &nbsp; &nbsp; &nbsp; Order No</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1447 &nbsp; &nbsp; &nbsp; 12 Jan 19 &nbsp;10045</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1587 &nbsp; &nbsp; &nbsp; 14 Jan 19 &nbsp;10051</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;10059</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Using the <span style="font-weight: bold;">RPT</span> field qualifier on the DATE field changes this to:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">LIST CUST.SALES DATE RPT ORDER.NO HDR.SUP</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Customer &nbsp; Date &nbsp; &nbsp; &nbsp; Order No</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1447 &nbsp; &nbsp; &nbsp; 12 Jan 19 &nbsp;10045</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1587 &nbsp; &nbsp; &nbsp; 14 Jan 19 &nbsp;10051</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 15 Jan 19 &nbsp;10059</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="repeating.htm" class="topiclink">REPEATING</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

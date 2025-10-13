@@ -1,0 +1,1049 @@
+     INCLUDE UTLSBP ASSIGN.VAR
+     INCLUDE BP ASSIGN.VAR.PTR
+     LZ.SHADE10 =ESCAPE:"*c2340a50bc2p10G"
+     LZ.SHADE10H =ESCAPE:"*c2340a25bc2p10G"
+     LZ.SHADE15 =ESCAPE:"*c2340a50bc2p15G"
+     LZ.SHADE15H =ESCAPE:"*c2340a25bc2p15G"
+     LZ.SHADE15B =ESCAPE:"*c360a50bc2p15G"
+     LZ.SHADE15HB =ESCAPE:"*c360a25bc2p15G"
+     CANTOPEN = ''
+     OPEN 'CUSTOMER' TO CM ELSE CANTOPEN = "CUSTOMER"
+     OPEN 'CONTACTS' TO F.CONTACTS ELSE CANTOPEN<1,-1> = 'CONTACTS'
+     OPEN 'TERMS' TO TERMS ELSE CANTOPEN = 'TERMS'
+     OPEN 'CUST.AR' TO AR.F ELSE CANTOPEN<1,-1> = 'CUST.AR'
+     OPEN 'OPEN-ITEMS' TO OI ELSE CANTOPEN<1,-1> = "OPEN-ITEMS"
+     OPEN 'QOPEN-ITEMS' TO QOI ELSE CANTOPEN<1,-1> = 'QOPEN-ITEMS'
+     OPEN 'CONTROL' TO CONTROL ELSE CANTOPEN<1,-1> = "CONTROL"
+     OPEN 'INVOICE' TO INVOICE ELSE CANTOPEN<1,-1> = "INVOICE"
+     OPEN 'MASTER' TO MASTER ELSE CANTOPEN<1,-1> = 'MASTER'
+     OPEN 'PAID.OI' TO PAID.OI ELSE CANTOPEN<1,-1> = 'PAID.OI'
+     OPEN 'SHIPTO' TO F.SHIPTO ELSE CANTOPEN<1,-1> = 'SHIPTO'
+     OPEN 'GLNUM' TO F.GLNUM ELSE CANTOPEN<1,-1> = 'GLNUM'
+     OPEN 'BRANCH' TO F.BRANCH ELSE CANTOPEN<1,-1> = 'BRANCH'
+     OPEN 'AR.STMT.QUEUE' TO F.AR.STMT.QUEUE ELSE CANTOPEN<1,-1> = 'AR.STMT.QUEUE'
+     OPEN 'AR.STMT.LOG' TO F.AR.STMT.LOG ELSE CANTOPEN<1,-1> = 'AR.STMT.LOG'
+     IF CANTOPEN # '' THEN ABORT 201,CANTOPEN
+     !
+     READ SJMON FROM F.GLNUM, 'SJMON' ELSE SJMON = ''
+     READ SJYR FROM F.GLNUM, 'SJYR' ELSE SJYR = ''
+     SJPERIOD = SJMON:SJYR
+     !
+     READV STMT.SUPP.TERMS FROM CONTROL,'STMT.SUPP.TERMS',1 ELSE STMT.SUPP.TERMS='N'      ; ** 12-02-08
+     READV STMT.SUPP.DISCOUNT FROM CONTROL,'STMT.SUPP.DISCOUNT',1 ELSE STMT.SUPP.DISCOUNT='N'       ; ** 12-02-08
+     READ COMP.B FROM CONTROL,'COMPANY' ELSE COMP.B = ''
+     READ STMT.DEF FROM CONTROL,"STATEMENT.DEFAULTS" ELSE STMT.DEF = ''
+     READV CHECK.OVDUE.90 FROM CONTROL,'CHECK.STATEMENTS.OVDUE90',1 ELSE CHECK.OVDUE.90 = 'Y'
+     IF COMP.B<20> = 'N' THEN SORT.BY = 'CNAME' ELSE SORT.BY = 'CUST#'
+     READ MESS FROM CONTROL,'STMTS.MESS' ELSE MESS = ''
+     COMP.TELN=COMP.B<7>
+     COMP.FAXN=COMP.B<6>
+     COMP.AREA=COMP.B<11>
+     PRT.CURR.INV.ONLY = COMP.B<194>
+     IF PRT.CURR.INV.ONLY = "Y" THEN PRT.CURR.INV.ONLY = 1 ELSE PRT.CURR.INV.ONLY = 0
+     SHOW.SUBACCT.INFO = COMP.B<160>
+     SPOOL.IND.CUST.STMTS = COMP.B<198>
+     BRANCH.AR = COMP.B<217>
+     READ CRCVD.B FROM CONTROL, 'CUST.CASH.RCVD':PORT ELSE CRCVD.B = ''
+     DELETE CONTROL, 'CUST.CASH.RCVD':PORT
+     !
+     READV SHOW.PF FROM CONTROL, 'SHOW.PHONE.FAX.AR.DOCS', 1 ELSE SHOW.PF = ''
+     READV SHOW.SLMN FROM CONTROL, 'SHOW.SLMN.STMT',1 ELSE SHOW.SLMN = ''
+     !
+     READV USE.AR.CONT FROM CONTROL, 'USE.AR.CONTACT.AS.ATTN', 1 ELSE USE.AR.CONT = ''
+     READV USE.SUBACCT.NAME FROM CONTROL,'USE.SUBACCT.NAME',1 ELSE USE.SUBAACT.NAME = ''
+     READV SHOW.PAID.POS FROM CONTROL,"SHOW.PAID.POS.STMT",1 ELSE SHOW.PAID.POS = ''
+     !
+     HH=''
+     PROCREAD BUFFER ELSE STOP
+     CALL AR.AGING.DAYS ('', '', ADMISC)
+     IF ADMISC<1,1> = 'Future' THEN DEL ADMISC<1>
+     BRANCH = OCONV(BUFFER,'G 1')
+     DT = OCONV(BUFFER,'G1 1')
+     DISCDT = OCONV(BUFFER,'G2 1')
+     PRINT.ZERO.BAL = OCONV(BUFFER,'G3 1')
+     SHOW.PAID.OFF = OCONV(BUFFER,'G4 1')
+     SHOW.PERIOD.PAID = OCONV(BUFFER,'G5 1')
+     BALFWD = OCONV(BUFFER,'G6 1') ; USE.BALFWD = BALFWD
+     OVDUE = OCONV(BUFFER,'G7 1')
+     DOVDUE= OCONV(BUFFER,'G8 1')
+     PRINTOI = OCONV(BUFFER,'G9 1')
+     PORS = OCONV(BUFFER,'G10 1')
+     IF PORS = 'S' THEN PRINTOI = 'N'
+     CUSTNO = OCONV(BUFFER,'G11 1')
+     IF CUSTNO = 'SELECT' THEN
+          PASSED.SELECT = STMT.DEF<99>
+          DEL STMT.DEF<99>
+          WRITE STMT.DEF ON CONTROL,"STATEMENT.DEFAULTS"
+     END
+     CONVERT '|' TO ' ' IN CUSTNO
+     DATES = OCONV(BUFFER,'G12 1')
+     DCUR = ICONV(OCONV(DATES,'G*1'),'D')
+     D30 = ICONV(OCONV(DATES,'G1*1'),'D')
+     D60 = ICONV(OCONV(DATES,'G2*1'),'D')
+     D90 = ICONV(OCONV(DATES,'G3*1'),'D')
+     D120 = ICONV(OCONV(DATES,'G4*1'),'D')
+     AGE.B = DCUR:IAMC:D30:IAMC:D60:IAMC:D90:IAMC:D120
+     IF COMP.B<36> = 'Y' THEN AGE.B = AGE.B:IAMC:DCUR
+     MM = DT[1,2] ; DD = DT[4,2] ; YY = DT[7,2]
+     IF MM = 01 THEN
+          MM = 12 ; YY = YY - 1'R%2'
+          IF YY = - 1 THEN YY=99
+     END ELSE MM = MM - 1
+     CDT = DD + 1 ; PDATE = ''
+     LOOP
+          CDT = CDT - 1
+     WHILE CDT GT 0 & PDATE = '' DO
+          PDATE = ICONV(MM:'/':CDT:'/':YY,'D')
+     REPEAT
+     IF PDATE = '' THEN
+          PRINT BELL:'IMPROPER DATE ENTRY, PROCESS ABORTED, HIT RETURN...':
+          INPUT NL ; STOP
+     END
+     FIRST = TRUE
+     DT = ICONV(DT,'D2/')
+     RDATE = DT
+     ***
+     FNAME = 'CUST.AR'
+     IF PRINTOI = '$' THEN
+          FNAME = 'QCUST.AR'
+          OPEN 'QOPEN-ITEMS' TO OI ELSE STOP
+          OPEN 'QCUST.AR' TO AR.F ELSE STOP
+          CLEARFILE AR.F
+          EXECUTE 'SSELECT QOPEN-ITEMS' CAPTURING OUTPUT
+50:       READNEXT ID ELSE GO 150
+          READ REC FROM OI, ID THEN
+               READ QREC FROM AR.F, REC<1> ELSE QREC = ''
+               QREC<2,-1> = ID
+               QREC<1> = QREC<1> + REC<3>
+               WRITE QREC ON AR.F, REC<1>
+          END
+          GO 50
+     END
+     ***
+150: !
+     ARSMISC = ''
+     IF PRINTOI # '$' THEN
+          ARSMISC<1> = RDATE
+          IF CUSTNO # '*' & CUSTNO # 'SELECT' THEN ARSMISC<2> = CUSTNO
+          ARSMISC<3> = COMP.B<36>
+          ARSMISC<4> = COMP.B<12>
+          ARSMISC<5> = SJPERIOD
+          CALL AR.SNAPSHOT (ERRORS, OI, AR.F, ARSMISC)
+          IF ERRORS # '' THEN CRT ERRORS ; STOP
+          IF ARSMISC<6> = 'Y' THEN
+               FNAME = 'CUST.AR.SNAPSHOT/':PORT:' USING DICT CUST.AR '
+          END
+     END
+     IF CUSTNO = "SELECT" THEN
+          CMND = PASSED.SELECT:' BY CUST.SORT BY CUST# '
+     END ELSE
+          IF CUSTNO # '*' THEN
+               CMND = 'SELECT ':FNAME:' "':CUSTNO:'"'
+          END ELSE CMND = 'SSELECT ':FNAME:' BY CUST.SORT BY CUST# '
+     END
+     EXECUTE CMND CAPTURING OUTPUT
+     PRINT
+     !
+     DEVICE = '' ; DETLIST = ''
+     READ QDVS FROM MASTER, 'STATIONS.QUEUED' THEN
+          LOCATE PORT IN QDVS<1> SETTING VM THEN DEVICE = QDVS<2,VM>
+     END
+     !
+     IDEF = 'F':IVM:'OA':IVM:'CM':IVM:'DM'
+     IDEF<2> = 'Finance Charge':IVM:'Payment On Account':IVM:'Credit Memo':IVM:'Charge Back'
+     GOSUB 1000                         ; * READNEXT ID
+1:   GOSUB 100                          ; * HEADING
+     GOSUB 200                          ; * PRINT PAID OFF INVOICES FOR CURRENT MONTH
+     SHOW.PMNT.RCVD.FLAG = 0
+     LOCATE CNO IN CRCVD.B<1> SETTING VAL THEN
+          PAYMENTS = DCOUNT(CRCVD.B<3,VAL>,ISVM)
+          PCTR = 0
+          LOOP
+               PCTR = PCTR + 1
+          WHILE PCTR LE PAYMENTS DO
+               PAY.DATE = CRCVD.B<3,VAL,PCTR>
+               PAY.AMT = CRCVD.B<4,VAL,PCTR>
+               DISC.AMT = CRCVD.B<5,VAL,PCTR>
+               ADJ.AMT = CRCVD.B<6,VAL,PCTR>
+               BAL.FWD.AMT = BAL.FWD.AMT + PAY.AMT + DISC.AMT+ ADJ.AMT
+          REPEAT
+     END
+     IF USE.BALFWD='Y' THEN BFWD.PRINT.FLAG=1 ELSE BFWD.PRINT.FLAG=0
+     OV1 = 0 ; OV2 = 0 ; OV3 = 0 ; OV4 = 0 ; OV5 = 0 ; PREV.SUB.ACCTNO = ''
+     INVCNT = DCOUNT(AR.B<2>,CHAR(253))
+     COUNT = 0
+     LOOP
+          COUNT = COUNT + 1
+     WHILE COUNT LE INVCNT DO
+          KEY = AR.B<2,COUNT>
+          READ OIREC FROM OI, KEY ELSE GO 250
+          IDATE = OIREC<2>
+          IF COMP.B<22> = 'D' THEN AGEDT = OIREC<8> ELSE AGEDT = OIREC<2>
+          IAMT = OIREC<3>
+          K = 1
+          AMTPD = 0
+          LOOP WHILE OIREC<5,K> # '' DO
+               AMTPD = AMTPD + OIREC<4,K> + OIREC<6,K> + OIREC<7,K>
+               K = K + 1
+          REPEAT
+          ABMISC = ''
+          CALL AR.AGING.BUCKETS (AGE.B, OIREC, COMP.B<22>, COMP.B<36>, ABMISC)
+          ABMISC<2> = ABMISC<2> + ABMISC<1> ; DEL ABMISC<1>
+          IF ABMISC<1>+0 # 0 THEN CURR.INV = 1 ELSE CURR.INV = 0
+          BAL = SUM(ABMISC)
+          OV1 = OV1 + ABMISC<1>
+          OV2 = OV2 + ABMISC<2>
+          OV3 = OV3 + ABMISC<3>
+          OV4 = OV4 + ABMISC<4>
+          OV5 = OV5 + ABMISC<5>
+          IF AMTPD + 0 = 0 THEN IF OIREC<20> = DISCDT THEN DISCTOT = DISCTOT + OIREC<10>
+          ARBAL = ARBAL + BAL
+          IF AGEDT LE D30 AND USE.BALFWD='Y' THEN
+               BAL.FWD.AMT=BAL.FWD.AMT+BAL
+               GO 250
+          END ELSE
+               IF BFWD.PRINT.FLAG AND BAL.FWD.AMT+0 # 0 THEN
+                    IF SHADE THEN SHADE = FALSE ELSE SHADE = TRUE
+                    LS = MOD(LC+1,30)
+                    IF LS + 0 = 0 THEN LS = 30
+                    IF SHADE THEN
+                         PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                         PRINT LZ.SHADE10:
+                    END
+                    PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+                    PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:LZ.BOLD:'BALANCE FORWARD':LZ.REG:P.VERTLN:STR('.',10):P.VERTLN:STR('.',9):P.VERTLN:STR('.',10):P.VERTLN:LZ.BOLD:OCONV(BAL.FWD.AMT,"MD2,")'R#11':LZ.REG:P.VERTLN
+                    LC = LC + 1
+                    IF LC >= 30 THEN
+                         CONTD = 1
+                         GOSUB 3000             ; * FOOTING *
+                         GOSUB 100
+                    END
+                    BFWD.PRINT.FLAG=0
+               END
+               IF SHOW.PERIOD.PAID = 'Y' & NOT(SHOW.PMNT.RCVD.FLAG) THEN
+                    LOCATE CNO IN CRCVD.B<1> SETTING VAL THEN
+                         PAYMENTS = DCOUNT(CRCVD.B<3,VAL>,ISVM)
+                         PCTR = 0
+                         LOOP
+                              PCTR = PCTR + 1
+                         WHILE PCTR LE PAYMENTS DO
+                              PAY.DATE = CRCVD.B<3,VAL,PCTR>
+                              PAY.AMT = CRCVD.B<4,VAL,PCTR>
+                              DISC.AMT = CRCVD.B<5,VAL,PCTR>
+                              IF PAY.AMT + DISC.AMT # 0 THEN
+                                   IF SHADE THEN SHADE = FALSE ELSE SHADE = TRUE
+                                   LS = MOD(LC+1,30)
+                                   IF LS + 0 = 0 THEN LS = 30
+                                   IF SHADE THEN
+                                        PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                                        PRINT LZ.SHADE10:
+                                   END
+                                   PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+                                   PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:LZ.BOLD:'PAYMENT RCVD ON':LZ.REG:P.VERTLN:STR('.',10):P.VERTLN:LZ.BOLD:OCONV(PAY.DATE,'D2/') 'R#9':LZ.REG:P.VERTLN:LZ.BOLD:OCONV(PAY.AMT+DISC.AMT,'MD2') 'R#10':LZ.REG:P.VERTLN:STR('.',11):P.VERTLN
+                                   LC = LC + 1
+                                   IF LC >= 30 THEN
+                                        CONTD = 1
+                                        GOSUB 3000    ; * FOOTING *
+                                        GOSUB 100
+                                   END
+                              END
+                         REPEAT
+                         SHOW.PMNT.RCVD.FLAG = 1
+                    END
+               END
+          END
+          SUB.ACCTNO = OIREC<42>
+          SUB.SPTO = OIREC<29>
+          IF SUB.ACCTNO = '' THEN SUB.ACCTNO = OIREC<1>
+          IF SUB.SPTO= '' ! SUB.SPTO = 'MAN' THEN
+               READV SUB.SPTO FROM F.SHIPTO, SUB.ACCTNO, 67 ELSE SUB.SPTO = ''
+               SUB.SPTO = SUB.SPTO<1,1>
+          END
+          IF SUB.SPTO = '' ! SUB.SPTO = 'MAN' THEN SUB.SPTO = '00000001'
+          SUBID = SUB.ACCTNO:'!':SUB.SPTO
+          IF PREV.SUB.ACCTNO = '' THEN PREV.SUB.ACCTNO = SUBID
+          IF OCONV(PREV.SUB.ACCTNO<1>,'G1!1') # SUB.SPTO & SHOW.SUBACCT.INFO = 'Y' THEN
+               LS = MOD(LC+1,30)
+               IF LS + 0 = 0 THEN LS = 30
+               IF SHADE THEN
+                    PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                    PRINT LZ.SHADE10:
+               END
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+               PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+               LC = LC + 1
+               IF LC >= 30 THEN
+                    CONTD = 1
+                    GOSUB 3000                ; * FOOTING *
+                    GOSUB 100
+               END
+               LS = MOD(LC+1,30)
+               IF LS + 0 = 0 THEN LS = 30
+               IF SHADE THEN
+                    PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                    PRINT LZ.SHADE10:
+               END
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+               PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT SPACE(10):LZ.BOLD:'Tot-ShipTo:':
+               READ SPTO.B FROM F.SHIPTO, PREV.SUB.ACCTNO<1> ELSE SPTO.B = 'SAME'
+               IF SPTO.B<1> = 'SAME' THEN
+                    READ SPTO.B FROM CM, OCONV(PREV.SUB.ACCTNO<1>,'G!1') ELSE SPTO.B = ''
+               END
+               IF SPTO.B<2> = '' THEN SPTO.B<2> = SPTO.B<1>
+     !!!  MOD, STEVE M  03/28/05  PRINT SHIPTO NAME INSTEAD OF ADDR1
+               PRINT (OCONV(PREV.SUB.ACCTNO<1>,'G1!1'):' ':SPTO.B<1>:STR('.',45)) 'L#45 ':OCONV(PREV.SUB.ACCTNO<3>,'MD2,') 'R#11':LZ.REG
+               LC = LC + 1
+               IF LC >= 30 THEN
+                    CONTD = 1
+                    GOSUB 3000                ; * FOOTING *
+                    GOSUB 100
+               END
+               LS = MOD(LC+1,30)
+               IF LS + 0 = 0 THEN LS = 30
+               IF SHADE THEN
+                    PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                    PRINT LZ.SHADE10:
+               END
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+               PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+               LC = LC + 1
+               IF LC >= 30 THEN
+                    CONTD = 1
+                    GOSUB 3000                ; * FOOTING *
+                    GOSUB 100
+               END
+               PREV.SUB.ACCTNO<5> = PREV.SUB.ACCTNO<1>
+               PREV.SUB.ACCTNO<3> = 0
+          END
+          IF OCONV(PREV.SUB.ACCTNO<1>,'G!1') # SUB.ACCTNO & SHOW.SUBACCT.INFO = 'Y' THEN
+               LS = MOD(LC+1,30)
+               IF LS + 0 = 0 THEN LS = 30
+               IF SHADE THEN
+                    PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                    PRINT LZ.SHADE10:
+               END
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+               PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+               LC = LC + 1
+               IF LC >= 30 THEN
+                    CONTD = 1
+                    GOSUB 3000                ; * FOOTING *
+                    GOSUB 100
+               END
+               LS = MOD(LC+1,30)
+               IF LS + 0 = 0 THEN LS = 30
+               IF SHADE THEN
+                    PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                    PRINT LZ.SHADE10:
+               END
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+               PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT SPACE(10):LZ.BOLD:'Total Sub :':
+               READ SCUST.B FROM CM, OCONV(PREV.SUB.ACCTNO<1>,'G!1') ELSE SCUST.B = ''
+               IF USE.SUBACCT.NAME # 'Y' THEN
+                    PRINT (OCONV(PREV.SUB.ACCTNO<1>,'G!1'):' ':SCUST.B<2>:STR('.',45)) 'L#45 ':OCONV(PREV.SUB.ACCTNO<2>,'MD2,') 'R#11':LZ.REG
+               END ELSE
+                    PRINT (OCONV(PREV.SUB.ACCTNO<1>,'G!1'):' ':SCUST.B<1>:STR('.',45)) 'L#45 ':OCONV(PREV.SUB.ACCTNO<2>,'MD2,') 'R#11':LZ.REG
+               END
+               LC = LC + 1
+               IF LC >= 30 THEN
+                    CONTD = 1
+                    GOSUB 3000                ; * FOOTING *
+                    GOSUB 100
+               END
+               LS = MOD(LC+1,30)
+               IF LS + 0 = 0 THEN LS = 30
+               IF SHADE THEN
+                    PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                    PRINT LZ.SHADE10:
+               END
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+               PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+               LC = LC + 1
+               IF LC >= 30 THEN
+                    CONTD = 1
+                    GOSUB 3000                ; * FOOTING *
+                    GOSUB 100
+               END
+               PREV.SUB.ACCTNO<2> = 0
+               PREV.SUB.ACCTNO<3> = 0
+               PREV.SUB.ACCTNO<4,-1> = PREV.SUB.ACCTNO<1>
+               PREV.SUB.ACCTNO<1> = SUBID
+          END
+          PREV.SUB.ACCTNO<2> = PREV.SUB.ACCTNO<2> + BAL
+          PREV.SUB.ACCTNO<3> = PREV.SUB.ACCTNO<3> + BAL
+          IF OCONV(PREV.SUB.ACCTNO<1>,'G1!1') # SUB.SPTO THEN PREV.SUB.ACCTNO<1> = SUBID
+          CUST.PO = OIREC<23>
+          IF CUST.PO = '' THEN
+               READV CUST.PO FROM INVOICE,KEY,31 ELSE CUST.PO = ''
+          END
+          IF PRINTOI = 'Y' AND (NOT(PRT.CURR.INV.ONLY) OR CURR.INV) THEN
+               READV VERIFY FROM INVOICE, KEY, 1 THEN DETLIST<1,-1> = KEY
+          END
+          IF SHADE THEN SHADE = FALSE ELSE SHADE = TRUE
+          LS = MOD(LC+1,30)
+          IF LS + 0 = 0 THEN LS = 30
+          IF SHADE THEN
+               PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+               PRINT LZ.SHADE10:
+          END
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT P.VERTLN:KEY 'R#8':P.VERTLN:OCONV(OIREC<2>,'D2/') 'R#8':P.VERTLN:
+          PRINT CUST.PO 'L#15':P.VERTLN:OCONV(IAMT,'MD2') 'R#10':P.VERTLN:
+          K = 1
+          LOOP WHILE OIREC<5,K> # '' DO
+               TOT.PMT = OIREC<4,K> + OIREC<6,K> + OIREC<7,K>
+               IF K = 1 THEN
+                    PRINT OCONV(OIREC<5,K>,'D2/') 'R#9':P.VERTLN:
+                    PRINT OCONV(TOT.PMT,'MD2') 'R#10':P.VERTLN:
+               END ELSE
+                    IF SHADE THEN SHADE = FALSE ELSE SHADE = TRUE
+                    LS = MOD(LC+1,30)
+                    IF LS + 0 = 0 THEN LS = 30
+                    IF SHADE THEN
+                         PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                         PRINT LZ.SHADE10:
+                    END
+                    PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+                    PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):
+                    PRINT P.VERTLN:SPACE(10):P.VERTLN:
+                    PRINT OCONV(OIREC<5,K>,'D2/') 'R#9':P.VERTLN:
+                    PRINT OCONV(TOT.PMT,'MD2') 'R#10':P.VERTLN:
+               END
+               IF OIREC<5,K+1> # '' THEN
+                    PRINT SPACE(11):P.VERTLN
+               END ELSE PRINT LZ.BOLD:OCONV(BAL,'MD2,') 'R#11':LZ.REG:P.VERTLN
+               K = K + 1
+               LC = LC + 1
+               IF LC >= 30 THEN
+                    CONTD = 1
+                    GOSUB 3000                ; * FOOTING *
+                    GOSUB 100
+               END
+          REPEAT
+          IF OIREC<5,1> = '' THEN
+               PRINT SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:
+               PRINT LZ.BOLD:OCONV(BAL,'MD2,') 'R#11':LZ.REG:P.VERTLN
+               K = 2
+               LC = LC + 1
+          END
+          IF LC >= 30 THEN
+               CONTD = 1
+               GOSUB 3000                   ; * FOOTING *
+               GOSUB 100
+          END
+250: REPEAT
+     IF BFWD.PRINT.FLAG AND BAL.FWD.AMT+0 # 0 THEN
+          IF SHADE THEN SHADE = FALSE ELSE SHADE = TRUE
+          LS = MOD(LC+1,30)
+          IF LS + 0 = 0 THEN LS = 30
+          IF SHADE THEN
+               PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+               PRINT LZ.SHADE10:
+          END
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT P.VERTLN:STR('.',8):P.VERTLN:STR('.',8):P.VERTLN:LZ.BOLD:'BALANCE FORWARD':LZ.REG:P.VERTLN:STR('.',10):P.VERTLN:STR('.',9):P.VERTLN:STR('.',10):P.VERTLN:LZ.BOLD:OCONV(BAL.FWD.AMT,"MD2,")'R#11':LZ.REG:P.VERTLN
+          LC = LC + 1
+          IF LC >= 30 THEN
+               CONTD = 1
+               GOSUB 3000                   ; * FOOTING *
+               GOSUB 100
+          END
+          BFWD.PRINT.FLAG=0
+     END
+     IF SHOW.PERIOD.PAID = 'Y' & NOT(SHOW.PMNT.RCVD.FLAG) THEN
+          LOCATE CNO IN CRCVD.B<1> SETTING VAL THEN
+               PAYMENTS = DCOUNT(CRCVD.B<3,VAL>,ISVM)
+               PCTR = 0
+               LOOP
+                    PCTR = PCTR + 1
+               WHILE PCTR LE PAYMENTS DO
+                    PAY.DATE = CRCVD.B<3,VAL,PCTR>
+                    PAY.AMT = CRCVD.B<4,VAL,PCTR>
+                    DISC.AMT = CRCVD.B<5,VAL,PCTR>
+                    IF PAY.AMT + DISC.AMT # 0 THEN
+                         IF SHADE THEN SHADE = FALSE ELSE SHADE = TRUE
+                         LS = MOD(LC+1,30)
+                         IF LS + 0 = 0 THEN LS = 30
+                         IF SHADE THEN
+                              PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                              PRINT LZ.SHADE10:
+                         END
+                         PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+                         PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:LZ.BOLD:'PAYMENT RCVD ON':LZ.REG:P.VERTLN:STR('.',10):P.VERTLN:LZ.BOLD:OCONV(PAY.DATE,'D2/') 'R#9':LZ.REG:P.VERTLN:LZ.BOLD:OCONV(PAY.AMT+DISC.AMT,'MD2') 'R#10':LZ.REG:P.VERTLN:STR('.',11):P.VERTLN
+                         LC = LC + 1
+                         IF LC >= 30 THEN
+                              CONTD = 1
+                              GOSUB 3000          ; * FOOTING *
+                              GOSUB 100
+                         END
+                    END
+               REPEAT
+               SHOW.PMNT.RCVD.FLAG = 1
+          END
+     END
+     IF PREV.SUB.ACCTNO<5> # '' & SHOW.SUBACCT.INFO = 'Y' THEN
+          LS = MOD(LC+1,30)
+          IF LS + 0 = 0 THEN LS = 30
+          IF SHADE THEN
+               PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+               PRINT LZ.SHADE10:
+          END
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+          PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+          LC = LC + 1
+          IF LC >= 30 THEN
+               CONTD = 1
+               GOSUB 3000                   ; * FOOTING *
+               GOSUB 100
+          END
+          LS = MOD(LC+1,30)
+          IF LS + 0 = 0 THEN LS = 30
+          IF SHADE THEN
+               PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+               PRINT LZ.SHADE10:
+          END
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+          PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT SPACE(10):LZ.BOLD:'Tot-ShipTo:':
+          READ SPTO.B FROM F.SHIPTO, PREV.SUB.ACCTNO<1> ELSE SPTO.B = 'SAME'
+          IF SPTO.B<1> = 'SAME' THEN
+               READ SPTO.B FROM CM, OCONV(PREV.SUB.ACCTNO<1>,'G!1') ELSE SPTO.B = ''
+          END
+          IF SPTO.B<2> = '' THEN SPTO.B<2> = SPTO.B<1>
+          PRINT (OCONV(PREV.SUB.ACCTNO<1>,'G1!1'):' ':SPTO.B<1>:STR('.',45)) 'L#45 ':OCONV(PREV.SUB.ACCTNO<3>,'MD2,') 'R#11':LZ.REG
+          LC = LC + 1
+          IF LC >= 30 THEN
+               CONTD = 1
+               GOSUB 3000                   ; * FOOTING *
+               GOSUB 100
+          END
+     END
+     IF PREV.SUB.ACCTNO<4,1> # '' & SHOW.SUBACCT.INFO = 'Y' THEN
+          LS = MOD(LC+1,30)
+          IF LS + 0 = 0 THEN LS = 30
+          IF SHADE THEN
+               PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+               PRINT LZ.SHADE10:
+          END
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+          PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+          LC = LC + 1
+          IF LC >= 30 THEN
+               CONTD = 1
+               GOSUB 3000                   ; * FOOTING *
+               GOSUB 100
+          END
+          LS = MOD(LC+1,30)
+          IF LS + 0 = 0 THEN LS = 30
+          IF SHADE THEN
+               PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+               PRINT LZ.SHADE10:
+          END
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+          PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT SPACE(10):LZ.BOLD:'Total Sub :':
+          READ SCUST.B FROM CM, OCONV(PREV.SUB.ACCTNO<1>,'G!1') ELSE SCUST.B = ''
+          IF USE.SUBACCT.NAME # 'Y' THEN
+               PRINT (OCONV(PREV.SUB.ACCTNO<1>,'G!1'):' ':SCUST.B<2>:STR('.',45)) 'L#45 ':OCONV(PREV.SUB.ACCTNO<2>,'MD2,') 'R#11':LZ.REG
+          END ELSE
+               PRINT (OCONV(PREV.SUB.ACCTNO<1>,'G!1'):' ':SCUST.B<1>:STR('.',45)) 'L#45 ':OCONV(PREV.SUB.ACCTNO<2>,'MD2,') 'R#11':LZ.REG
+          END
+          LC = LC + 1
+          IF LC >= 30 THEN
+               CONTD = 1
+               GOSUB 3000                   ; * FOOTING *
+               GOSUB 100
+          END
+     END
+     CONTD = 0
+     GOSUB 3000                         ; * FOOTING *
+     GOSUB 1000 ; GO 1
+1000: * READNEXT ID *
+     !
+     READNEXT CNO ELSE
+          IF ARSMISC<6> = 'Y' THEN
+               CLOSE OI
+               CLOSE AR.F
+               *EXECUTE 'DELETE-FILE CUST.AR.SNAPSHOT/':PORT CAPTURING OUTPUT
+               *EXECUTE 'DELETE-FILE OI.SNAPSHOT/':PORT CAPTURING OUTPUT
+          END
+          STOP
+     END
+     IF CUSTNO = '*' OR CUSTNO = 'SELECT' THEN
+          READ CUST.B FROM CM,CNO ELSE GO 1000
+          IF BRANCH.AR = 'Y' & BRANCH # '*' THEN
+               IF CUST.B<114> # BRANCH THEN GO 1000
+          END
+          IF BALFWD = 'Y' THEN USE.BALFWD = 'Y' ELSE
+               IF CUST.B<112> = 'B' THEN USE.BALFWD = 'Y' ELSE USE.BALFWD = 'N'
+          END
+          READV PRINT.INV.FLAG FROM TERMS,CUST.B<25>,11 ELSE PRINT.INV.FLAG=''
+          IF PRINT.INV.FLAG='N' THEN GO 1000
+     END
+     READ AR.B FROM AR.F, CNO ELSE GO 1000
+     IF CUSTNO = '*' & AR.B<1> + 0 = 0 & PRINT.ZERO.BAL = 'N' THEN GO 1000
+     IF OVDUE = 'Y' THEN
+          GOSUB 8800
+          IF TOT.OVDUE+0 > 0 THEN NULL ELSE GO 1000
+     END
+     GOSUB 6000                         ; * RESORT INVOICES
+     PAIDOFF = '' ; DISCTOT = 0 ; BAL.FWD.AMT = 0
+     IF SHOW.PAID.OFF = 'Y' ! USE.BALFWD = 'Y' THEN
+          INVPAID = DCOUNT(AR.B<3>,CHAR(253)) ; IPCT = 0
+          LOOP
+               IPCT = IPCT + 1
+          WHILE IPCT LE INVPAID DO
+               *S*          IF AR.B<6,IPCT> GE PDATE & SHOW.PAID.OFF = 'Y' & AR.B<3,IPCT>[1,1] # 'P' THEN
+               IF AR.B<6,IPCT> GE PDATE & SHOW.PAID.OFF = 'Y' & (AR.B<3,IPCT>[1,1] # 'P' OR SHOW.PAID.POS = 'Y') THEN
+                    PINVNO = AR.B<3,IPCT>
+                    LOCATE PINVNO IN PAIDOFF<1> BY 'AR' SETTING PVAL ELSE NULL
+                    INS '' BEFORE PAIDOFF<1,PVAL>
+                    INS '' BEFORE PAIDOFF<2,PVAL>
+                    INS '' BEFORE PAIDOFF<3,PVAL>
+                    INS '' BEFORE PAIDOFF<4,PVAL>
+                    PAIDOFF<1,PVAL> = AR.B<3,IPCT>      ; * INVOICE NUMBER
+                    PAIDOFF<2,PVAL> = AR.B<4,IPCT>      ; * INVOICE DATE
+                    IF PAIDOFF<2,PVAL> = '' THEN
+                         READV INVDT FROM INVOICE, AR.B<3,IPCT>, 11 THEN
+                              PAIDOFF<2,PVAL> = INVDT
+                         END
+                    END
+                    PAIDOFF<3,PVAL> = AR.B<5,IPCT>      ; * INVOICE AMOUNT
+                    PAIDOFF<4,PVAL> = AR.B<6,IPCT>      ; * DATE PAID
+               END
+               IF USE.BALFWD = 'Y' & AR.B<6,IPCT> GT D30 THEN
+                    READ POI.B FROM PAID.OI, AR.B<3,IPCT> THEN
+                         PRIOR.PAID = 0
+                         PAYMENTS = DCOUNT(POI.B<5>,CHAR(253))
+                         FOR I = 1 TO PAYMENTS
+                              IF POI.B<5,I> LE D30 THEN
+                                   PRIOR.PAID = PRIOR.PAID - (POI.B<4,I> - POI.B<6,I> - POI.B<7,I>)
+                              END
+                         NEXT I
+                         IF PRIOR.PAID + 0 # 0 THEN
+                              BAL.FWD.AMT = BAL.FWD.AMT + (POI.B<3> - PRIOR.PAID)
+                         END
+                    END
+               END
+          REPEAT
+     END
+     IF AR.B<1> + 0 # 0 ! PAIDOFF # '' ELSE GO 1000
+     READ CREC FROM CM, CNO ELSE CREC = ''
+     IF CREC<112> = 'N' & CUSTNO = '*' THEN GO 1000
+     CRT @(0):EOS:CNO:' - ':CREC<1>:
+     FT = 0 ; ARBAL = 0 ; PG = 0 ; DETLIST = ''
+     RETURN
+     !
+3000: * FOOTING *
+     !
+     FOR J = LC TO 30
+          IF SHADE THEN SHADE = FALSE ELSE SHADE = TRUE
+          LS = MOD(J-1,30)
+          IF LS + 0 = 0 THEN LS = 30
+          IF J # 1 THEN
+               IF SHADE THEN
+                    PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+                    PRINT LZ.SHADE10:
+               END
+               PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+               PRINT P.VERTLN:SPACE(8):P.VERTLN:SPACE(8):P.VERTLN:SPACE(15):P.VERTLN:
+               PRINT SPACE(10):P.VERTLN:SPACE(9):P.VERTLN:SPACE(10):P.VERTLN:SPACE(11):P.VERTLN
+          END
+     NEXT J
+     IF CONTD THEN
+          PRINT
+          PRINT P.LLO:STR(P.HORZLN,8):P.UPT:STR(P.HORZLN,8):P.UPT:STR(P.HORZLN,15):
+          PRINT P.UPT:STR(P.HORZLN,10):P.UPT:STR(P.HORZLN,9):P.UPT:
+          PRINT STR(P.HORZLN,10):P.UPT:STR(P.HORZLN,11):P.LRO
+          PRINT ; PRINT ; PRINT ; PRINT ; PRINT
+          PG = PG + 1
+          PRINT SPACE(34):LZ.BOLD:"[ Continued ]":SPACE(24):'Page ':PG:LZ.REG
+          PRINT CHAR(12)
+     END ELSE
+          PRINT P.LLO:STR(P.HORZLN,8):P.UPT:STR(P.HORZLN,8):P.UPT:STR(P.HORZLN,15):
+          PRINT P.UPT:STR(P.HORZLN,10):P.UPT:STR(P.HORZLN,9):P.UPT:
+          PRINT STR(P.HORZLN,10):P.UPT:STR(P.HORZLN,11):P.LRO
+          PRINT LZ.8LPI:
+          PRINT CHAR(27):"&a":(68-1.2):"ra63.5C":
+          PRINT LZ.SHADE15B:
+          PRINT LZ.SHADE15B:
+          PRINT CHAR(27):"&a":(69-1.2):"ra63.5C":
+          PRINT LZ.SHADE15B:
+          PRINT CHAR(27):"&a":(70-1.2):"ra63.5C":
+          PRINT LZ.SHADE15B:
+          PRINT CHAR(27):"&a":(71-1.1):"ra63.5C":
+          PRINT LZ.SHADE15HB:
+          IF COMP.B<22> = 'D' THEN
+               PRINT CHAR(27):"&a66.3ra32C":LZ.REG12:'P a s t  -  D u e':LZ.REGULAR:
+          END
+          PRINT CHAR(27):"&a":(68-1):"ra0C":
+          PRINT SPACE(3):P.ULO:STR(P.HORZLN,11):P.DNT:STR(P.HORZLN,11):P.DNT:
+          PRINT STR(P.HORZLN,11):P.DNT:STR(P.HORZLN,11):P.DNT:
+          PRINT STR(P.HORZLN,11):P.DNT:STR(P.HORZLN,11):P.URO
+          PRINT SPACE(3):
+          FOR I = 1 TO 5
+               PRINT P.VERTLN:LZ.BOLD:ADMISC<I,1> 'R#11':LZ.REG:
+          NEXT I
+          PRINT P.VERTLN:LZ.BOLD:'Balance Due':LZ.REG:P.VERTLN
+          PRINT SPACE(3):P.VERTLN:SPACE(11):P.VERTLN:SPACE(11):P.VERTLN:SPACE(11):P.VERTLN:
+          PRINT SPACE(11):P.VERTLN:SPACE(11):P.VERTLN:SPACE(11):P.VERTLN
+          PRINT SPACE(3):P.VERTLN:OCONV(OV1,'MD2,') 'R#11':
+          PRINT P.VERTLN:OCONV(OV2,'MD2,') 'R#11':
+          PRINT P.VERTLN:OCONV(OV3,'MD2,') 'R#11':
+          PRINT P.VERTLN:OCONV(OV4,'MD2,') 'R#11':
+          PRINT P.VERTLN:OCONV(OV5,'MD2,') 'R#11':
+          PRINT P.VERTLN:LZ.BOLD:OCONV(ARBAL,'MD2,$') 'R#11':LZ.REG:P.VERTLN
+          PRINT SPACE(3):P.LLO:STR(P.HORZLN,11):P.UPT:STR(P.HORZLN,11):P.UPT:
+          PRINT STR(P.HORZLN,11):P.UPT:STR(P.HORZLN,11):P.UPT:
+          PRINT STR(P.HORZLN,11):P.UPT:STR(P.HORZLN,11):P.LRO:
+          PRINT LZ.LINEPTR
+          FOR I = 1 TO 4
+               PRINT SPACE(10):LZ.BOLD:MESS<I> 'L#60 ':LZ.REG:MESS<4+I>
+          NEXT I
+          PRINT LZ.REGULAR:LZ.6LPI:
+          IF DISCTOT + 0 GT 0 THEN
+               IF DOVDUE = 'Y' ! (DOVDUE = 'N' & OV2 + 0 LE 0 & OV3 + 0 LE 0 & OV4 + 0 LE 0 & OV5 + 0 LE 0) THEN
+                    IF STMT.SUPP.DISCOUNT = 'Y' THEN
+                         PRINT
+                         PRINT
+                    END ELSE
+                         PRINT ESC:"&a0c14R":
+                         PRINT "* Pay in full by ":OCONV(DISCDT,'D2/'):' & take a'
+                         PRINT "  cash discount of ":OCONV(DISCTOT,'MD2$')
+                    END
+               END
+          END
+          PRINT CHAR(12)
+          IF PORS = 'S' THEN
+               IF SEND.STMT THEN
+                    FAX.B = 'FC'
+                    CALL PRINTER.CONTROL (CONTROL, 'FAX', '', FAX.B)
+                    ASSIGN 1 TO SYSTEM(1017)
+                    SQID = CNO:'|':SEND.TYPE:'|':SEND.DEST:'|':RDATE
+                    WRITE FAX.B ON F.AR.STMT.QUEUE, SQID
+                    ASSIGN 0 TO SYSTEM(1017)
+                    LOG.B = ''
+                    IF SEND.TYPE = 'F' THEN WORD = 'Fax' ELSE WORD = 'Email'
+                    WRITE WORD:' submitted on ':OCONV(DATE(),'D2/') ON F.AR.STMT.LOG, SQID
+               END ELSE CALL PRINTER.CONTROL (CONTROL, '', '', 'C')
+               PMISC = 'O' ; PMISC<2> = 'Y' ; PMISC<3> = 'N' ; PMISC<4> = DEVICE ; PMISC<8> = 'Y'
+               CALL PRINTER.CONTROL (CONTROL, DEVICE, '', PMISC)
+               DEVICE = DEVICE<1,1>
+               PRINTER ON
+          END ELSE
+               IF PRINTOI = 'Y' ! SPOOL.IND.CUST.STMTS = 'Y' THEN
+                    IF PRINTOI = 'Y' THEN
+                         FOR I = 1 TO DCOUNT(DETLIST<1>,CHAR(253))
+                              DATA 'ARCHIVE',DETLIST<1,I>
+                              EXECUTE 'INVOICE.PRINT STATEMENT'
+                         NEXT I
+                    END
+                    IF NUM(DEVICE) THEN
+                         CALL PRINTER.CONTROL (CONTROL, DEVICE, '', 'C')
+                         PMISC = 'O' ; PMISC<2> = 'Y' ; PMISC<3> = 'N' ; PMISC<4> = DEVICE ; PMISC<8> = 'Y'
+                         CALL PRINTER.CONTROL (CONTROL, DEVICE, '', PMISC)
+                         DEVICE = DEVICE<1,1>
+                         PRINTER ON
+                    END
+               END
+          END
+     END
+     RETURN
+     !
+     ! HEADING
+     !
+100: * HEADING
+     SEND.STMT = FALSE ; SEND.TYPE = '' ; SEND.DEST = ''
+     SHADE = TRUE
+     CO.NAME.ADDR = COMP.B<1>: "   ": COMP.B<2>: "   ": COMP.B<3>: ", ": COMP.B<4>: " ": COMP.B<5>
+     IF PORS = 'S' THEN
+          IF CUSTNO = '*' ! CUSTNO = 'SELECT' THEN
+               FAXTO = CUST.B<1>
+               FAXNO = CUST.B<14>
+               EMAIL = CUST.B<135>
+               EORF = CUST.B<115>
+               IF EORF = 'Y' THEN EORF = 'F'
+               INC.AREA.CODE = CUST.B<121>
+               INC.ONE = CUST.B<131>
+               CONTACT.ID = ''
+               FOR I = 1 TO DCOUNT(CUST.B<145>,CHAR(253)) WHILE CONTACT.ID = '' DO
+                    READ CONT.B FROM F.CONTACTS, 'C|':CNO:'|':CUST.B<145,I> THEN
+                         IF CONT.B<26> = 'A' THEN
+                              FAXNO = CONT.B<11>
+                              EMAIL = CONT.B<14>
+                              INC.AREA.CODE = CONT.B<13>
+                              INC.ONE = CONT.B<12>
+                              CONTACT.ID = CUST.B<145,I>
+                         END
+                    END
+               NEXT I
+               IF INC.AREA.CODE = '' THEN
+                    IF FAXNO[1,3] = COMP.AREA THEN
+                         INC.AREA.CODE = 'N' ; INC.ONE = 'N'
+                    END ELSE
+                         INC.AREA.CODE = 'Y' ; INC.ONE = 'Y'
+                    END
+               END
+               IF INC.AREA.CODE = 'N' THEN FAXNO = FAXNO[4,99]
+               IF INC.ONE = 'Y' THEN FAXNO = 1:FAXNO
+               IF FAXNO = 1 THEN FAXNO = ''
+               SEND.TYPE = EORF
+               IF EORF = 'F' THEN SEND.DEST = FAXNO ELSE SEND.DEST = EMAIL
+               IF SEND.TYPE # '' & SEND.TYPE # "N" & SEND.DEST # '' THEN SEND.STMT = TRUE
+          END
+     END
+     IF SEND.STMT ! DEVICE = 'FAX' THEN
+          P.ULO = P.ULA ; P.URO = P.URA ; P.LLO = P.LLA ; P.LRO = P.LRA
+     END ELSE
+          P.ULO = ESC:"(15U":CHAR(98):ESC:"(12U" ; P.URO = ESC:"(15U":CHAR(114):ESC:"(12U"
+          P.LLO = ESC:"(15U":CHAR(99):ESC:"(12U" ; P.LRO = ESC:"(15U":CHAR(115):ESC:"(12U"
+     END
+     IF PORS = 'S' THEN
+          IF SEND.STMT THEN
+               PMISC = 'F' ; PMISC<2> = 'Y' ; PMISC<8> = 'Y'
+               CALL PRINTER.CONTROL (CONTROL, '', ESCFLG, PMISC)
+          END ELSE
+               PMISC = 'O' ; PMISC<2> = 'Y' ; PMISC<3> = 'N' ; PMISC<4> = DEVICE
+               CALL PRINTER.CONTROL (CONTROL, DEVICE, ESCFLG, PMISC)
+               DEVICE = DEVICE<1,1>
+          END
+          PRINTER ON
+     END ELSE
+          IF FIRST THEN
+               PRINTER ON
+               FIRST = FALSE
+          END
+     END
+     PRINT LZ.TOP.OF.FORM:
+     IF COMP.B<14> = 'Y' THEN           ; *V*
+          LOGO = 'Y'                      ; *V*
+     END ELSE LOGO='N'
+     !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-   ;*V*
+     ! NEW HEADER SETUP                                    ;*V*
+     !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-   ;*V*
+     HEADERDATA = ''                    ; *V*
+     IF CREC<114> # '' THEN
+          READ BRANCH.B FROM F.BRANCH, CREC<114> THEN
+               FOR I = 1 TO 9
+                    HEADERDATA<I> = BRANCH.B<I>
+               NEXT I
+          END
+     END
+     IF HEADERDATA = '' THEN
+          HEADERDATA<1> = COMP.B<1>       ; *V*
+          HEADERDATA<2> = COMP.B<2>       ; *V*
+          HEADERDATA<3> = COMP.B<9>       ; *V*
+          HEADERDATA<4> = COMP.B<3>       ; *V*
+          HEADERDATA<5> = COMP.B<4>       ; *V*
+          HEADERDATA<6> = COMP.B<5>       ; *V*
+          HEADERDATA<7> = COMP.B<7>       ; *V*
+          HEADERDATA<9> = COMP.B<6>       ; *V*
+     END
+     IF BRANCH.AR = 'Y' THEN HEADERDATA<10> = CREC<114>
+     FMISC = ''                         ; *V*
+     FMISC<1> = 'ST'                    ; *V*
+     FMISC<3> = LOGO                    ; *V*
+     IF DEVICE = 'FAX' THEN FMISC<7> = 'F'
+     CALL PRINT.FORM.HEADER (HEADERDATA, FMISC)   ; *V*
+     PRINT LZ.REGULAR
+     IF COMP.B<9> = '' THEN PRINT
+     PRINT
+     PRINT
+     PRINT
+     PRINT
+     SKP = 0
+     PRINT ; PRINT
+     CINFO.B = ''
+     CINFO.B<1> = CREC<1>
+     IF CREC<122> # '' THEN
+          CINFO.B<-1>='Attn: ':CREC<122>
+     END ELSE
+          IF CREC<8> # '' & USE.AR.CONT = 'Y' THEN
+               CINFO.B<-1>='Attn: ':CREC<8>
+          END
+     END
+     IF CREC<2> # '' THEN CINFO.B<-1> = CREC<2>
+     IF CREC<3> # '' THEN CINFO.B<-1> = CREC<3>
+     IF CREC<97> # '' THEN CINFO.B<-1> = CREC<97>
+     CINFO.B<-1> = CREC<4>:', ':CREC<5>:' ':CREC<6>
+     IF SHOW.PF = 'Y' THEN
+          CINFO.B<-1> = 'Tel:':CREC<9>:'  Fax:':CREC<14>
+     END ELSE
+          IF SHOW.SLMN = 'Y' THEN
+               CINFO.B<-1>=' '
+               CINFO.B<-1>=' '
+               CINFO.B<-1>=' '
+               CINFO.B<-1> = 'Salesman ':CREC<7>
+          END
+     END
+     PRINT SPACE(8):CINFO.B<1> 'L#40':
+     PRINT LZ.BOLD:'Statement Date   ':LZ.REG:OCONV(RDATE,'D2/')
+     PRINT SPACE(8):CINFO.B<2> 'L#40':
+     PRINT LZ.BOLD:'Customer Account ':LZ.REG:CNO
+     PRINT SPACE(8):CINFO.B<3>'L#40':
+     IF STMT.SUPP.TERMS = 'Y' THEN
+          PRINT
+     END ELSE
+          PRINT LZ.BOLD:'Terms ':LZ.REG:OCONV(CREC<25>,'TTERMS;X;1;1')
+     END
+     LNPT = 1
+     LOOP
+          LNPT = LNPT + 1
+     WHILE LNPT LE 5 DO
+          PRINT SPACE(8):CINFO.B<LNPT+2> 'L#36 ':
+          PRINT LZ.LINEPTR:LZ.BOLD:IDEF<1,LNPT-1> 'L#2 ':LZ.REG:'- ':
+          PRINT 'Before Invoice Number Denotes ':IDEF<2,LNPT-1>:'.':LZ.REGULAR
+     REPEAT
+     PRINT CHAR(27):"&a":(17-1.2):"ra.5C":
+     PRINT LZ.SHADE15H:
+     PRINT LZ.SHADE15:
+     PRINT CHAR(27):"&a16ra0C":
+     PRINT P.ULO:STR(P.HORZLN,8):P.DNT:STR(P.HORZLN,8):P.DNT:STR(P.HORZLN,15):
+     PRINT P.DNT:STR(P.HORZLN,10):P.DNT:STR(P.HORZLN,9):P.DNT:
+     PRINT STR(P.HORZLN,10):P.DNT:STR(P.HORZLN,11):P.URO
+     PRINT CHAR(27):"&a":(18-1.7):"ra.5C":
+     PRINT LZ.SHADE15:
+     PRINT CHAR(27):"&a":(19-1.7):"ra.5C":
+     PRINT LZ.SHADE15:
+     PRINT CHAR(27):"&a17ra0C":
+     PRINT P.VERTLN:LZ.BOLD:'Invoice ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'Invoice ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'   Customer    ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:' Original ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:' Payment ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'  Amount  ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'  Invoice  ':LZ.REG:P.VERTLN
+     PRINT P.VERTLN:LZ.BOLD:'Number  ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:' Date   ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'     P/O #     ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'Inv Amount':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'  Date   ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'   Paid   ':LZ.REG:
+     PRINT P.VERTLN:LZ.BOLD:'  Balance  ':LZ.REG:P.VERTLN
+     PRINT P.LINT:STR(P.HORZLN,8):P.CINT:STR(P.HORZLN,8):P.CINT:STR(P.HORZLN,15):
+     PRINT P.CINT:STR(P.HORZLN,10):P.CINT:STR(P.HORZLN,9):P.CINT:
+     PRINT STR(P.HORZLN,10):P.CINT:STR(P.HORZLN,11):P.RINT
+     PRINT CHAR(27):"&a":(20-1.7):"ra.5C":
+     PRINT LZ.SHADE15H:
+     PRINT LZ.SHADE10H:
+     PRINT CHAR(27):"&a18ra0C":
+     LC = 0
+     RETURN
+     !
+     ! PRINT PAID OFF INVOICES FOR CURRENT MONTH
+     !
+200: INVPAID = DCOUNT(PAIDOFF<1>,CHAR(253))
+     IPCT = 0
+     LOOP
+          IPCT = IPCT + 1
+     WHILE IPCT LE INVPAID DO
+          INVNO = PAIDOFF<1,IPCT>
+          INVDT = PAIDOFF<2,IPCT>
+          INVAMT= PAIDOFF<3,IPCT>
+          DATEPD= PAIDOFF<4,IPCT>
+          READV CUSTPO FROM INVOICE, INVNO, 31 ELSE CUSTPO = ''
+          IF SHADE THEN SHADE = FALSE ELSE SHADE = TRUE
+          LS = MOD(LC+1,30)
+          IF LS + 0 = 0 THEN LS = 30
+          IF SHADE THEN
+               PRINT CHAR(27):"&a":(LS+20-1.7):"ra.5C":
+               PRINT LZ.SHADE10:
+          END
+          PRINT CHAR(27):"&a":(LS+20-1):"ra0C":
+          PRINT P.VERTLN:INVNO 'R#8':P.VERTLN:OCONV(INVDT,'D2/') 'R#8':
+          PRINT P.VERTLN:CUSTPO 'L#15':P.VERTLN:OCONV(INVAMT,'MD2') 'R#10':
+          PRINT P.VERTLN:OCONV(DATEPD,'D2/') 'R#9':
+          PRINT P.VERTLN:OCONV(INVAMT,'MD2') 'R#10':P.VERTLN:
+          PRINT OCONV(0,'MD2') 'R#11':P.VERTLN:LZ.BOLD:'P':LZ.REG
+          LC = LC + 1
+          IF LC = 30 THEN
+               CONTD = 1
+               GOSUB 3000
+               GOSUB 100
+               CONTD = 0
+          END
+     REPEAT
+     RETURN
+     !
+     !
+8800: ! DETERMINE OVERDUE STATEMENTS ONLY
+     !
+     INVCNT = DCOUNT(AR.B<2>,CHAR(253))
+     CHECK.OV1=0 ; CHECK.OV2=0 ; CHECK.OV3=0 ; CHECK.OV4=0 ; CHECK.OV5=0
+     COUNT = 0
+     LOOP
+          COUNT = COUNT + 1
+     WHILE COUNT LE INVCNT DO
+          KEY = AR.B<2,COUNT>
+          READ OIREC FROM OI, KEY ELSE GO 8801
+          IDATE = OIREC<2>
+          IF COMP.B<22> = 'D' THEN AGEDT = OIREC<8> ELSE AGEDT = OIREC<2>
+          IAMT = OIREC<3>
+          K = 1
+          AMTPD = 0
+          LOOP WHILE OIREC<5,K> # '' DO
+               AMTPD = AMTPD + OIREC<4,K> + OIREC<6,K> + OIREC<7,K>
+               K = K + 1
+          REPEAT
+          BAL = IAMT - AMTPD
+          DAY = RDATE - IDATE
+          BEGIN CASE
+               CASE AGEDT LE D30 & AGEDT GT D60 AND CHECK.OVDUE.90 # 'Y' ; CHECK.OV2 = CHECK.OV2 + BAL
+               CASE AGEDT LE D60 & AGEDT GT D90 AND CHECK.OVDUE.90 # 'Y' ; CHECK.OV3 = CHECK.OV3 + BAL
+               CASE AGEDT LE D90 & AGEDT GT D120 ; CHECK.OV4 = CHECK.OV4 + BAL
+               CASE AGEDT LE D120 ; CHECK.OV5 = CHECK.OV5 + BAL
+               CASE AGEDT LE D30 & CHECK.OVDUE.90 # 'Y' ; CHECK.OV1 = CHECK.OV1 + BAL
+               CASE CHECK.OVDUE.90 = 'Y' ; CHECK.OV1 = CHECK.OV1+0
+          END CASE
+          TOT.OVDUE=CHECK.OV2+CHECK.OV3+CHECK.OV4+CHECK.OV5
+8801: !
+     REPEAT
+     RETURN
+     ! RESORT INVOICES BY DATE
+     !
+6000: ITEMS = DCOUNT(AR.B<2>,CHAR(253)) ; SORTLIST = '' ; CTR = 0
+     LOOP
+          CTR = CTR + 1
+     WHILE CTR LE ITEMS DO
+          INVNO = AR.B<2,CTR>
+          READ OI.B FROM OI, INVNO ELSE OI.B = ''
+          INVDT = OI.B<2>
+          SUB.ACCTNO = OI.B<42>
+          IF SUB.ACCTNO = '' THEN SUB.ACCTNO = OI.B<1>
+          SUB.SPTO = OI.B<29>
+          IF SUB.SPTO= '' ! SUB.SPTO = 'MAN' THEN
+               READV SUB.SPTO FROM F.SHIPTO, SUB.ACCTNO, 67 ELSE SUB.SPTO = ''
+               SUB.SPTO = SUB.SPTO<1,1>
+          END
+          IF SHOW.SUBACCT.INFO # 'Y' THEN SUB.SPTO = '' ; SUB.ACCTNO = OI.B<1>
+          IF SUB.SPTO = '' ! SUB.SPTO = 'MAN' THEN SUB.SPTO = '00000001'
+          SUBID = SUB.ACCTNO:'!':SUB.SPTO:'*':INVDT
+          LOCATE SUBID IN SORTLIST<1> BY 'AR' SETTING VM ELSE
+               INS SUBID BEFORE SORTLIST<1,VM>
+               INS '' BEFORE SORTLIST<2,VM>
+          END
+          LOCATE INVNO IN SORTLIST<2,VM> BY 'AR' SETTING SVM ELSE
+               INS INVNO BEFORE SORTLIST<2,VM,SVM>
+          END
+     REPEAT
+     SORTED.INVOICES = SORTLIST<2>
+     CONVERT ISVM TO IVM IN SORTED.INVOICES
+     AR.B<2> = SORTED.INVOICES
+     RETURN
+     END

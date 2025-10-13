@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LISTF</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LISTF,LISTFL,LISTFR" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "listf.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LISTF, LISTFL, LISTFR</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="listdict.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="listk.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LISTF</span> command lists all files defined in the VOC. The <span style="font-weight: bold;">LISTFL</span> and <span style="font-weight: bold;">LISTFR</span> commands show only local or remote files.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LISTF </span>{<span style="font-style: italic;">modes</span>}<span style="font-weight: bold;"> </span>{<span style="font-weight: bold;">LPTR</span>}</p>
+<p style="margin: 4px 0 0 30px;"><span style="font-weight: bold;">LISTFL </span>{<span style="font-style: italic;">modes</span>}<span style="font-weight: bold;"> </span>{<span style="font-weight: bold;">LPTR</span>}</p>
+<p style="margin: 4px 0 0 30px;"><span style="font-weight: bold;">LISTFR </span>{<span style="font-style: italic;">modes</span>}<span style="font-weight: bold;"> </span>{<span style="font-weight: bold;">LPTR</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LISTF</span> command is a sentence to list all <a href="voc_f.htm" class="topiclink">F type VOC entries</a>. The listing shows the VOC name of the file, the file type, the description (field 1 of the VOC entry), the data portion pathname (field 2) and the dictionary pathname (field 3). The report is sorted by file name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LISTFL</span> command is similar but shows only files that are local to the account. Selection is performed by reporting only those records for which the data portion pathname does not contain a directory separator character. It is thus possible to defeat this selection process by using absolute pathnames for local files. The <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command always uses the file name only for a local file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LISTFR</span> command is similar but shows only files that are remote to the account. Selection is performed by reporting only those records for which the data portion pathname contains a directory separator character.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The file type column shows:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">DH</td><td style="border:none;padding:0">for a dynamic hash file. This type code may be followed by</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">C</td><td style="border:none;padding:0">the file is a data collection</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">D</td><td style="border:none;padding:0">the file uses data integrity constraints</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">E</td><td style="border:none;padding:0">the file uses encryption</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">I</td><td style="border:none;padding:0">the file has alternate key indices</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">R</td><td style="border:none;padding:0">the file is exported for replication</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">S</td><td style="border:none;padding:0">file statistics are enabled</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">T</td><td style="border:none;padding:0">the file has a trigger function defined</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">X</td><td style="border:none;padding:0">the file is in ECS mode</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">Dir</td><td style="border:none;padding:0">for a directory file. This type code may be followed by</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">E</td><td style="border:none;padding:0">the file uses encryption</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">L</td><td style="border:none;padding:0">the file uses forced lowercase ids</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">R</td><td style="border:none;padding:0">the file is exported for replication</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">T</td><td style="border:none;padding:0">the file has a trigger function defined</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">U</td><td style="border:none;padding:0">the file uses forced uppercase ids</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">Mult</td><td style="border:none;padding:0">for a multifile. This entry will be followed by a line for each subfile.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">Err</td><td style="border:none;padding:0">if the file cannot be opened.</td></tr></table></div><p style="margin: 10px 0 0 0;">The column is blank for a VOC entry with no data pathname.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-style: italic;">modes</span> element of this command is a query processor <span style="font-weight: bold;"><a href="with.htm" class="topiclink">WITH</a></span> or <span style="font-weight: bold;"><a href="without.htm" class="topiclink">WITHOUT</a></span> clause using ENCRYPTION, REPLICATION or TRIGGER. For example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LISTF WITH REPLICATION</span></p>
+<p>would show only files that use replication.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LPTR</span> keyword will direct the output to the printer. Other query processor keywords can be appended to the command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span>, <span style="font-weight: bold;"><a href="delete_file.htm" class="topiclink">DELETE.FILE</a></span>, <span style="font-weight: bold;"><a href="list_replicated.htm" class="topiclink">LIST.REPLICATED</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

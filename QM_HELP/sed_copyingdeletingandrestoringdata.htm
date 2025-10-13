@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SED - Copying, deleting and restoring data</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sed_copyingdeletingandrestoringdata.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SED &nbsp;- &nbsp;Copying, Deleting and Restoring Data</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sed_datainsertion.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sed_multivalueddata.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Delete char</span> (Ctrl-D or Delete)</p>
+<p style="margin: 0 0 0 30px;">The character at the current cursor position is deleted unless the cursor is positioned at the end of the line in which case the following line is appended to the current line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Backspace</span> (Ctrl-H or Backspace)</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">backspace</span> function removes the character to the left of the cursor position unless the cursor is already at the start of the line in which case the current line is appended to the previous line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Kill line</span> (Ctrl-K)</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">kill line</span> function behaves in one of two ways depending on the cursor position.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If there is data at or beyond the cursor position on the current line, the line is truncated at the cursor position.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If the cursor is beyond the last data character on the current line, the line break is removed, bringing data up from the next line.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The data removed by consecutive uses of the <span style="font-weight: bold;">kill line</span> function is placed in the <span style="font-weight: bold;">kill buffer</span> (see Functions that Operate on a Block of Data). Any other function will cause a later use of the <span style="font-weight: bold;">kill line</span> function to reset the kill buffer.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">kill line</span> function may also be used in an explore buffer to delete the record named on the current line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Delete word</span> (Esc-D)</p>
+<p style="margin: 0 0 0 30px;">Text is deleted from the current cursor position to the end of the next word.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Back del word</span> (Esc-Backspace)</p>
+<p style="margin: 0 0 0 30px;">Text is deleted backwards from the current cursor position to the start of the previous word.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMRespond()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMRespond()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmrespond.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMRespond()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmreplace.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmrevision.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMRespond()</span> function responds to a request for input from a command executed on the server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The function arguments are:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">Response</span></td><td style="border:none;padding:0">is the response to be sent.</td></tr></table></div><p style="text-indent: -91px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">Err</span></td><td style="border:none;padding:0">is an integer variable to receive status information. This argument is not present in all variants of the QMClient API.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This function may only be used when an immediately preceding <span style="font-weight: bold;"><a href="qmexecute.htm" class="topiclink">QMExecute()</a></span> or <span style="font-weight: bold;">QMRespond()</span> function has returned a status of SV_PROMPT.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMRespond()</span> function returns the given <span style="font-style: italic;">Response</span> to the input request from the server command. Further output from this command is returned as a text string. If the command does not produce any output, the C API returns a null pointer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the command completes without requesting input, the <span style="font-style: italic;">Err</span> variable is set to SV_OK.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the command requests further input, any output up to that point is returned and the <span style="font-style: italic;">Err</span> variable is set to SV_PROMPT. The client may respond to this using the <span style="font-weight: bold;">QMRespond()</span> function or abort the command using the <span style="font-weight: bold;"><a href="qmendcommand.htm" class="topiclink">QMEndCommand()</a></span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">char * QMRespond(char * </span><span style="font-style: italic;">Cmnd</span><span style="font-weight: bold;">, int * </span><span style="font-style: italic;">Err</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">S = QMExecute(&quot;RUN MYPROG&quot;, &amp;Err);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while(Err == SV_PROMPT)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process returned value and get new Response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;QMFree(S);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;S = QMRespond(Response, &amp;Err);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> }</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process final response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that the returned string pointer from both <span style="font-weight: bold;">QMExecute()</span> and <span style="font-weight: bold;">QMRespond()</span> points to dynamically allocated memory that must be released using <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span> when no longer required.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMRespond(ByVal </span><span style="font-style: italic;">Cmnd </span><span style="font-weight: bold;">as String, ByRef </span><span style="font-style: italic;">Err</span><span style="font-weight: bold;"> as Integer) as String</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">S = QMExecute(&quot;RUN MYPROG&quot;, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">While Err = SV_PROMPT</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process returned value and get new Response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; S = QMRespond(Response, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">End While</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process final response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A3_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A3','TOGGLE0186A3_ICON')">QMBasic</a> Class Module</span></td></tr></table></div><div id="TOGGLE0186A3" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">Respond(</span><span style="font-style: italic;">Cmnd</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">Err</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">S = session-&gt;Execute(&quot;RUN MYPROG&quot;, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">loop</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while Err = SV$PROMPT</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process returned value and get new Response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; S = session-&gt;Respond(&quot;RUN MYPROG&quot;, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">repeat</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process final response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A4_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A4','TOGGLE0186A4_ICON')">Java</a></span></td></tr></table></div><div id="TOGGLE0186A4" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">String Respond(String </span><span style="font-style: italic;">Cmnd</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">S = QMExecute(&quot;RUN MYPROG&quot;);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while(qm.ServerError == SV_PROMPT)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process returned value and get new Response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;S = qm.Respond(Response);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> }</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process final response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A5_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A5','TOGGLE0186A5_ICON')">Python</a></span></td></tr></table></div><div id="TOGGLE0186A5" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">Respond(</span><span style="font-style: italic;">Cmnd</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">S, Err = qm.Execute(&quot;RUN MYPROG&quot;)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while(qm.ServerError == SV$PROMPT):</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process returned value and get new Response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;S, Err = qm.Respond(Response)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Process final response</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A3_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A3\',\'TOGGLE0186A3_ICON\')');
+HMInitToggle('TOGGLE0186A3','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A4_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A4\',\'TOGGLE0186A4_ICON\')');
+HMInitToggle('TOGGLE0186A4','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A5_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A5\',\'TOGGLE0186A5_ICON\')');
+HMInitToggle('TOGGLE0186A5','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

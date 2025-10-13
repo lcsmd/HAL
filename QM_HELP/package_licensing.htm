@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Package Licensing</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Package licensing" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "package_licensing.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Package Licensing</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="errors.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sxa.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Packages provide a way in which a software developer can ensure that their application is used only on systems for which it is licensed and with a defined user limit. QM supports two distinct types of package; <span style="font-weight: bold;">registered packages</span> that can be licensed by QM resellers via the openqm.com web site and <span style="font-weight: bold;">private packages</span> that manage the licensing internally.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-size: 12pt; font-weight: bold;">Registered Packages</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Registered packages are managed by the QM licensing system. A reseller can register a package name with Rocket Software and then use the web site to generate licences to use that package. Registered packages are identified by names of up to 15 characters that commence with an uppercase letter and may have an associated user limit and expiry date. They are tied to a specific QM licence by QM's own licence authentication system. QM resellers who own registered packages will have access to the relevant licensing screens on the openqm.com web site.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A package licence is enabled by use of the <span style="font-weight: bold;"><a href="package_licence.htm" class="topiclink">PACKAGE.LICENCE</a></span> command in the QMSYS account. The package name and authorization code are entered by the user and then validated by QM before being applied to the internal registered package list. This command can also be used to remove a package licence or to amend the authorisation code.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-size: 12pt; font-weight: bold;">Private Packages</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Private packages are applications that are released directly by their developer. They are identified by names of up to 15 characters that commence with a lowercase letter. All aspects of licence authentication are the responsibility of the application. The only involvement of QM in this process is tracking the number of users currently active in the package.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-size: 12pt; font-weight: bold;">Entering a Package</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An application uses the QMBasic <span style="font-weight: bold;">ENTER.PACKAGE()</span> function to indicate that it is entering the package.</p>
+<p style="margin: 10px 0 10px 30px;">ENTER.PACKAGE(<span style="font-style: italic;">name</span>)</p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of the package.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For a registered package this function returns True if it is successful, False if it fails. In the event of failure, the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function can be used to determine the cause.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For a private package, the function returns the number of users in the package, including the one that executed this function. The application can determine from its own licensing rules whether the user limit has been reached. If so, it should exit the package as described below.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where a package is to be tied to a specific QM licence, the licence number can be obtained using the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">SYSTEM()</a></span> function with key 31 (SYS$LICENCE.NO).</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-size: 12pt; font-weight: bold;">Exiting from a Package</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An application uses the QMBasic <span style="font-weight: bold;">EXIT.PACKAGE()</span> function to indicate that it is leaving the package.</p>
+<p style="margin: 10px 0 10px 30px;">EXIT.PACKAGE(<span style="font-style: italic;">name</span>)</p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of the package.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This function returns True if it is successful, False if it fails. In the event of failure, the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function can be used to determine the cause. Note that a registered package may be configured not to allow exit.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM will automatically update the internal data managing package access if a process terminates without exiting from a package that it had previously entered.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Identifying Active Packages</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An application can obtain a field mark delimited list of currently active packages by use of the <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key 1054 (SYS$PACKAGES). Although this should not normally be required as the process should be able to track package entry and exit, it might be useful, for example, to test if a malicious user has attempted to defeat the user limit mechanism by executing an <span style="font-weight: bold;"><a href="qmb_exit_package.htm" class="topiclink">EXIT.PACKAGE()</a></span> function. A test such as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">IF LISTINDEX(SYSTEM(1054), @FM, package.name) THEN</span></p>
+<p class="p_Normal">could be used periodically to confirm that the process is stall active in that package.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Application Installation</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An application installer can add a licence for a registered package by using the <span style="font-weight: bold;"><a href="qmbs_package.htm" class="topiclink">!PACKAGE()</a></span> subroutine.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">See also:</span><br />
+<span style="font-weight: bold;"><a href="qmb_enter_package.htm" class="topiclink">ENTER.PACKAGE()</a></span>, <span style="font-weight: bold;"><a href="qmb_exit_package.htm" class="topiclink">EXIT.PACKAGE()</a></span>, <span style="font-weight: bold;"><a href="package_licence.htm" class="topiclink">PACKAGE.LICENCE</a></span><span style="font-weight: bold;"><a href="package_licence.htm" class="topiclink">,</a></span> <span style="font-weight: bold;"><a href="qmbs_package.htm" class="topiclink">!PACKAGE()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

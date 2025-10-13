@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SED Extensions - Variables, constants and functions</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sed_extensionsvarconstfunc.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SED &nbsp;- &nbsp;Variables, Constants and Functions</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sed_extensionprogramming.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sed_extensionsstdvarfunc.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>All extension program source text is case insensitive except for literal strings.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Local Variables</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>These are names commencing with a letter and containing only letters, digits, periods (.) and dollar signs. A procedure or function can use at most 250 local variables. Local variables are private to the procedure or function and the same name used in another procedure refers to a different local variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Global Variables</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>These are names commencing with a dollar sign and containing only letters, digits, periods (.) and dollar signs. Global variables are common to all extensions and retain their values until the user leaves SED.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Global variables beginning with two dollar signs are reserved. Current usage of these names is:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">$$EXTENSION.FILES</td><td style="border:none;padding:0">Contains a space separated list of the files to be searched for extension programs. By default, this variable contains &amp;SED.EXTENSIONS&amp; but it may be modified at any time by user written extension programs. File names are used left to right. If the requested extension is not found in any of these files, a final attempt is made using the &amp;SED.EXTENSIONS&amp; file in the QMSYS account. Once an extension program has been loaded on first use, it remains loaded unless it is specifically unloaded by use of <span style="font-weight: bold;">unload</span> or by recompilation by the user who has it loaded.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Constants</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Numeric constants are written as a sequence of digits, optionally prefixed by a sign or including a decimal point. A numeric constant with an absolute value of less than one must be written with a leading zero (e.g. 0.5).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A string constant may be enclosed in either single or double quotes. It may contain any character except the mark characters (which are available using the tokens shown below) and ASCII character 0 (nul).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The logical values are represented as 0 for False and 1 for True. In general, use of any value other than zero is treated as True by operations that expect logical values as their arguments.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Key Tokens</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">get.key</span> function returns a code that relates to an internal function number. Each function has a corresponding symbolic name. These all begin with a period (.) and are the same as the comment inserted at the start of each line of a key binding record with spaces replaced by period. The names are:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.newline</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.start.line</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.end.line</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.back.char</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.fwd.char</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.up.line</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.down.line</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.top</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.bottom</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.page.up</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.page.down</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.del.char</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.backspace</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.kill.line</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.save.record</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.quit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.overlay</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.tab</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.goto.line</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.toggle.chars</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.fwd.search</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.replace</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.query.replace</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.swap.mark</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.execute.macro</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.nudge.down</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.nudge.up</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.set.mark</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.delete.region</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.copy.region</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.insert.killed</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.forward.word</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.delete.word</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.import</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.reverse.srch</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.lowercase</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.uppercase</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.capital.init</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.back.word</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.del.back.word</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.close.spaces</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.next.buffer</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.prev.buffer</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.goto.buffer</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.delete.buffer</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.up.to.list</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.repeat</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.refresh</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.quote.char</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.list.buffers</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.find.record</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.write.record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.start.macro</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.end.macro</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.expand.char</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.list.records</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.export</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.command</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.cancel</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.run</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.insert</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>.align.text</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><br />
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">System Variables</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Extension programs may examine the current state of many editor features by use of system variables. These all begin with a percent sign (%) and are read only (i.e. they cannot be used in a set function).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following system variables may also be referenced in extensions:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@IM</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@FM</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@VM</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@SM</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@TM</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@LOGNAME</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@CRTHIGH</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@CRTWIDE</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@DATE</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@TIME</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@PATH</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@SENTENCE</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@WHO</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@TTY</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><p>@USERNO</p>
+</td>
+<td style="vertical-align:top; width:176px; padding:4px; border:none"><br />
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Comments</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A comment is introduced by an asterisk (*) and extends to the end of the line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Erroneous Programs</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Extension programs may test whether the buffer being processed is read only. Attempts to change such a buffer are ignored. No error is displayed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Variables are type variant in the same way as for QMBasic programs and they follow the same rules. In most cases, attempts to use a non-numeric value where a number is required result in use of a default.</p>
+
+</td></tr></table>
+
+</body>
+</html>

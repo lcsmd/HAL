@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>REM()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="REM()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_rem.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">REM()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_release.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_remark.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">REM()</span> function returns the remainder when one value is divided by another.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">REM(</span><span style="font-style: italic;">dividend</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">divisor</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">dividend</span></td><td style="border:none;padding:0">evaluates to a number or a numeric array.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">divisor</span></td><td style="border:none;padding:0">evaluates to a number or a numeric array.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">REM()</span> function returns the remainder of dividing <span style="font-style: italic;">dividend</span> by <span style="font-style: italic;">divisor</span>. This is defined as</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REM(x, y) = SIGN(x) * MOD(ABS(X), ABS(Y))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where the SIGN() function returns 1 for x &gt; 0, -1 for x &lt; 0 and 0 for x = 0. (SIGN() is not part of QMBasic. It is used here only to explain the action of the <span style="font-weight: bold;">REM()</span> function).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">REM()</span> function differs from the <span style="font-weight: bold;"><a href="qmb_mod.htm" class="topiclink">MOD()</a></span> function when one of its arguments is negative. The following table shows the result of the <span style="font-weight: bold;">REM()</span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p><span style="font-weight: bold;">Dividend</span></p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p><span style="font-weight: bold;">Divisor</span></p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p><span style="font-weight: bold;">REM()</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p>530</p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p>100</p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p>30</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p>-530</p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p>100</p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p>-30</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p>530</p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p>-100</p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p>30</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p>-530</p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p>-100</p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p>-30</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p>100</p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p>0</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p>-100</p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p>0</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p>100</p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p>100</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:129px; padding:4px; border:none"><p>-100</p>
+</td>
+<td style="vertical-align:top; width:137px; padding:4px; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; width:130px; padding:4px; border:none"><p>-100</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If either <span style="font-style: italic;">dividend</span> or <span style="font-style: italic;">divisor</span> is a numeric array (a dynamic array where all elements are numeric), the <span style="font-weight: bold;">REM()</span> function operates on each element in turn and returns another numeric array. The structure of this array will be the same as that of the <span style="font-style: italic;">dividend</span> and <span style="font-style: italic;">divisor</span> arrays if they are identical. For arrays of differing structure, the structure of the result depends on whether the <span style="font-weight: bold;">REUSE()</span> function is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = REM(T, 30)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement finds the remainder of dividing T by 30 and assigns this to N.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_mod.htm" class="topiclink">MOD()</a></span>, <span style="font-weight: bold;"><a href="qmb_rounddown.htm" class="topiclink">ROUNDDOWN()</a></span>, <span style="font-weight: bold;"><a href="qmb_rounddown.htm" class="topiclink">ROUNDUP()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

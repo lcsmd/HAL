@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMBasic - Scalars, matrices and dynamic arrays</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Variables (QMBasic)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbasic_scalarsmatricesanddynamicarrays.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMBasic &nbsp;- &nbsp;Scalars, Matrices and Dynamic Arrays</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbasic_variablenamesandvalues.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbasic_collections.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMBasic provides support for both scalar and matrix variables. A <span style="font-weight: bold;">scalar variable</span> is a simple value referenced by its name alone. It may contain data of any type.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A <span style="font-weight: bold;">matrix variable</span> is a one or two dimensional array of values. Matrices must be declared by use of the <span style="font-weight: bold;"><a href="qmb_dim.htm" class="topiclink">DIMENSION</a></span> (more usually <span style="font-weight: bold;">DIM</span>) statement. Because memory for matrices is allocated dynamically, the <span style="font-weight: bold;">DIM</span> statement must be executed at program run time before the variable is used in any other way. Matrix variables are also known as <span style="font-weight: bold;">dimensioned arrays</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A one dimensional matrix of ten elements is defined by a statement of the form</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DIM A(10)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For a two dimensional matrix with 5 rows of 8 columns this becomes</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DIM B(5,8)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A single dimensional matrix is effectively a two dimensional matrix with one column. Thus references of the forms A(B) and A(B,1) are totally interchangeable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By default, all matrices have an additional element, the zero element, which is used by some QMBasic statements. This is referred to as A(0) or B(0,0). The <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive can be used to create Pick style matrices which do not have a zero element. Note that, in a two dimensional matrix, this is a single element, not a complete row 0 and column 0.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The elements of a matrix may be of differing types (numbers, strings, file variables, etc).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A variable holding a string value may be considered as a <span style="font-weight: bold;">dynamic array</span>, the mark characters being used to divide it into fields, values and subvalues. Such a string may correspond to a record in a data file or may be totally internal to the program. Special operations are provided in QMBasic to manipulate dynamic arrays. These include sorted and unsequenced searching, insertion, deletion, replacement and extraction as well as some extremely powerful operations to build or decompose dynamic arrays.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A dynamic array in which each field, value or subvalue contains a numeric value is known as a <span style="font-weight: bold;">numeric array</span>. Many of the arithmetic operations operate on numeric arrays by processing corresponding elements in turn. For example, a statement</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = B + C</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>adds B and C together, storing the result in A. Where B and C are simple numeric values or strings that can be converted to numbers, this operation behaves as in most other computer languages. If B and C are dynamic arrays the operation handles each corresponding pair of values in turn.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">B = &quot;1&quot; : @FM : &quot;2&quot; : @VM : &quot;3&quot; : @FM : &quot;4&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">C = &quot;5&quot; : @FM : &quot;6&quot; : @VM : &quot;7&quot; : @FM : &quot;8&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = B + C</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The result of this operation would be to set A to &nbsp;6<span style="font-size: 6pt;">FM</span>8<span style="font-size: 6pt;">VM</span>10<span style="font-size: 6pt;">FM</span>12. The effect of operations on numeric arrays where the placement of fields, values and subvalues do not match exactly is determined by the use of the <span style="font-weight: bold;"><a href="qmb_reuse.htm" class="topiclink">REUSE()</a></span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="matrix_file_io.htm" class="topiclink">Matrix File I/O</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

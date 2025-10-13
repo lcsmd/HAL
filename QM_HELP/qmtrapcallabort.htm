@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMTrapCallAbort()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMTrapCallAbort" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmtrapcallabort.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMTrapCallAbort()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmtrans.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmtxn.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMTrapCallAbort()</span> function enables or disables client side trapping of aborts in actions that execute QMBasic code on the server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The function tales a single argument, <span style="font-style: italic;">Mode</span>, evaluating to True or False.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By default, an abort occurring in a subroutine called using <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span> will display a message box (VB) or display a message. Use of the key value 8 to the <span style="font-weight: bold;"><a href="qmconnectiontype.htm" class="topiclink">QMConnectionType()</a></span> function before opening the connection can modify this behaviour such that display is suppressed, returning the abort message via <span style="font-weight: bold;"><a href="qmerror.htm" class="topiclink">QMError()</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMTrapCallAbort</span> function allows an application to trap the abort and take its own recovery action. When call abort trapping is enabled, use of <span style="font-weight: bold;"><a href="qmstatus.htm" class="topiclink">QMStatus()</a></span> immediately after return from <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span> will return zero if the call ran successfully or non-zero if an abort occurred. The actual abort message can be retrieved using <span style="font-weight: bold;"><a href="qmerror.htm" class="topiclink">QMError()</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When call abort trapping is not enabled, the value returned by <span style="font-weight: bold;"><a href="qmstatus.htm" class="topiclink">QMStatus()</a></span> after <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span> is the current <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function value on the server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">When operating with multiple server connections from a single client, the state of call abort trapping applies to all connections.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Call abort trapping applies to <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span>, <span style="font-weight: bold;"><a href="qmcallx.htm" class="topiclink">QMCallx()</a></span>, <span style="font-weight: bold;"><a href="qmcreateobject.htm" class="topiclink">QMCreateObject()</a></span>, <span style="font-weight: bold;"><a href="qmdestroyobject.htm" class="topiclink">QMDestroyObject()</a></span>, <span style="font-weight: bold;"><a href="qmget.htm" class="topiclink">QMGet()</a></span> and <span style="font-weight: bold;"><a href="qmset.htm" class="topiclink">QMSet()</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;">void <span style="font-weight: bold;">QMTrapCallAbort(int </span><span style="font-style: italic;">Mode</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMTrapCallAbort(1);</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMTrapCallAbort ByVal </span><span style="font-style: italic;">Mode </span><span style="font-weight: bold;">as Integer</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMTrapCallAbort(True)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A3_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A3','TOGGLE0186A3_ICON')">QMBasic</a> Class Module</span></td></tr></table></div><div id="TOGGLE0186A3" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">TrapCallAbort(</span><span style="font-style: italic;">Mode</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">Session-&gt;TrapCallAbort(@true)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A4_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A4','TOGGLE0186A4_ICON')">Java</a></span></td></tr></table></div><div id="TOGGLE0186A4" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">boolean TrapCallAbort</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">qm.TrapCallAbort = true;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMTrapCallAbort()</span> function is implemented as a public property variable in this version of the QMClient API.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A5_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A5','TOGGLE0186A5_ICON')">Python</a></span></td></tr></table></div><div id="TOGGLE0186A5" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">TrapCallAbort(</span><span style="font-style: italic;">Mode</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">qm.TrapCallAbort(True)</span></p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A3_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A3\',\'TOGGLE0186A3_ICON\')');
+HMInitToggle('TOGGLE0186A3','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A4_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A4\',\'TOGGLE0186A4_ICON\')');
+HMInitToggle('TOGGLE0186A4','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A5_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A5\',\'TOGGLE0186A5_ICON\')');
+HMInitToggle('TOGGLE0186A5','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

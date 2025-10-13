@@ -1,0 +1,86 @@
+* HAL.SCHEDULE - Handle scheduling-related commands
+* @param TEXT - The user's request text
+* @param RESPONSE - Response to be sent back
+
+SUBROUTINE HAL.SCHEDULE(TEXT, RESPONSE)
+$INSERT COMMON
+$INSERT SYSCOM
+
+* Initialize response
+RESPONSE = ''
+
+* Open schedule file
+OPEN 'HAL.SCHEDULE' TO F.SCHEDULE ELSE
+    CREATE F.SCHEDULE ON ''
+END
+
+* Extract date and time from text
+CALL DATE.EXTRACT(TEXT, DATE.STR, TIME.STR, EVENT.DESC)
+
+IF DATE.STR = '' OR TIME.STR = '' THEN
+    * Couldn't parse date/time, ask LLM for help
+    RESPONSE = "I'm not sure about the date and time for this schedule request. Could you please be more specific?"
+    RETURN
+END
+
+* Convert to internal format
+INT.DATE = ICONV(DATE.STR, 'D')
+INT.TIME = ICONV(TIME.STR, 'MT')
+
+IF INT.DATE = '' OR INT.TIME = '' THEN
+    RESPONSE = "I couldn't understand the date and time format. Please try again."
+    RETURN
+END
+
+* Generate unique ID for event
+EVENT.ID = INT.DATE : '.' : INT.TIME : '.' : RND(99999)
+
+* Create event record
+REC = ''
+REC<1> = EVENT.DESC    * Description
+REC<2> = INT.DATE      * Internal date
+REC<3> = INT.TIME      * Internal time
+REC<4> = DATE.STR      * Display date
+REC<5> = TIME.STR      * Display time
+REC<6> = 0             * Not completed
+REC<7> = DATE()        * Creation date
+REC<8> = TIME()        * Creation time
+
+* Write event to file
+WRITE REC TO F.SCHEDULE, EVENT.ID
+
+* Format response
+RESPONSE = "I've scheduled ":EVENT.DESC:" for ":DATE.STR:" at ":TIME.STR:"."
+
+* Check for conflicts
+GOSUB CHECK.CONFLICTS
+IF CONFLICTS # '' THEN
+    RESPONSE := CHAR(10):CHAR(10):"Note: You also have these events scheduled around that time:":CHAR(10):CONFLICTS
+END
+
+RETURN
+
+*************************************************************************
+CHECK.CONFLICTS:
+* Check for other events within 1 hour
+CONFLICTS = ''
+
+SELECT F.SCHEDULE TO SEL.LIST
+READLIST EVENT.IDS FROM SEL.LIST ELSE RETURN
+
+LOOP
+    REMOVE EVENT.ID FROM EVENT.IDS SETTING MORE
+    UNTIL MORE = 0 DO
+        READ REC FROM F.SCHEDULE, EVENT.ID ELSE CONTINUE
+        
+        * Skip if not same date
+        IF REC<2> # INT.DATE THEN CONTINUE
+        
+        * Check if within 1 hour
+        TIME.DIFF = ABS(REC<3> - INT.TIME)
+        IF TIME.DIFF <= 100 AND EVENT.ID # CURR.EVENT.ID THEN
+            IF CONFLICTS # '' THEN CONFLICTS := CHAR(10)
+            CONFLICTS := "- ":REC<1>:" at ":REC<5>
+        END
+    REPEAT
+RETURN

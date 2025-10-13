@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>RPL.PAUSE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="RPL.PAUSE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "rpl_pause.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">RPL.PAUSE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="revoke_key.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="rpl_status.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RPL.PAUSE</span> command pauses or resumes a replication subscriber.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">RPL.PAUSE </span><span style="font-style: italic;">server </span>{<span style="font-weight: bold;">CANCEL</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 33px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:63px"><span style="font-style: italic;">server</span></td><td style="border:none;padding:0">identifies the replication subscriber to which the command applies.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">RPL.PAUSE</span> command is normally only present in the VOC of the QMSYS account but it can be copied to other accounts if needed. Use of the command requires administrator rights.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Pausing a replication subscriber causes it to temporarily stop applying updates from the publisher server named in the command. It is intended for use when, for example, bringing the system to a quiescent state that allows the subscriber system to be backed up while updates continue on the publisher. A backup performed in this way is safe from the structural errors that can occur if a file is modified while it is being backed up.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Subsequent use of the <span style="font-weight: bold;">RPL.PAUSE</span> command with the cancel option will resume application of updates.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="rpl_status.htm" class="topiclink">RPL.STATUS</a></span> and <span style="font-weight: bold;"><a href="pstat.htm" class="topiclink">PSTAT</a></span> commands both show whether replication is paused.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span><br />
+<a href="replication.htm" class="topiclink">Replication</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

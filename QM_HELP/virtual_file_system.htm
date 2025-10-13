@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>The Virtual File System</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="VFS,Virtual File System" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "virtual_file_system.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">The Virtual File System</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmnet.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="creatingandmodifyingdata.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The Virtual File System (VFS) allows application designers to provide access to data that appears to an application as a file but may actually be something quite different. Possible uses of the VFS include:</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="text-indent: 0; padding-left: 30px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Providing access to data in other database environments.</p><p style="text-indent: 0; padding-left: 30px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Accessing data transparently over a network where QMNet is not appropriate.</p><p style="text-indent: 0; padding-left: 30px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Implementing an alternative encryption layer on top of standard QM files.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are two styles of VFS handler; <span style="font-weight: bold;">internal</span> using a QMBasic class module to perform the file system operations, and <span style="font-weight: bold;">external</span> using a C program. Development of an external handler requires skills beyond QMBasic but allows access to run time libraries provided by other database vendors.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The role of the VFS handler is largely to make the external data appear to be a QM file. It may be possible to achieve very close compatibility but often there are some features that are difficult to link between the two environments. For example, the index scanning operations of QM may have no direct equivalence in the external data source. Where it is not possible to provide full compatibility, some features of QM may not be available when using the VFS.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Before using any of the VFS handlers available via the openqm.com web site, take care to read the comment text at the head of the source code as this may include important issues to consider before using the VFS.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">The Internal VFS Handler Class Module</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A VFS handler is a globally catalogued QMBasic class module that intercepts all attempts to access the file (read, write, select, etc). It processes requests, storing or retrieving data as appropriate.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A template class module named VFS.CLS is provided in the BP file of the QMSYS account. This includes a brief description of each of its component functions and subroutines.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The External VFS Handler C Program</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A heavily commented skeleton program is available for download from the openqm.com web site. There are also variants adapted to interface with other products, including (where redistribution rights permit) pre-built versions that require no additional programming.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The skeleton program contains all of the C coding necessary to interface with a parent QM process and dummy functions corresponding to each of the file system operations handled by the VFS. These functions need to be modified to interface with whatever file system is to be accessed by the VFS handler. Unlike the internal VFS where there is a separate instance for each file opened, an external handler may be shared between multiple files opened from the same QM process. The handler communicates with its parent QM process through a pipe, ensuring that there is complete isolation between the two processes which, in turn, protects the QM process from the effects of any programming errors in the VFS handler.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">Creating a Virtual File System</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are three steps; creating the VFS handler, defining the VFS server and creating the VOC entries.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Step 1:</span> Creation of the VFS handler involves modification and compilation as described above.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Step 2:</span> The handler name and server connection information is stored as a <span style="font-weight: bold;">VFS server definition</span> which is created using the <span style="font-weight: bold;"><a href="set_vfs_server.htm" class="topiclink">SET.VFS.SERVER</a></span> command. Some parts of this definition such as the remote server connection details may be irrelevant for a particular use. Once a VFS server definition has been created, the <span style="font-weight: bold;"><a href="admin_server.htm" class="topiclink">ADMIN.SERVER</a></span> command can be used to provide more closely controlled user authentication.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For an internal VFS handler, the handler name corresponds to a globally catalogued VFS handler class module.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For an external VFS handler, the handler name has a case insensitive prefix of EXT separated from the rest of the name by a single space. The actual name of the VFS handler program is formed by adding a prefix of vfs_ to the &nbsp;handler name. For example, the VFS handler available from the openqm.com web site to access U2 files would be vfs_u2 on Linux or vfs_u2.exe on Windows. The handler program is started when the first file using that VFS server is opened and remains active until the last file is closed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Step 3:</span> Like all files, a VFS file is identified by an F-type VOC item. It is possible for only some parts of a file to be VFS items. Thus a file might have a VFS data part but a normal dictionary part. &nbsp;The components of a multifile can be a mix of VFS and normal items.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A VFS item is identified by the pathname in the F-type VOC entry being specified as &quot;<span style="font-family: 'Courier New',Courier,monospace;">VFS:</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">server</span>&quot; where <span style="font-style: italic;">server</span> identifies the VFS server definition which in turn identifies the VFS handler program and connection information. There is an optional third component to this syntax which will be passed to the handler on opening the VFS item. The full syntax of the VOC item is thus</p>
+<p style="margin: 5px 0 5px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">VFS:</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">server</span><span style="font-family: 'Courier New',Courier,monospace;">:</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">qualifier</span></p>
+<p class="p_Normal">This third component could be used, for example, when a single VFS handler is used to access many files. The <span style="font-style: italic;">qualifier</span> might be the pathname or other reference to the actual file to be opened by the handler. It may include further colons dividing it into sections in any way that the developer wishes.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Dictionaries</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">It is important to note that using the VFS to access dictionaries on remote systems may have unexpected effects. For example, <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> functions or correlatives using <a href="conv_tfile.htm" class="topiclink">T-conversions</a> will be compiled in the context of the local QM system and hence file names on items within the system accessed via the VFS may be meaningless.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As a general rule it is best to create local copies of the dictionaries with appropriate VFS file name references to avoid this problem.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Partial Select Lists</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QM file system optimises select list generation by arranging that the QMBasic <span style="font-weight: bold;"><a href="qmb_select.htm" class="topiclink">SELECT</a></span> statement (not the query processor equivalent) used against a hashed file actually performs the select group by group as the <span style="font-weight: bold;"><a href="qmb_readnext.htm" class="topiclink">READNEXT</a></span> statement is used to walk through the list. Anything that requires the list to be completed (e.g. using <span style="font-weight: bold;"><a href="qmb_selectinfo.htm" class="topiclink">SELECTINFO()</a></span> to determine the number of items in the list) will cause the remainder of the list to be constructed immediately.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A VFS handler can work in much the same way. The V$SELECT function can return the entire list or just the initial part of the list. When a program processing this list reaches the end of the list returned by V$SELECT, the V$CONTINUE.SELECT function is called to return the next part of the list. The V$COMPLETE.SELECT function will be called if the remainder of the list should be returned as a single item and the V$END.SELECT subroutine is called to terminate generation of a partial list. In an external handler, the function names referenced above have an underscore in place of the dollar sign.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Internal VFS handlers that do not use partial list construction can omit the V$CONTINUE.SELECT, V$COMPLETE.SELECT and V$END.SELECT entry points. External VFS handlers must include these functions, returning an empty list from the first two if not implemented.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Extending an Internal VFS handler</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When developing an internal style VFS handler, additional public subroutines, functions or variables can be accessed by a modified form of the object reference operator in which the object variable is replaced by the file variable of the VFS file.</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;"><span style="font-family: 'Courier New',Courier,monospace;">fvar-&gt;name</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Alternate Key Indices</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A VFS handler that cannot accurately provide the documented behaviour of the <span style="font-weight: bold;"><a href="qmb_indices.htm" class="topiclink">INDICES()</a></span>, <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span>, <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT</a></span>, <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span>, <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETLEFT</a></span> and <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span> operations may lead to issues with, for example, using the query processor against the VFS file. It may be best simply to return a null string from the <span style="font-weight: bold;"><a href="qmb_indices.htm" class="topiclink">INDICES()</a></span> function so that the file appears to have no indices.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Alternatively, if the VFS handler supports simple index look up operations (<span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span>) but not the index scanning operations, it should be written such that use of <span style="font-weight: bold;"><a href="qmb_fileinfo.htm" class="topiclink">FILEINFO()</a></span> with key FL$INDEX.SCAN returns False (0). This will cause the query processor to reject an index when using relational operators that require the unsupported functions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Extended Filename Syntax</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If enabled using additive value 8 to the <a href="configparams.htm#filerule" class="topiclink">FILERULE</a> configuration parameter, a VFS file may be referenced using an extended filename syntax:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">VFS:</span><span class="f_CodeSingleLine" style="font-style: italic;">server</span><span class="f_CodeSingleLine">:</span><span class="f_CodeSingleLine" style="font-style: italic;">qualifier</span></p>
+<p class="p_Normal">where <span style="font-style: italic;">server</span> is the name of a VFS server defined as described above and <span style="font-style: italic;">qualifier</span> is the optional qualifying data defining the file to be opened. Because some VFS handlers may need to process filenames that include spaces (e.g. DICT <span style="font-style: italic;">name</span>), any tilde characters (~) in the <span style="font-style: italic;">qualifier</span> will be replaced by spaces.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The VFS Cache</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The VFS includes an optional caching mechanism whereby a file that is closed by an application is actually held open in a cache so that a further open for the same file will execute faster by taking the file back from the cache. Use of <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> or <a href="conv_tfile.htm" class="topiclink">T</a><span style="font-style: italic;"><a href="conv_tfile.htm" class="topiclink">file</a></span> conversions in a query is likely to benefit considerably from use of this cache. The size of the cache is set by the <a href="configparams.htm#vfscache" class="topiclink">VFSCACHE</a> private configuration parameter in the range 0 to 50. This mechanism is very similar to the file cache used by hashed files and the two caches are cleared together on return to the command prompt or on use of the <span style="font-weight: bold;"><a href="qmb_flush_dh_cache.htm" class="topiclink">FLUSH.DH.CACHE</a></span> QMBasic statement as well as automatically at some points where a cached file could cause problems.</p>
+
+</td></tr></table>
+
+</body>
+</html>

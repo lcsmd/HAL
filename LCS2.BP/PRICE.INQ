@@ -1,0 +1,3738 @@
+      COM F.PRODUCT, F.CONTROL, CNO, CUST.B, CATDESC, WORK.B, TOTAL, ONAME
+      COM F.CUSTOMER, F.BRANCH, SPTO, SHIP.B, SUBTOTAL, TAXAMT, QUOTE, NONCUST
+      COM TXBL.TOT
+!
+      INCLUDE UTLSBP ASSIGN.VAR
+!
+      PGMEXIT = FALSE
+      WHDETAIL = FALSE
+      MAXWHLINES = 4 ; WSTL = 1 ; WEDL = MAXWHLINES
+      IF SYSTEM(10) THEN
+         INPUT DATAINFO
+         IF SYSTEM(10) THEN
+            INPUT DATAINFO2
+            IF DATAINFO2 = 'EXIT' THEN PGMEXIT = TRUE
+         END
+         DATA DATAINFO
+      END
+!
+      DIM F.SHARED.INVENTORY(10), F.SHARED.CONTROL(10)
+      MAT F.SHARED.INVENTORY = '' ; MAT F.SHARED.CONTROL = ''
+!
+      DISPL.OPT.B = 'Inventory':IVM:'Tax Code':IVM:'Re-Calculate':IVM:'Customer Part Number':IVM:'Price Columns':IVM:'ImPort':IVM:'REpair Order':IVM:'Price Matrix':IVM:'Price Switch':IVM:'Manual Shipto':IVM:'Sales History':IVM:'Quote Description'
+      DISPL.OPT.B<2> = '19,6':IVM:'19,7':IVM:'19,8':IVM:'19,9':IVM:'19,10':IVM:'19,11':IVM:'40,6':IVM:'40,7':IVM:'40,8':IVM:'40,9':IVM:'40,10':IVM:'40,11'
+      FOR I = 1 TO DCOUNT(DISPL.OPT.B<1>,IVM)
+         DISPL.OPT.B<5,I> = I
+      NEXT I
+      DISPL.OPT.B<10> = 'I':IVM:'T':IVM:'R':IVM:'N':IVM:'C':IVM:'P':IVM:'E':IVM:'M':IVM:'S':IVM:'O':IVM:'H':IVM:'D'
+!
+      F = ''
+      PNO=''
+      PROSPECT.FLAG = 'N'
+      SHOWGP = ''
+      AUTOFEED = FALSE
+!
+      OPEN 'CUSTOMER' TO F.CUSTOMER ELSE F=F:',CUSTOMER'
+      OPEN 'TERMS' TO F.TERMS ELSE F=F:',TERMS'
+      OPEN 'UOM' TO F.UOM ELSE F=F:',UOM'
+      OPEN 'SHIP.VIA' TO F.SHIP.VIA ELSE F=F:',SHIP.VIA'
+      OPEN 'PROD.CUST.PN.XREF' TO PROD.CUST.PN.XREF ELSE F=F:',PROD.CUST.PN.XREF'
+      OPEN 'CUST.PN.XREF' TO CUST.PN.XREF ELSE F=F', CUST.PN.XREF'
+      OPEN 'SHIPTO' TO F.SHIPTO ELSE F=F:',SHIPTO'
+      OPEN 'CUST.CATEGORY' TO F.CUST.CATEGORY ELSE F=F:',CUST.CATEGORY'
+      OPEN 'PRODUCT' TO F.PRODUCT ELSE F=F:',PRODUCT'
+      OPEN 'INVENTORY' TO F.INVENTORY ELSE F=F:',INVENTORY'
+      OPEN 'SCREENS' TO F.SCREENS ELSE F=F:',SCREENS'
+      OPEN 'MASTER' TO F.MASTER ELSE F=F:',MASTER'
+      OPEN 'SALESMAN' TO F.SALESMAN ELSE F=F:',SALESMAN'
+      OPEN 'CONTROL' TO F.CONTROL ELSE F=F:',CONTROL'
+      OPEN 'BID' TO F.BID ELSE F=F:',BID'
+      OPEN 'BRANCH' TO F.BRANCH ELSE F = F:',BRANCH'
+      OPEN 'ALPHA.XREF' TO F.ALPHA ELSE F=F:',ALPHA.XREF'
+      OPEN 'PROD.FIND' TO F.PROD.FIND ELSE F=F:',PROD.FIND'
+      OPEN 'TAX' TO F.TAX ELSE F=F:',TAX'
+      OPEN 'PRICE.QUOTE' TO F.PRICE.QUOTE ELSE F=F:',PRICE.QUOTE'
+      OPEN 'PRICE.QUOTE.X' TO F.PRICE.QUOTE.X ELSE F=F:',PRICE.QUOTE.X'
+      OPEN 'PRODUCT.QUOTE.X' TO F.PRODUCT.QUOTE.X ELSE F=F:',PRODUCT.QUOTE.X'
+      OPEN 'CPSH' TO F.CPSH ELSE F=F:',CPSH'
+      OPEN 'CNOTE.HDR' TO F.CNOTE.HDR ELSE F = F:', CNOTE.HDR'
+      OPEN 'CNOTE.DET' TO F.CNOTE.DET ELSE F = F:', CNOTE.DET'
+      OPEN 'FASTRACK' TO F.FASTRACK ELSE F = F:', FASTRACK'
+      OPEN 'JOB' TO F.JOB ELSE F = F:', JOB'
+      OPEN 'CONTACTS' TO F.CONTACTS ELSE F = F:', CONTACTS'
+!
+      IF TRIM(F) # '' THEN PRINT FILE.ERRORS:F:BCK: ; INPUT NL,1:_
+!
+      READ PIOPT.B FROM F.CONTROL, 'PRICE.INQ.OPTIONS' ELSE PIOPT.B = ''
+      READ PRT.PROG FROM F.CONTROL, 'PRICE.QUOTE.PRINT.PGM' ELSE PRT.PROG = ''
+      READV CHECK.DUPS FROM F.CONTROL, 'CHECK.DUPS',1 ELSE CHECK.DUPS = ''
+      READV SHOW.GP.MSG FROM F.CONTROL, 'SHOW.GP.MSG',1 ELSE SHOW.GP.MSG = 'Y'
+      READ ALLOW.ZERO FROM F.CONTROL,"ALLOW.ZERO.PQ" ELSE ALLOW.ZERO = 'N'
+      SHIPTO.SBY = OCONV('SHIPTO.MAINT.SORT.BY.NAME','TCONTROL;X;1;1')
+      SHOW.FULL.SHIPTO.NAME = OCONV('SHOW.FULL.SHIPTO.NAME','TCONTROL;X;1;1')
+      IF PIOPT.B = '' THEN
+         PIOPT.B<1> = 'L1'
+         PIOPT.B<2> = 'I'
+      END
+      PRICE.FIELDS = PIOPT.B<1>
+      IF PIOPT.B<2> = 'I' THEN LPSW = FALSE ELSE LPSW = TRUE
+!
+      READV SHOW.PROD.NOTES FROM F.CONTROL, 'SHOW.PRODUCT.NOTES', 1 ELSE SHOW.PROD.NOTES = ''
+      READV BCAT FROM F.CONTROL,'BROKEN.BOX.CAT',1 ELSE BCAT=''
+!
+      READV EDOCS FROM F.CONTROL, 'IMAGE.MODULE.ACTIVE', 1 ELSE EDOCS = ''
+!
+      READ USERS.B FROM F.MASTER, 'SYSTEM.USERS' ELSE
+         PRINT C22:BELL:'MASTER SYSTEM.USERS Record Missing, Hit RETURN...': ; INPUT NL,1: ; STOP
+      END
+!
+      SELECT F.SALESMAN
+      READLIST SLMLIST ELSE SLMLIST = ''
+      SLMLIST = CHANGE(SLMLIST,IAMC,IVM)
+      FOR I = 1 TO DCOUNT(SLMLIST<1>,IVM)
+         READV SLM.INTLS FROM F.SALESMAN, SLMLIST<1,I>, 34 THEN
+            SLMLIST<2,I> = SLM.INTLS
+         END
+      NEXT I
+!
+      SELECT F.JOB
+      READLIST JOBLIST ELSE JOBLIST = ''
+      JOBS.DAT = ''
+      JOBLIST = CHANGE(JOBLIST,IAMC,IVM)
+      JCNT = 0
+      FOR I = 1 TO DCOUNT(JOBLIST<1>,IVM)
+         READ JOB.B FROM F.JOB,JOBLIST<1,I> THEN
+            IF JOB.B<6> = 'O' THEN
+               JCNT = JCNT + 1
+               JOBS.DAT<2,JCNT> = JOBLIST<1,I>
+               JOBS.DAT<1,JCNT> = JOBLIST<1,I> 'L#10':SPACE(1):JOB.B<1> 'L#30'
+               JOBS.DAT<1,JCNT> = JOBS.DAT<1,JCNT>:" ":OCONV(JOB.B<2>,'D2/') 'R#8'
+               JOBS.DAT<1,JCNT> = JOBS.DAT<1,JCNT>:" ":OCONV(JOB.B<3>,'D2/') 'R#8'
+               JOBS.DAT<1,JCNT> = JOBS.DAT<1,JCNT>:" ":JOB.B<6> 'R#4'
+            END
+         END
+      NEXT I
+!
+      WHSE='01'
+      ORIG.WORK.B=''
+      NEWNON = 0
+      SUBTOTAL = 0
+      TAXAMT = 0
+      PRFX = '' ; BRANCH = '' ; BRANCH.B = ''
+      READV BRANCH FROM F.CONTROL,'STATION.BRANCH.DEFAULT', (PORT+1) THEN
+         READ BRANCH.B FROM F.BRANCH, BRANCH ELSE BRANCH.B = ''
+         WHSE = BRANCH.B<11>
+         IF WHSE = '' THEN WHSE = '01'
+         PRFX = BRANCH.B<38>
+      END
+!
+      READV EXCLUDE.TAX FROM F.CONTROL, 'PRICE.QUOTE.TAX.EXCLUDE', 1 ELSE EXCLUDE.TAX = ''
+!
+      READV QTY.DEFAULT FROM F.CONTROL,"QUOTE.QTY.DEFAULT",1 ELSE QTY.DEFAULT='Y'
+      READ WHSE.B FROM F.CONTROL,'WAREHOUSE' ELSE WHSE.B=''
+      WHSE.CT=DCOUNT(WHSE.B<1>,CHAR(253))
+      ORIG.WHSE.B = WHSE.B
+      SHARED.INVENTORY.FILES = FALSE
+      READ SHARED.B FROM F.MASTER, 'SHARED.INVENTORY.FILES' THEN
+         SFILES = DCOUNT(SHARED.B<1>,CHAR(253)) ; SCTR = 0
+         LOOP
+            SCTR = SCTR + 1
+         WHILE SCTR LE SFILES DO
+            SFILE = SHARED.B<1,SCTR>
+            SCTRL = SHARED.B<2,SCTR>
+            SACCT = SHARED.B<3,SCTR>
+            OPEN SFILE TO F.SHARED.INVENTORY(SCTR) ELSE
+               PRINT FILE.ERRORS:' ':SFILE:BCK: ; INPUT NL: ; STOP
+            END
+            OPEN SCTRL TO F.SHARED.CONTROL(SCTR) ELSE
+               PRINT FILE.ERRORS:' ':SCTRL:BCK: ; INPUT NL: ; STOP
+            END
+         REPEAT
+         SHARED.INVENTORY.FILES = TRUE
+      END
+!
+      READ SCR.B FROM F.SCREENS, 'PRICE.INQ' ELSE
+         PRINT C22:BELL:'SCREENS PRICE.INQ MISSING, <RET>...':
+         INPUT NL,1:_ ; STOP
+      END
+!
+      READ SCR.REPAIR.B FROM F.SCREENS, 'PRICE.QUOTE.REPAIR' ELSE
+         PRINT C22:BELL:'SCREENS PRICE.QUOTE.REPAIR Missing, RETURN...':
+         INPUT NL,1: ; STOP
+      END
+      READ SCR.CUTPIPE FROM F.SCREENS, 'OED.CUT.PIPE' ELSE
+         PRINT 'SCREENS OED.CUT.PIPE Record Missing, Hit RETURN...':
+         INPUT NL,1: ; STOP
+      END
+      SCRCUTPIPE = ''
+      CALL SCREEN.PAINTER (SCR.CUTPIPE, SCRCUTPIPE, '')
+!
+      READ COMP.B FROM F.CONTROL, 'COMPANY' ELSE
+         PRINT C22:BELL:'CONTROL COMPANY RECORD MISSING, <RET>...':
+         INPUT NL ; STOP
+      END
+      CSTCLM = COMP.B<24>
+      IF BRANCH.B<47> # '' THEN CSTCLM = COMP.B<24>
+      REF1 = COMP.B<174>
+      REF2 = COMP.B<175>
+      REF3 = COMP.B<176>
+      IF REF1 = '' THEN REF1 = 'Reference 1'
+      IF REF2 = '' THEN REF2 = 'Reference 2'
+      IF REF3 = '' THEN REF3 = 'Reference 3	'
+      DFLTENTBY = COMP.B<52>
+      CUTPIPE = COMP.B<173>
+      QUOTE.EXP.DAYS=COMP.B<79>
+      UOM.ENTRY=COMP.B<53> ; IF UOM.ENTRY='' THEN UOM.ENTRY='N'
+      DEFAULT.SP.UOM=COMP.B<66>
+      IF DEFAULT.SP.UOM='' THEN DEFAULT.SP.UOM='EA'
+      MINGP=COMP.B<13>
+      IF COMP.B<20> = 'A' THEN JSTF = 'L%7' ELSE JSTF = 'R%7'
+      PR.OVRD = COMP.B<29>
+      MLTPLR = COMP.B<42>
+      SHOW.BQ = COMP.B<75>
+      QUOTE.NBR=''
+      PRDEC = COMP.B<25>
+      CSTENT= COMP.B<28>
+      OVRDCOST ='N'
+      WRITER.AS.SALESMAN = COMP.B<163>
+      AUTO.MARGIN.RECALC = COMP.B<189>
+      HIST.YRS = COMP.B<111>
+      USE.PROJ.LN = COMP.B<195>
+      VAL.JOB.NUM = COMP.B<235>
+      CALC.LOWER.MARGIN = COMP.B<242>
+      CUST.CONTACTS = ''
+      IF HIST.YRS = '' OR NOT(NUM(HIST.YRS)) THEN HIST.YRS = 2
+      HDR1 = @(1,19):SPACE(11):@(2):DMON:'Sub Total':DMOFF
+      HDR1 = HDR1:@(14,19):SPACE(9):@(15):DMON:'Tax Amt':DMOFF
+      HDR1 = HDR1:@(26,19):SPACE(7):@(26):DMON:'TaxCode ':DMOFF
+      HDR1 = HDR1:@(36,19):SPACE(30):@(36):DMON:'OnHand  Commtd  Availb OnOrder':DMOFF
+      HDR2 = @(1,19):SPACE(11):@(1):DMON:OCONV(PRICE.FIELDS,'G,1'):DMOFF
+      HDR2 = HDR2:@(1,20):SPACE(11):@(1):DMON:OCONV(PRICE.FIELDS,'G1,1'):DMOFF
+      HDR2 = HDR2:@(14,19):SPACE(9):@(14):DMON:'Brk PrdLn':DMOFF
+      HDR2 = HDR2:@(26,19):SPACE(7):@(26):DMON:'PriceGrp':DMOFF
+      HDR2 = HDR2:@(36,19):SPACE(30):@(36):DMON:'Price Matrix Used             ':DMOFF
+!
+! USER INFORMATION
+!
+      CALL USERINFO (F.CONTROL, ONAME, OPER, ULEVEL, INTLS, '')
+!
+! CHECK FOR VALID ACCESS LEVEL
+!
+      PATH = 'PRICE QUOTE'
+      CALL ACCESS.SUB (F.CONTROL, PATH, VALID, '')
+      IF NOT(VALID) THEN STOP
+      PATH = 'COST OVERRIDE IN P/Q'
+      PATH<1,2> = 'Y'
+      CALL ACCESS.SUB (F.CONTROL, PATH, VALID, '')
+      IF VALID THEN CSTENT = 'Y'         ; !!!  CHANGED 08/08/06
+      IF VALID THEN OVRDCOST = 'Y'
+*     IF NOT(VALID) AND CSTENT = "Y" THEN CSTENT = 'N'
+      PATH = 'SEE COST AND GROSS PROFIT'
+      PATH<1,2> = 'Y'
+      CALL ACCESS.SUB (F.CONTROL, PATH, VALID, '')
+*     IF NOT(VALID) THEN SHOWGP = FALSE
+*     IF SHOWGP = FALSE THEN LPSW = FALSE ELSE LPSW = TRUE
+      IF VALID THEN SHOWGP = TRUE ELSE SHOWGP = FALSE
+*     IF VALID AND COMP.B<130> # 'Y' THEN SHOWGP = TRUE
+      IF SHOWGP = FALSE THEN LPSW = FALSE
+!
+! DISPLAY SCREEN
+!
+      SCR = CLS:PRON
+      CALL SCREEN.PAINTER (SCR.B, SCR, '')
+      IF LPSW THEN SCR = SCR:HDR2 ELSE SCR = SCR:HDR1
+      SCR = SCR:PROFF
+      PRINT SCR
+      SCR.REPAIR = ''
+      CALL SCREEN.PAINTER (SCR.REPAIR.B, SCR.REPAIR, '')
+      READ SCR.WHSE.B FROM F.SCREENS, 'PRICE.INQ.INV' ELSE
+         PRINT C22:BELL:'SCREENS PRICE.INQ MISSING, <RET>...':
+         INPUT NL,1:_ ; STOP
+      END
+      SCR.WHSE='':PRON
+      CALL SCREEN.PAINTER (SCR.WHSE.B, SCR.WHSE, '')
+      SCR.WHSE=SCR.WHSE:PROFF
+!
+      CLRDET = '' ; CTR = 0
+      LOOP
+         CTR = CTR + 1
+      WHILE CTR LE 10 DO
+         CLRDET = CLRDET:@(1,4+CTR):SPACE(78)
+      REPEAT
+      MCNO = '' ; MCAT = '' ; WORK.B = '' ; MSPTO = '' ; TXCD = '' ; TXBL = '' ; JUR = ''
+      STL = 1 ; EDL = 10 ; PG = 1 ; COUNT = 1 ; RPTLST = ''
+!
+! CUSTOMER NUMBER
+!
+1:    XMISC = IVM:STR('*',7):SPACE(13)
+      XMISC<2> = 'Y':IVM:'Y' ; XMISC<10> = 23
+      XMISC<4> = 1:IVM:2:IVM:8:IVM:10:IVM:11:IVM:12 ; XMISC<5>='Search':IVM:'FastKey':IVM:'FastCust':IVM:'PrdQtInq':IVM:'CusQtInq':IVM:'JobQtInq'
+      CNO = '' ; CATG = '' ; SPTO = '' ; SHIP.B = '' ; TXCD = '' ; TXBL = '' ; JUR = '' ; QUOTE = '' ; PROD.B = '' ; ORIG.WORK.B = '' ; FASTRACKS = '' ; TRACK1.B = '' ; TRACK2.B = '' ; TRACK3.B = ''
+      RELEASE
+      NEWNON = 0
+      PRINT @(20,1):SPACE(57):
+      PRINT C22:'Enter CUSTOMER NUMBER or (Qnnnnnn) Q and Quote# '
+      CALL CIP (20,1, 20, MCNO, CNO, ESCFLG, XMISC)
+      PRINT C22
+      IF ESCFLG THEN STOP
+      IF CNO[1,1]='Q' THEN
+         QUOTE=CNO[2,9]'R%6'
+         READU WORK.B FROM F.PRICE.QUOTE,QUOTE ELSE QUOTE = '' ; GO 3
+         CNO=WORK.B<9>
+         READ CUST.B FROM F.CUSTOMER, CNO ELSE CUST.B=''
+         IF CNO # 'MANUAL' THEN
+            PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:'  ':CUST.B<9>) 'L#46':LOFF:
+            READV CATDESC FROM F.CUST.CATEGORY, CUST.B<17>, 1 ELSE CATDESC = ''
+            PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+         END
+         ORIG.WORK.B = WORK.B
+         IF WORK.B<42> = 'Y' THEN CALL AUTO.MARGIN.QUOTE.RECALC (WORK.B, '')
+         SPTO = WORK.B<10>
+         IF SPTO # '' THEN
+            READ SHIP.B FROM F.SHIPTO, CNO:'!':SPTO ELSE SHIP.B = ''
+         END
+         TXCD = WORK.B<13> ; TOTAL = WORK.B<16>
+         SUBTOTAL = WORK.B<14> ; TAXAMT = WORK.B<15>
+         IF CNO = 'MANUAL' THEN
+            FOR A = 1 TO 6
+               CUST.B<A> = WORK.B<22,A>
+            NEXT A
+            CUST.B<9> = WORK.B<22,7>
+            CUST.B<11> = WORK.B<22,7>
+            CUST.B<14> = WORK.B<22,8>
+            CUST.B<17> = WORK.B<22,9>
+            NONCUST = ''
+            FOR A = 1 TO 9
+               NONCUST<A> = WORK.B<22,A>
+            NEXT A
+            READV CATDESC FROM F.CUST.CATEGORY, CUST.B<17>, 1 ELSE CATDESC = ''
+            PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+            PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+         END
+         GOSUB 6000 ; GOSUB 5000 ; GO 1000
+      END
+*JS*3     IF XMISC<6> = 11 THEN CNO = 'MANUAL' ;PRINT @(20,1):'MANUAL'
+3:!
+*S*IF CNO='M' THEN CNO='MANUAL' ; PRINT @(20,1):'MANUAL'
+      IF CNO = 'MANUAL' THEN
+         CUST.B = ''
+         CUST.B<67> = 'MANUAL'
+         GO 20
+      END
+      IF XMISC<6> = 1 THEN CNO = 'X ':CNO
+      IF XMISC<6> = 2 THEN
+         EXECUTE "FASTKEY"
+         PRINT SCR
+         GO 1
+      END
+      IF XMISC<6> = 10 THEN
+         EXECUTE 'ITEM.QUOTE.INQ'
+         PRINT SCR
+         GO 1
+      END
+      IF XMISC<6> = 11 THEN
+         EXECUTE 'CUST.QUOTE.INQ'
+         PRINT SCR
+         GO 1
+      END
+      IF XMISC<6> = 12 THEN
+         EXECUTE 'JOB.QUOTE.INQ'
+         PRINT SCR
+         GO 1
+      END
+      IF XMISC<6> = 8 THEN
+         CALL FAST.CUST.SUB (FCNO, '')
+         PRINT SCR:
+         IF FCNO # '' THEN DATA FCNO
+         GO 1
+      END
+1.1:!
+      IF CNO[1,2] = 'X ' OR CNO[1,2] = 'Z ' THEN
+         IF PROSPECT.FLAG # 'Y' THEN
+            XK = CNO ; MF = 'CUSTOMER' ; MFX = 'CUSTOMER.XREF' ; FK = '' ; XM=''
+         END ELSE
+            XK = CNO ; MF = 'PROSPECT' ; MFX = 'PROSPECT.XREF' ; FK = '' ; XM=''
+         END
+         CALL SUB.CMC.XREF (XK, MF, MFX, FK,XM)
+         IF XM<1> THEN PRINT SCR
+         IF PROSPECT.FLAG # 'Y' THEN
+            IF FK # '' THEN CNO = FK ELSE GO 1
+         END ELSE
+            IF FK # '' THEN
+               CNO=FK
+               CNO=OCONV(CNO,"G*1")
+            END ELSE GO 1
+         END
+      END
+      IF XMISC<6> = 10 THEN
+         CMISC = ''
+         CMISC<10> = SCR
+         NONCUST = ''
+         CALL PROSPECT.CUSTOMER.INFO (NONCUST,ESCFLG,CMISC)
+         PRINT SCR:
+         IF NONCUST<9> = '' THEN GO 1 ELSE
+            CNO = 'MANUAL'
+            CUST.B = ''
+            CUST.B<1> = NONCUST<1>
+            CUST.B<2> = NONCUST<2>
+            CUST.B<3> = NONCUST<3>
+            CUST.B<4> = NONCUST<4>
+            CUST.B<5> = NONCUST<5>
+            CUST.B<6> = NONCUST<6>
+            CUST.B<9> = NONCUST<7>
+            CUST.B<11> = NONCUST<7>
+            CUST.B<14> = NONCUST<8>
+            CUST.B<17> = NONCUST<9>
+            WORK.B<8> = NONCUST<1>
+            NEWNON = 1
+            READV CATDESC FROM F.CUST.CATEGORY, CUST.B<17>, 1 ELSE CATDESC = ''
+            PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+            PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+            GO 10
+         END
+      END
+      READ ALPHA.B FROM F.ALPHA, CNO THEN
+         FK = ''
+         CALL CUST.XREF (ALPHA.B, FK, F.CUSTOMER, 5, 20, 1)
+         PRINT SCR
+         IF FK = '' THEN GO 1 ELSE CNO = FK
+      END
+      IF CNO = '' THEN GO 5
+      IF PROSPECT.FLAG # 'Y' & CNO # 'MANUAL' THEN
+         READ CUST.B FROM F.CUSTOMER, CNO JSTF ELSE
+            IF CNO # '' THEN
+               IF CNO[1,2] # 'Z ' THEN CNO='Z ':CNO ; GO 1.1
+            END
+            GO 1
+         END
+         CNO = CNO JSTF
+      END ELSE
+         IF CNO # 'MANUAL' THEN
+            READ CUST.B FROM F.CUSTOMER,CNO JSTF ELSE
+               IF CNO # '' THEN
+                  IF CNO[1,2] # 'Z ' THEN CNO='Z ':CNO ; GO 1.1
+               END
+               GO 1
+            END
+            CNO = CNO JSTF
+         END
+      END
+      PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+      IF CUST.B<76> # '' THEN
+         CALL CM.INTER.NOTES(F.CUSTOMER, F.SCREENS, CNO, '')
+         PRINT SCR
+         PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+      END
+10:*   VF
+      READV CATDESC FROM F.CUST.CATEGORY, CUST.B<17>, 1 ELSE CATDESC = ''
+      PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+20:*    VF
+      READV QUOTES FROM F.PRICE.QUOTE.X, CNO, 1 ELSE QUOTES = ''
+      SPCT = DCOUNT(CUST.B<67>,CHAR(253)) ; SCT = 0
+      LOOP
+         SCT = SCT + 1
+      WHILE SCT LE SPCT DO
+         READV SPQUOTES FROM F.PRICE.QUOTE.X, CNO:'|':CUST.B<67,SCT>, 1 THEN
+            QUOTES<1,-1> = SPQUOTES
+         END
+      REPEAT
+      IF QUOTES # '' & NOT(NEWNON) THEN
+         IF CNO = 'MANUAL' THEN RESP='Y' ; GO 30
+         TEXT = 'QUOTES exist for this Customer, INQUIRE ? (Y/N)...'
+         VERIFY = 'Y':IVM:'N'
+         PRINT BELL:
+         QMISC = 5 ; QMISC<5> = 'N' ; QMISC<4> = LON
+         CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, QMISC)
+         IF QMISC<10> = 'Y' THEN
+            DATA CNO
+            EXECUTE 'CUST.QUOTE.INQ'
+*           PRINT SCR: ; GO 1
+            PRINT SCR:
+            PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+            PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+            GO 2
+         END ELSE
+            PRINT SCR:
+            PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+            PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+            GO 2
+         END
+30:      IF RESP = 'Y' THEN
+            QITEMS = DCOUNT(QUOTES<1>,CHAR(253))
+            CTR = 0
+            DATA.B = ''
+            LOOP
+               CTR = CTR + 1
+            WHILE CTR LE QITEMS DO
+               QID = QUOTES<1,CTR>
+               READ QUOTE.B FROM F.PRICE.QUOTE, QID THEN
+                  PL = QID 'L#7 ':OCONV(QUOTE.B<11>,'D2/') 'L#8  ':QUOTE.B<12> 'L#4  '
+                  PL = PL:QUOTE.B<8> 'L#23':QUOTE.B<18> 'L#7':OCONV(QUOTE.B<16>,'MD2,$') 'R#12'
+                  EXP.ST=''
+                  IF QUOTE.B<7> # '' THEN
+                     IF QUOTE.B<7> < DATE() THEN EXP.ST='exp'
+                  END
+                  PL=PL:EXP.ST'L#3'
+                  LOCATE QID IN DATA.B<2> BY 'DR' SETTING VM ELSE
+                     INS QID BEFORE DATA.B<2,VM>
+                     INS PL BEFORE DATA.B<1,VM>
+                  END
+               END
+            REPEAT
+            QITEMS = DCOUNT(DATA.B<2>,CHAR(253))
+            IF QITEMS THEN
+               SMISC = 'CUSTOMER PRICE QUOTE SELECTOR'
+               SMISC<5> = 'QUOTE#  QUOTE DT  USER  GENERAL INTRNL CMMENT  ORDER#  QUOTE TOTAL'
+               SMISC<7> = 5
+               CALL SELECTOR (DATA.B, SMISC)
+               PRINT SCR:
+               IF CNO = 'MANUAL' & SMISC<2> = '' THEN GO 1
+               IF CNO # 'MANUAL' THEN
+                  PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+                  PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+               END
+               IF SMISC<2> # '' THEN
+                  QUOTE = DATA.B<2,SMISC<2>>
+                  READU WORK.B FROM F.PRICE.QUOTE, QUOTE ELSE GO 1
+                  ORIG.WORK.B = WORK.B
+                  IF WORK.B<42> = 'Y' THEN CALL AUTO.MARGIN.QUOTE.RECALC (WORK.B, '')
+                  SPTO = WORK.B<10>
+                  IF SPTO # '' THEN
+                     READ SHIP.B FROM F.SHIPTO, CNO:'!':SPTO ELSE SHIP.B = ''
+                  END
+                  TXCD = WORK.B<13> ; TOTAL = WORK.B<16>
+                  SUBTOTAL = WORK.B<14> ; TAXAMT = WORK.B<15>
+                  IF CNO = 'MANUAL' THEN
+                     FOR A = 1 TO 6
+                        CUST.B<A> = WORK.B<22,A>
+                     NEXT A
+                     CUST.B<9> = WORK.B<22,7>
+                     CUST.B<11> = WORK.B<22,7>
+                     CUST.B<14> = WORK.B<22,8>
+                     CUST.B<17> = WORK.B<22,9>
+                     NONCUST = ''
+                     FOR A = 1 TO 9
+                        NONCUST<A> = WORK.B<22,A>
+                     NEXT A
+                     READV CATDESC FROM F.CUST.CATEGORY, CUST.B<17>, 1 ELSE CATDESC = ''
+                     PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+                     PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+                  END
+                  GOSUB 6000 ; GOSUB 5000 ; GO 1000
+               END
+            END
+         END
+      END
+      IF CNO = 'MANUAL' THEN GO 1000
+!
+! SHIPTO CODE
+!
+2:    XMISC='' ; XMISC<2>='Y':IVM:'Y'
+      XMISC<10> = 23 ; XMISC<4> = 1:IVM:10 ; XMISC<5> = 'Search':IVM:'ManShpto'
+      PRINT @(20,2):SPACE(41):
+      IF DCOUNT(CUST.B<67>,CHAR(253))+0 > 1 THEN PRINT @(31,2):SPACE(30):@(31):FLON:"MULTIPLE SHIPTO'S":FLOFF:
+      CALL CIP (20,2, 8, MSPTO, SPTO, ESCFLG, XMISC)
+      IF ESCFLG THEN PRINT SCR ; GO 1
+      IF XMISC<6> = 10 THEN
+         ZMISC = ''
+         SHIPTO.RECORD = ''
+         SHIPTO.RECORD<1> = WORK.B<36,1>
+         SHIPTO.RECORD<2> = WORK.B<36,2>
+         SHIPTO.RECORD<3> = WORK.B<36,3>
+         SHIPTO.RECORD<4> = WORK.B<36,5>
+         SHIPTO.RECORD<5> = WORK.B<36,6>
+         SHIPTO.RECORD<6> = WORK.B<36,7>
+         CALL FAST.SHIPTO.SUB(SHIPTO.RECORD, ZMISC)
+         PRINT SCR:
+         PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+         WORK.B<36,1> = SHIPTO.RECORD<1>
+         WORK.B<36,2> = SHIPTO.RECORD<2>
+         WORK.B<36,3> = SHIPTO.RECORD<3>
+         WORK.B<36,5> = SHIPTO.RECORD<4>
+         WORK.B<36,6> = SHIPTO.RECORD<5>
+         WORK.B<36,7> = SHIPTO.RECORD<6>
+      END
+      IF XMISC<6> = 1 THEN
+         PRINT C23:@(30):'S e a r c h i n g . . .':
+         ITEMS = DCOUNT(CUST.B<67>,CHAR(253))
+         CTR = 0 ; DATA.B = ''
+         LOOP
+            CTR = CTR + 1
+         WHILE CTR LE ITEMS DO
+            READ SHIP.B FROM F.SHIPTO, CNO:'!':CUST.B<67,CTR> THEN
+               IF SHOW.FULL.SHIPTO.NAME # 'Y' THEN
+                  NL = CUST.B<67,CTR> 'L#8 ':SHIP.B<1> 'L#18 '
+                  NL = NL:SHIP.B<2> 'L#18 ':SHIP.B<4> 'L#15 '
+               END ELSE
+                  NL = CUST.B<67,CTR> 'L#8 ':SHIP.B<1> 'L#37 ':SHIP.B<4> 'L#15 '
+               END
+               NL = NL:SHIP.B<5> 'L#2 '
+               IF SHIPTO.SBY = 'Y' THEN
+                  LOCATE SHIP.B<1> IN DATA.B<3> BY 'AL' SETTING VM ELSE NULL
+                  INS SHIP.B<1> BEFORE DATA.B<3,VM>
+                  INS CUST.B<67,CTR> BEFORE DATA.B<2,VM>
+                  INS NL BEFORE DATA.B<1,VM>
+               END ELSE
+                  DATA.B<1,-1> = NL
+                  DATA.B<2,-1> = CUST.B<67,CTR>
+               END
+            END
+         REPEAT
+         PRINT C23:
+         ITEMS = DCOUNT(DATA.B<1>,CHAR(253))
+         IF NOT(ITEMS) THEN
+            PRINT C23:BELL:"NO SHIPTO'S FOUND FOR THIS CUSTOMER":
+            PRINT ', <RET>...':
+            INPUT NL,1:_
+            GO 2
+         END
+         XMISC = 'SHIPTO SELECTOR'
+         IF SHOW.FULL.SHIPTO.NAME # 'Y' THEN
+            XMISC<5> = 'SHIPTO#  NAME               ADDRESS            '
+         END ELSE
+            XMISC<5> = 'SHIPTO#  NAME                                  '
+         END
+         XMISC<5> = XMISC<5>:'CITY            ST'
+         XMISC<7> = 3
+         CALL SELECTOR (DATA.B, XMISC)
+         PRINT SCR:
+         PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+         IF XMISC<2> = '' THEN GO 2
+         SPTO = DATA.B<2,XMISC<2>>
+      END
+      IF SPTO = '' THEN
+         MSPTO = '' ; GOSUB 8000 ; GO 1000
+      END
+      SPTO = SPTO 'R%8'
+      READ SHIP.B FROM F.SHIPTO, CNO:'!':SPTO ELSE PRINT BELL: ; GO 2
+      PRINT @(20,2):SPTO 'L#10 ':LON:(SHIP.B<1>:' ':SHIP.B<2>) 'L#46':LOFF:
+      IF SPTO # '' THEN WORK.B<36> = ''
+      IF WORK.B<36,1> # '' OR WORK.B<36,2> # '' THEN
+         PRINT @(20,2):FLON:'MANUAL SHIPTO':FLOFF:
+      END
+      MSPTO = '' ; GOSUB 8000 ; GO 1000
+!
+! CUSTOMER CATAGORY
+!
+5:    XMISC = 2 ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1 ; XMISC<5> = 'Search' ; XMISC<10> = 23
+      PRINT @(20,3):SPACE(57):
+      CALL CIP (20,3, 5, MCAT, CATG, ESCFLG, XMISC)
+      IF ESCFLG ! XMISC<3,1> = 'Y' THEN
+         PRINT @(20,3):SPACE(57):
+         CATG = ''
+         GO 1
+      END
+      IF XMISC<6> # '' THEN
+         IF XMISC<6> = 1 THEN
+            SMISC = 'CUSTOMER CATAGORY SELECTOR'
+            SMISC<3> = 0:IVM:1
+            SMISC<4> = 'L#10':IVM:'L#30'
+            SMISC<6> = 2
+            SMISC<7> = 'CODE        NAME/DESCRIPTION'
+            SMISC<8> = 3
+            SMISC<9> = 1
+            SMISC<10>= 'AL'
+            CALL SELECTFILE (F.CUST.CATEGORY, REDISPLAY, SMISC)
+            IF REDISPLAY THEN
+               PRINT SCR
+            END
+            IF SMISC<2> # '' THEN
+               CATG = SMISC<2>
+               PRINT @(20,3):CATG 'L#5'
+            END ELSE GO 5
+         END
+      END
+      IF CATG = '' THEN GO 1
+      READ CAT.B FROM F.CUST.CATEGORY, CATG ELSE GO 5
+      CATDESC = CAT.B
+      PRINT @(20,3):CATG 'L#10 ':LON:CAT.B<1> 'L#46':LOFF
+      CUST.B = '' ; CUST.B<17> = CATG ; CNO = JUNK
+      GOSUB 8000
+!
+! MAIN INPUT ROUTINE
+! PRODUCT NUMBER
+!
+1000: IF WORK.B<1,COUNT> # '' THEN
+         IF LPSW THEN
+            PRINT HDR2:
+            VALUE = COUNT
+            GOSUB 8700 ; GOSUB 4000
+            PMROW = 20
+            IF WORK.B<24,COUNT> # '' THEN PMROW = 19
+            PRINT @(35,PMROW):SPACE(31):@(36):ULON:WORK.B<4,COUNT>:ULOFF
+            IF WORK.B<24,COUNT> # '' THEN
+               PRINT @(35,20):SPACE(31):@(36):ULON:WORK.B<24,COUNT>:ULOFF
+            END
+         END ELSE
+            PRINT HDR1:
+            PRINT @(2,17):SPACE(10):@(26,16):SPACE(11):@(51,16):SPACE(11):@(26,17):SPACE(11):@(51,17):SPACE(11):
+         END
+         READ PROD.B FROM F.PRODUCT, WORK.B<1,COUNT> ELSE PROD.B = ''
+         GOSUB 6000
+      END ELSE
+         IF COUNT # 1 AND WORK.B<1,COUNT-1> # '' THEN
+*          IF LPSW THEN
+            IF LPSW AND AUTOFEED # TRUE THEN
+               PRINT HDR2:
+               VALUE = COUNT - 1
+               GOSUB 8700 ; GOSUB 4000
+               PMROW = 20
+               IF WORK.B<24,COUNT-1> # '' THEN PMROW = 19
+               PRINT @(35,PMROW):SPACE(31):@(36):ULON:WORK.B<4,COUNT-1>:ULOFF
+               IF WORK.B<24,COUNT-1> # '' THEN
+                  PRINT @(35,20):SPACE(31):@(36):ULON:WORK.B<24,COUNT-1>:ULOFF
+               END
+            END ELSE
+               IF AUTOFEED # TRUE THEN
+                  PRINT HDR1:
+                  PRINT @(2,17):SPACE(10):@(26,16):SPACE(11):@(51,16):SPACE(11):@(26,17):SPACE(11):@(51,17):SPACE(11):
+               END
+            END
+         END
+      END
+      IF COUNT LE 10 THEN ROW = COUNT ELSE
+         ROW = MOD(COUNT,10)
+         IF ROW + 0 = 0 THEN ROW = 10
+      END
+      IF WORK.B<1,COUNT> # '' THEN USECNT = COUNT ELSE
+         IF COUNT # 1 THEN USECNT = COUNT - 1 ELSE USECNT = 0
+      END
+      IF USECNT THEN
+         LMISC=WORK.B<1,USECNT> ; LMISC<2>='S'
+         LMISC<3>=WORK.B<27,USECNT>
+         LMISC<4>=WORK.B<43,USECNT>
+         LMISC<5>=WORK.B<44,USECNT>
+         IF ALLOW.ZERO = "Y" THEN USEQTY = 1 ELSE USEQTY = WORK.B<2,USECNT>
+         CALL LINE.EXT (WORK.B<21,USECNT>, WORK.B<3,USECNT>, USEQTY, EXTENSION, LMISC)
+         IF WORK.B<21,USECNT> + 0 = 0 ! WORK.B<3,USECNT> + 0 = 0 THEN NETPR = WORK.B<3,USECNT> ELSE
+            DISCAMT = (OCONV(WORK.B<3,USECNT>,'MD4') * WORK.B<21,USECNT>)
+            NETPR = INT(WORK.B<3,USECNT> - DISCAMT)
+         END
+         NETPR = ICONV(OCONV(NETPR,'MD4'),'MD4')
+      END ELSE NETPR = ''
+      IF AUTOFEED # TRUE THEN
+         PRINT @(55,18):LON:' Net Price ':OCONV(NETPR,'MD4') 'R#11 ':LOFF:
+      END
+      MSK = STR('*',9):SPACE(29)
+      IF WORK.B<1,COUNT> # '' THEN
+         IF WORK.B<1,COUNT> # '!SP' & WORK.B<1,COUNT> # '!***' THEN
+            READV MSK FROM F.PRODUCT, WORK.B<1,COUNT>,1 ELSE MSK = ''
+            MSK = OCONV(WORK.B<1,COUNT>,'G1!1') 'L#9 ':MSK'L#30'
+         END ELSE MSK=OCONV(WORK.B<1,COUNT>,'G1!1')'L#9 ':WORK.B<25,COUNT>'L#30'
+      END
+      XMISC = IVM:MSK ; XMISC<11> = 'Y'
+      XMISC<10> = 23
+      XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:2:IVM:3:IVM:4:IVM:5:IVM:6:IVM:7:IVM:8:IVM:9:IVM:10:IVM:11:IVM:12
+      XMISC<5> = 'Srch/Rptl':IVM:'FastKey':IVM:'Del Line':IVM:'Pg Down':IVM:'Pg Up':IVM:'Override':IVM:'Comments':IVM:'FastProd':IVM:'Quote':IVM:'HdrBreak':IVM:'Ins Line':IVM:'Options'
+      ROW = ROW + 4 ; COL = 2 ; PRINT C23: ; XMISC<6> = '' ; XMISC<3> = ''
+      PRINT @(1,ROW):SPACE(1):
+      LINES=DCOUNT(WORK.B<1>,CHAR(253))
+      IF LINES=0 THEN LINES=1
+      IF AUTOFEED # TRUE THEN
+         PRINT @(2,21):LON:'Line ':COUNT:' / ':LINES:LOFF
+      END
+      IF WORK.B<34> # '' ! FASTRACKS # '' THEN
+         FCTR = DCOUNT(WORK.B<34>,CHAR(253))
+         IF FASTRACKS # '' THEN
+            FCTR = 0
+            FOR I = 1 TO 3
+               IF FASTRACKS<1,I> # '' THEN FCTR = FCTR + 1
+            NEXT I
+         END
+         IF AUTOFEED # TRUE THEN
+            PRINT @(17,21):FLON:' ':FCTR:' FasTracks(s) ':FLOFF:
+         END
+      END
+      IF AUTOFEED # TRUE THEN
+         READ P.PROD FROM F.PRODUCT, WORK.B<1,COUNT> ELSE P.PROD = ''
+         IF LEN(WORK.B<1,COUNT>) > 9 OR P.PROD<71> # '' THEN
+*          PRINT @(1,15):LULON:OCONV(WORK.B<1,COUNT>,'G1!1'):LULOFF
+            PRINT @(1,15):DLULON:(OCONV(WORK.B<1,COUNT>,'G1!1'):SPACE(2):(P.PROD<1>:' ':P.PROD<71>))'L#76':DLULOFF
+         END ELSE PRINT @(1,15):STR(HORZLN,78)
+         IF USE.PROJ.LN = "Y" AND WORK.B<45,COUNT> # "" THEN
+            PRINT@(55,15):LON:"Project Line Number ":WORK.B<45,COUNT> 'R#3':LOFF
+         END
+      END
+      IF AUTOFEED # TRUE THEN
+         CALL CIP (COL, ROW, 40, '', A, ESCFLG, XMISC)
+      END ELSE
+         GO 1026
+      END
+      IF WORK.B<1,COUNT> # '' THEN
+         IF WORK.B<1,COUNT> # '!SP' & WORK.B<1,COUNT> # '!***' THEN
+            READV DESC FROM F.PRODUCT, WORK.B<1,COUNT>, 1 ELSE DESC = ''
+         END ELSE DESC=WORK.B<25,COUNT>
+         PRINT @(COL,ROW):OCONV(WORK.B<1,COUNT>,'G1!1') 'L#9 ':DESC 'L#30'
+      END
+      IF ESCFLG THEN
+*L*        IF CNO = JUNK ELSE
+         VERIFY = 'Y':IVM:'N'
+         TEXT = 'Do you wish to EXIT ? (Y)es/(N)o...'
+         PRINT BELL:
+         TMISC = ''
+         CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+         RESP=TMISC<10>
+         PRINT SCR: ; GOSUB 6000 ; GOSUB 5000
+         IF ESCFLG THEN RESP='N'
+         IF RESP='N' THEN GO 1000
+         IF PGMEXIT THEN STOP
+*L*        END
+         IF QUOTE # '' THEN
+            WORK.B = '' ; STL = 1 ; EDL = 10 ; COUNT = 1 ; PG = 1
+            PRINT SCR:
+         END
+         GO 1
+      END
+      IF XMISC<6> = 12 THEN GO 1050
+      IF XMISC<6> = 2 THEN
+         IF WORK.B<1,COUNT> # '' THEN PNO = WORK.B<1,COUNT> ELSE
+            IF COUNT # 1 THEN PNO = WORK.B<1,COUNT-1>
+         END
+         PNO = OCONV(PNO,'G1!1')
+         CALL FASTKEY.MENU ('PRICE QUOTE', CNO, PNO, '')
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000 ; GO 1000
+      END
+      IF XMISC<6> = 7 THEN
+         IF WORK.B<1,COUNT> = '' THEN GO 1000
+         GOSUB 3625 ; GO 1000
+      END ELSE IF XMISC<6> = 8 THEN
+         IF WORK.B<1,COUNT> # '' THEN GO 1000
+         PATH = 'FAST PRODUCT ENTRY IN S/O'
+         CALL ACCESS.SUB (F.CONTROL, PATH, VALID, REDISPLAY)
+         IF REDISPLAY THEN PRINT SCR: ; GOSUB 5000
+         IF NOT(VALID) THEN GO 1000
+         CALL SPEC.PROD.SUB (SPNO, '')
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000 ; GOSUB 7000
+         IF SPNO # '' THEN A = OCONV(SPNO,'G1!1')
+      END ELSE IF XMISC<6> = 9 THEN
+         IF CATG # '' THEN GO 1000
+         IF WORK.B<1,COUNT> = '' & WORK.B<1,COUNT+1> # '' THEN GO 1000
+         GOSUB 9000
+      END ELSE IF XMISC<6> = 10 THEN
+         IF WORK.B<1,COUNT> # '' THEN
+            CTR = 0
+            LOOP
+               CTR = CTR + 1
+            WHILE CTR LE 4 DO
+               INS '' BEFORE WORK.B<CTR,COUNT>
+            REPEAT
+            INS '' BEFORE WORK.B<21,COUNT>
+            INS '' BEFORE WORK.B<22,COUNT>
+            INS '' BEFORE WORK.B<23,COUNT>
+            INS '' BEFORE WORK.B<24,COUNT>
+            INS '' BEFORE WORK.B<25,COUNT>
+            INS '' BEFORE WORK.B<17,COUNT>
+            INS '' BEFORE WORK.B<27,COUNT>
+            INS '' BEFORE WORK.B<29,COUNT>
+            INS '' BEFORE WORK.B<43,COUNT>
+            INS '' BEFORE WORK.B<38,COUNT>
+            INS '' BEFORE WORK.B<37,COUNT>
+            INS '' BEFORE WORK.B<44,COUNT>
+            INS '' BEFORE WORK.B<45,COUNT>
+            GOSUB 5000
+         END
+         DATA '***'
+         GO 1000
+      END ELSE IF XMISC<6> = 6 THEN
+         IF WORK.B<3,COUNT> = '' THEN GO 1000
+         PATH = 'PRICE OVERRIDE IN P/Q'
+         CALL ACCESS.SUB (CONTROL, PATH, VALID, REDISPLAY)
+         IF REDISPLAY THEN
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000
+         END
+         IF NOT(VALID) THEN GO 1000
+         GOSUB 8500
+         GO 1650
+      END ELSE IF XMISC<6> = 1 THEN
+         IF A # '' THEN A = 'X ':A ELSE
+            IF RPTLST = '' THEN A = 'X ' ELSE
+               A = RPTLST
+               IF RPTLST[1,2] = 'X ' OR RPTLST = 'Z ' THEN GO 1025 ELSE GO 1000
+            END
+         END
+      END ELSE IF XMISC<6> = 11 THEN
+         IF WORK.B<1,COUNT> = '' THEN GO 1000
+         CTR = 0
+         LOOP
+            CTR = CTR + 1
+         WHILE CTR LE 4 DO
+            INS '' BEFORE WORK.B<CTR,COUNT>
+         REPEAT
+         INS '' BEFORE WORK.B<21,COUNT>
+         INS '' BEFORE WORK.B<22,COUNT>
+         INS '' BEFORE WORK.B<23,COUNT>
+         INS '' BEFORE WORK.B<24,COUNT>
+         INS '' BEFORE WORK.B<25,COUNT>
+         INS '' BEFORE WORK.B<17,COUNT>
+         INS '' BEFORE WORK.B<27,COUNT>
+         INS '' BEFORE WORK.B<29,COUNT>
+         INS '' BEFORE WORK.B<43,COUNT>
+         INS '' BEFORE WORK.B<38,COUNT>
+         INS '' BEFORE WORK.B<37,COUNT>
+         INS '' BEFORE WORK.B<44,COUNT>
+         INS '' BEFORE WORK.B<45,COUNT>
+         GOSUB 5000
+         GO 1000
+      END ELSE IF XMISC<6> = 3 THEN
+         CTR = 0
+         LOOP
+            CTR = CTR + 1
+         WHILE CTR LE 4 DO
+            DEL WORK.B<CTR,COUNT>
+         REPEAT
+         DEL WORK.B<21,COUNT>
+         DEL WORK.B<22,COUNT>
+         DEL WORK.B<23,COUNT>
+         DEL WORK.B<24,COUNT>
+         DEL WORK.B<25,COUNT>
+         DEL WORK.B<17,COUNT>
+         DEL WORK.B<27,COUNT>
+         DEL WORK.B<29,COUNT>
+         DEL WORK.B<43,COUNT>
+         DEL WORK.B<38,COUNT>
+         DEL WORK.B<37,COUNT>
+         DEL WORK.B<44,COUNT>
+         DEL WORK.B<45,COUNT>
+         GOSUB 9700                      ; * Product Line/Price Group mixed qty break re-calc.
+         GOSUB 5000
+         GO 1000
+      END
+1025: IF A[1,2] = 'X ' OR A[1,2] = 'Z ' THEN
+         XK = A ; MF = 'PRODUCT' ; MFX = 'PRODUCT.XREF' ; FK = '' ; XM=''
+         XM<2> = CNO ; XM<3> = SPTO
+         XM<4> = 1
+         CALL SUB.CMC.XREF (XK, MF, MFX, FK,XM)
+         IF XM<1> THEN
+            IF A[1,2] = 'Z ' THEN A='X ':A[3,99]
+            RPTLST = A
+            PRINT SCR
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000
+         END ELSE RPTLST = ''
+         IF FK<2,1> # '' THEN
+            IF WORK.B<1,COUNT+1> # '' THEN GO 1000
+            GOSUB 3339
+            GO 1000
+         END
+         IF FK # '' THEN A = FK[2,99] ELSE GO 1000
+      END
+      IF A = 'SP' THEN GO 1026
+      IF A # '' THEN
+         CALL SELECT.PROD (A, FOUND,SPMISC)
+         IF SPMISC<1> THEN
+            PRINT SCR
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000
+         END
+         IF FOUND # '' THEN A = OCONV(FOUND,'G1!1')
+      END
+      CPN=''
+      IF CNO # '' THEN
+         READV CPN FROM PROD.CUST.PN.XREF, CNO:'!':A, 1 THEN
+            READV VERIFY FROM F.PRODUCT, '!':CPN, 1 THEN A = CPN
+         END
+      END
+      IF A = '' THEN A = OCONV(WORK.B<1,COUNT>,'G1!1')
+      IF TRIM(A) = '' THEN
+         IF XMISC<3,1> = 'Y' THEN
+            IF WORK.B<1,COUNT+1> # '' THEN GO 1000
+            GOSUB 2800 ; GO 1000
+         END
+      END
+1026:*
+      PRDID = '!':A
+      IF A # 'SP' & A # '***' THEN
+         READ PROD.B FROM F.PRODUCT, '!':A ELSE
+            IF A # '' THEN
+               IF A[1,2] # 'Z ' THEN A='Z ':A ; GO 1025
+            END
+            GO 1000
+         END
+      END ELSE
+         PROD.B = ''
+         PROD.B<1> = WORK.B<25,COUNT>
+         IF A = 'SP' THEN PROD.B<7> = DEFAULT.SP.UOM
+      END
+      IF AUTOFEED # TRUE THEN
+         IF PROD.B<144> # '' THEN PRINT @(1,ROW):DLULON:'q':DLULOFF:
+      END
+1010: IF AUTOFEED # TRUE THEN
+         PRINT @(COL,ROW):A 'L#9 ':PROD.B<1> 'L#30 ':
+         PRINT SPACE(34):@(COL+41):
+         IF PROD.B<41> = 'I' THEN
+            PRINT C22:BELL:LON:'This item is INACTIVE ..... ':LOFF: ; INPUT RT,1:
+            PRINT C22:
+            GO 1000
+         END
+         IF PROD.B<41> = 'D' THEN
+            PRINT C22:BELL:LON:'This item is DISCONTINUED ..... ':LOFF: ; INPUT RT,1:
+            PRINT C22:
+         END
+      END
+      IF A = '***' THEN
+         IF WORK.B<43,COUNT> = '' THEN WORK.B<43,COUNT> = 1
+         IF WORK.B<44,COUNT> = '' THEN WORK.B<44,COUNT> = 1
+         PRINT STR('.',25):
+         IF WORK.B<29,COUNT> + 0 = 0 THEN PRINT STR('.',10): ELSE
+            PRINT ULON:OCONV(WORK.B<29,COUNT>,'MD2,') 'R#10':ULOFF:
+         END
+      END ELSE
+         IF AUTOFEED # TRUE THEN
+            PRINT PROD.B<7> 'L#3':
+            PRINT WORK.B<2,COUNT> 'R#5':
+            PRINT OCONV(WORK.B<3,COUNT>,'MD4') 'R#11':
+         END
+         DISC = OCONV(WORK.B<21,COUNT>,'MD2')
+         IF MLTPLR = 'Y' THEN
+            IF WORK.B<21,COUNT> # '' THEN
+               CALL CONVERT.DISC.MULT (WORK.B<21,COUNT>, MULT, '')
+            END ELSE MULT = ''
+            DISC = MULT
+         END
+         IF AUTOFEED # TRUE THEN
+            PRINT DISC 'R#6':
+         END
+         LMISC=WORK.B<1,COUNT> ; LMISC<2>='S'
+         LMISC<3>=WORK.B<27,COUNT>
+         LMISC<4>=WORK.B<43,COUNT>
+         LMISC<5>=WORK.B<44,COUNT>
+         IF USECNT = 0 THEN USECNT = 1
+         IF ALLOW.ZERO = "Y" THEN USEQTY = 1 ELSE USEQTY = WORK.B<2,USECNT>
+         CALL LINE.EXT (WORK.B<21,COUNT>, WORK.B<3,COUNT>, USEQTY, EXTENSION, LMISC)
+         IF AUTOFEED # TRUE THEN
+            PRINT OCONV(EXTENSION,'MD2') 'R#10':
+         END
+      END
+      IF WORK.B<1,COUNT> # '' & WORK.B<1,COUNT> # PRDID THEN
+         FOR I = 1 TO 4
+            WORK.B<I,COUNT> = ''
+         NEXT I
+         WORK.B<17,COUNT> = ''
+         WORK.B<21,COUNT> = ''
+         WORK.B<23,COUNT> = ''
+         WORK.B<24,COUNT> = ''
+         WORK.B<25,COUNT> = ''
+         WORK.B<27,COUNT> = ''
+      END
+      IF WORK.B<1,COUNT> # '' & WORK.B<1,COUNT> # PRDID & (XMISC<3,1> = 'Y' ! XMISC<3,2> = 'Y') THEN XMISC<3> = ''
+      WORK.B<1,COUNT> = PRDID
+      IF XMISC<3,1> = 'Y' THEN
+         GOSUB 2800 ; GO 1000
+      END
+      IF XMISC<3,2> = 'Y' THEN
+         XMISC<3> = '' ; GO 1650
+      END
+      IF XMISC<6> # '' THEN
+         FKEY = XMISC<6> ; XMISC<6> = ''
+         IF FKEY = 3 THEN
+            CTR = 0
+            LOOP
+               CTR = CTR + 1
+            WHILE CTR LE 4 DO
+               DEL WORK.B<CTR,COUNT>
+            REPEAT
+            DEL WORK.B<21,COUNT>
+            DEL WORK.B<22,COUNT>
+            DEL WORK.B<23,COUNT>
+            DEL WORK.B<24,COUNT>
+            DEL WORK.B<25,COUNT>
+            DEL WORK.B<17,COUNT>
+            DEL WORK.B<27,COUNT>
+            DEL WORK.B<29,COUNT>
+            DEL WORK.B<43,COUNT>
+            DEL WORK.B<38,COUNT>
+            DEL WORK.B<37,COUNT>
+            DEL WORK.B<44,COUNT>
+            DEL WORK.B<45,COUNT>
+            GOSUB 9700                   ; * Product Line/Price Group mixed qty break re-calc.
+            GOSUB 5000
+            GO 1000
+         END ELSE IF FKEY = 4 THEN
+            GOSUB 2700 ; GO 1000
+         END ELSE IF FKEY = 5 THEN
+            GOSUB 2500 ; GO 1000
+         END ELSE IF FKEY = 2 THEN
+******
+1050:       PRINT @(0,5):DMON:
+            CALL WINDOW (18, 5, 41, 8, '', 0)
+            PRINT @(39,5):DNT:
+            FOR I = 6 TO 13 ; PRINT @(39,I):VERTLN: ; NEXT I
+            PRINT @(39,14):UPT:
+            PRINT @(18,12):LINT:STR(HORZLN,20):RINT:
+            PRINT @(19,13):'Select Option  [ ]':
+            PRINT DMOFF:
+            XMISC = '' ; XMISC<10> = 23
+            XMISC<7> = '35,13,1' ; XMISC<8> = 'N'
+            XMISC<2> = 6:IVM:8:IVM:9:IVM:10:IVM:12 ; XMISC<3> = 'ChgCust':IVM:'PL/Recap':IVM:'ConvQuote':IVM:'SndQuote':IVM:'PrintOut'
+            CALL SCREEN.POINTER (DISPL.OPT.B, '', ESCFLG, XMISC)
+            XMISC<6> = XMISC<4>
+            SEL = ''
+            IF NUM(XMISC<5>) THEN SEL = DISPL.OPT.B<5,XMISC<5>>
+            IF SEL # '' THEN
+               LOCATE SEL IN DISPL.OPT.B<5> SETTING VM THEN
+                  DISPL.OPT.B<6> = VM ; SEL = DISPL.OPT.B<10,VM>
+               END
+            END
+            PRINT SCR: ; GOSUB 6000 ; GOSUB 5000
+            A = SEL
+            PRINT C22:EOS:
+            IF A = 'M' THEN
+               EXECUTE 'PRICE.MATRIX.MT'
+               PRINT SCR:
+               GOSUB 6000 ; GOSUB 5000 ; GO 1000
+            END
+            IF A = 'S' THEN
+               IF LPSW THEN LPSW = FALSE ELSE LPSW = TRUE
+               IF SHOWGP = FALSE THEN LPSW=FALSE   ; ** CHECK FOR USER LEVEL
+               IF WORK.B<1,COUNT> = '' AND COUNT # 1 THEN
+                  COUNT = COUNT - 1 ; GOSUB 6000 ; COUNT = COUNT + 1
+               END ELSE GOSUB 6000
+               GO 1000
+            END ELSE
+               IF A = 'I' THEN
+                  IF WORK.B<1,COUNT> # '' THEN
+                     READ INV.B FROM F.INVENTORY,WORK.B<1,COUNT> ELSE INV.B = ''
+                     CALL WHSE.OH.INQ(WHSE.B,INV.B)
+                  END
+               END ELSE IF A = 'P' THEN
+                  IF QUOTE # '' THEN GO 1050
+                  IF WORK.B<1> # '' THEN GO 1050
+                  CALL IMPORT.QUOTE.SUB (QUOTE.B, '')
+                  IF QUOTE.B # '' THEN
+                     WORK.B = QUOTE.B
+                     GOSUB 6000 ; GOSUB 5000
+                  END
+               END ELSE IF A = 'N' THEN
+                  IF CNO # '' AND WORK.B<1,COUNT> # '' AND WORK.B<1,COUNT> # '!***' AND WORK.B<1,COUNT> # '!SP' THEN GOSUB 3666
+                  GO 1000
+               END ELSE IF A= 'O' THEN
+                  ZMISC = ''
+                  SHIPTO.RECORD = ''
+                  SHIPTO.RECORD<1> = WORK.B<36,1>
+                  SHIPTO.RECORD<2> = WORK.B<36,2>
+                  SHIPTO.RECORD<3> = WORK.B<36,3>
+                  SHIPTO.RECORD<4> = WORK.B<36,5>
+                  SHIPTO.RECORD<5> = WORK.B<36,6>
+                  SHIPTO.RECORD<6> = WORK.B<36,7>
+                  CALL FAST.SHIPTO.SUB(SHIPTO.RECORD, ZMISC)
+                  WORK.B<36,1> = SHIPTO.RECORD<1>
+                  WORK.B<36,2> = SHIPTO.RECORD<2>
+                  WORK.B<36,3> = SHIPTO.RECORD<3>
+                  WORK.B<36,5> = SHIPTO.RECORD<4>
+                  WORK.B<36,6> = SHIPTO.RECORD<5>
+                  WORK.B<36,7> = SHIPTO.RECORD<6>
+               END ELSE IF A = 'E' THEN
+                  IF WORK.B<1,COUNT> # '' & WORK.B<1,COUNT> # '!SP' & WORK.B<1,COUNT> # '!***' ELSE GO 1000
+                  PRINT SCR.REPAIR:
+                  RCOMMENTS = CHANGE(WORK.B<17,COUNT>,ISVM,IVM)
+                  FOR I = 1 TO 6
+                     PRINT @(47,7+I):WORK.B<17,COUNT,I> 'L#30':
+                  NEXT I
+1020:             RMISC = '' ; RMISC<2> = 'Y':IVM:'Y' ; RMISC<10> = 23
+                  RMISC<4> = 3:IVM:9 ; RMISC<5> = 'DelRepair':IVM:'Save'
+                  CALL CIP (47, 6, 30, WORK.B<38,COUNT>, A, ESCFLG, RMISC)
+                  IF ESCFLG THEN GOSUB 5000 ; GO 1000
+                  WORK.B<38,COUNT> = A
+                  IF RMISC<6> = 3 THEN
+                     WORK.B<37,COUNT> = '' ; WORK.B<38,COUNT> = '' ; WORK.B<17,COUNT> = ''
+                     GOSUB 5000 ; GO 1000
+                  END
+                  IF RMISC<6> = 9 THEN
+                     IF RCOMMENTS<1,1> = '' & WORK.B<38,COUNT> = '' THEN
+                        WORK.B<37,COUNT> = '' ; WORK.B<38,COUNT> = '' ; WORK.B<17,COUNT> = ''
+                     END ELSE
+                        WORK.B<37,COUNT> = 'Y'
+                        WORK.B<17,COUNT> = CHANGE(RCOMMENTS,IVM,ISVM)
+                     END
+                     GOSUB 5000 ; GO 1000
+                  END
+                  CMISC = ''
+                  CMISC<1> = 6
+                  CMISC<2> = 13
+                  CMISC<3> = 47
+                  CMISC<4> = 1
+                  CMISC<5> = 30
+*L*              CMISC<6> = 'PRICE.QUOTE.REPAIR'
+                  CMISC<9> = 'Done'
+                  CALL COMMENTS.SUB (7, RCOMMENTS, ESCFLG, CMISC)
+                  IF ESCFLG THEN GOSUB 5000 ; GO 1000
+                  GO 1020
+               END ELSE IF A = 'D' THEN
+                  IF WORK.B<1,COUNT> # '' & WORK.B<1,COUNT> # '!SP' & WORK.B<1,COUNT> # '!***' ELSE GO 1000
+                  PATH = 'CHANGE P/Q PRODUCT DESCRIPTION'
+                  CALL ACCESS.SUB (F.CONTROL, PATH, VALID, REDISPLAY)
+                  IF REDISPLAY THEN
+                     PRINT SCR:
+                     GOSUB 6000 ; GOSUB 5000
+                  END
+                  IF NOT(VALID) THEN GO 1000
+                  RMISC = 'PRODUCT NUMBER'
+                  CALL READFILE (F.PRODUCT, WORK.B<1,COUNT>, PROD.B, RMISC)
+                  IF RMISC<3> THEN RELEASE F.PRODUCT, WORK.B<1,COUNT> ; GO 1000
+                  IF RMISC<2> THEN GO 1000
+                  DMISC = ''
+                  DMISC<1> = 9
+                  DMISC<2> = 14
+                  DMISC<3> = 12
+                  DMISC<4> = 1
+                  DMISC<5> = 30
+                  DMISC<6> = 'PQ.DESC'
+                  DMISC<7> = 0
+                  DESC = PROD.B<144>
+                  CALL COMMENTS.SUB (5, DESC, ESCFLG, DMISC)
+                  IF NOT(ESCFLG) THEN
+                     PROD.B<144> = DESC
+                     WRITE PROD.B ON F.PRODUCT, WORK.B<1,COUNT>
+                  END ELSE RELEASE F.PRODUCT, WORK.B<1,COUNT>
+                  GOSUB 5000 ; GO 1000
+               END ELSE IF A = 'R' THEN
+                  IF CNO = '' ! CNO = JUNK THEN
+                     PRINT C22:BELL:'Customer NOT Specified, ':
+                     PRINT 'Please change CUSTOMER CATEGORY to Re-Calculate...':
+                     INPUT NL,1:
+                     GO 1000
+                  END
+                  GOSUB 9900 ; GO 1000
+               END ELSE IF A = 'H' THEN
+                  DPN = ''
+                  IF CNO # '' THEN
+                     DATA CNO
+                     IF WORK.B<1,COUNT> # '' THEN DPN = OCONV(WORK.B<1,COUNT>,'G1!1') ELSE
+                        IF COUNT # 1 THEN DPN = OCONV(WORK.B<1,COUNT-1>,'G1!1')
+                     END
+                     IF DPN # '' THEN
+                        DATA DPN
+                        YEAR = OCONV('SJYR','TGLNUM;X;1;1')
+                        IF YEAR # '' THEN DATA YEAR
+                     END
+                  END
+                  EXECUTE 'CUST.SALES.HIST'
+               END ELSE IF A = 'C' THEN
+1100:             PRINT C22:ULON:'PRICE FIELDS:':ULOFF:DMON:' (C1,C2,C3,C4,C5,C6,C7), (L1,L2,L3,L4) ':DMOFF:
+                  PMISC = IVM:"__,__"
+                  CALL CIP (60, 22, 5, PRICE.FIELDS, A, ESCFLG, PMISC)
+                  PRINT C22:
+                  IF ESCFLG THEN GO 1000
+                  PF1 = OCONV(A,'G,1')
+                  PF2 = OCONV(A,'G1,1')
+                  IF PF1 = '' & PF2 = '' THEN PRICE.FIELDS = '' ELSE
+                     IF PF1 = '' THEN GO 1100
+                     IF PF1 = 'C1' ! PF1 = 'C2' ! PF1 = 'C3' ! PF1 = 'C4' ! PF1 = 'C5' ! PF1 = 'C6' ! PF1 = 'C7' ! PF1 = 'L1' ! PF1 = 'L2' ! PF1 = 'L3' ! PF1 = 'L4' ELSE GO 1100
+                     IF PF2 # '' THEN IF PF2 = 'C1' ! PF2 = 'C2' ! PF2 = 'C3' ! PF2 = 'C4' ! PF2 = 'C5' ! PF2 = 'C6' ! PF2 = 'C7' ! PF2 = 'L1' ! PF2 = 'L2' ! PF2 = 'L3' ! PF2 = 'L4' ELSE GO 1100
+                     PRICE.FIELDS = A
+                  END
+                  HDR2 = @(1,19):SPACE(11):@(1):DMON:OCONV(PRICE.FIELDS,'G,1'):DMOFF
+                  HDR2 = HDR2:@(1,20):SPACE(11):@(1):DMON:OCONV(PRICE.FIELDS,'G1,1'):DMOFF
+                  HDR2 = HDR2:@(14,19):SPACE(9):@(14):DMON:'Brk PrdLn':DMOFF
+                  HDR2 = HDR2:@(26,19):SPACE(7):@(26):DMON:'PriceGrp':DMOFF
+                  HDR2 = HDR2:@(36,19):SPACE(30):@(36):DMON:'Price Matrix Used':DMOFF
+                  IF LPSW THEN PRINT HDR2: ; GOSUB 8700
+                  GO 1000
+               END ELSE IF A = 'T' THEN
+                  OV = TXCD
+600:              PRINT C22:'Enter TAX CODE ':
+                  TMISC = '' ; TMISC<10> = 23 ; TMISC<4> = 1 ; TMISC<5> = 'Search'
+                  CALL CIP (18, 22, 4, OV, TXCD, ESCFLG, TMISC)
+                  IF ESCFLG THEN GO 1000
+                  IF TMISC<6> = 1 THEN
+                     SMISC = 'TAX CODE SELECTOR'
+                     SMISC<3> = 0:IVM:1
+                     SMISC<4> = 'L#10':IVM:'L#30'
+                     SMISC<6> = 2
+                     SMISC<7> = 'CODE        NAME/DESCRIPTION'
+                     SMISC<8> = 3
+                     SMISC<9> = 1
+                     SMISC<10>= 'AL'
+                     CALL SELECTFILE (F.TAX, REDISPLAY, SMISC)
+                     IF REDISPLAY THEN
+                        PRINT SCR
+                        IF LPSW THEN PRINT HDR2:
+                        GOSUB 5000
+                     END
+                     IF SMISC<2> # '' THEN TXCD = SMISC<2>
+                  END
+                  READ TAX.B FROM F.TAX, TXCD ELSE GO 600
+                  GOSUB 7000 ; GO 1000
+               END ELSE IF XMISC<6> = 2 THEN
+                  IF WORK.B<1,COUNT> # '' THEN PNO = WORK.B<1,COUNT> ELSE
+                     IF COUNT # 1 THEN PNO = WORK.B<1,COUNT-1>
+                  END
+                  PNO = OCONV(PNO,'G1!1')
+                  CALL FASTKEY.MENU ('PRICE QUOTE', CNO, PNO, '')
+               END ELSE IF XMISC<6> = 8 THEN
+                  CALL PRICE.INQ.PLRECAP (REDISPLAY)
+                  IF REDISPLAY THEN
+                     PRINT SCR:
+                     GOSUB 5000
+                     GOSUB 7000
+                  END
+                  GO 1000
+               END ELSE IF XMISC<6> = 9 THEN
+                  IF QUOTE = '' THEN
+                     PRINT C22:BELL:LON:' Quote Must be SAVED prior to converting to sales order, Hit RETURN...':LOFF: ; INPUT NL,1: ; GO 1050
+                  END
+                  RELEASE
+                  DATA 'OE','Q':QUOTE
+                  EXECUTE 'OEH'
+                  PRINT SCR: ; GO 1
+               END ELSE IF XMISC<6> = 10 THEN
+                  CALL PRICE.INQ.FAX
+                  PRINT SCR:
+                  IF LPSW THEN PRINT HDR2:
+                  GOSUB 5000 ; GO 1000
+               END ELSE IF XMISC<6> = 12 THEN
+                  IF PRT.PROG # '' THEN
+                     CALL @PRT.PROG
+                  END ELSE
+                     CALL PRICE.INQ.PRINT
+                  END
+                  PRINT SCR
+                  IF LPSW THEN PRINT HDR2:
+                  GOSUB 5000 ; GOSUB 7000 ; GO 1000
+               END ELSE IF XMISC<6> = 6 THEN
+1055:             PRINT C22:ULON:'NEW Customer Number:':ULOFF:
+                  FMISC = IVM:STR('*',7):SPACE(13)
+                  FMISC<2> = 'Y':IVM:'Y' ; FMISC<10> = 23
+                  FMISC<4> = 1 ; FMISC<5>='Search'
+                  CALL CIP(22,22,20,'',NCN,ESCFLG,FMISC)
+                  IF ESCFLG THEN GO 1050
+                  IF FMISC<6> = 1 THEN NCN = 'X ':NCN
+1056:             IF NCN[1,2] = 'X ' ! NCN[1,2] = 'Z ' THEN
+                     XK = NCN ; MF = 'CUSTOMER' ; MFX = 'CUSTOMER.XREF' ; FK = '' ; XM=''
+                     CALL SUB.CMC.XREF (XK, MF, MFX, FK,XM)
+                     IF XM<1> THEN
+                        PRINT SCR
+                        IF LPSW THEN PRINT HDR2:
+                        GOSUB 5000
+                     END
+                     IF FK # '' THEN NCN = FK ELSE GO 1055
+                  END
+                  READ ALPHA.B FROM F.ALPHA, NCN THEN
+                     FK = ''
+                     CALL CUST.XREF (ALPHA.B, FK, F.CUSTOMER, 5, 20, 1)
+                     PRINT SCR
+                     IF LPSW THEN PRINT HDR2:
+                     GOSUB 5000
+                     IF FK = '' THEN GO 1055 ELSE NCN = FK
+                  END
+                  IF NCN = '' THEN GO 1055
+                  READ NCUST.B FROM F.CUSTOMER,NCN JSTF ELSE
+                     IF NCN # '' THEN
+                        IF NCN[1,2] # 'Z ' THEN NCN = 'Z ':NCN ; GO 1056
+                     END
+                     GO 1055
+                  END
+                  NCN=NCN JSTF
+1060:             PRINT C22:'New CUSTOMER : ':LON:NCN'L#7':'  ':NCUST.B<1>'L#30':LOFF:'  O.K. ? Y/N : [ ]':
+                  FMISC='' ; CALL CIP(70,22,1,'',RSP,ESCFLG,FMISC)
+                  IF ESCFLG ! RSP = 'N' THEN GO 1055
+                  IF RSP = 'Y' ELSE GO 1060
+                  WORK.B<26,-1>=WORK.B<9>
+                  WORK.B<9>=NCN
+                  CNO=NCN
+                  CUST.B=NCUST.B
+                  WORK.B<18> = ''
+                  WORK.B<11> = DATE()
+*JS*WORK.B<12> = INTLS
+                  QUOTE = '' ; ORIG.WORK.B = ''
+                  GOSUB 9600
+****
+               END
+            END
+            PRINT SCR
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000 ; GO 1000
+         END ELSE IF FKEY = 6 THEN
+            IF LPSW THEN LPSW = FALSE ELSE LPSW = TRUE
+            GOSUB 6000
+         END
+      END
+      IF PROD.B<80> # '' AND SHOW.PROD.NOTES # 'N' AND AUTOFEED # TRUE THEN
+         CALL PROD.INTER.NOTES(F.PRODUCT,F.SCREENS,"!":A,'')
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000 ; GOSUB 7000
+      END
+!
+!    SP ITEM OR *** DESCRIPTION
+!
+      IF PRDID = '!SP' ! PRDID = '!***' THEN
+1800:    SMISC='' ; CALL CIP(12,ROW,30,WORK.B<25,COUNT>,SPDESC,ESCFLG,SMISC)
+         WORK.B<25,COUNT>=SPDESC
+      END
+      YR=OCONV(DATE(),"D2/")[7,2]
+      PRINT C22:
+!   MOD - 02/14/05 TO GO BACK MAX HIST YEAR
+      CURR.YR = YR
+      FOR YRLP = 1 TO HIST.YRS
+         CURR.YR = CURR.YR 'R%2'
+         READ HIST.REC FROM F.CPSH,CNO:'|':PRDID:'|':CURR.YR THEN
+            SW.HIT =1
+            YRLP = HIST.YRS
+         END ELSE
+            SW.HIT = 0
+            HIST.REC = ''
+         END
+         CURR.YR = CURR.YR - 1
+         IF CURR.YR < 0 THEN CURR.YR = 99
+      NEXT YRLP
+      HIST.ITEMS=DCOUNT(HIST.REC<1>,CHAR(253))
+      FOR HIST.VAL = 1 TO HIST.ITEMS
+         IF HIST.REC<1,HIST.VAL> # '' THEN
+            IF HIST.REC<2,HIST.VAL>+0 > 0 THEN
+!  DETERMINE IF PRICE WAS CHANGE - WHAT SHOULD BE THEN NEW PRICE
+               PRICE.FACTOR = OCONV(WORK.B<27,COUNT>,'TUOM;X;1;1')
+               IF PRICE.FACTOR + 0 = 0 THEN PRICE.FACTOR = 1
+               BEGIN CASE
+                  CASE WORK.B<23,COUNT> # '' ; COST = WORK.B<23,COUNT>
+                  CASE CSTCLM = "C1" ; COST = PROD.B<3> * PRICE.FACTOR
+                  CASE CSTCLM = "C2" ; COST = PROD.B<5> * PRICE.FACTOR
+                  CASE CSTCLM = "C3" ; COST = PROD.B<19> * PRICE.FACTOR
+                  CASE CSTCLM = "C4" ; COST = PROD.B<62> * PRICE.FACTOR
+                  CASE CSTCLM = "C5" ; COST = PROD.B<120> * PRICE.FACTOR
+                  CASE CSTCLM = "C6" ; COST = PROD.B<122> * PRICE.FACTOR
+                  CASE CSTCLM = "C7" ; COST = PROD.B<124> * PRICE.FACTOR
+               END CASE
+               IF COST + 0 = 0 THEN GP=0 ELSE
+                  NETPR = HIST.REC<3,HIST.VAL> * 100
+                  IF NETPR+0 # 0 THEN
+                     GP=ICONV((((NETPR-HIST.REC<7,HIST.VAL>)/NETPR) * 100),"MD2")
+                  END ELSE GP=0
+                  GP = ICONV(OCONV(GP,'MD2'),'MD2')
+               END
+               IF GP + 0 # 0 THEN
+                  CPRICE = ((COST / (10000 - GP)) * 10000)
+               END ELSE CPRICE=''
+               CMSG=''
+               CPRICE=OCONV(CPRICE,"MD24")
+               CPRICE=ICONV(CPRICE,"MD2")*100
+               IF CPRICE + 0 # 0 THEN
+                  IF CALC.LOWER.MARGIN # "Y" THEN
+                     IF CPRICE LE NETPR THEN CPRICE = ''
+                  END ELSE
+                     IF CPRICE EQ NETPR THEN CPRICE = ''
+                  END
+                  IF CPRICE # '' THEN CMSG='Margin ':OCONV(CPRICE,'MD24,$')
+               END
+               IF AUTOFEED # TRUE THEN
+                  PRINT C22:DLON:' Last ':HIST.REC<2,HIST.VAL>:'/':OCONV(HIST.REC<3,HIST.VAL>,'MD2,$'):' ':OCONV(HIST.REC<1,HIST.VAL>,'D2/'):HIST.REC<10,HIST.VAL> 'L#1':DLOFF:FLON:CMSG:FLOFF:
+               END
+               GO 2040
+            END
+         END
+      NEXT HIST.VAL
+2040:!
+      PDQXID = WORK.B<1,COUNT>:'|':CNO
+      IF SPTO # '' THEN PDQXID = PDQXID:'|':SPTO
+      READ PDQX.B FROM F.PRODUCT.QUOTE.X, PDQXID THEN
+         IF QUOTE = PDQX.B<1> ELSE
+            IF AUTOFEED # TRUE THEN
+               PRINT LON:' Q':PDQX.B<1>:' ':PDQX.B<2>:'/':OCONV(PDQX.B<6>,'MD4,$'):' ':OCONV(PDQX.B<3>,'D2/'):'-':PDQX.B<7>:' ':LOFF:
+            END
+         END
+      END
+!
+!  CHECK FOR DUPLICATE PRODUCT
+!
+!
+      CHECK.PNO = WORK.B<1,COUNT>
+      DUP.PNO = ''
+      LOCATE CHECK.PNO IN WORK.B<1> SETTING VAL THEN
+         IF VAL # COUNT THEN
+            DUP.PNO = VAL
+         END
+      END
+      IF DUP.PNO # '' AND WORK.B<1,COUNT> # '!SP' AND WORK.B<2,COUNT>+0 = 0 AND WORK.B<1,COUNT> # '!***' AND AUTOFEED # TRUE THEN
+         IF CHECK.DUPS # 'N' THEN
+            VERIFY = 'Y':IVM:'N'
+            TEXT = 'Product Already Found on Line ':DUP.PNO:' ! OK to CONTINUE ? (Y)es/(N)o ...'
+            PRINT BELL:
+            TMISC = ''
+            CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+            RESP=TMISC<10>
+            IF ESCFLG THEN RESP='N'
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000 ; GOSUB 7000
+            IF RESP = 'N' THEN WORK.B<1,COUNT> = '' ; GO 1000
+         END
+         WORK.B<3,COUNT> = WORK.B<3,DUP.PNO>
+         WORK.B<21,COUNT> = WORK.B<21,DUP.PNO>
+         WORK.B<23,COUNT> = WORK.B<23,DUP.PNO>
+         WORK.B<4,COUNT> = WORK.B<4,DUP.PNO>
+         WORK.B<24,COUNT> = WORK.B<24,DUP.PNO>
+         WORK.B<15,COUNT> = WORK.B<15,DUP.PNO>
+         WORK.B<43,COUNT> = WORK.B<43,DUP.PNO>
+         WORK.B<44,COUNT> = WORK.B<44,DUP.PNO>
+         WORK.B<27,COUNT> = WORK.B<27,DUP.PNO>
+*S*       WORK.B<27,CTR> = PROD.B<7>
+      END
+****
+      IF USE.PROJ.LN = "Y" THEN
+         READV DESC FROM F.PRODUCT,WORK.B<1,COUNT>,1 ELSE DESC = WORK.B<25,COUNT>
+         PRINT @(1,ROW):LON:OCONV(WORK.B<1,COUNT>,'G1!1') 'L#9 ':DESC 'L#30':LOFF
+         PRINT @(55,15):FLON:"Project Line Number ":FLOFF
+         IF WORK.B<45,COUNT> = "" THEN WORK.B<45,COUNT> = COUNT
+         CALL CIP (75,15,3,WORK.B<45,COUNT>,PROJ.LINE.NUM,ESCFLG,"")
+         IF NOT(ESCFLG) AND NUM(PROJ.LINE.NUM) AND PROJ.LINE.NUM # "" THEN WORK.B<45,COUNT> = PROJ.LINE.NUM
+         PRINT SCR:
+         GOSUB 5000
+      END
+***
+1450:!
+! UNIT OF MEASURE
+!
+      IF WORK.B<1,COUNT> = '!***' THEN
+         IF WORK.B<29,COUNT> = '' THEN GOSUB 7000
+         IF WORK.B<29,COUNT> + 0 = 0 THEN
+            PRINT @(68,ROW):STR('.',10):
+         END ELSE
+            PRINT @(68,ROW):ULON:OCONV(WORK.B<29,COUNT>,'MD2,') 'R#10':ULOFF:
+         END
+         GO 1650
+      END
+      IF WORK.B<27,COUNT> = '' THEN
+         READV UOM FROM F.PRODUCT,WORK.B<1,COUNT>,7 ELSE UOM=''
+         WORK.B<27,COUNT>=UOM
+      END
+      IF WORK.B<27,COUNT> = '' THEN WORK.B<27,COUNT> = DEFAULT.SP.UOM
+      READV PF FROM F.UOM, WORK.B<27,COUNT>, 1 ELSE PF = ''
+      IF PF = '' THEN PF = 1
+      READV QFC FROM F.PRODUCT, WORK.B<1,COUNT>, 140 ELSE QFC = ''
+      READV QF FROM F.UOM, QFC, 1 ELSE QF = ''
+      IF QF = '' THEN QF = 1
+      IF WORK.B<43,COUNT> = '' THEN WORK.B<43,COUNT> = PF
+      IF WORK.B<44,COUNT> = '' THEN WORK.B<44,COUNT> = QF
+      IF WORK.B<45,COUNT> = '' THEN WORK.B<45,COUNT> = COUNT
+      IF AUTOFEED # TRUE THEN
+         PRINT @(43,ROW):WORK.B<27,COUNT>
+      END
+      IF UOM.ENTRY = 'N' OR AUTOFEED = TRUE THEN GO 1500
+      COL=43 ; XMISC='' ; XMISC<2>='Y':IVM:'Y'
+      XMISC<4>=1:IVM:3 ; XMISC<5>='Search':IVM:'Delete'
+      XMISC<10>=23
+      CALL CIP(COL, ROW, 3, WORK.B<27,COUNT>, A, ESCFLG,XMISC)
+      IF XMISC<6> = 3 THEN
+         CTR = 0
+         LOOP
+            CTR = CTR + 1
+         WHILE CTR LE 4 DO
+            DEL WORK.B<CTR,COUNT>
+         REPEAT
+         DEL WORK.B<17,COUNT>
+         DEL WORK.B<21,COUNT>
+         DEL WORK.B<22,COUNT>
+         DEL WORK.B<23,COUNT>
+         DEL WORK.B<24,COUNT>
+         DEL WORK.B<25,COUNT>
+         DEL WORK.B<27,COUNT>
+         DEL WORK.B<29,COUNT>
+         DEL WORK.B<43,COUNT>
+         DEL WORK.B<38,COUNT>
+         DEL WORK.B<37,COUNT>
+         DEL WORK.B<44,COUNT>
+         DEL WORK.B<45,COUNT>
+         GOSUB 5000
+         GO 1000
+      END
+      IF XMISC<6> = 1 THEN
+         SMISC = 'UNIT OF MEASURE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'UOM         FACTOR'
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         CALL SELECTFILE (F.UOM, REDISPLAY, SMISC)
+         IF REDISPLAY THEN
+            PRINT SCR
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000
+         END
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GO 1450
+      END
+      READV DUMMY FROM F.UOM,A,1 ELSE GO 1450
+      WORK.B<27,COUNT>=A
+      PRINT @(COL,ROW):A'L#3'
+! QUANTITY
+!
+1500: IF WORK.B<2,COUNT>= '' THEN
+         PQTY = WORK.B<2,COUNT> ; PQTY<1,6> = BRANCH
+         CALL PRICE.SUB (PROD.B, CUST.B, CNO, WORK.B<1,COUNT>, SPTO, PQTY, WORK.B<27,COUNT>, XMISC)
+         WORK.B<22,COUNT>=XMISC<5>
+         PRIOR.DISC = XMISC<3>
+         PRIOR.PRICE= XMISC<4>
+         ORIG.COST = ''
+         IF XMISC<21> # '' THEN
+            ORIG.COST = XMISC<21>
+            WORK.B<23,COUNT>=XMISC<21>
+            WORK.B<24,COUNT>=XMISC<22>
+         END
+         GOSUB 6000
+      END
+      READV CPN FROM CUST.PN.XREF,CNO:PRDID,1 THEN
+         IF AUTOFEED # TRUE THEN
+            PRINT @(57,22):'Cust Part#  ':FLON:CPN'L#10':FLOFF
+         END
+      END
+      COL = 46 ; XMISC = '' ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<10> = 23 ; XMISC<4> = '3' ; XMISC<5> = 'Delete'
+      IF CUTPIPE = 'Y' THEN
+         XMISC<4,-1> = 6 ; XMISC<5,-1> = 'CutLngth'
+      END
+      IF NOT(WHDETAIL) THEN
+         XMISC<4,-1> = 10 ; XMISC<5,-1> = 'WhseDet'
+      END
+      NBR.EQUALS=DCOUNT(PROD.B<139>,CHAR(253))
+      IF NBR.EQUALS+0 > 0 THEN
+         XMISC<4>=XMISC<4>:IVM:'2'
+         XMISC<5>=XMISC<5>:IVM:'Eqls/Subs'
+      END
+1501:!
+      ORIG.QTY = WORK.B<2,COUNT>
+      IF AUTOFEED # TRUE THEN
+         CALL CIP (COL, ROW, 5, WORK.B<2,COUNT>, A, ESCFLG, XMISC)
+      END ELSE A = QUANT
+      IF ESCFLG THEN GO 1501
+      IF XMISC<6> = 6 THEN
+         PRINT SCRCUTPIPE
+         CUT.STR = ''
+13321:   ZMISC = '' ; ZMISC<10> = 23
+         ZMISC<2> = 'Y':IVM:'Y'
+         ZMISC<4> = 9 ; ZMISC<5> = 'Done'
+         CALL CIP(64,5,3,CUT.STR<1>,PCS,ESCFLG,ZMISC)
+         IF NOT(NUM(PCS)) THEN GO 13321
+         IF ZMISC<3,1> = 'Y' THEN GO 13325
+         IF ZMISC<6> = 9 THEN
+            FOR Z = 1 TO 5
+               IF CUT.STR<Z> # '' THEN NULL ELSE GO 13321
+            NEXT Z
+            GOSUB 14000
+         END
+         IF ESCFLG THEN
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000 ; GOSUB 7000
+            GO 1500
+         END
+         IF NOT(NUM(PCS)) THEN GO 13321
+         CUT.STR<1> = PCS
+13322:   ZMISC = '' ; ZMISC<10> = 23
+         ZMISC<4> = 9 ; ZMISC<5>= 'Done'
+         ZMISC<2> = 'Y':IVM:'Y'
+         CALL CIP(64,6,3,CUT.STR<2>,FEET,ESCFLG,ZMISC)
+         IF ESCFLG THEN
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000 ; GOSUB 7000
+            GO 1500
+         END
+         IF ZMISC<3,1> = 'Y' THEN GO 13321
+         IF ZMISC<6> = 9 THEN
+            FOR Z = 1 TO 5
+               IF CUT.STR<Z> # '' THEN NULL ELSE GO 13322
+            NEXT Z
+            GOSUB 14000
+         END
+         IF NOT(NUM(FEET)) THEN GO 13322
+         CUT.STR<2> = FEET
+13323:   ZMISC = '' ; ZMISC<10> = 23
+         ZMISC<4> = 9 ; ZMISC<5>= 'Done'
+         ZMISC<2> = 'Y':IVM:'Y'
+         CALL CIP(64,7,3,CUT.STR<3>,INCHES,ESCFLG,ZMISC)
+         IF ESCFLG THEN
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000 ; GOSUB 7000
+            GO 1500
+         END
+         IF ZMISC<3,1> = 'Y' THEN GO 13322
+         IF ZMISC<6> = 9 THEN
+            FOR Z = 1 TO 5
+               IF CUT.STR<Z> # '' THEN NULL ELSE GO 13323
+            NEXT Z
+            GOSUB 14000
+         END
+         IF NOT(NUM(INCHES)) THEN GO 13323
+         CUT.STR<3> = INCHES
+13324:   ZMISC = '' ; ZMISC<10> = 23
+         ZMISC<4> = 9 ; ZMISC<5>= 'Done'
+         ZMISC<2> = 'Y':IVM:'Y'
+         CALL CIP(64,8,3,CUT.STR<4>,DEC1,ESCFLG,ZMISC)
+         IF ESCFLG THEN
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000 ; GOSUB 7000
+            GO 1500
+         END
+         IF NOT(NUM(DEC1)) THEN GO 13324
+         IF ZMISC<3,1> = 'Y' THEN GO 13323
+         IF ZMISC<6> = 9 THEN
+            FOR Z = 1 TO 5
+               IF CUT.STR<Z> # '' THEN NULL ELSE GO 13324
+            NEXT Z
+            GOSUB 14000
+         END
+         CUT.STR<4> = DEC1
+13325:   ZMISC = '' ; ZMISC<10> = 23
+         ZMISC<4> = 9 ; ZMISC<5>= 'Done'
+         ZMISC<2> = 'Y':IVM:'Y'
+         CALL CIP(69,8,3,CUT.STR<5>,DEC2,ESCFLG,ZMISC)
+         IF ESCFLG THEN
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000 ; GOSUB 7000
+            GO 1500
+         END
+         IF NOT(NUM(DEC2)) THEN GO 13325
+         IF ZMISC<6> = 9 THEN
+            FOR Z = 1 TO 5
+               IF CUT.STR<Z> # '' THEN NULL ELSE GO 13325
+            NEXT Z
+            GOSUB 14000
+         END
+         IF ZMISC<3,1> = 'Y' THEN GO 13324
+         CUT.STR<5> = DEC2
+         GO 13321
+      END
+      IF XMISC<6> = 2 THEN
+         SMISC = ''
+         SMISC<1> = CNO
+         SMISC<2> = SPTO
+         SMISC<3> = CSTCLM
+         SMISC<4> = BRANCH
+         SMISC<5> = SHOWGP
+         CALL SUBSTITUTE.SUB (PRDID[2,15], SMISC)
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000 ; GOSUB 7000
+         IF SMISC<1> # '' THEN A = SMISC<1> ; COL=2 ; XMISC='' ; GO 1025
+         GO 1500
+      END
+      IF XMISC<6> = 10 THEN
+         WHDETAIL=TRUE
+         GOSUB 4550                      ; *** DETAIL WAREHOUSE
+*        PRINT SCR:
+*        IF LPSW THEN PRINT HDR2:
+*        GOSUB 5000; GOSUB 7000
+         XMISC<6>=''
+         GO 1501
+      END
+      IF XMISC<6> = 3 THEN
+         CTR = 0
+         LOOP
+            CTR = CTR + 1
+         WHILE CTR LE 4 DO
+            DEL WORK.B<CTR,COUNT>
+         REPEAT
+         DEL WORK.B<21,COUNT>
+         DEL WORK.B<22,COUNT>
+         DEL WORK.B<23,COUNT>
+         DEL WORK.B<24,COUNT>
+         DEL WORK.B<25,COUNT>
+         DEL WORK.B<17,COUNT>
+         DEL WORK.B<27,COUNT>
+         DEL WORK.B<29,COUNT>
+         DEL WORK.B<43,COUNT>
+         DEL WORK.B<38,COUNT>
+         DEL WORK.B<37,COUNT>
+         DEL WORK.B<44,COUNT>
+         DEL WORK.B<45,COUNT>
+         GOSUB 5000
+         IF WHDETAIL THEN
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000 ; GOSUB 7000
+            WHDETAIL=FALSE
+         END
+         GO 1000
+      END
+*S*
+      IF A # "" & A LT 0 & A # ORIG.QTY THEN
+         READV PROD.STATUS FROM F.PRODUCT, WORK.B<1,COUNT>, 41 ELSE PROD.STATUS = ''
+         IF PROD.STATUS = 'N' THEN
+            PATH = 'NON-STOCK ITEM RETURNS IN S/O ENTRY'
+         END ELSE
+            PATH = 'RETURNS IN S/O ENTRY'
+         END
+         CALL ACCESS.SUB (CONTROL,PATH,VALID,REDISPLAY)
+         IF REDISPLAY THEN
+            PRINT SCR
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000
+         END
+         IF NOT(VALID) THEN GO 1500
+      END
+*S*
+      IF TRIM(A) = '' THEN
+         IF QTY.DEFAULT='Y' THEN A=1 ELSE GO 1500
+      END
+***
+      PBC = A[LEN(A),1]
+      IF WORK.B<1,COUNT> # '!SP' THEN IF PBC = 'B' ! PBC = 'C' THEN
+         A = A[1,LEN(A)-1]
+         IF NUM(A) ELSE GO 1500
+         IF A = '' THEN GO 1500
+         BOXQTY = PROD.B<81> ; CTNQTY = PROD.B<94>
+         IF PBC = 'B' THEN
+            IF BOXQTY + 0 = 0 THEN GO 1500
+            USEQTY = BOXQTY
+         END ELSE
+            IF CTNQTY + 0 = 0 THEN GO 1500
+            USEQTY = CTNQTY
+         END
+         A = A * USEQTY
+      END
+***
+      IF NUM(A) ELSE GO 1500
+      IF PRDID # '!SP' & SHOW.BQ # 'N' THEN IF PROD.B<81> + 0 # 0 THEN
+         CHECK.BOX.QTY=A/PROD.B<81>
+         IF INDEX(CHECK.BOX.QTY,".",1)+0 # 0 THEN
+            IF AUTOFEED # TRUE THEN
+               PRINT C23:BELL:LON:LON:' Caution: Box Quantity is ':LOFF:FLON:PROD.B<81>:FLOFF:LON:' <RET>...':LOFF: ; INPUT NL,1:
+               PRINT C23:
+            END
+         END
+      END
+      IF A = 0 AND ALLOW.ZERO = "N" THEN GO 1500
+      WORK.B<2,COUNT> = A
+      IF AUTOFEED # TRUE THEN
+         PRINT @(COL,ROW):A 'R#5'
+      END
+      IF WHDETAIL AND AUTOFEED # TRUE THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000 ; GOSUB 7000
+         WHDETAIL=FALSE
+      END
+!
+      IF WORK.B<1,COUNT> # '!SP' & WORK.B<1,COUNT> # '!***' THEN
+         IF AVAIL < WORK.B<2,COUNT> OR COMP.B<38> # 'Y' THEN
+            IF PROD.B<68> # '' ! PROD.B<69> # '' THEN
+               IF WORK.B<2,COUNT> = '' THEN GOSUB 6000
+               IF AUTOFEED # TRUE THEN
+                  LOOP
+                     PRINT C22:BELL:LON:'SUBSTITUTES:':ULOFF:' Available for this ':
+                     PRINT 'Product !, INQUIRE ? (Y)es/(N)o   [N]':STR(BS,2):LOFF:
+                     INPUT RESP,1:
+                     IF RESP = '' THEN RESP = 'N'
+                  UNTIL RESP = 'Y' ! RESP = 'N' DO REPEAT
+                  PRINT C22
+                  IF RESP = 'Y' THEN
+                     SMISC = ''
+                     SMISC<1> = CNO
+                     SMISC<2> = SPTO
+                     SMISC<3> = CSTCLM
+                     SMISC<5> = BRANCH
+                     CALL SUBSTITUTE.SUB (WORK.B<1,COUNT>[2,15] , SMISC)
+                     PRINT SCR:
+                     IF LPSW THEN PRINT HDR2:
+                     GOSUB 5000 ; GOSUB 7000
+                     IF SMISC<1> # '' THEN A = SMISC<1> ; COL=2 ; GO 1025
+                  END
+               END
+            END
+         END
+      END
+      IF WORK.B<4,COUNT> # 'Override' & WORK.B<1,COUNT> # '!SP' & WORK.B<1,COUNT> # '!***' THEN
+         READ PROD.B FROM F.PRODUCT, WORK.B<1,COUNT> ELSE PROD.B=''
+         PCUST.B=CUST.B
+         IF BCAT # '' & PROD.B<81> THEN
+            BROKEN.BOX=WORK.B<2,COUNT>/PROD.B<81>
+            IF INDEX(BROKEN.BOX,'.',1) THEN PCUST.B<17> = BCAT ; PCNO = JUNK
+         END
+         PQTY = WORK.B<2,COUNT> ; PQTY<1,6> = BRANCH
+         CALL PRICE.SUB (PROD.B, PCUST.B, CNO, WORK.B<1,COUNT>, SPTO, PQTY, WORK.B<27,COUNT>, XMISC)
+         WORK.B<3,COUNT> = XMISC<4> ; WORK.B<4,COUNT> = XMISC<2>
+         WORK.B<21,COUNT> = XMISC<3>
+         PRICE.FACTOR = OCONV(WORK.B<27,COUNT>,'TUOM;X;1;1')
+         WORK.B<43,COUNT> = PRICE.FACTOR
+         READV QFC FROM F.PRODUCT, WORK.B<1,COUNT>, 140 ELSE QFC = ''
+         READV QF FROM F.UOM, QFC, 1 ELSE QF = ''
+         WORK.B<44,COUNT> = QF
+         WORK.B<22,COUNT>=XMISC<5>
+         IF WORK.B<24,COUNT> # 'Override' & XMISC<21> # '' THEN
+            WORK.B<23,COUNT>=XMISC<21>
+            WORK.B<24,COUNT>=XMISC<22>
+         END
+      END
+      GOSUB 9700                         ; * Product Line/Price Group mixed qty break re-calc.
+      IF AUTOFEED # TRUE THEN
+         IF CHANGE THEN GOSUB 5000
+         PRINT @(52,ROW):OCONV(WORK.B<3,COUNT>,'MD4') 'R#10 ':
+      END
+      IF MLTPLR = 'Y' THEN
+         CALL CONVERT.DISC.MULT (WORK.B<21,COUNT>, MULT, '')
+         IF AUTOFEED # TRUE THEN
+            PRINT MULT 'R#5 ':
+         END
+      END ELSE
+         IF AUTOFEED # TRUE THEN
+            PRINT OCONV(WORK.B<21,COUNT>+0,'MD2') 'R#5 ':
+         END
+      END
+      LMISC=WORK.B<1,COUNT> ; LMISC<2>='S'
+      LMISC<3>=WORK.B<27,COUNT>
+      LMISC<4>=WORK.B<43,COUNT>
+      LMISC<5>=WORK.B<44,COUNT>
+      CALL LINE.EXT (WORK.B<21,COUNT>, WORK.B<3,COUNT>, A, EXTENSION, LMISC)
+      IF AUTOFEED # TRUE THEN
+         PRINT @(68,ROW):OCONV(EXTENSION,'MD2') 'R#10'
+      END
+      IF WORK.B<23,COUNT> = '' THEN GOSUB 8630 ELSE
+         IF LPSW THEN
+            VALUE = COUNT
+            GOSUB 4000
+         END
+      END
+      IF AUTOFEED = TRUE THEN GO 3334
+      IF WORK.B<17,COUNT,1> # '' ! WORK.B<17,COUNT,2> # '' THEN
+         PRINT @(78,ROW):FON:'c':FOFF
+      END ELSE PRINT @(78,ROW):' '
+      IF LPSW THEN
+         PRINT HDR2:
+         VALUE = COUNT
+         PMROW = 20
+         IF WORK.B<24,COUNT> # '' THEN PMROW = 19
+         PRINT @(35,PMROW):SPACE(31):@(36):ULON:WORK.B<4,COUNT>:ULOFF
+         IF WORK.B<24,COUNT> # '' THEN
+            PRINT @(35,20):SPACE(31):@(36):ULON:WORK.B<24,COUNT>:ULOFF
+         END
+         GOSUB 4000
+      END ELSE
+         PRINT HDR1:
+         PRINT @(2,17):SPACE(10):@(26,16):SPACE(11):@(51,16):SPACE(11):@(26,17):SPACE(11):@(51,17):SPACE(11):
+      END
+      IF LPSW THEN
+         GOSUB 8700
+      END ELSE PRINT @(2,20):OCONV(TAXAMT,'MD2,$') 'R#10':
+3334:!
+      GOSUB 7000
+      IF XMISC<3,1> = 'Y' THEN
+         IF COUNT # 1 THEN IF MOD(COUNT,10) = 1 THEN
+            EDL = STL - 1 ; STL = EDL - 9 ; GOSUB 5000
+         END
+         IF COUNT # 1 THEN COUNT = COUNT - 1 ELSE
+            ITEMS = DCOUNT(WORK.B<1>,IVM)
+            IF ITEMS = 0 THEN ITEMS = 1
+            COUNT = ITEMS
+         END
+      END
+      IF PR.OVRD = 'Y' ! WORK.B<1,COUNT> = '!SP' THEN GOSUB 8500
+!
+!
+      IF AUTOFEED = TRUE THEN RETURN
+      IF WORK.B<1,COUNT> # '' AND WORK.B<1,COUNT> # '!SP' AND WORK.B<1,COUNT+1> = '' AND WORK.B<1,COUNT> # '***' THEN
+         READ OPT.B FROM F.PRODUCT, WORK.B<1,COUNT> ELSE OPT.B = ''
+         OPT.FOUND = FALSE
+         SS=DCOUNT(OPT.B<164>,CHAR(253))
+         FOR II = 1 TO SS
+            IF OPT.B<164,II> # '' THEN OPT.FOUND = TRUE
+         NEXT II
+         IF OPT.FOUND = TRUE THEN
+            VERIFY = 'Y':IVM:'N'
+            PRINT BELL:
+            TEXT = 'Include Options & Accessories for this Product (Y)es/(N)o...'
+            TMISC = ''
+            CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+            OPT.ANS=TMISC<10>
+            IF ESCFLG THEN OPT.ANS='N'
+            IF OPT.ANS = 'N' THEN
+               PRINT SCR:
+               IF LPSW THEN PRINT HDR2:
+               GOSUB 5000 ; GO 1650
+            END
+            IF OPT.ANS = 'Y' THEN
+               OP.ITEMS = DCOUNT(OPT.B<164>,CHAR(253))
+               TCTR = 0
+               DATA.B = ''
+               LOOP
+                  TCTR = TCTR + 1
+               WHILE TCTR LE OP.ITEMS DO
+                  TID = OPT.B<164,TCTR>
+                  PL = TID 'L#8':OPT.B<165,TCTR>'L#30'
+                  LOCATE TID IN DATA.B<2> BY 'AR' SETTING OP.VM ELSE
+                     INS TID BEFORE DATA.B<2,OP.VM>
+                     INS PL BEFORE DATA.B<1,OP.VM>
+                  END
+               REPEAT
+               QITEMS = DCOUNT(DATA.B<2>,CHAR(253))
+               IF QITEMS THEN
+                  SMISC = 'Options & Accessories'
+                  SMISC<5> = 'Option  Description'
+                  SMISC<7> = 5
+                  CALL SELECTOR (DATA.B, SMISC)
+                  PRINT SCR:
+                  IF LPSW THEN PRINT HDR2:
+                  GOSUB 5000
+                  IF SMISC<2> # '' THEN
+                     OPNUM = DATA.B<2,SMISC<2>>
+                  END ELSE OPNUM=''
+                  IF OPNUM # '' THEN
+                     GOSUB 3338          ; * ADD OPTIONS TO THE ORDER
+                  END
+               END
+            END
+         END
+      END
+!
+!
+1650: IF MOD(COUNT,10) + 0 = 0 THEN
+         STL = EDL + 1 ; EDL = STL + 9 ; GOSUB 5000
+      END
+      COUNT = COUNT + 1
+1700: GO 1000
+!
+! DISPLAY INFO
+!
+5000: GOSUB 2000
+      IF PG GT PGS THEN PGS = PG
+      IF CATG = '' THEN
+         PRINT @(20,1):CNO 'L#10 ':LON:(CUST.B<1>:' ':CUST.B<9>) 'L#46':LOFF:
+         IF SPTO # '' THEN
+            PRINT @(20,2):SPTO 'L#10 ':LON:(SHIP.B<1>:' ':SHIP.B<2>) 'L#46':LOFF:
+         END
+         READV CATDESC FROM F.CUST.CATEGORY, CUST.B<17>, 1 ELSE CATDESC = ''
+         PRINT @(20,3):CUST.B<17> 'L#10 ':LON:CATDESC 'L#46':LOFF
+      END ELSE
+         PRINT @(20,3):CATG 'L#10 ':LON:CAT.B<1> 'L#46':LOFF
+      END
+      DISPLAY = @(2,0):STR(DHORZLN,15):@(2):LON:' Page ':PG:'/':PGS:' ':LOFF
+      IF QUOTE # '' THEN
+         DISPLAY = DISPLAY:@(63,0):FLON:' Quote ':QUOTE:' ':FLOFF
+      END
+      IF WORK.B<28> # '' ! WORK.B<35> # '' THEN
+         NOTEMSG = ''
+         IF WORK.B<28> # '' THEN NOTEMSG = 'Internal'
+         IF WORK.B<35> # '' THEN
+            IF NOTEMSG # '' THEN NOTEMSG = NOTEMSG:' & '
+            NOTEMSG = NOTEMSG:'External'
+         END
+         NOTEMSG = NOTEMSG:' Notes'
+         DISPLAY = DISPLAY:@(14,21):FLON:NOTEMSG:FLOFF
+      END
+      DISPLAY = DISPLAY:CLRDET
+      ITEMS = DCOUNT(WORK.B<1>,CHAR(253))
+      CTR = STL - 1 ; LINE = 4
+      LOOP
+         CTR = CTR + 1 ; LINE = LINE + 1
+      WHILE CTR LE ITEMS & CTR LE EDL DO
+         IF WORK.B<1,CTR> # '' THEN
+            IF WORK.B<1,CTR> # '!SP' & WORK.B<1,CTR> # '!***' THEN
+               READ PROD.B FROM F.PRODUCT, WORK.B<1,CTR> ELSE PROD.B = ''
+            END ELSE PROD.B<1> = WORK.B<25,CTR> ; PROD.B<7> = WORK.B<27,CTR>
+            IF PROD.B<144> # '' THEN DISPLAY = DISPLAY:@(1,LINE):DLULON:'q':DLULOFF
+            DISPLAY = DISPLAY:@(2,LINE):OCONV(WORK.B<1,CTR>,'G1!1') 'L#9 '
+            DISPLAY = DISPLAY:PROD.B<1> 'L#30 '
+            IF WORK.B<1,CTR> = '!***' THEN
+               DISPLAY = DISPLAY:STR('.',25)
+               IF WORK.B<29,CTR> + 0 = 0 THEN
+                  DISPLAY = DISPLAY:STR('.',10)
+               END ELSE
+                  DISPLAY = DISPLAY:ULON:OCONV(WORK.B<29,CTR>,'MD2,') 'R#10':ULOFF
+               END
+            END ELSE
+               DISPLAY = DISPLAY:WORK.B<27,CTR> 'L#3'
+               DISPLAY = DISPLAY:WORK.B<2,CTR> 'R#5 '
+               DISPLAY = DISPLAY:OCONV(WORK.B<3,CTR>,'MD4') 'R#10 '
+               IF MLTPLR = 'Y' THEN
+                  CALL CONVERT.DISC.MULT (WORK.B<21,CTR>, MULT, '')
+                  DISPLAY = DISPLAY:MULT 'R#5 '
+               END ELSE
+                  DISPLAY = DISPLAY:OCONV(WORK.B<21,CTR>+0,'MD2') 'R#5 '
+               END
+               LMISC=WORK.B<1,CTR> ; LMISC<2>='S'
+               LMISC<3>=WORK.B<27,CTR>
+               LMISC<4>=WORK.B<43,CTR>
+               LMISC<5>=WORK.B<44,CTR>
+               CALL LINE.EXT (WORK.B<21,CTR>, WORK.B<3,CTR>, WORK.B<2,CTR>, EXTENSION, LMISC)
+               DISPLAY = DISPLAY:OCONV(EXTENSION,'MD2') 'R#9'
+            END
+            IF WORK.B<17,CTR,1> # '' ! WORK.B<17,CTR,2> # '' THEN
+               DISPLAY=DISPLAY:FON:'c':FOFF
+            END ELSE DISPLAY=DISPLAY:' '
+         END
+      REPEAT
+      PRINT DISPLAY
+      IF WORK.B<36,1> # '' OR WORK.B<36,2> # '' THEN
+         PRINT @(20,2):FLON:'MANUAL SHIPTO':FLOFF:
+      END
+      GOSUB 7000
+      RETURN
+!
+! FINAL QUOTE SCREEN
+!
+5500: CALL WINDOW (29, 5, 46, 13, 'Quote Header', 0)
+      IF QUOTE = '' THEN
+         WORK.B<11> = DATE()
+*JS*WORK.B<12> = INTLS
+         IF WORK.B<20> = '' THEN WORK.B<20> = CUST.B<78>
+         WORK.B<42> = AUTO.MARGIN.RECALC
+      END
+      READV SV.DESC FROM F.SHIP.VIA, WORK.B<20>, 1 ELSE SV.DESC = ''
+      PRINT @(31,6):DMON:'Quote Date    ':DMOFF:OCONV(WORK.B<11>,'D2/'):
+      PRINT @(31,7):DMON:'Entered by    ':DMOFF:WORK.B<12>:
+      IF WORK.B<40> = '' THEN
+         READV SLMN FROM F.SHIPTO,CNO:'!':SPTO,20 ELSE SLMN = ''
+         IF SLMN = '' THEN
+            READV SLMN FROM F.CUSTOMER, CNO,7 ELSE SLMN = ''
+         END
+         WORK.B<40>=SLMN
+      END
+      PRINT @(31,8):DMON:'Salesman      ':DMOFF:WORK.B<40>'L#3 ':OCONV(WORK.B<40>,'TSALESMAN;X;1;1')'L#20':
+      PRINT @(31,9):DMON:'Customer P/O# ':DMOFF:WORK.B<19>:
+      PRINT @(31,10):DMON:'Ship Via      ':DMOFF:SV.DESC:
+      PRINT @(31,11):DMON:'Job/Comment   ':DMOFF:WORK.B<8>:
+      PRINT @(31,12):DMON:REF1'L#14':DMOFF:WORK.B<39,1>:
+      PRINT @(31,13):DMON:REF2'L#14':DMOFF:WORK.B<39,2>:
+      PRINT @(31,14):DMON:REF3'L#15':DMOFF:WORK.B<39,3>:
+      IF WORK.B<7>='' THEN
+         IF QUOTE.EXP.DAYS+0 # 0 THEN
+            WORK.B<7>=WORK.B<11>+QUOTE.EXP.DAYS
+         END
+      END
+      PRINT @(31,15):DMON:'Expiration Dt ':DMOFF:OCONV(WORK.B<7>,'D2/'):
+      IF WORK.B<41> = '' THEN WORK.B<41> = CUST.B<25>
+      READV TERMS.DESCR FROM F.TERMS, WORK.B<41>,1 ELSE TERMS.DESCR = ''
+      PRINT @(31,16):DMON:'T	erms         ':DMOFF:TERMS.DESCR'L#15'
+      PRINT @(31,17):DMON:'Bid Number    ':DMOFF:WORK.B<30>:
+      PRINT @(31,18):DMON:'Margin ReCalc?':DMOFF:WORK.B<42>:
+      RETURN
+!
+! CALCULATE PAGES
+!
+2000: ITEMS = DCOUNT(WORK.B<1>,IVM)
+      IF ITEMS LE 10 THEN PGS = 1 ELSE
+         IF ITEMS/10 GT INT(ITEMS/10) THEN PGS = INT(ITEMS/10) + 1 ELSE
+            PGS = ITEMS/10
+         END
+      END
+      IF STL LE 10 THEN PG = 1 ELSE PG = ((STL - 1) / 10) + 1
+      RETURN
+!
+! PAGE DOWN
+!
+2500: GOSUB 2000
+      CPG = PG
+      IF PG = 1 THEN
+         IF PG # PGS THEN PG = PGS
+      END ELSE PG = PG - 1
+      STL = (((PG - 1) * 10) + 1)
+      EDL = STL + 9 ; COUNT = STL
+      IF CPG # PG THEN GOSUB 5000
+      RETURN
+!
+! PAGE UP
+!
+2700: GOSUB 2000
+      CPG = PG
+      IF PG + 1 LE PGS THEN PG = PG + 1 ELSE IF PG # 1 THEN PG = 1
+      STL = (((PG - 1) * 10) + 1) ; EDL = STL + 9 ; COUNT = STL
+      IF PG # CPG THEN GOSUB 5000
+      RETURN
+!
+! UP ONE LINE
+!
+2800: GOSUB 2000
+      XMISC<3> = ''
+      CPG = PG
+      IF COUNT = 1 THEN COUNT = ITEMS ELSE COUNT = COUNT - 1
+      IF COUNT LT 1 THEN COUNT = 1
+      IF COUNT LE 10 THEN PG = 1 ELSE
+         IF COUNT/10 GT INT(COUNT/10) THEN PG = INT(COUNT/10) + 1 ELSE
+            PG = COUNT/10
+         END
+      END
+      STL = (((PG - 1) * 10) + 1)
+      EDL = STL + 9
+      IF PG # CPG THEN GOSUB 5000
+      RETURN
+!
+! ESCAPE ?
+!
+3000: RESP = 'Y'
+      RELEASE
+      RETURN
+!
+! CALCULATE FIELDS: ON-HAND, COMMITTED, ON-ORDER, AVAILABLE
+!
+6000: SMISC = '' ; SMISC<39> = 'Y'       ; * COMBINE CONSIGNMENT WHSE
+      IF WORK.B<1,COUNT> # '!SP' & WORK.B<1,COUNT> # '!***' THEN
+         CALL STOCK.SUB(F.INVENTORY,F.CONTROL,WORK.B<1,COUNT>,WHSE,SMISC)
+      END
+      OH=SMISC<1>
+      CMTD=SMISC<2>
+      AVAIL=SMISC<3>
+      ONORD=SMISC<4>
+      PO.EXP.DEL.DATE=SMISC<40>
+      PO.CONFIRM=SMISC<41>
+      IF LPSW THEN
+         GOSUB 8700
+         IF AUTOFEED # TRUE THEN
+            PRINT @(14,20):SPACE(9):@(18):PROD.B<26>'L#6'
+            PRINT @(26,20):SPACE(7):@(26):PROD.B<112>
+            IF WORK.B<22,COUNT>#'' THEN ANS=FON:'YES':FOFF ELSE ANS='NO'
+            PRINT @(14,20):ANS:
+         END
+         RETURN
+      END
+      IF AUTOFEED # TRUE THEN
+         PRINT HDR1:
+         PRINT @(2,17):SPACE(10):@(26,16):SPACE(11):@(51,16):SPACE(11):@(26,17):SPACE(11):@(51,17):SPACE(11):
+         PRINT @(1,20):OCONV(SUBTOTAL,'MD2,$') 'R#11':
+         PRINT @(14,20):OCONV(TAXAMT,'MD2,$') 'R#9':
+         PRINT @(26,20):(TXCD:' ':JUR) 'L#8'
+      END
+      READ INV.B FROM F.INVENTORY, WORK.B<1,COUNT> ELSE INV.B = ''
+      IF SHARED.INVENTORY.FILES THEN
+         SATTR = 1:IVM:2:IVM:3:IVM:4:IVM:5:IVM:6:IVM:7:IVM:10:IVM:11:IVM:12:IVM:13:IVM:14:IVM:15:IVM:16:IVM:17:IVM:18:IVM:19:IVM:25:IVM:26:IVM:27:IVM:28:IVM:29:IVM:30:IVM:31:IVM:32:IVM:34:IVM:35:IVM:36
+         SCTR = 0
+         WHSECT = DCOUNT(ORIG.WHSE.B,CHAR(253))
+         WHSE.B = ORIG.WHSE.B
+         LOOP
+            SCTR = SCTR + 1
+         WHILE SCTR LE SFILES DO
+            SFILE = SHARED.B<1,SCTR>
+            SACCT = SHARED.B<3,SCTR>
+            IF SACCT # SYS.ACCOUNT THEN
+               READ SWHSE.B FROM F.SHARED.CONTROL(SCTR), 'WAREHOUSE' ELSE SWHSE.B = ''
+               FOR S = 1 TO DCOUNT(SWHSE.B<1>,IVM)
+                  IF SWHSE.B<9,S> # 'Y' & SWHSE.B<14,S> # 'Y' & SWHSE.B<10,S> # 'Y' THEN
+                     WHSECT = WHSECT + 1
+                     FOR I = 1 TO 15
+                        IF I = 1 THEN WHSE.B<I,WHSECT> = WHSECT 'R%2' ELSE
+                           WHSE.B<I,WHSECT> = SWHSE.B<I,S>
+                        END
+                     NEXT I
+                     READ SINV.B FROM F.SHARED.INVENTORY(SCTR), WORK.B<1,COUNT> ELSE SINV.B = ''
+                     ATTRS = DCOUNT(SATTR<1>,IVM) ; ACTR = 0
+                     LOOP
+                        ACTR = ACTR + 1
+                     WHILE ACTR LE ATTRS DO
+                        IF ACTR # 1 & ACTR # 2 & ACTR # 3 & ACTR # 34 & ACTR # 35 THEN
+                           FOR MON = 1 TO 12
+                              INV.B<ACTR,MON,WHSECT> = SINV.B<ACTR,MON,S>
+                           NEXT MON
+                        END ELSE INV.B<ACTR,WHSECT> = SINV.B<ACTR,S>
+                     REPEAT
+                  END
+               NEXT S
+            END
+         REPEAT
+      END
+      READ PROD.B FROM F.PRODUCT, WORK.B<1,COUNT> ELSE PROD.B = ''
+      IF AUTOFEED # TRUE THEN
+         PRINT @(35,20):SPACE(31)
+         PRINT @(35,20):OH'R#7':
+         PRINT CMTD'R#8':
+         PRINT AVAIL'R#8':
+         PRINT ONORD'R#8'
+         PRINT @(44,21):LON:'Exp-PO-Del : ':OCONV(PO.EXP.DEL.DATE,"D2/")'L#8':PO.CONFIRM'L#1':LOFF
+      END
+      RETURN
+!
+! CALCULATE TOTAL QUOTE
+!
+7000: ITEMS = DCOUNT(WORK.B<1>,CHAR(253))
+      IF TXCD = '' & EXCLUDE.TAX # 'Y' THEN
+         IF TXCD = '' AND SPTO # '' THEN
+            TXCD = SHIP.B<10> ; TXBL = SHIP.B<11>
+         END
+         IF TXCD = '' AND CNO # '' THEN
+            TXCD = CUST.B<18> ; TXBL = CUST.B<68>
+         END
+      END
+      CTR = 0 ; TOTAL = 0 ; TAXAMT = 0 ; SUBTOTAL = 0 ; TOTAL.COST = 0
+      ORDER.GP = 0 ; ORDER.GP.DLRS = 0 ; TXBL.TOT = 0 ; GST.TXBL.TOT = 0
+      HDR.TOT = 0
+      LOOP
+         CTR = CTR + 1
+      WHILE CTR LE ITEMS DO
+         IF WORK.B<1,CTR> = '!***' THEN
+            WORK.B<29,CTR> = HDR.TOT
+            HDR.TOT = 0
+         END ELSE
+            LMISC=WORK.B<1,CTR> ; LMISC<2>='S'
+            LMISC<3>=WORK.B<27,CTR>
+            LMISC<4>=WORK.B<43,CTR>
+            LMISC<5>=WORK.B<44,CTR>
+            CALL LINE.EXT (WORK.B<21,CTR>, WORK.B<3,CTR>, WORK.B<2,CTR>, LN.EXT, LMISC)
+            TOTAL = TOTAL + LN.EXT
+*L*          TMISC = '' ; TAXABLE = ''
+*L*          CALL CUST.TAX.MATRIX.SUB (CNO, SPTO, WORK.B<1,CTR>, TAXABLE, TMISC)
+*L*          IF TAXABLE = '' THEN
+*L*            READV TAXABLE FROM F.PRODUCT, WORK.B<1,CTR>, 102 ELSE TAXABLE = ''
+*L*            IF TAXABLE = '' THEN TAXABLE = 'Y'
+*L*          END
+*L*          IF TAXABLE = 'G' THEN
+*L*            GST.TXBL.TOT = GST.TXBL.TOT + LN.EXT
+*L*          END ELSE
+*L*            IF TAXABLE = 'Y' THEN TXBL.TOT = TXBL.TOT + LN.EXT
+*L*          END
+            PF = WORK.B<43,CTR> ; QF = WORK.B<44,CTR>
+            IF PF = '' THEN PF = 1
+            IF QF = '' THEN QF = 1
+            LN.COST = ICONV(OCONV(((WORK.B<23,CTR>*QF)/PF) * WORK.B<2,CTR>,'MD4'),'MD4')
+            TOTAL.COST = TOTAL.COST + LN.COST
+            HDR.TOT = HDR.TOT + LN.EXT
+         END
+      REPEAT
+      IF TOTAL.COST + 0 = 0 ! TOTAL+0 = 0 THEN ORDER.GP = 0 ELSE
+         ORDER.GP = ((ABS(TOTAL*100) - ABS(TOTAL.COST)) / ABS(TOTAL*100) * 100)
+         ORDER.GP = ICONV(ORDER.GP,'MD2')
+         ORDER.GP.DLRS = (TOTAL * 100) - TOTAL.COST
+      END
+!
+      INARGS = ''
+      INARGS<1> = CNO
+      INARGS<2> = SPTO
+      INARGS<3> = TXCD
+      INARGS<9> = WORK.B<1>
+      INARGS<10>= WORK.B<2>
+      INARGS<11>= WORK.B<3>
+      INARGS<12>= WORK.B<21>
+      INARGS<13>= WORK.B<27>
+      INARGS<14>= WORK.B<43>
+      INARGS<15>= WORK.B<44>
+      CALL TAX.SUB (INARGS, OUTARGS, '')
+      TAXAMT = OUTARGS<1>
+      GST.TAXAMT = OUTARGS<2>
+      PST.TAXAMT = OUTARGS<3>
+      IF TXCD # '' AND TXBL # 'N' THEN
+*L*        ADD.TAX.AMT = OCONV('$':TXCD,'TCONTROL;X;1;1')
+         READ TAX.B FROM F.TAX, TXCD THEN
+*L*          TAXPCNT=TAX.B<2>+TAX.B<5>+TAX.B<7>
+*L*          GST.TAXPCNT = TAX.B<2>
+*L*          PST.TAXPCNT = TAX.B<5> + TAX.B<7>
+*L*          IF CUST.B<68>='N' THEN TAXPCNT=0
+*L*          TAXAMT = TXBL.TOT * TAXPCNT / 100000
+*L*          GST.TAXAMT = GST.TXBL.TOT * GST.TAXPCNT / 100000
+*L*          IF UP.SALES.TAX = 'Y' THEN
+*L*            IF TAXAMT + 0 > 0 THEN TAXAMT = TAXAMT + '.55'
+*L*            IF TAXAMT + 0 < 0 THEN TAXAMT = TAXAMT - '.55'
+*L*          END
+*L*          TAXAMT = ICONV(OCONV(TAXAMT,'MD2'),'MD2') + ADD.TAX.AMT
+*L*          PST.TAXAMT = TXBL.TOT * PST.TAXPCNT / 100000
+*L*          PST.TAXAMT = ICONV(OCONV(PST.TAXAMT,'MD2'),'MD2')
+*L*          GST.TAXAMT = ICONV(OCONV(GST.TAXAMT,'MD2'),'MD2')
+*L*          TAXAMT = TAXAMT + GST.TAXAMT
+*L*          WORK.B<46> = TAXAMT - PST.TAXAMT
+            WORK.B<46> = GST.TAXAMT
+            WORK.B<47> = PST.TAXAMT
+            JUR = '' ; JCTR = 0 ; JDESC = TRIM(TAX.B) ; JEOF = FALSE
+            LOOP
+               JCTR = JCTR + 1
+               CV = 'G':JCTR-1:' 1'
+               JSTR = TRIM(OCONV(JDESC,CV))
+               IF JSTR = '' THEN JEOF = TRUE ELSE
+                  JUR = JUR:JSTR[1,1]
+               END
+            UNTIL JEOF DO REPEAT
+         END
+      END
+      SUBTOTAL = TOTAL
+      TOTAL = TOTAL + TAXAMT
+      IF LPSW ELSE
+         IF AUTOFEED # TRUE THEN
+            PRINT @(1,20):OCONV(SUBTOTAL,'MD2,$') 'R#11'
+            PRINT @(14,20):@(14,20):OCONV(TAXAMT,'MD2,$') 'R#9'
+            PRINT @(26,20):(TXCD:' ':JUR) 'L#8'
+         END
+      END
+      IF AUTOFEED # TRUE THEN
+         PRINT @(68,20):OCONV(TOTAL,'MD2,$') 'R#10'
+      END
+      LOCATE '!***' IN WORK.B<1> SETTING VM THEN
+         CTR = STL - 1 ; LINE = 4
+         LOOP
+            CTR = CTR + 1 ; LINE = LINE + 1
+         WHILE CTR LE ITEMS & CTR LE EDL DO
+            IF WORK.B<1,CTR> = '!***' THEN
+               IF WORK.B<29,CTR> + 0 = 0 THEN
+                  IF AUTOFEED # TRUE THEN
+                     PRINT @(68,LINE):STR('.',10):
+                  END
+               END ELSE
+                  IF AUTOFEED # TRUE THEN
+                     PRINT @(68,LINE):ULON:OCONV(WORK.B<29,CTR>,'MD2,') 'R#10':ULOFF:
+                  END
+               END
+            END
+         REPEAT
+      END
+      RETURN
+!
+! RECALCULATE PRICES FOR NEW CUSTOMER OR CATEGORY
+!
+8000: PRINT @(30,23):FON:'Re-Calculating...':FOFF:
+      IF CNO = JUNK THEN MCNO = '' ELSE MCNO = CNO
+      IF CATG = JUNK THEN MCAT = '' ELSE MCAT = CATG
+      IF TXCD = '' & EXCLUDE.TAX # 'Y' THEN
+         IF TXCD = '' AND SPTO # '' THEN
+            TXCD = SHIP.B<10> ; TXBL = SHIP.B<11>
+         END
+         IF TXCD = '' AND CNO # '' THEN
+            TXCD = CUST.B<18> ; TXBL = CUST.B<68>
+         END
+      END
+      ITEMS = DCOUNT(WORK.B<1>,CHAR(253))
+      CTR = 0 ; TOTAL = 0 ; TAXAMT = 0 ; SUBTOTAL = 0
+      LOOP
+         CTR = CTR + 1
+      WHILE CTR LE ITEMS DO
+         IF WORK.B<1,CTR> # '!SP' & WORK.B<1,CTR> # '***' THEN
+            READ PROD.B FROM F.PRODUCT, WORK.B<1,CTR> ELSE PROD.B = ''
+            PQTY = WORK.B<2,CTR> ; PQTY<1,6> = BRANCH
+            CALL PRICE.SUB (PROD.B, CUST.B, CNO, WORK.B<1,CTR>, SPTO, PQTY, WORK.B<27,CTR>, XMISC)
+            WORK.B<3,CTR> = XMISC<4> ; WORK.B<4,CTR> = XMISC<2>
+            WORK.B<21,CTR> = XMISC<3>
+            WORK.B<22,CTR>=XMISC<5>
+            IF XMISC<21> # '' THEN
+               WORK.B<23,CTR>=XMISC<21>
+               WORK.B<24,CTR>=XMISC<22>
+            END
+            LMISC=WORK.B<1,CTR> ; LMISC<2>='S'
+            LMISC<3>=WORK.B<27,CTR>
+            LMISC<4>=WORK.B<43,CTR>
+            LMISC<5>=WORK.B<44,CTR>
+            CALL LINE.EXT (WORK.B<21,CTR>, WORK.B<3,CTR>, WORK.B<2,CTR>, EXTENSION, LMISC)
+            TOTAL = TOTAL + EXTENSION
+         END
+      REPEAT
+      PRINT C23:
+      GOSUB 9700                         ; * Product Line/Price Group mixed qty break re-calc.
+      GOSUB 5000
+      RETURN
+!
+! PRICE OVERRIDE
+!
+8500: XMISC = '' ; XMISC<10> = 23
+      XMISC<4> = 1:IVM:6 ; XMISC<5> = 'PricePad':IVM:'GP% Calc'
+      OV = OCONV(WORK.B<3,COUNT>,'MD4')
+      PRIOR.PRICE = WORK.B<3,COUNT>
+      IF AUTOFEED # TRUE THEN
+         CALL CIP (52, ROW, 10, OV, A, ESCFLG, XMISC)
+      END ELSE A = OV
+      IF ESCFLG THEN
+         PRINT @(52,ROW):OCONV(WORK.B<3,COUNT>,'MD4') 'R#10'
+         RETURN
+      END
+      IF XMISC<6> = 1 THEN
+         CALL PRICE.PAD (CNO, WORK.B<1,COUNT>, PMISC)
+         PRINT SCR
+         IF LPSW THEN PRINT HDR2:
+         IF PMISC<1> = '' THEN GOSUB 5000 ; GOSUB 7000 ; GO 8500
+         PRIOR.DISC = WORK.B<21,COUNT>
+         IF PMISC<1> # WORK.B<4,COUNT> THEN WORK.B<4,COUNT> = 'Override'
+         WORK.B<3,COUNT> = PMISC<2>
+         WORK.B<21,COUNT> = PMISC<3>
+         GOSUB 5000 ; GOSUB 7000
+         IF PMISC<5> # 'Price Pad Formula' THEN
+            LMISC=WORK.B<1,COUNT> ; LMISC<2>='S'
+            LMISC<3>=WORK.B<27,COUNT>
+            LMISC<4>=WORK.B<43,COUNT>
+            LMISC<5>=WORK.B<44,COUNT>
+            CALL LINE.EXT (WORK.B<21,COUNT>, WORK.B<3,COUNT>, WORK.B<2,COUNT>, EXTENSION, LMISC)
+            GOSUB 8630                   ; ** CHECK FOR VALID GP%
+         END
+         GO 1650
+      END
+      IF XMISC<6> = 6 THEN
+         BEGIN CASE
+            CASE WORK.B<23,COUNT> # '' ; COST = WORK.B<23,COUNT>
+            CASE CSTCLM = "C1" ; COST = PROD.B<3> * WORK.B<43,COUNT>
+            CASE CSTCLM = "C2" ; COST = PROD.B<5> * WORK.B<43,COUNT>
+            CASE CSTCLM = "C3" ; COST = PROD.B<19> * WORK.B<43,COUNT>
+            CASE CSTCLM = "C4" ; COST = PROD.B<62> * WORK.B<43,COUNT>
+            CASE CSTCLM = "C5" ; COST = PROD.B<120> * WORK.B<43,COUNT>
+            CASE CSTCLM = "C6" ; COST = PROD.B<122> * WORK.B<43,COUNT>
+            CASE CSTCLM = "C7" ; COST = PROD.B<124> * WORK.B<43,COUNT>
+         END CASE
+         CALL GP.CALC (COST, SELL)
+         IF SELL = '' THEN GO 8500
+         A = SELL
+         WORK.B<21,COUNT> = 0
+         PRINT @(68,ROW):SPACE(10):
+      END
+      IF A = '' ! A = 0 THEN A = 0 ELSE IF NUM(A) THEN IF ICONV(A,'MD4') ELSE GO 8500 ELSE GO 8500
+      CVDI = 'MD4':PRDEC
+      CVDO = 'MD':PRDEC
+      A = ICONV(OCONV(ICONV(A,CVDI),CVDO),'MD4')
+      IF AUTOFEED # TRUE THEN
+         PRINT @(52,ROW):OCONV(A,'MD4') 'R#10'
+      END
+      WORK.B<3,COUNT> = A
+      IF WORK.B<3,COUNT> # PRIOR.PRICE AND PRIOR.PRICE # '' THEN WORK.B<21,COUNT> = 0
+      IF LPSW THEN VALUE = COUNT ; GOSUB 4000
+!
+! DISCOUNT %
+!
+8600: XMISC = '' ; XMISC<10> = 23
+      XMISC<4> = 6 ; XMISC<5> = 'ChainDis'
+      OV = OCONV(WORK.B<21,COUNT>,'MD2')
+      PRIOR.DISC = WORK.B<21,COUNT>
+      IF MLTPLR = 'Y' THEN
+         IF WORK.B<21,COUNT> # '' THEN
+            CALL CONVERT.DISC.MULT (WORK.B<21,COUNT>, OV, '')
+         END ELSE OV = ''
+      END
+      IF AUTOFEED # TRUE THEN
+         CALL CIP (63, ROW, 5, OV, A, ESCFLG, XMISC)
+      END ELSE A = OV
+      IF ESCFLG THEN GO 8600
+      IF XMISC<6> = 6 THEN
+         PRINT C22:'CHAIN DISCOUNT Seprated by Slashes, (M.=MULT)':
+         CALL CIP (48, 22, 30, '', CDISC, ESCFLG, '')
+         PRINT C22:
+         IF ESCFLG THEN GO 8600
+         CMISC = ''
+         CALL CHAIN.DISCOUNT.SUB (CDISC, DISCOUNT, CMISC)
+         IF NOT(CMISC<1>) THEN GO 8600
+         IF MLTPLR = 'Y' THEN
+            CALL CONVERT.DISC.MULT (ICONV(DISCOUNT,'MD2'), MULT, '')
+            DISCOUNT = MULT
+         END
+         A = DISCOUNT
+      END
+      IF A = '' THEN A = 0
+      IF NUM(A) ELSE GO 8600
+      IF MLTPLR = 'Y' THEN
+         CVMISC = 1
+         CALL CONVERT.DISC.MULT (DISC, A, CVMISC)
+         IF CVMISC<2> THEN GO 8600
+         MULT = A
+         A = DISC
+      END ELSE A = ICONV(A,'MD2')
+      IF MLTPLR = 'Y' THEN
+         IF AUTOFEED # TRUE THEN
+            PRINT @(63,ROW):MULT 'R#5'
+         END
+      END ELSE
+         IF AUTOFEED # TRUE THEN
+            PRINT @(63,ROW):OCONV(A,'MD2') 'R#5'
+         END
+      END
+      WORK.B<21,COUNT> = A
+*S*   IF WORK.B<1,COUNT> = '!SP' ! (CSTENT = 'Y' & SHOWGP) THEN
+!!!   CHANGE MADE, STEVEM, 05/23/07 TO GET SALES ORDER SYSTEM &
+!!!   QUOTE SYSTEM DOING THE SAME THING
+      IF WORK.B<1,COUNT> = '!SP' ! (CSTENT = 'Y' & OVRDCOST = 'Y') THEN
+!
+! COST
+!
+8625:    ORIG.COST = WORK.B<23,COUNT>
+         IF AUTOFEED # TRUE THEN
+            CALL CIP (2, 17, 10, OCONV(WORK.B<23,COUNT>,'MD4'), COST, ESCFLG, '')
+         END ELSE COST = OCONV(WORK.B<23,COUNT>,'MD4')
+         IF COST = '' THEN COST = 0
+         IF ESCFLG THEN GO 8625
+         IF COST = '' THEN GO 8625
+         IF NUM(COST) ! COST = 0 ELSE GO 8625
+         COST = ICONV(COST,'MD4')
+         IF AUTOFEED # TRUE THEN
+            PRINT @(2,17):OCONV(COST,'MD4') 'R#10':
+         END
+         WORK.B<23,COUNT> = COST
+         IF ORIG.COST + 0 # COST + 0 THEN WORK.B<24,COUNT> = 'Override'
+      END
+      IF WORK.B<3,COUNT> # PRIOR.PRICE ! WORK.B<21,COUNT> + 0 # PRIOR.DISC + 0 THEN
+         WORK.B<4,COUNT> = 'Override'
+      END
+      GOSUB 9700                         ; * Product Line/Price Group mixed qty break re-calc.
+      IF CHANGE THEN GOSUB 5000
+      LMISC=WORK.B<1,COUNT> ; LMISC<2>='S'
+      LMISC<3>=WORK.B<27,COUNT>
+      LMISC<4>=WORK.B<43,COUNT>
+      LMISC<5>=WORK.B<44,COUNT>
+      CALL LINE.EXT (WORK.B<21,COUNT>, WORK.B<3,COUNT>, WORK.B<2,COUNT>, EXTENSION, LMISC)
+      PRINT @(68,ROW):OCONV(EXTENSION,'MD2') 'R#10'
+      GOSUB 7000
+!
+!   CHECK FOR BELOW MIN GP
+!
+8630: BEGIN CASE
+         CASE WORK.B<23,COUNT> # '' ; COST = WORK.B<23,COUNT>
+         CASE CSTCLM = "C1" ; COST = PROD.B<3> * WORK.B<43,COUNT>
+         CASE CSTCLM = "C2" ; COST = PROD.B<5> * WORK.B<43,COUNT>
+         CASE CSTCLM = "C3" ; COST = PROD.B<19> * WORK.B<43,COUNT>
+         CASE CSTCLM = "C4" ; COST = PROD.B<62> * WORK.B<43,COUNT>
+         CASE CSTCLM = "C5" ; COST = PROD.B<120> * WORK.B<43,COUNT>
+         CASE CSTCLM = "C6" ; COST = PROD.B<122> * WORK.B<43,COUNT>
+         CASE CSTCLM = "C7" ; COST = PROD.B<124> * WORK.B<43,COUNT>
+      END CASE
+      WORK.B<23,COUNT> = COST
+      QTY.FACTOR = OCONV(PROD.B<140>,'TUOM;X;1;1')
+      IF QTY.FACTOR + 0 = 0 THEN QTY.FACTOR = 1
+      READV PRICE.FACTOR FROM F.UOM, WORK.B<27,COUNT>, 1 ELSE PRICE.FACTOR = ''
+      IF PRICE.FACTOR + 0 = 0 THEN PRICE.FACTOR = 1
+      IF WORK.B<43,COUNT> = '' THEN WORK.B<43,COUNT> = PRICE.FACTOR
+      IF WORK.B<44,COUNT> = '' THEN WORK.B<44,COUNT> = QTY.FACTOR
+      LN.COST = ICONV(OCONV(((COST*WORK.B<44,COUNT>)/WORK.B<43,COUNT>) * WORK.B<2,COUNT>,'MD4'),'MD4')
+      IF LN.COST + 0 = 0 ! EXTENSION+0 = 0 THEN LN.GP = 0 ELSE
+         LN.GP = ((ABS(EXTENSION*100) - ABS(LN.COST)) / ABS(EXTENSION*100) * 100)
+         LN.GP = ICONV(LN.GP,'MD2')
+      END
+      IF LN.GP LT MINGP & COST +0 # 0 & WORK.B<3,COUNT> # '' AND WORK.B<4,COUNT> = 'Override' AND AUTOFEED # TRUE AND SHOW.GP.MSG # 'N' THEN
+***
+2410:***
+         PRICE.MSG = 'GP = ':OCONV(LN.GP,'MD02'):'% Below Minimum '
+         VERIFY = 'Y':IVM:'N'
+         TEXT = PRICE.MSG:' Continue ? (Y)es/(N)o...'
+         PRINT BELL:
+         TMISC = ''
+         CALL MESSAGE.SUB (TEXT, VERIFY, ESCFLG, TMISC)
+         RESP=TMISC<10>
+         IF RESP = "Y" THEN
+            PATH = 'PRICE OVERRIDE BELOW G/P%'
+            CALL ACCESS.SUB (CONTROL, PATH, VALID, '')
+            IF NOT(VALID) THEN RESP = 'N'
+            IF RESP = 'N' THEN GO 2410
+         END
+         PRINT SCR
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000 ; GOSUB 7000
+         IF ESCFLG THEN RESP='N'
+         IF RESP = 'N' THEN
+            IF ORIG.COST = '' THEN ORIG.COST = COST
+            WORK.B<21,COUNT> = PRIOR.DISC
+            WORK.B<3,COUNT> = PRIOR.PRICE
+            WORK.B<23,COUNT> = ORIG.COST
+            GO 8500
+         END
+      END
+***
+8650: IF LPSW THEN
+         VALUE = COUNT
+         GOSUB 4000
+      END
+      IF AUTOFEED # TRUE THEN
+         IF WORK.B<17,COUNT,1> # '' ! WORK.B<17,COUNT,2> # '' THEN
+            PRINT @(78,ROW):FON:'c':FOFF
+         END ELSE PRINT @(78,ROW):' '
+      END
+****
+      RETURN
+!
+!
+9000: GOSUB 5500
+!
+!   INITIALS
+!
+9001: XMISC='' ; XMISC<10> = 23 ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      IF DFLTENTBY = 'N' ELSE
+         IF WORK.B<12> # '' THEN DATA WORK.B<12> ELSE DATA INTLS
+      END
+      OV=WORK.B<12>
+      CALL CIP (45, 7, 3, OV, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+*S*  LOCATE A IN USERS.B<4> SETTING VM ELSE GO 9001
+      LOCATE A IN USERS.B<4> SETTING VM ELSE
+         IF DFLTENTBY # "N" AND WORK.B<12> # "" THEN WORK.B<12> = ''
+         GO 9001
+      END
+      WORK.B<12> = A
+      PRINT @(45,7):WORK.B<12>'L#3'
+      LOCATE A IN SLMLIST<2> SETTING VM THEN WRTSLM = SLMLIST<1,VM> ELSE WRTSLM = ''
+      IF (WRITER.AS.SALESMAN = 'Y' ! WRITER.AS.SALESMAN = 'H') & WRTSLM # '' THEN
+         USE.WRITER = FALSE
+         IF WRITER.AS.SALESMAN = 'H' THEN
+            READV SNAME FROM F.SALESMAN, WORK.B<40>, 1 ELSE SNAME = ''
+            IF WORK.B<40> = '' THEN SNAME = 'HOUSE'
+            IF INDEX(OCONV(SNAME,'MCU'),'HOUSE',1) THEN USE.WRITER = TRUE
+         END ELSE USE.WRITER = TRUE
+         IF USE.WRITER & WORK.B<40> # WRTSLM & QUOTE = '' THEN
+            WORK.B<40> = WRTSLM
+            READV SALENAME FROM F.SALESMAN,WORK.B<40>,1 ELSE SALENAME = "NOT ON FILE"
+            PRINT @(45,8):WORK.B<40> 'L#3 ':SALENAME 'L#20':
+         END
+      END
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9001
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9001
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; * FasTrack
+         GO 9001
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9001
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9001
+      END
+!
+!   SALESMAN NUMBER
+!
+9003: XMISC='' ; XMISC<10> = 23
+      XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Search':IVM:'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      OV=WORK.B<40>
+      CALL CIP (45, 8, 3, OV, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      IF XMISC<6> = 1 THEN
+         SMISC = 'SALESMAN CODE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'SLMN        NAME/DESCRIPTION'
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         CALL SELECTFILE (F.SALESMAN, REDISPLAY, SMISC)
+         IF REDISPLAY THEN PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         GOSUB 5500
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GO 9003
+      END
+      READV SLMN.NAME FROM F.SALESMAN, A,1 ELSE GO 9003
+      IF A # '' & WORK.B<40> # A THEN
+         PATH = 'CHANGE SALESMAN IN P/Q'
+         CALL ACCESS.SUB (F.CONTROL, PATH, VALID, REDISPLAY)
+         IF REDISPLAY THEN
+            PRINT SCR:
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000
+            GOSUB 5500
+         END
+         IF NOT(VALID) THEN GO 9003
+      END
+      WORK.B<40> = A
+      PRINT @(45,8):WORK.B<40>'L#3 ':SLMN.NAME'L#20'
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9003
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9003
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; * FasTrack
+         GO 9003
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9003
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9003
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9040
+!
+! CUSTOMER P/O#
+!
+9005: XMISC='' ; XMISC<10>=23
+      XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      OV=WORK.B<19>
+      CALL CIP (45, 9, 15, OV, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      WORK.B<19> = A
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9005
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9005
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; * FasTrack
+         GO 9005
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9005
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9005
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9003
+!
+! SHIP VIA
+!
+9010: XMISC='' ; XMISC<10>=23
+      XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Search':IVM:'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      OV = WORK.B<20>
+      PRINT @(45,10):SPACE(30):
+      CALL CIP (45, 10, 3, OV, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'SHIP VIA CODE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        NAME/DESCRIPTION'
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (F.SHIP.VIA, REDISPLAY, SMISC)
+         PRINT SCR
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         GOSUB 5500
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GOTO 9010
+      END
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9010
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9010
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; *FasTrack
+         GO 9010
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9010
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9010
+      END
+      SV.DESCR = ''
+      IF A # '' THEN
+         READV SV.DESCR FROM F.SHIP.VIA,A,1 ELSE GO 9010
+      END
+      WORK.B<20> = A
+      PRINT @(45,10):SV.DESCR'L#15'
+      IF XMISC<3,1> = 'Y' THEN GO 9005
+!
+! JOB/ID OR COMMENT
+!
+9020: XMISC = '' ; XMISC<10> = 23 ; XMISC<2> = 'Y':IVM:'Y'
+      IF VAL.JOB.NUM = "Y" THEN
+         XMISC<4> = 1:IVM:3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Search':IVM:'	Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      END ELSE
+         XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      END
+**
+      CUST.CONTACTS = ''
+      FOR X = 1 TO DCOUNT(CUST.B<145>,IVM)
+         K.CONTACTS = "C|":CNO:"|":CUST.B<145,X>
+         READ CONT.B FROM F.CONTACTS,K.CONTACTS THEN
+            CUST.CONTACTS<1,X> = CONT.B<1>'L#15':SPACE(5):CONT.B<2> 'L#15'
+            CUST.CONTACTS<2,X> = CONT.B<1>
+         END
+      NEXT X
+**
+      IF CUST.CONTACTS # "" THEN
+         XMISC<4,-1> = 11
+         XMISC<5,-1> = 'Contacts'
+      END
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      CALL CIP (45, 11, 30, WORK.B<8>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'JOB NUMBER SELECTOR'
+         SMISC<5> = "Job# ":SPACE(6):"Job Desc ":SPACE(22):"Recv Dte":SPACE(1):"Due Date":SPACE(1):"Stat"
+         SMISC<7> = 3
+         CALL SELECTOR (JOBS.DAT, SMISC)
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         GOSUB 5500
+         IF SMISC<2> # '' THEN
+            A = JOBS.DAT<2,SMISC<2>>
+         END ELSE
+            GO 9020
+         END
+      END
+      IF VAL.JOB.NUM = "Y" THEN
+         READ JOB.B FROM F.JOB, A THEN
+            IF JOB.B<6> # "O" THEN GO 9020
+            JOB.DESC = JOB.B<1>
+         END ELSE
+            IMISC = '' ; CALL INDEX.SEARCH (A, 'JOB', 'INDEX', FK, IMISC)
+            IF IMISC<1> THEN
+               PRINT SCR:
+               IF LPSW THEN PRINT HDR2:
+               GOSUB 5000
+               GOSUB 5500
+            END
+            IF FK # '' THEN A = FK ELSE GO 9020
+            READV JOB.DESC FROM F.JOB, A , 1 ELSE JOB.DESC = ''
+         END
+      END
+      IF XMISC<6>= 11 THEN
+         SMISC = 'CONTACT SELECTOR'
+         SMISC<5> = 'Contact Name':SPACE(8):"Title"
+         SMISC<7> = 3
+         CALL SELECTOR (CUST.CONTACTS, SMISC)
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         GOSUB 5500
+         IF SMISC<2> # '' THEN
+            A = CUST.CONTACTS<2,SMISC<2>>
+         END ELSE
+            GO 9020
+         END
+      END
+      WORK.B<8> = A
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9020
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9020
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; *FasTrack
+         GO 9020
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9020
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9020
+      END
+      IF VAL.JOB.NUM = "Y" THEN
+         PRINT @(45,11):WORK.B<8>:" ":JOB.DESC[1,15]
+      END ELSE
+         PRINT @(45,11):WORK.B<8> 'L#30':
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9010
+!
+! REFERENCE 1
+!
+9021: XMISC = '' ; XMISC<10> = 23 ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      CALL CIP (45, 12, 30, WORK.B<39,1>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      WORK.B<39,1> = A
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9021
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9021
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; *FasTrack
+         GO 9021
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9021
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9021
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9020
+!
+! REFERENCE 2
+!
+9022: XMISC = '' ; XMISC<10> = 23 ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      CALL CIP (45, 13, 30, WORK.B<39,2>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      WORK.B<39,2> = A
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9022
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9022
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; *FasTrack
+         GO 9022
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9022
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9022
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9021
+!
+! REFERENCE 3
+!
+9023: XMISC = '' ; XMISC<10> = 23 ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      CALL CIP (45, 14, 30, WORK.B<39,3>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      WORK.B<39,3> = A
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9023
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9023
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; *FasTrack
+         GO 9023
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9023
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9023
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9022
+!
+! QUOTE EXPIRATION DATE
+!
+9025: XMISC=2:IVM:'MM/DD/YY' ; XMISC<10>=23 ; XMISC<2>='Y':IVM:'Y'
+      XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      CALL CIP(45,15,8,OCONV(WORK.B<7>,'D2/'),A,ESCFLG,XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      IF A # '' THEN
+         IF NOT(ICONV(A,'D2/')) THEN GO 9025
+         A=ICONV(A,'D2/')
+         IF A < WORK.B<11> THEN GO 9025
+      END
+      WORK.B<7> = A
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9025
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9025
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; *FasTrack
+         GO 9025
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9025
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9025
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9023
+!
+! TERMS
+!
+9026: XMISC='' ; XMISC<10>=23
+      XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 1:IVM:3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Search':IVM:'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      OV = WORK.B<41>
+      PRINT @(45,16):SPACE(30):
+      CALL CIP (45, 16, 3, OV, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      IF XMISC<6>= 1 THEN
+         SMISC = 'TERMS CODE SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        NAME/DESCRIPTION'
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         REDISPLAY=1
+         CALL SELECTFILE (F.TERMS, REDISPLAY, SMISC)
+         PRINT SCR
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         GOSUB 5500
+         IF SMISC<2> # '' THEN
+            A = SMISC<2>
+         END ELSE GOTO 9026
+      END
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9026
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9026
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; *FasTrack
+         GO 9026
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9026
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9026
+      END
+      TERMS.DESCR = ''
+      IF A # '' THEN
+         READV TERMS.DESCR FROM F.TERMS,A,1 ELSE GO 9026
+      END
+      WORK.B<41> = A
+      PRINT @(45,16):TERMS.DESCR'L#15'
+      IF XMISC<3,1> = 'Y' THEN GO 9025
+!
+!  BID NUMBER
+!
+9030: XMISC = '' ; XMISC<10> = 23 ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      CALL CIP (45, 17, 10, WORK.B<30>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      IF A # '' THEN
+         READ BID.B FROM F.BID, A ELSE GO 9030
+         IF QUOTE # '' THEN
+            IF BID.B<5> # '' THEN
+               IF BID.B<5> # QUOTE THEN
+                  PRINT C22:BELL:LON:'CAUTION: ':LOFF:DMON:'  QUOTE# ':DMOFF:BID.B<5>:DMON:' Already Assigned to this BID, Hit RETURN...':DMOFF: ; INPUT RT,1:_
+                  PRINT C22:
+               END
+            END
+         END
+      END
+      WORK.B<30> = A
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9030
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9030
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; * FasTrack
+         GO 9030
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9030
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9030
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9025
+!
+! AUTO MARING RECALC
+!
+9040: XMISC = '' ; XMISC<10> = 23 ; XMISC<2> = 'Y':IVM:'Y'
+      XMISC<4> = 3:IVM:7:IVM:8:IVM:9:IVM:10 ; XMISC<5> = 'Delete':IVM:'InterNote':IVM:'ExterNote':IVM:'Save':IVM:'FasTrack'
+      IF QUOTE # '' & EDOCS = 'S' THEN XMISC<4> = XMISC<4>:IVM:12 ; XMISC<5> = XMISC<5>:IVM:'eDocScan'
+      CALL CIP (45, 18, 1, WORK.B<42>, A, ESCFLG, XMISC)
+      IF ESCFLG THEN
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 5000
+         RETURN TO 1000
+      END
+      IF A = '' ! A = 'Y' ! A = 'N' ELSE GO 9040
+      WORK.B<42> = A
+      IF XMISC<6> = 3 THEN
+         GOSUB 9500
+         GO 9040
+      END ELSE IF XMISC<6> = 7 ! XMISC<6> = 8 THEN
+         IF XMISC<6> = 7 THEN NOTE.TYPE = 'I' ELSE NOTE.TYPE = 'E'
+         GOSUB 9400 ; GO 9040
+      END ELSE IF XMISC<6> = 10 THEN
+         GOSUB 9800                      ; * FasTrack
+         GO 9040
+      END ELSE IF XMISC<6> = 9 THEN
+         GOSUB 9600
+         GO 9040
+      END ELSE IF XMISC<6> = 12 THEN
+         CALL EDOCS.SUB ('S', 'PQ', QUOTE, '', '', '')
+         GO 9040
+      END
+      IF XMISC<3,1> = 'Y' THEN GO 9030
+      GO 9001
+***
+!
+! INTERNAL / EXTERNAL NOTES
+!
+9400: IF NOTE.TYPE = 'I' THEN
+         COMMENTS = WORK.B<28>
+         NOTESCR = 'QUOTE.INTER.NOTES'
+      END ELSE
+         COMMENTS = WORK.B<35>
+         NOTESCR = 'QUOTE.EXTER.NOTES'
+      END
+      CMISC = ''
+      CMISC<1> = 5
+      CMISC<2> = 8
+      CMISC<3> = 3
+      CMISC<4> = 1
+      CMISC<5> = 30
+      CMISC<6> = NOTESCR
+      CMISC<7> = 2
+      CALL COMMENTS.SUB (3, COMMENTS, ESCFLG, CMISC)
+      IF NOT(ESCFLG) THEN
+         CHECK.CMTS = COMMENTS
+         CONVERT IVM TO '' IN CHECK.CMTS
+         IF CHECK.CMTS = '' THEN COMMENTS = ''
+         IF NOTE.TYPE = 'I' THEN WORK.B<28> = COMMENTS ELSE WORK.B<35> = COMMENTS
+      END
+      PRINT SCR:
+      IF LPSW THEN PRINT HDR2:
+      GOSUB 5000
+      GOSUB 5500
+      RETURN
+!
+! DELETE QUOTE
+!
+9500: PATH = "DELETE PRICE QUOTE"
+      DEL.VALID = 0
+      CALL ACCESS.SUB (F.CONTROL, PATH, DEL.VALID, REDISPLAY)
+      IF REDISPLAY THEN
+         GOSUB 5000 ; GOSUB 5500
+      END
+      IF NOT(DEL.VALID) THEN RETURN
+      LOOP
+         PRINT C22:BELL:ULON:'DELETE:':ULOFF:' This QUOTE ? (Y)es/(N)o   ':
+         PRINT '[ ]':STR(BS,2):
+         INPUT RESP,1:
+      UNTIL RESP = 'Y' ! RESP = 'N' DO REPEAT
+      IF RESP = 'N' THEN RETURN
+      IF QUOTE = '' ELSE
+         PQXID = CNO
+         IF SPTO # '' THEN PQXID = PQXID:'|':SPTO
+         READU QUOTE.B FROM F.PRICE.QUOTE.X, PQXID THEN
+            LOCATE QUOTE IN QUOTE.B<1> SETTING VM THEN DEL QUOTE.B<1,VM>
+            IF QUOTE.B = '' THEN
+               DELETE F.PRICE.QUOTE.X, PQXID
+            END ELSE
+               WRITE QUOTE.B ON F.PRICE.QUOTE.X, PQXID
+               IF QUOTE.B<30> # '' THEN
+                  READ BID.B FROM F.BID, QUOTE.B<30> THEN
+                     BID.B<5>=PQXID
+                     WRITE BID.B ON F.BID, QUOTE.B<30>
+                  END
+               END
+            END
+         END ELSE RELEASE F.PRICE.QUOTE.X, PQXID
+         DELETE F.PRICE.QUOTE, QUOTE
+         UPDFLG = FALSE ; GOSUB 9100     ; * UPDATE PRODUCT QUOTE XREF FILE
+      END
+      WORK.B = '' ; COUNT = 1 ; STL = 1 ; EDL = 10 ; PG = 1
+      PRINT C22:FON:'D e l e t e d . . .':FOFF: ; RQM
+      IF PGMEXIT THEN STOP
+      PRINT SCR: ; RETURN TO 1
+!
+! SAVE QUOTE
+!
+9600: NEW = FALSE
+      IF QUOTE = '' THEN
+         NEW = TRUE
+         READU NXTNBR FROM F.CONTROL, PRFX:'PRICE.QUOTE#' ELSE NXTNBR = 0
+         NXTNBR = NXTNBR + 1
+         WRITE NXTNBR ON F.CONTROL, PRFX:'PRICE.QUOTE#'
+         IF PRFX # '' THEN QJSTF = 'R%5' ELSE QJSTF = 'R%6'
+         QUOTE = PRFX:(NXTNBR QJSTF)
+         PQXID = CNO
+         IF SPTO # '' THEN PQXID = PQXID:'|':SPTO
+         READU QUOTE.B FROM F.PRICE.QUOTE.X, PQXID ELSE QUOTE.B = ''
+         LOCATE QUOTE IN QUOTE.B<1> SETTING VM ELSE QUOTE.B<1,VM> = QUOTE
+         WRITE QUOTE.B ON F.PRICE.QUOTE.X, PQXID
+         IF QUOTE.B<30> # '' THEN
+            READ BID.B FROM F.BID, QUOTE.B<30> THEN
+               BID.B<5>=PQXID
+               WRITE BID.B ON F.BID, QUOTE.B<30>
+            END
+         END
+         WORK.B<9> = CNO
+         IF WRITER.AS.SALESMAN # 'Y' AND WRITER.AS.SALESMAN # 'H' AND WORK.B<40> = '' THEN
+            NEW.SLMN = OCONV(CNO,'TCUSTOMER;X;7;7')
+            IF NEW.SLMN # '' THEN
+               WORK.B<40> = NEW.SLMN
+            END
+         END
+         WORK.B<10>= SPTO
+         IF WORK.B<10> # "" THEN
+            READV SHIPTO.SLMN FROM F.SHIPTO,CNO:"!":WORK.B<10>,20 ELSE SHIPTO.SLMN = ""
+            IF SHIPTO.SLMN # "" THEN WORK.B<40> = SHIPTO.SLMN
+         END
+      END
+      WORK.B<13> = TXCD
+      WORK.B<14> = SUBTOTAL
+      WORK.B<15> = TAXAMT
+      WORK.B<16> = TOTAL
+      IF WORK.B<9> = 'MANUAL' THEN
+         FOR A = 1 TO 9
+            WORK.B<22,A> = NONCUST<A>
+         NEXT A
+      END
+      READV ORIG.FLUPDT FROM F.PRICE.QUOTE, QUOTE, 31 ELSE ORIG.FLUPDT = ''
+      IF WORK.B<31> # '' THEN
+         IF WORK.B<31> # ORIG.FLUPDT THEN
+            READU CHDR.B FROM F.CNOTE.HDR, WORK.B<9> ELSE CHDR.B = ''
+            CHDR.B<1> = CHDR.B<1> + 1
+            INS CHDR.B<1> BEFORE CHDR.B<2,1>
+            INS DATE() BEFORE CHDR.B<3,1>
+            INS WORK.B<31> BEFORE CHDR.B<4,1>
+            INS '' BEFORE CHDR.B<5,1>
+            CDET.B = ''
+            CDET.B<1> = 'Q'
+            CDET.B<2> = WORK.B<31>
+            CDET.B<3> = INTLS
+            CDET.B<4> = 'Follow Up on Price Quote # ':QUOTE
+            CDET.B<5> = DATE()
+            WRITE CDET.B ON F.CNOTE.DET, WORK.B<9>:'-':CHDR.B<1>
+            WRITE CHDR.B ON F.CNOTE.HDR, WORK.B<9>
+         END
+      END
+      WORK.B<32> = DATE()
+      WORK.B<33> = TIME()
+      WRITE WORK.B ON F.PRICE.QUOTE, QUOTE
+      IF FASTRACKS = '' THEN FASTRACKS = WORK.B<34>
+      IF TRACK1.B = '' & FASTRACKS<1,1> # '' THEN
+         READ TRACK1.B FROM F.FASTRACK, FASTRACKS<1,1> ELSE TRACK1.B = ''
+      END
+      IF TRACK2.B = '' & FASTRACKS<1,2> # '' THEN
+         READ TRACK2.B FROM F.FASTRACK, FASTRACKS<1,2> ELSE TRACK2.B = ''
+      END
+      IF TRACK3.B = '' & FASTRACKS<1,3> # '' THEN
+         READ TRACK3.B FROM F.FASTRACK, FASTRACKS<1,3> ELSE TRACK3.B = ''
+      END
+      CALL FASTRACK.ENTRY (F.MASTER, F.CONTROL, F.SCREENS, F.FASTRACK, F.PRICE.QUOTE, 34, '', QUOTE, 'PQ', FASTRACKS, TRACK1.B, TRACK2.B, TRACK3.B, 'U')
+      IF WORK.B<30> # '' THEN
+         READ BID.B FROM F.BID, WORK.B<30> THEN
+            BID.B<5>=QUOTE
+            WRITE BID.B ON F.BID, WORK.B<30>
+         END
+      END
+!
+!  ** UPDATE PRICE.QUOTE.X IF CUSTOMER# CHANGED ON THIS QUOTE **
+      READ ATR FROM F.PRICE.QUOTE.X,WORK.B<9> ELSE ATR=''
+      LOCATE QUOTE IN ATR<1> SETTING VAL.POS ELSE NULL
+      ATR<1,VAL.POS>=QUOTE
+      WRITE ATR ON F.PRICE.QUOTE.X,WORK.B<9>
+!
+!
+      IF ORIG.WORK.B # '' THEN UPDFLG = FALSE ; GOSUB 9100
+      UPDFLG = TRUE ; GOSUB 9100         ; * UPDATE PRODUCT QUOTE XREF FILE
+      WORK.B = '' ; ORIG.WORK.B = '' ; COUNT = 1 ; STL = 1 ; EDL = 10 ; PG = 1
+      PRINT C22:FON:'S a v e d . . .':FOFF: ; RQM
+      IF NEW THEN
+*L*        PRINT C22:'Your Quote Number is ':LON:QUOTE:LOFF:' Press ':
+*L*        PRINT 'ANY KEY to Continue...':; INPUT NL,1:
+         READU WORK.B FROM F.PRICE.QUOTE, QUOTE ELSE GO 1
+         ORIG.WORK.B = WORK.B
+!!!      DO NOT CALL RECALC IF IT IS A NEW QUOTE
+*S*      IF WORK.B<42> = 'Y' THEN CALL AUTO.MARGIN.QUOTE.RECALC (WORK.B, '')
+         TXCD = WORK.B<13> ; TOTAL = WORK.B<16>
+         SUBTOTAL = WORK.B<14> ; TAXAMT = WORK.B<15>
+         PRINT SCR:
+         IF LPSW THEN PRINT HDR2:
+         GOSUB 6000 ; GOSUB 5000 ; GO 1000
+*L*        GOSUB 6000; GOSUB 5000; GO 1000
+      END
+      IF PGMEXIT THEN STOP
+      PRINT SCR: ; RETURN TO 1
+3666:! CUSTOMER PART#
+      READV CPN FROM CUST.PN.XREF,CNO:'!':OCONV(WORK.B<1,COUNT>,"G1!1"),1 ELSE CPN=''
+      PRINT @(11,ROW):FON:'>':FOFF:
+      PRINT C22:@(12):DMON:'Customer Prod# ':DMOFF:CPN
+3667:***
+      CALL CIP(27,22,20,CPN,A,ESCFLG,'')
+      PRINT @(11,ROW):' ':@(0,22):EOS:
+      IF ESCFLG THEN RETURN TO 1000
+      DELETE CUST.PN.XREF,CNO:'!':OCONV(WORK.B<1,COUNT>,"G1!1")
+      DELETE PROD.CUST.PN.XREF, CNO:'!':CPN
+      IF A # '' THEN
+         WRITEV A ON CUST.PN.XREF,CNO:'!':OCONV(WORK.B<1,COUNT>,"G1!1"),1
+         WRITEV OCONV(WORK.B<1,COUNT>,"G1!1") ON PROD.CUST.PN.XREF,CNO:'!':A,1
+      END
+3668: PRINT @(11,ROW):' ':@(0,22):EOS:
+      RETURN
+!
+! DISPLAY PRICE FIELDS
+!
+8700: IF PROD.B = '' THEN RETURN
+      PF1 = OCONV(PRICE.FIELDS,'G,1')
+      PF2 = OCONV(PRICE.FIELDS,'G1,1')
+      PF = ''
+      BEGIN CASE
+         CASE PF1 = "L1" ; PF = PROD.B<13>
+         CASE PF1 = "L2" ; PF = PROD.B<64>
+         CASE PF1 = "L3" ; PF = PROD.B<66>
+         CASE PF1 = "L4" ; PF = PROD.B<126>
+         CASE PF1 = "C1" ; PF = PROD.B<3>
+         CASE PF1 = "C2" ; PF = PROD.B<5>
+         CASE PF1 = "C3" ; PF = PROD.B<19>
+         CASE PF1 = "C4" ; PF = PROD.B<62>
+         CASE PF1 = "C5" ; PF = PROD.B<120>
+         CASE PF1 = "C6" ; PF = PROD.B<122>
+         CASE PF1 = "C7" ; PF = PROD.B<124>
+      END CASE
+      PRINT @(4,19):OCONV(PF,'MD4') 'L#8':
+      PF = ''
+      BEGIN CASE
+         CASE PF2 = "L1" ; PF = PROD.B<13>
+         CASE PF2 = "L2" ; PF = PROD.B<64>
+         CASE PF2 = "L3" ; PF = PROD.B<66>
+         CASE PF2 = "L4" ; PF = PROD.B<126>
+         CASE PF2 = "C1" ; PF = PROD.B<3>
+         CASE PF2 = "C2" ; PF = PROD.B<5>
+         CASE PF2 = "C3" ; PF = PROD.B<19>
+         CASE PF2 = "C4" ; PF = PROD.B<62>
+         CASE PF2 = "C5" ; PF = PROD.B<120>
+         CASE PF2 = "C6" ; PF = PROD.B<122>
+         CASE PF2 = "C7" ; PF = PROD.B<124>
+      END CASE
+      PRINT @(4,20):OCONV(PF,'MD4') 'L#8':
+      RETURN
+!
+! COMMENTS
+!
+3625: PRINT @(11,ROW):FON:'>':FOFF:
+      COMMENTS = WORK.B<17,COUNT>
+      CONVERT ISVM TO IVM IN COMMENTS
+      CMISC = ''
+      CMISC<2> = 13
+      CMISC<3> = 45
+      CMISC<4> = 1
+      CMISC<5> = 30
+      CMISC<6> = 'OED.COMMENTS'
+      CMISC<7> = 2
+      CALL COMMENTS.SUB (3, COMMENTS, ESCFLG, CMISC)
+      IF ESCFLG THEN GO 3310
+      CONVERT IVM TO ISVM IN COMMENTS
+      CHECK.CMTS = COMMENTS
+      CONVERT ISVM TO '' IN CHECK.CMTS
+      IF CHECK.CMTS = '' THEN COMMENTS = ''
+      WORK.B<17,COUNT> = COMMENTS
+3310: PRINT SCR:
+      IF LPSW THEN PRINT HDR2:
+      GOSUB 5000
+      RETURN
+!
+! DISPLAY GP%
+!
+4000: READ PROD.B FROM F.PRODUCT, WORK.B<1,VALUE> ELSE PROD.B = ''
+      COST = 0
+      BEGIN CASE
+         CASE WORK.B<23,VALUE> # '' ; COST = WORK.B<23,VALUE>
+         CASE CSTCLM = "C1" ; COST = PROD.B<3> * WORK.B<43,VALUE>
+         CASE CSTCLM = "C2" ; COST = PROD.B<5> * WORK.B<43,VALUE>
+         CASE CSTCLM = "C3" ; COST = PROD.B<19> * WORK.B<43,VALUE>
+         CASE CSTCLM = "C4" ; COST = PROD.B<62> * WORK.B<43,VALUE>
+         CASE CSTCLM = "C5" ; COST = PROD.B<120> * WORK.B<43,VALUE>
+         CASE CSTCLM = "C6" ; COST = PROD.B<122> * WORK.B<43,VALUE>
+         CASE CSTCLM = "C7" ; COST = PROD.B<124> * WORK.B<43,VALUE>
+      END CASE
+      LMISC=WORK.B<1,VALUE> ; LMISC<2>='S'
+      LMISC<3>=WORK.B<27,VALUE>
+      LMISC<4>=WORK.B<43,VALUE>
+      LMISC<5>=WORK.B<44,VALUE>
+      CALL LINE.EXT (WORK.B<21,VALUE>, WORK.B<3,VALUE>, WORK.B<2,VALUE>, LN.EXT, LMISC)
+      LN.COST = ICONV(OCONV(((COST*WORK.B<44,VALUE>)/WORK.B<43,VALUE>) * WORK.B<2,VALUE>,'MD4'),'MD4')
+      LN.GP.DLRS = 0
+      IF LN.COST + 0 = 0 ! LN.EXT+0 = 0 THEN LN.GP = 0 ELSE
+         LN.GP = ((ABS(LN.EXT*100) - ABS(LN.COST)) / ABS(LN.EXT*100) * 100)
+         LN.GP = ICONV(LN.GP,'MD2')
+         LN.GP.DLRS = (LN.EXT * 100) - LN.COST
+      END
+      IF AUTOFEED # TRUE THEN
+         PRINT @(2,17):OCONV(WORK.B<23,VALUE>,'MD4') 'R#10':
+         PRINT @(26,16):OCONV(LN.GP,'MD2') 'R#11':
+         PRINT @(26,17):OCONV(LN.GP.DLRS,'MD24') 'R#11':
+         PRINT @(51,16):OCONV(ORDER.GP,'MD2') 'R#11':
+         PRINT @(51,17):OCONV(ORDER.GP.DLRS,'MD24') 'R#11':
+      END
+      RETURN
+!
+! UPDATE PRODUCT QUOTE XREF
+!
+9100: CNTR = 0
+      IF UPDFLG THEN PDQXCT = DCOUNT(WORK.B<1>,CHAR(253)) ELSE
+         PDQXCT = DCOUNT(ORIG.WORK.B<1>,CHAR(253))
+      END
+      LOOP
+         CNTR = CNTR + 1
+      WHILE CNTR LE PDQXCT DO
+         IF UPDFLG THEN PDQXID = WORK.B<1,CNTR> ELSE PDQXID = ORIG.WORK.B<1,CNTR>
+         IF PDQXID # '!***' & PDQXID # '!SP' THEN
+            PDQXID = PDQXID:'|':CNO
+            IF SPTO # '' THEN PDQXID = PDQXID:'|':SPTO
+            IF UPDFLG THEN
+               READU PDQX.B FROM F.PRODUCT.QUOTE.X, PDQXID ELSE PDQX.B = ''
+               PDQX.B<1> = QUOTE
+               PDQX.B<2> = WORK.B<2,CNTR>
+               PDQX.B<3> = WORK.B<11>
+               PDQX.B<4> = WORK.B<3,CNTR>
+               PDQX.B<5> = WORK.B<21,CNTR>
+               LMISC=WORK.B<1,CNTR> ; LMISC<2>='S'
+               LMISC<3>=WORK.B<27,CNTR>
+               LMISC<4>=WORK.B<43,CNTR>
+               LMISC<5>=WORK.B<44,CNTR>
+               CALL LINE.EXT (WORK.B<21,CNTR>, WORK.B<3,CNTR>, WORK.B<2,CNTR>, EXT, LMISC)
+               IF WORK.B<21,CNTR> + 0 = 0 ! WORK.B<3,CNTR> + 0 = 0 THEN NETPR = WORK.B<3,CNTR> ELSE
+                  DISAMT = (OCONV(WORK.B<3,CNTR>,'MD4') * WORK.B<21,CNTR>)
+                  NETPR = INT(WORK.B<3,CNTR> - DISAMT)
+               END
+               NETPR = ICONV(OCONV(NETPR,'MD4'),'MD4')
+               PDQX.B<6> = NETPR
+               PDQX.B<7> = WORK.B<12>
+               WRITE PDQX.B ON F.PRODUCT.QUOTE.X, PDQXID
+            END ELSE
+               DELETE F.PRODUCT.QUOTE.X, PDQXID
+            END
+         END
+      REPEAT
+      RETURN
+!
+! RE-CALCULATE ORDER
+!
+9900: XMISC = '' ; XMISC<10> = 23 ; XMISC<4> = 1 ; XMISC<5> = 'Search'
+      PRINT C22:ULON:'RE-CALCULATE':ULOFF:' for which Customer Category ? ':
+      CALL CIP (73, 22, 5, CUST.B<17>, RC, ESCFLG, XMISC)
+      IF ESCFLG THEN RETURN
+      IF XMISC<6> = 1 THEN
+         SMISC = 'CUSTOMER CATEGORY SELECTOR'
+         SMISC<3> = 0:IVM:1
+         SMISC<4> = 'L#10':IVM:'L#30'
+         SMISC<6> = 2
+         SMISC<7> = 'CODE        NAME/DESCRIPTION'
+         SMISC<8> = 3
+         SMISC<9> = 1
+         SMISC<10>= 'AL'
+         CALL SELECTFILE (F.CUST.CATEGORY, REDISPLAY, SMISC)
+         IF REDISPLAY THEN
+            PRINT SCR
+            IF LPSW THEN PRINT HDR2:
+            GOSUB 5000
+         END
+         IF SMISC<2> # '' THEN
+            RC = SMISC<2>
+         END ELSE GO 9900
+      END
+      READV CDESC FROM F.CUST.CATEGORY, RC, 1 ELSE GO 9900
+      LOOP
+         PRINT C22:DLON:' Category ':RC:' ':DLOFF:' Include Overrides in this Re-Calculation ? (Y)es/(N)o ':
+         CALL CIP (77, 22, 1, '', RESP, ESCFLG, '')
+         PRINT C22:
+         IF ESCFLG THEN RETURN
+      UNTIL RESP = 'Y' ! RESP = 'N' DO REPEAT
+      PRINT C22:@(30):FON:'R e - C a l c u l a t i n g':FOFF:
+      CNTR = 0
+      LOOP
+         CNTR = CNTR + 1
+      WHILE CNTR LE ITEMS DO
+         IF (WORK.B<4,CNTR> = 'Override' & RESP = 'Y') ! (WORK.B<4,CNTR> # 'Override') THEN
+            IF WORK.B<1,CNTR> # '!SP' & WORK.B<1,CNTR> # '!***' THEN
+               QUANT = WORK.B<2,CNTR>
+               PMISC = ''
+               PCNO = CNO
+               CREC = '' ; CREC<17> = RC ; CREC<113> = CUST.B<113>
+               READ PRODREC FROM F.PRODUCT, WORK.B<1,CNTR> ELSE PRODREC = ''
+               PQTY = QUANT ; PQTY<1,6> = BRANCH
+               CALL PRICE.SUB (PRODREC, CREC, PCNO, WORK.B<1,CNTR>, SPTO, PQTY, WORK.B<27,CNTR>, PMISC)
+               WORK.B<3,CNTR> = PMISC<4>
+               WORK.B<21,CNTR>= PMISC<3>
+               WORK.B<4,CNTR> = PMISC<2>
+               WORK.B<22,CNTR> = PMISC<5>
+               IF PMISC<21>+0 # 0 THEN
+                  WORK.B<23,CNTR> = PMISC<21>
+               END
+               WORK.B<24,CNTR> = PMISC<22>
+            END
+         END
+      REPEAT
+      GOSUB 9700                         ; * Product Line/Price Group mixed qty break re-calc.
+      GOSUB 7000                         ; * Calculate Quote Total
+      PRINT SCR
+      IF LPSW THEN PRINT HDR2:
+      GOSUB 5000
+      PRINT C22:
+      RETURN
+!
+! PRODUCT LINE/PRICE GROUP MIXED QUANTITY BREAKS CALCULATION
+!
+9700: CHANGE = FALSE
+      IF INDEX(WORK.B<4>,'\MB\',1) THEN
+         DETAIL.B = ''
+         DETAIL.B<1> = WORK.B<1>
+         DETAIL.B<2> = WORK.B<2>
+         DETAIL.B<3> = WORK.B<27>
+         DETAIL.B<4> = WORK.B<4>
+         DETAIL.B<5> = WORK.B<3>
+         DETAIL.B<6> = WORK.B<21>
+         FPMISC = BRANCH
+         CALL FAMILY.PRICE.BREAK.SUB (F.PRODUCT, CNO, CUST.B, SPTO, DETAIL.B, CHANGE, FPMISC)
+         IF CHANGE THEN
+            WORK.B<1> = DETAIL.B<1>
+            WORK.B<2> = DETAIL.B<2>
+            WORK.B<27>= DETAIL.B<3>
+            WORK.B<4> = DETAIL.B<4>
+            WORK.B<3> = DETAIL.B<5>
+            WORK.B<21>= DETAIL.B<6>
+         END
+      END
+      RETURN
+!
+! FASTRACK
+!
+9800: IF FASTRACKS = '' THEN FASTRACKS = WORK.B<34>
+      IF TRACK1.B = '' & FASTRACKS<1,1> # '' THEN
+         READ TRACK1.B FROM F.FASTRACK, FASTRACKS<1,1> ELSE TRACK1.B = ''
+      END
+      IF TRACK2.B = '' & FASTRACKS<1,2> # '' THEN
+         READ TRACK2.B FROM F.FASTRACK, FASTRACKS<1,2> ELSE TRACK2.B = ''
+      END
+      IF TRACK3.B = '' & FASTRACKS<1,3> # '' THEN
+         READ TRACK3.B FROM F.FASTRACK, FASTRACKS<1,3> ELSE TRACK3.B = ''
+      END
+      CALL FASTRACK.ENTRY (F.MASTER, F.CONTROL, F.SCREENS, F.FASTRACK, F.PRICE.QUOTE, 34, '', QUOTE, 'PQ', FASTRACKS, TRACK1.B, TRACK2.B, TRACK3.B, 'E')
+      PRINT SCR
+      IF LPSW THEN PRINT HDR2:
+      GOSUB 5000
+      GOSUB 5500
+      RETURN
+!
+4550:! DETAIL WAREHOUSE INFO
+!
+      IF WHDETAIL THEN
+         PRINT SCR.WHSE:
+         PRINT @(1,16):DLULON:'Whse Detail ':DLULOFF:
+         PRINT @(14):DLULON:' Warehouse  ':DLULOFF:
+         PRINT @(27):DLULON:'   On-Hand  ':DLULOFF:
+         PRINT @(40):DLULON:' Committed  ':DLULOFF:
+         PRINT @(53):DLULON:' Available  ':DLULOFF:
+         PRINT @(66):DLULON:'    On-P/O  ':DLULOFF:
+         LINE = 16
+         WCTR = WSTL - 1
+         LOOP
+            WCTR = WCTR + 1
+            LINE = LINE + 1
+         WHILE WCTR LE WEDL DO
+            IF WCTR LE WHSE.CT THEN
+               PRINT @(1,LINE):SPACE(5):WHSE.B<1,WCTR> 'L#7':
+               PRINT @(14):WHSE.B<2,WCTR> 'L#12':
+               STOCK.B = ''
+               CALL STOCK.SUB (F.INVENTORY, F.CONTROL, WORK.B<1,COUNT>, WHSE.B<1,WCTR>, STOCK.B)
+               PRINT @(27):STOCK.B<1> 'R#10  ':
+               PRINT @(40):STOCK.B<2> 'R#10  ':
+               PRINT @(53):STOCK.B<3> 'R#10  ':
+               PRINT @(66):STOCK.B<4> 'R#10  ':
+            END ELSE
+               PRINT @(1,LINE):SPACE(12):@(14):SPACE(12):@(27):SPACE(12):@(40):SPACE(12):@(53):SPACE(12):@(66):SPACE(12):
+            END
+         REPEAT
+         GO 4560
+      END
+*JS*4560 INPUT JJ
+4560:!
+      RETURN
+3338:! OPTIONS ANS ACCESSORIES
+      ORIG.LINE = COUNT
+      LOCATE OPNUM IN OPT.B<164> SETTING OPVAL.POS THEN
+         SS=DCOUNT(OPT.B<166,OPVAL.POS>,CHAR(252))
+         FOR II = 1 TO SS
+            A = OPT.B<166,OPVAL.POS,II>
+            A = OCONV(A,'G1!1')
+            READ PROD.B FROM F.PRODUCT, '!':A THEN
+               QUANT = OPT.B<167,OPVAL.POS,II> * WORK.B<2,ORIG.LINE>
+               AUTOFEED = TRUE
+               IF MOD(COUNT,10) + 0 = 0 THEN
+                  STL = EDL + 1 ; EDL = STL + 9
+               END
+               COUNT = COUNT + 1
+               GOSUB 1000
+               AUTOFEED = FALSE
+            END
+         NEXT II
+      END
+      PRINT SCR:
+      IF LPSW THEN PRINT HDR2:
+      GOSUB 5000
+      RETURN
+3339:! SHOPPING CART
+      ORIG.LINE = COUNT
+      SS=DCOUNT(FK<1>,CHAR(253))
+      FOR II = 1 TO SS
+         A = FK<1,II>
+         A = OCONV(A,'G1!1')
+         READ PROD.B FROM F.PRODUCT, '!':A THEN
+            QUANT = FK<2,II>
+            AUTOFEED = TRUE
+            IF MOD(COUNT,10) + 0 = 0 THEN
+               STL = EDL + 1 ; EDL = STL + 9
+            END
+            IF II # 1 THEN
+               COUNT = COUNT + 1
+            END
+            GOSUB 1000
+            AUTOFEED = FALSE
+         END
+      NEXT II
+      COUNT = COUNT +1
+      PRINT SCR:
+      IF LPSW THEN PRINT HDR2:
+      GOSUB 5000
+      RETURN
+14000:! CALCULATE CUSTOMER CUT PARAMTERES
+      INCHES = CUT.STR<3>/12
+      TOT.DEC = CUT.STR<4>/CUT.STR<5>/12
+      TOT.INCHES = INCHES + TOT.DEC
+      TOT.LENGTH = (CUT.STR<2> + TOT.INCHES) * CUT.STR<1>
+      TOT.LENGTH = ICONV(TOT.LENGTH,'MD2')
+      TOT.LENGTH = OCONV(TOT.LENGTH,'MD2')+0
+      AUX.DESCR = CUT.STR<1>:'p ':CUT.STR<2>:'f':'  ':CUT.STR<3>:' ':CUT.STR<4>:'/':CUT.STR<5>:'"':'  Net = ':TOT.LENGTH
+      CALL CONVERT.LENGTH (AUX.DESCR,30,AMISC)
+      WORK.B<17,COUNT> = CHANGE(AMISC,IVM,ISVM)
+      PRINT SCR:
+      IF LPSW THEN PRINT HDR2:
+      GOSUB 5000 ; GOSUB 7000
+      DATA TOT.LENGTH
+      RETURN TO 1500

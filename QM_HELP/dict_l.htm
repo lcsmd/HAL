@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Dictionary L-type records</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Dictionary L-type records" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "dict_l.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Dictionary L-Type Records</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="dict_i.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="dict_ph.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An L-type record represents a link to another file. It can be used in query processor commands to reference fields in a dependent file without the need to create an I-type <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> expression for each field. Links can also be used within I-type expressions to minimise the number of explicit <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> operations.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">1:</td><td style="border:none;padding:0">L &nbsp;{ descriptive text }</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">2:</td><td style="border:none;padding:0">Id expression</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">3:</td><td style="border:none;padding:0">File name</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">4:</td><td style="border:none;padding:0">{File expression}</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The expression in field 2 is constructed in exactly the same was as an I-type expression and derives the record id of the record(s) in the linked file from data in the original file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Links can be used to reference A, C, D, I or S-type items in the remote file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The optional file expression in field 4 allows for more complex linking where the file to be referenced is one of a number of files that share a common dictionary, for example, sales divided by region. The name in field 3 is used to identify the file whose dictionary should be referenced to look up names used in the expressions in fields 2 and 4. The file expression in field 4 derives the name of the actual file to be referenced when retrieving data. Where field 4 is empty, the file name in field 3 is used for both purposes.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If a library application has two files, BOOKS and TITLES where the record id of BOOKS is formed from the id of the corresponding TITLES record and the copy number separated by a hyphen, the following link placed in the dictionary of the BOOKS file could be used to access the associated TITLES record:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">1: &nbsp;L</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">2: &nbsp;@ID['-', 1, 1]</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">3: &nbsp;TITLES</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Queries based on the BOOKS file could then reference data from the TITLES file using field names made up from the name of the link record, a % character and the name of the TITLES field to be accessed. For example, if the above link was named TTL, a query such as</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST BOOKS TTL%TITLE TTL%AUTHOR</span></p>
+<p>could be used to print a list of book titles and their authors.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The same data could be referenced in an I-type item in the dictionary of the BOOKS file by use of simply</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> TTL%TITLE</span></p>
+<p>as the expression (field 2). This is exactly equivalent to writing</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">TRANS(TITLES, @ID['-' , 1, 1], TITLE, 'X')</span></p>
+<p>Use of links in this way removes the need to include the link expression (<span style="font-family: 'Courier New',Courier,monospace;">@ID['-', 1, 1]</span>) in every reference to items in the TITLES file. Because use of a link causes a compile time substitution of the actual <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> operation, changing the link record requires all I-types that use it to be recompiled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Multiple Links</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A link may reference an item that is itself a further link. Extending the above example, there might be a READERS file that has a record for each user of the library and includes a LOANS field that lists the books on loan to the reader. The link from the READERS file to the BOOKS file becomes</p>
+<p class="p_CodeBody"><span class="f_CodeBody">OUT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">1: L</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">2: LOANS</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">3: BOOKS</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Finding the titles of the books on loan might then require a query command of the form</p>
+<p class="p_CodeTopLine">LIST READERS OUT%TTL%TITLE</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

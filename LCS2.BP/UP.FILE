@@ -1,0 +1,96 @@
+      TAB = CHAR(9)
+      BUFF = ""
+      DIM DICT.BUFF(50)
+      CONVCD = ""
+      DISP = ""
+      FORM = "10L"
+      MV = "M"
+      ASS = ""
+      PARMS1 = TRIM(FIELD(@SENTENCE," ",2))
+      PARMS2 = TRIM(FIELD(@SENTENCE," ",3))
+      FILE.NAME = PARMS1
+      IF NOT(FILE.NAME) THEN
+         PRINT "ENTER FILE NAME IN DIRECRTORY LCS.CSV"
+         INPUT FILE.NAME
+      END
+      FILE2.NAME = PARMS2
+      IF NOT(FILE2.NAME) THEN
+         PRINT "ENTER DEST FILE NAME"
+         INPUT FILE2.NAME
+      END
+      EXECUTE "CLEAR.FILE DATA ":FILE2.NAME
+
+      PRINT "IMPORTING FROM LCS.CSV ":FILE.NAME:" INTO ":FILE2.NAME
+      PRINT
+      OPEN FILE2.NAME TO INFILE ELSE PRINT FILE2.NAME;STOP
+      OPEN "DICT",FILE2.NAME TO D.FILE2.NAME ELSE PRINT 'DICT ':FILE2.NAME;STOP
+      OPENSEQ "LCS.CSV",FILE.NAME TO SFILE ELSE PRINT "SFILE";STOP
+      *PRINT INFILE
+      CT=0
+      LOOP
+         CT+=1
+         PRINT CT
+         READSEQ LINE FROM SFILE ELSE EXIT
+         PRINT CT:"  ":LINE
+         BUFF = CHANGE(LINE,TAB,@FM)
+         PRINT BUFF
+         IF CT =1 THEN
+            DICT.NAMES = CHANGE(LINE,TAB," ")
+             DICT.LIST = DICT.NAMES
+            GOSUB CREATE.DICT:
+         END ELSE
+            ID = BUFF<1>
+            DEL BUFF<1>
+            PRINT ID:"::":BUFF
+            BUFF = CHANGE(BUFF,"$","")
+            GOSUB CONV.MD:
+            WRITE BUFF ON INFILE,ID
+         END
+      REPEAT
+      PRINT "DONE"
+      STOP
+
+
+CREATE.DICT:
+      DICT.NAMES = CHANGE(DICT.NAMES," ",@FM)
+      DNUM = DCOUNT(DICT.NAMES,@FM)
+      MAT DICT.BUFF = ""
+      FOR DX = 1 TO DNUM
+         DXX=DX-1
+         IF DICT.NAMES<DX> > "" THEN
+            READ DBUFF FROM D.FILE2.NAME, DICT.NAMES<DX> ELSE
+               DBUFF = ""
+               DBUFF<1> = "D"
+               DBUFF<2> = DX-1
+               DBUFF<3> = CONVCD
+               DBUFF<4> = DISP
+               DBUFF<5> = FORM
+               DBUFF<6> = MV
+               DBUFF<7> = ASS
+               PRINT "ADDING ":DICT.NAMES<DX>
+               WRITE DBUFF ON D.FILE2.NAME, DICT.NAMES<DX>
+            END
+            DICT.BUFF(DX) = DBUFF
+            PRINT DX:":":DBUFF:":":DBUFF(DXX)
+            *DEBUG
+         END
+      NEXT DX
+      DICT.COUNT = DNUM
+      INPUT ANS,1
+      DBUFF = ""
+      DBUFF<1> = "PH"
+      DBUFF<2> = DICT.LIST
+      DBUFF<5> = "10L"
+      DBUFF<6> = "M"
+      WRITE DBUFF ON D.FILE2.NAME,"@ALL"
+      WRITE DBUFF ON D.FILE2.NAME,"@"
+      RETURN
+
+CONV.MD:
+      FOR XB = 1 TO DICT.COUNT
+         IF DICT.BUFF(XB)<3> > "" THEN BUFF<XB> = ICONV(BUFF<XB>,DICT.BUFF(XB)<3>)
+      NEXT XB
+      RETURN
+
+      END
+

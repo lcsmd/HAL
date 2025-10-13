@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>BLOCK.PRINT, BLOCK.TERM</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="BLOCK.PRINT,BLOCK.TERM" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "block_print.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">BLOCK.PRINT, BLOCK.TERM</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="bell.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="break.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">BLOCK.PRINT</span> command prints text on the default printer using large characters. The <span style="font-weight: bold;">BLOCK.TERM</span> is similar but directs its output to the terminal</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-weight: bold;">BLOCK.PRINT</span> <span style="font-style: italic;">text</span></p>
+<p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-weight: bold;">BLOCK.TERM</span> <span style="font-style: italic;">text</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">text</span></td><td style="border:none;padding:0">is the text to be printed or displayed.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">BLOCK.PRINT</span> and <span style="font-weight: bold;">BLOCK.TERM</span> commands print <span style="font-style: italic;">text</span> using a large font constructed from a 7 x 7 matrix of characters. On an 80 character printer or terminal, a maximum of 8 characters will fit on a line. The command will wrap long text across multiple lines, breaking on spaces where possible.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By default, the characters in the output are formed from use of the letter &quot;W&quot;. There is an X-type control record named &quot;$BIGLTRS&quot; in the VOC of the QMSYS account that can be used to change how the characters are constructed. Field 2 of this record contains a mode value that may be:</p>
+<p>0 &nbsp; &nbsp; &nbsp; &nbsp;Use &quot;W&quot; (default)</p>
+<p>1 &nbsp; &nbsp; &nbsp; &nbsp;Use uppercase version of the character</p>
+<p>2 &nbsp; &nbsp; &nbsp; &nbsp;Use preserved case version of the character</p>
+<p>3 &nbsp; &nbsp; &nbsp; &nbsp;Use character shape definitions as in fields 4 to 10.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Adding 8 to the above values centres the text in the available device width.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When using mode 3, the characters will be constructed from the patterns in fields 4 to 10. Field 3 holds a character reference that may make editing easier.</p>
+
+</td></tr></table>
+
+</body>
+</html>

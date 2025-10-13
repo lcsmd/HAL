@@ -1,0 +1,33 @@
+      program RESTORE.dicts
+      FILE.name = trim(field(@sentence," ",2))
+      open "DICTS" TO F.DICTS ELSE PRINT 'DICTS';STOP
+      open "LCS.DICT" TO F.LCS.DICT ELSE PRINT 'LCS.DICT';STOP
+      READ LBUFF FROM F.LCS.DICT,FILE.NAME ELSE LBUFF = '' 
+      OPEN "DICT",FILE.NAME TO D.DICT ELSE PRINT "DICT ":FILE.NAME
+      READ DICTS.B FROM F.DICTS,FILE.NAME THEN
+         FIELD.CT = DCOUNT(DICTS.B<3>,@VM)
+         DABB = DICTS.B<2>
+         LBUFF<1> = DABB
+         LBUFF<2> = "ID"
+         FOR FIELDS.X = 1 TO FIELD.CT
+            FNAME  = DICTS.B<3,FIELDS.X>
+            DICT.B = ""
+            DBUFF<1> = DICTS.B<4,FIELDS.X>
+            DBUFF<2> = DICTS.B<5,FIELDS.X>
+            DBUFF<3> = DICTS.B<6,FIELDS.X>
+            DBUFF<4> = DICTS.B<7,FIELDS.X>
+            DBUFF<5> = DICTS.B<8,FIELDS.X>
+            DBUFF<6> = DICTS.B<9,FIELDS.X>
+            DBUFF<7> = DICTS.B<10,FIELDS.X>
+            WRITE DBUFF ON D.DICT,FNAME
+            LBUFF<FIELDS.X+2> = TRIM(FNAME:" ":DBUFF<3>:" ":DBUFF<4>:" ":DBUFF<5>:" ":DBUFF<6>:" ":DBUFF<7>)
+         NEXT FIELDS.X
+         WRITE LBUFF ON F.LCS.DICT,FILE.NAME:".2"
+      END ELSE
+         EXECUTE "BUILD.DICT.SUB ":FILE.NAME:" ":LBUFF<1>
+         PRINT FILE.NAME:" NOT FOUND IN DICTS"
+      END
+      END
+
+
+

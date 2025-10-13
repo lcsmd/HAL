@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MAT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MAT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_mat.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MAT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_mark_mapping.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_mat_func.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MAT</span> statement assigns a value to all elements of a matrix, copies one matrix to another, or tests for equivalent matrices.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">MAT</span> <span style="font-style: italic;">matrix</span> <span style="font-weight: bold;">=</span> <span style="font-style: italic;">expr</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">MAT</span> <span style="font-style: italic;">matrix2</span> <span style="font-weight: bold;">= MAT</span> <span style="font-style: italic;">matrix1</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">IF MAT</span> <span style="font-style: italic;">matrix1</span> <span style="font-weight: bold;">=</span> <span style="font-weight: bold;">MAT </span><span style="font-style: italic;">matrix2</span> <span style="font-weight: bold;">THEN</span> ...</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">matrix</span></td><td style="border:none;padding:0">is the name of a previously dimensioned matrix.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">evaluates to the value to be stored in each matrix element.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first format of this statement copies the value of <span style="font-style: italic;">expr</span> into all elements of <span style="font-style: italic;">matrix</span>. The zero element is set to a null string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The second format copies elements from <span style="font-style: italic;">matrix1</span> to <span style="font-style: italic;">matrix2</span> row by row. If the number of columns differs, the copy behaves as depicted below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="width:300px; border:none; border-spacing:0;">
+<tr>
+<td colspan="3"  style="vertical-align:top; padding:4px; border:none"><p><span style="font-weight: bold;">Source:</span></p>
+</td>
+<td colspan="4"  style="vertical-align:top; padding:4px; border:none"><p><span style="font-weight: bold;">Target:</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:43px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:49px; padding:4px; border:none"><p><span style="font-weight: bold;">1</span></p>
+</td>
+<td style="vertical-align:top; width:95px; padding:4px; border:none"><p><span style="font-weight: bold;">2</span></p>
+</td>
+<td style="vertical-align:top; width:46px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:53px; padding:4px; border:none"><p><span style="font-weight: bold;">1</span></p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p><span style="font-weight: bold;">2</span></p>
+</td>
+<td style="vertical-align:top; width:58px; padding:4px; border:none"><p><span style="font-weight: bold;">3</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:43px; padding:4px; border:none"><p><span style="font-weight: bold;">1</span></p>
+</td>
+<td style="vertical-align:top; width:49px; padding:4px; border:none"><p>A</p>
+</td>
+<td style="vertical-align:top; width:95px; padding:4px; border:none"><p>B</p>
+</td>
+<td style="vertical-align:top; width:46px; padding:4px; border:none"><p><span style="font-weight: bold;">1</span></p>
+</td>
+<td style="vertical-align:top; width:53px; padding:4px; border:none"><p>A</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>B</p>
+</td>
+<td style="vertical-align:top; width:58px; padding:4px; border:none"><p>C</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:43px; padding:4px; border:none"><p><span style="font-weight: bold;">2</span></p>
+</td>
+<td style="vertical-align:top; width:49px; padding:4px; border:none"><p>C</p>
+</td>
+<td style="vertical-align:top; width:95px; padding:4px; border:none"><p>D</p>
+</td>
+<td style="vertical-align:top; width:46px; padding:4px; border:none"><p><span style="font-weight: bold;">2</span></p>
+</td>
+<td style="vertical-align:top; width:53px; padding:4px; border:none"><p>D</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>E</p>
+</td>
+<td style="vertical-align:top; width:58px; padding:4px; border:none"><p>F</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:43px; padding:4px; border:none"><p><span style="font-weight: bold;">3</span></p>
+</td>
+<td style="vertical-align:top; width:49px; padding:4px; border:none"><p>E</p>
+</td>
+<td style="vertical-align:top; width:95px; padding:4px; border:none"><p>F</p>
+</td>
+<td style="vertical-align:top; width:46px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:53px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:58px; padding:4px; border:none"><br />
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The zero element of <span style="font-style: italic;">src.matrix</span> is copied to the zero element of <span style="font-style: italic;">matrix</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">src.matrix</span> has more elements than <span style="font-style: italic;">matrix</span>, the excess elements are ignored. If <span style="font-style: italic;">src.matrix</span> has fewer elements than <span style="font-style: italic;">matrix</span>, the remaining elements of <span style="font-style: italic;">matrix</span> are unchanged.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A single dimensional matrix can be copied to a two dimensional matrix and vice versa.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The third syntax tests whether the content of <span style="font-style: italic;">matrix1</span> is the same as the content of <span style="font-style: italic;">matrix2</span>. Although most likely to be used as part of an IF statement as shown above, the</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">MAT </span><span class="f_CodeSingleLine" style="font-style: italic;">matrix1</span><span class="f_CodeSingleLine"> = MAT </span><span class="f_CodeSingleLine" style="font-style: italic;">matrix2</span></p>
+<p>component of this statement may be used anywhere that a Boolean value is appropriate.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DIM A(25)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">MAT A = 0</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment dimensions matrix A to have 25 elements and sets them all to zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DIM A(5,5), B(25)</span></p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-style: italic;">... statements that set values in matrix A...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">MAT B = MAT A</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment dimensions two matrices, sets values into matrix A and then creates a single dimensional copy of A in matrix B.</p>
+
+</td></tr></table>
+
+</body>
+</html>

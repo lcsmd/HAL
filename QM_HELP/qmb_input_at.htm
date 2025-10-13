@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>INPUT @</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="INPUT @" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_input_at.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">INPUT @</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_input.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_inputcsv.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">INPUT</span> <span style="font-weight: bold;">@</span> statement enables entry of data from the keyboard at a specific screen position or from previously stored <span style="font-weight: bold;"><a href="qmb_data.htm" class="topiclink">DATA</a></span> statements.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">INPUT</span> <span style="font-weight: bold;">@(</span><span style="font-style: italic;">x</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">y</span><span style="font-weight: bold;">)</span> {<span style="font-weight: bold;">,</span>} {<span style="font-weight: bold;">:</span>} <span style="font-style: italic;">var</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">length</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">fill</span>}} {<span style="font-weight: bold;">_</span>} {<span style="font-weight: bold;">:</span>} {<span style="font-style: italic;">format</span>} {<span style="font-style: italic;">modes</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span><span style="font-style: italic;"> statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span><span style="font-style: italic;"> statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">x</span>, <span style="font-style: italic;">y</span></td><td style="border:none;padding:0">are the screen position (column and line) at which input is to occur.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is the variable in which the data is to be stored.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">length</span></td><td style="border:none;padding:0">is the maximum length of data to be allowed. Because of a potential syntactic ambiguity in the language, this must be enclosed in brackets if it is an expression.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">fill</span></td><td style="border:none;padding:0">is a Pick style fill expression. The first character will be used to fill any spare space in the input field to make the field width clear to the user. The second character will be used to fill unused space after input is completed. If the <span style="font-style: italic;">fill</span> string is only one character, spaces will be used. The third character, if present causes the cursor to be left at the end of the input field instead of the default action of leaving it after the last character of the entered data string. The <span style="font-style: italic;">fill</span> option cannot be used with a <span style="font-style: italic;">format</span> mask, <span style="font-weight: bold;">PANNING</span> or <span style="font-weight: bold;">HIDDEN</span>.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">format</span></td><td style="border:none;padding:0">is the <a href="fmt_spec.htm" class="topiclink">format specification</a> to the used for initial display of <span style="font-style: italic;">var</span> and to redisplay the data on completion of input.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">modes</span></td><td style="border:none;padding:0">are any combination of the following keywords:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 210px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;">APPEND</span></td><td style="border:none;padding:0">Position the cursor at the end of the data. Use of this keyword also implies <span style="font-weight: bold;">EDIT</span> mode.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 210px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;">EDIT</span></td><td style="border:none;padding:0">Starts in &quot;edit&quot; mode, suppressing the normal clearance of the input field if the first character entered by the user is a data character rather than an edit character.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 210px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;">HIDDEN</span></td><td style="border:none;padding:0">echoes characters back to the screen as asterisks for password type fields.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 210px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;">NO.ECHO</span></td><td style="border:none;padding:0">Suppresses echo of input data.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 209px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:154px"><span style="font-weight: bold;">NO.ENCODING</span></td><td style="border:none;padding:0">Suppresses decode of encoded input when the terminal is set to operate in UTF-8 mode. Use of this mode will also suppress encoding of data echoed back to the terminal.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 209px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:154px"><span style="font-weight: bold;">OVERLAY</span></td><td style="border:none;padding:0">Starts in &quot;overlay&quot; mode where data entered by the user replaces the character under the cursor rather than being inserted.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 210px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;">PANNING</span></td><td style="border:none;padding:0">Allows entry of an unlimited number of characters in a field width of the given <span style="font-style: italic;">length</span> by panning the data if it is longer than the display width. Use of this option requires <span style="font-style: italic;">length</span> to be specified and implies the presence of the underscore.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 210px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;">TIMEOUT </span><span style="font-style: italic;">wait</span></td><td style="border:none;padding:0">Sets a timeout period in seconds. If input is not received in this time, the <span style="font-weight: bold;">INPUT</span> terminates, leaving <span style="font-style: italic;">var</span> unchanged. The keywords <span style="font-weight: bold;">FOR</span> or <span style="font-weight: bold;">WAITING</span> can be used in place of <span style="font-weight: bold;">TIMEOUT</span> for compatibility with other environments.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 210px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;">UPCASE</span></td><td style="border:none;padding:0">converts the input data to uppercase.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The comma after the cursor position is optional and has no effect on the operation of the statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses used with <span style="font-weight: bold;">TIMEOUT</span> allow a program to determine whether the input timed out. Successful input executes the <span style="font-weight: bold;">THEN</span> clause. A timeout will execute the <span style="font-weight: bold;">ELSE</span> clause.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">INPUT @</span> statement reads data from the <span style="font-weight: bold;">DATA</span> queue or, if there is no stored data, from the keyboard.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Keyboard Input</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When reading from the keyboard, the current prompt character will be displayed to the left of the given input position. No prompt is displayed if the input column position, <span style="font-style: italic;">x</span>, is zero or if the prompt has been disabled using the <span style="font-weight: bold;"><a href="qmb_prompt.htm" class="topiclink">PROMPT</a></span> statement. The prompt character will be removed from the screen on completion of the input.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the colon character before <span style="font-style: italic;">var</span> is present, the original contents or <span style="font-style: italic;">var</span> are displayed in the input area and entry commences in overlay mode. If the colon character before <span style="font-style: italic;">var</span> is not present, entry commences in insert mode with a blank field.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The user has three options:</p>
+<p style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Pressing the return key retains the original content of <span style="font-style: italic;">var</span>. </p><p style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Typing a data character replaces the original content of <span style="font-style: italic;">var</span>, clearing any old displayed data (unless the <span style="font-weight: bold;">EDIT</span> option is used).</p><p style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Using an edit key (see below) allows the old data to be edited.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the application needs to recognise the first of these three options, it can do so by testing the value returned by the <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function immediately after the <span style="font-weight: bold;">INPUT</span>. This will be 1 for use of the default value, 0 for all other situations.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The values stored for printing characters are the ASCII characters associated with the key. Non-printing characters result in stored character values as listed under <a href="key_codes.htm" class="topiclink">Character Values for Terminal Input</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If no <span style="font-style: italic;">length</span> expression is included, data characters are stored until the return key is pressed. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">length</span> is specified, up to that number of characters may be entered after which input is automatically terminated as though the return key had been pressed, any subsequent key entries being retained for the next <span style="font-weight: bold;">INPUT</span> statement. The return key is not stored as part of the input data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">INPUT @</span> statement may not behave correctly if the <span style="font-style: italic;">length</span> of the input field causes it to extend over multiple lines and the terminal in use does not automatically wrap from one line to the next when displaying long text output.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional underscore component of the statement suppresses the automatic input termination when <span style="font-style: italic;">length</span> characters have been entered. Any number of characters may be entered but only <span style="font-style: italic;">length</span> characters will be displayed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional colon causes the carriage return and line feed output when the return key is used or on reaching the input length limit to be suppressed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In all cases, the following editing keys are available.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Ctrl-A</p>
+</td>
+<td style="vertical-align:top; width:161px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Home</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Position the cursor at the start of the input data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Ctrl-B</p>
+</td>
+<td style="vertical-align:top; width:161px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Cursor left</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Move the cursor left one character</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Ctrl-D</p>
+</td>
+<td style="vertical-align:top; width:161px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Delete</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Delete character under cursor</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Ctrl-E</p>
+</td>
+<td style="vertical-align:top; width:161px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">End</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Position the cursor at the end of the input data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Ctrl-F</p>
+</td>
+<td style="vertical-align:top; width:161px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Cursor right</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Move the cursor right one character</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Ctrl-H</p>
+</td>
+<td style="vertical-align:top; width:161px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Backspace</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Backspace one character</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Ctrl-K</p>
+</td>
+<td style="vertical-align:top; width:161px; padding:4px; border:none"><p style="margin: 0 0 10px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p style="margin: 0 0 10px 0;">Delete all characters after the cursor</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:161px; padding:4px; border:none"><p>Insert</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p>Toggle insert/overlay mode. When overlay mode is enabled, data entered by the user replaces the character under the cursor rather than being inserted before this character. Unless the <span style="font-weight: bold;">OVERLAY</span> option is used, the input begins &nbsp;in insert mode.</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>These editing keys can be modified using the <span style="font-weight: bold;"><a href="qmb_keyedit.htm" class="topiclink">KEYEDIT</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When the return key is pressed to terminate input, if a format is specified, the data is redisplayed using this mask to apply format rules such as right justification.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DATA Queue Input</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where the data queue is not empty, the <span style="font-weight: bold;">INPUT @</span> statement reads the item at the head of this queue, copying it verbatim to <span style="font-style: italic;">var</span> with no processing of any embedded control characters. The <span style="font-style: italic;">length</span> expression is ignored. The item is displayed as though it had been typed but the prompt character is not displayed. Unless the NO.ECHO.DATA mode of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive or the NO.ECHO.DATA setting of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command is enabled, the item is displayed as though it had been typed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function after an <span style="font-weight: bold;"><a href="qmb_input_at.htm" class="topiclink">INPUT @</a></span> statement returns zero unless input was terminated by a key defined using the <span style="font-weight: bold;"><a href="qmb_keyexit.htm" class="topiclink">KEYEXIT</a></span> or <span style="font-weight: bold;"><a href="qmb_keytrap.htm" class="topiclink">KEYTRAP</a></span> statements.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Use of Pipes</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM recognises input from pipes as a special case. Programs that process data from a pipe can read the data using the same QMBasic statements and functions as for keyboard input. If the end of the data is reached, a subsequent <span style="font-weight: bold;">INPUT @</span> will return a null string. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return ER$EOF.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY @(0,10) : &quot;Account &quot; :</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PROMPT &quot;&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">INPUT @(8, 10) : ACCOUNT.NO, 16</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment displays the current value of ACCOUNT.NO with a suitable annotation and accepts input. Pressing the RETURN key alone will retain the original value as displayed. The <span style="font-weight: bold;"><a href="qmb_prompt.htm" class="topiclink">PROMPT</a></span> statement has been used to suppress display of the prompt character.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">INPUT @(10, 5) : PRICE, 10 '10R'</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment inputs a value for the PRICE variable, redisplaying it right justified on completion of input.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_bindkey.htm" class="topiclink">BINDKEY()</a></span>, <span style="font-weight: bold;"><a href="qmb_inputfield.htm" class="topiclink">INPUTFIELD</a></span>, <span style="font-weight: bold;"><a href="qmb_inputif.htm" class="topiclink">INPUTIF</a></span>, <span style="font-weight: bold;"><a href="qmb_inputnull.htm" class="topiclink">INPUTNULL</a></span>, <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODE()</a></span>, <span style="font-weight: bold;"><a href="qmb_keyedit.htm" class="topiclink">KEYEDIT</a></span>, <span style="font-weight: bold;"><a href="qmb_keyexit.htm" class="topiclink">KEYEXIT</a></span>, <span style="font-weight: bold;"><a href="qmb_keytrap.htm" class="topiclink">KEYTRAP</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

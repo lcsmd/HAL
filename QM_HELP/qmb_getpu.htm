@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>GETPU()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="GETPU()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_getpu.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">GETPU()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_getnls.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_getrem.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="page-break-after: avoid; margin: 0 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">GETPU()</span> function gets the characteristics of a print unit.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">GETPU(</span><span style="font-style: italic;">key</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">unit</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">key</span></td><td style="border:none;padding:0">identifies the parameter to retrieved. This may be:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 120px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$DEFINED</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Is print unit defined?</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$MODE</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Print unit mode</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>2</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$WIDTH</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Characters per line</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>3</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$LENGTH</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Lines per page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>4</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$TOPMARGIN</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Top margin size</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>5</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$BOTMARGIN</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Bottom margin size</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>6</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$LEFTMARGIN</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Left margin size</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>7</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$SPOOLFLAGS</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Various print unit flags</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>9</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$FORM</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Form name (not used by all spoolers)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>10</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$BANNER</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Banner page text</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>11</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$LOCATION</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Printer / file name</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>12</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$COPIES</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Number of copies to print</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>15</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$PAGENUMBER</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Current page number</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1002</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$LINESLEFT</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Lines left on page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1003</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$HEADERLINES</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Lines occupied by header</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1004</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$FOOTERLINES</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Lines occupied by footer</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1005</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$DATALINES</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Lines between header and footer</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1006</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$OPTIONS</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Options to be passed to the spooler</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1007</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$PREFIX</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Pathname of file holding prefix data to be added to the start of the output</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1008</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$SPOOLER</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Spooler to be used (ignored on Windows)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1009</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$OVERLAY</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Catalogued overlay subroutine name (see <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span>)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1010</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$CPI</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Characters per inch (may be non-integer value)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1011</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$PAPER.SIZE</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Paper size. See SYSCOM PCL.H</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1012</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$LPI</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Lines per inch</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1013</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$WEIGHT</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Font stroke weight. See SYSCOM PCL.H</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1014</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$SYMBOL.SET</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Symbol set. See SYSCOM PCL.H</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1015</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$STYLE</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Query processor style. See the Query processor <span style="font-weight: bold;"><a href="style.htm" class="topiclink">STYLE</a></span> option for details.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1016</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$NEWLINE</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Newline string for this print unit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1017</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$PRINTER.NAME</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Name of printer</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1018</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$FILE.NAME</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>File name for output directed to a file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1019</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$SEQNO</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Hold file sequence number. &nbsp;See also <a href="at_variables.htm#seqno" class="topiclink">@SEQNO</a>.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1020</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$FORM.QUEUE</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Last assigned form queue number with <span style="font-weight: bold;"><a href="sp_assign.htm" class="topiclink">SP.ASSIGN</a></span>. This value will be meaningless if the characteristics of the print unit have subsequently been modified.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1021</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$FORM.FEED</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Get form feed string for this print unit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1022</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$ENCODING</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Get character encoding for this print unit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1023</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$FONT</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Get font name</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1024</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$PATHNAME</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Get pathname of output file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>1025</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$FONT.SIZE</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Get the GDI mode font size. Zero implies use of the default font.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:82px; padding:4px; border:none"><p>2000</p>
+</td>
+<td style="vertical-align:top; width:265px; padding:4px; border:none"><p>PU$LINENO</p>
+</td>
+<td style="vertical-align:top; width:592px; padding:4px; border:none"><p>Current line number on page</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">unit</span></td><td style="border:none;padding:0">evaluates to the print unit number.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">GETPU()</span> function returns the print unit characteristic specified by <span style="font-style: italic;">key</span>. It is closely related to the <span style="font-weight: bold;"><a href="qmbs_getpu.htm" class="topiclink">!GETPU()</a></span> subroutine.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The PU$DEFINED key should be used to determine if a print unit has been defined. Use of any other <span style="font-style: italic;">key</span> value for an undefined print unit will create it with all settings at their default values.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">MODE = GETPU(PU$MODE, 3)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above statement gets the mode of print unit 3, storing it in MODE.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_setpu.htm" class="topiclink">SETPU</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

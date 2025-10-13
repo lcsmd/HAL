@@ -1,0 +1,48 @@
+     OPEN 'INVENT' TO INVENT ELSE PRINT 'INVENT'
+     OPEN 'VEND_ABB' TO VEND_ABB ELSE PRINT 'VEND_ABB';STOP
+
+     INCLUDE FILE.EQU INVENT.EQ
+     INCLUDE FILE.EQU VEND_ABB.EQ
+
+     SELECT.STR = 'SSELECT VEND_ABB BY-DSND LEN'
+
+
+     PRINT SELECT.STR
+     EXECUTE SELECT.STR CAPTURING CAP
+     PRINT CAP
+     READLIST VA.KEYS THEN
+          KC =  DCOUNT(VA.KEYS,@FM)
+          FOR X = 1 TO KC
+               VA.K = VA.KEYS<X>
+               READ VA.B FROM VEND_ABB,VA.K THEN
+                    IF VA.PG = "" THEN VA.PG = VA.K[1,3]
+                    SELECT.STR5 = 'SELECT INVENT WITH DESC1 like ':VA.K:'... AND WITH CATNUM = ""'
+                    PRINT SELECT.STR5
+                    EXECUTE SELECT.STR5 CAPTURING CAP
+                    PRINT CAP
+                    READLIST IKEYS THEN
+                         INV.K.CT = DCOUNT(IKEYS,@FM)
+                         FOR X2 = 1 TO INV.K.CT
+                              INV.K = IKEYS<X2>
+                              READ INV.B FROM INVENT,INV.K THEN
+                                   LV = LEN(VA.K)
+                                   LD = LEN(INV.DESC1)
+                                   IF VA.SUB THEN
+                                        INV.DESC2 = CHANGE(INV.DESC1,VA.K,VA.SUB)
+                                        INV.CATNUM = CHANGE(INV.DESC2,VA.PG,"")
+                                   END ELSE
+                                        INV.VEND_ABB = VA.K
+                                        INV.CATNUM = CHANGE(INV.DESC1,VA.K,"")
+                                   END
+                                   IF VA.PG THEN INV.P_G = VA.PG
+                                   INV.UCAT = INV.P_G:INV.CATNUM
+                                   INV.UCAT2 = VA.K[1,1]:INV.CATNUM
+                                   WRITE VA.B ON VEND_ABB,VA.K
+                                   WRITE INV.B ON INVENT,INV.K
+                              END
+                         NEXT X2
+                    END
+               END
+          NEXT X
+     END
+     STOP

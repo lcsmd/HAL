@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FSTAT.USER</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FSTAT.USER" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "fstat_user.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FSTAT.USER</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="fstat.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="generate.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FSTAT.USER</span> command shows a periodically updated report of file access statistics on a per-user basis.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -270px; margin: 0 0 0 300px;"><span style="font-weight: bold;">FSTAT.USER</span></p>
+<p style="text-indent: -270px; margin: 0 0 0 300px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM maintains file activity counters that record the number of opens, reads, writes, deletes, etc. The <span style="font-weight: bold;">FSTAT.USER</span> command displays the statistics on a per-user basis, allowing identification of processes that might be performance bottlenecks. Used in conjunction with other analysis tools, a developer can identify exactly where the file activity is concentrated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p> The <span style="font-weight: bold;">FSTAT.USER</span> command initially shows a screen that shows the user number, user name and read/write/delete counts in user number order for as many users as will fit on the screen. Entering the letter &quot;T&quot; switches to &quot;top mode&quot; in which the report is sorted into descending order of file activity. Entering &quot;T&quot; again reverts to the default sequencing.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The display is updated periodically, every two seconds by default. The update interval can be changed to any value in the range 1 to 3600 by entering &quot;I&quot; followed by the desired interval value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Entering &quot;D&quot; toggles &quot;difference mode&quot; in which each display update shows the activity since the last update.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">User &nbsp;Name....... &nbsp;....Reads &nbsp;..Writes &nbsp;..Deletes</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; 5 &nbsp;SALES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;79234 &nbsp; &nbsp; 46876 &nbsp; &nbsp; &nbsp; &nbsp; 91</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp;22 &nbsp;KEVIN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;206 &nbsp; &nbsp; &nbsp; &nbsp;58 &nbsp; &nbsp; &nbsp; &nbsp; 17</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp;27 &nbsp;SARAH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1809 &nbsp; &nbsp; &nbsp; 213 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p>Entering &quot;U&quot; followed by a user number shows a detailed report for that user.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">File activity for user 5</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Opens &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 218</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Reads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 85493</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Writes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;47007</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Deletes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 104</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Clears &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Selects &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 759</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Splits &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;838</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Merges &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 18</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">AK Reads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4828</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">AK Writes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2766</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">AK Deletes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 38</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pressing the Return key reverts to the overview screen.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Entering &quot;Q&quot; exits from the activity monitor.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="fstat.htm" class="topiclink">FSTAT</a></span>, <span style="font-weight: bold;"><a href="profiler.htm" class="topiclink">PROFILER</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

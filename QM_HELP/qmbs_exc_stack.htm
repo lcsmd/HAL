@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>!EXC.STACK()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="!EXC.STACK()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbs_exc_stack.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">!EXC.STACK()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbs_errtext.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbs_findprog.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!EXC.STACK()</span> subroutine displays a report based on the content of the <a href="mailto:@EXCEPTION.STACK" class="weblink">@EXCEPTION.STACK</a> variable after an exception is thrown.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CALL !EXC.STACK</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This call executes a system supplied subroutine that contains</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF @EXCEPTION.STACK # '' THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY ' &nbsp; &nbsp; Program name.................. &nbsp;Addr.. &nbsp;Line'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; LEVEL = 1</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; FOR EACH PROG IN @EXCEPTION.STACK DELIMITER @FM</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;NAME = FMT(PROG&lt;1,1&gt;, '30L')</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;DISPLAY FMT(LEVEL, 'R%3 &nbsp;') :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;SUBDATA = FIELD(PROG&lt;1&gt;, @VM , 2, *)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;SUBADDR = VSLICE(SUBDATA, 0, 1)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;SUBLINE = VSLICE(SUBDATA, 0, 2)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY FMT(REMOVE(NAME, MORE.NAME), '30L') : ' &nbsp;' :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY DTX(REMOVE(SUBADDR, MORE.ADDR), 6) : ' &nbsp;' :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY REMOVE(SUBLINE, MORE.LINE)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;WHILE MORE.NAME OR MORE.ADDR OR MORE.LINE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY ' &nbsp; &nbsp; ' :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;REPEAT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;LEVEL += 1</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; NEXT PROG</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that <a href="mailto:@EXCEPTION.STACK" class="weblink">@EXCEPTION.STACK</a> is only set if the <span style="font-weight: bold;"><a href="qmb_try.htm" class="topiclink">CATCH</a></span> clause that catches the exception uses the SAVING.STACK qualifier. This allows applications to use exceptions as part of the normal flow of execution rather than only for error handling without paying the performance cost of gathering the stack information.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="exception_handling.htm" class="topiclink">Exception handling</a>, <span style="font-weight: bold;"><a href="qmb_throw.htm" class="topiclink">THROW</a></span>, <span style="font-weight: bold;"><a href="qmb_try.htm" class="topiclink">TRY/CATCH</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

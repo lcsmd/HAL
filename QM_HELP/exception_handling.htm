@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Exception Handling</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Exception handling" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "exception_handling.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Exception Handling</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbasic_objects.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="using_socket_connections.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">An <span style="font-weight: bold;">exception</span> is a named event, typically an error, that can be <span style="font-weight: bold;">caught</span> and handled by an application. Exceptions are <span style="font-weight: bold;">thrown</span> either by use of the <span style="font-weight: bold;"><a href="qmb_throw.htm" class="topiclink">THROW</a></span> statement in an application program or automatically by QM as an alternative to the abort events normally raised by data type errors and similar failures.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The actual name of an exception has no significance to QM but should ideally relate to the situation that the exception handles. Exception names are case insensitive and may be up to 63 characters. Application developers should avoid creating exception names that begin with &quot;SYS.&quot; and names containing a $ symbol as these are reserved as described below.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QMBasic allows creation of exception handlers in a manner broadly similar to that of some other programming languages by use of a <span style="font-weight: bold;"><a href="qmb_try.htm" class="topiclink">TRY/CATCH</a></span> construct:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">TRY</span> {<span style="font-style: italic;">statement</span>}</p>
+<p class="p_Normal" style="margin: 0 0 0 59px;">{<span style="font-style: italic;">statements</span>}</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CATCH</span> <span style="font-style: italic;">exception</span> {, <span style="font-style: italic;">exception</span>...}</p>
+<p class="p_Normal" style="margin: 0 0 0 59px;">{<span style="font-style: italic;">statements</span>}</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CATCH</span> <span style="font-style: italic;">exception</span> {, <span style="font-style: italic;">exception</span>...}</p>
+<p class="p_Normal" style="margin: 0 0 0 59px;">{<span style="font-style: italic;">statements</span>}</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are any executable QMBasic statements.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">exception</span></td><td style="border:none;padding:0">is an exception name. The name may optionally be enclosed in quotes. An exception name may be followed by the keyword DUMPING to cause a <a href="processdumpfile.htm" class="topiclink">process dump file</a> to be created prior to unwinding the stack back to the exception handler.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A single <span style="font-weight: bold;">TRY</span> construct may have multiple <span style="font-weight: bold;">CATCH</span> clauses, each handling one or more exceptions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">TRY</span>/<span style="font-weight: bold;">CATCH</span> construct executes the statement(s) in the <span style="font-weight: bold;">TRY</span> clause, monitoring for named exceptions being thrown. The <span style="font-weight: bold;">TRY</span> clause may include <span style="font-weight: bold;"><a href="qmb_gosub.htm" class="topiclink">GOSUB</a></span>, <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span> or <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> to execute lower level code outside of this clause, however, unless an exception is raised, it is essential that these operations return to complete the <span style="font-weight: bold;">TRY</span> clause. Use of <span style="font-weight: bold;"><a href="qmb_goto.htm" class="topiclink">GOTO</a></span> to jump into or out of the <span style="font-weight: bold;">TRY</span> clause may have undesirable results.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On throwing an exception, the application exits from all lower level programs, subroutines, etc and continues execution in the <span style="font-weight: bold;">CATCH</span> clause that handles this exception. Where an object oriented programming object is discarded by an exception, the DESTROY.OBJECT subroutine will be executed in the normal way.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Transactions started by actions within the <span style="font-weight: bold;">TRY</span> clause and still active at the point when the exception is thrown will be rolled back.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A single <span style="font-weight: bold;">CATCH</span> clause may catch multiple exception names. On arrival in the <span style="font-weight: bold;">CATCH</span> clause, the <a href="at_variables.htm#exception" class="topiclink">@EXCEPTION</a> variable will contain the name of the exception that has been caught and the <a href="at_variables.htm#exception.data" class="topiclink">@EXCEPTION.DATA</a> variable will contain any data associated with this exception. The <a href="at_variables.htm#exception.origin" class="topiclink">@EXCEPTION.ORIGIN</a> variable is set to a dynamic array in which field 1 holds the program name from which the exception was thrown and field 2 holds the line number in that program. If the program has no cross-reference tables, the line number will be -1.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">CATCH</span> clause has two optional qualifiers that can appear after an exception name. The DUMPING qualifier causes a <a href="processdumpfile.htm" class="topiclink">process dump file</a> to be created, showing the full state of the call stack at the point when the exception was thrown. The SAVING.STACK qualifier sets <a href="mailto:@EXCEPTION.STACK" class="weblink">@EXCEPTION.STACK</a> to contain the call stack in the same form as produced by the <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key 1002 (SYS$CALL.STACK). See <span style="font-weight: bold;"><a href="qmb_try.htm" class="topiclink">TRY/CATCH</a></span> for an example of a simple code fragment to report this data in a useful form.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READNEXT ACC.ID ELSE EXIT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; TRY</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;CALL PROCESS.ACCOUNT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; CATCH ACCOUNT.INVALID</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DISPLAY 'Account ' : ACC.ID : ' is not valid'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above rather simple example shows a program fragment that processes successive items from a select list. If the PROCESS.ACCOUNT subroutine, or any lower level action called from it, throws an ACCOUNT.INVALID exception, the program will continue execution at the DISPLAY statement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Exception Groups</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An exception name may be formed from multiple components separated by a period where each component forms a level of grouping. In the above example, the ACCOUNT.INVALID exception can be considered as part of an exception group named ACCOUNT. The <span style="font-weight: bold;">CATCH</span> clause in the example will be entered on throwing the specific ACCOUNT.INVALID exception. Alternatively, the <span style="font-weight: bold;">CATCH</span> clause could have been written as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CATCH ACCOUNT</span></p>
+<p class="p_Normal">and this would be executed for any exception in the ACCOUNT group, including the ACCOUNT.INVALID exception. Use of exception groups can significantly simplify programs by using a single <span style="font-weight: bold;">CATCH</span> clause to trap a whole exception group, the actual exception name being available in the <a href="at_variables.htm#exception" class="topiclink">@EXCEPTION</a> variable. There is no restriction on the number of levels in an exception group aside from the entire exception name being limited to 63 characters. The example above would also catch further exception levels such as ACCOUNT.INVALID.CLOSED to show the reason for the account to be invalid.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Scope of Exception Handlers</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The structure of an application may validly nest <span style="font-weight: bold;">TRY</span>/<span style="font-weight: bold;">CATCH</span> constructs to any depth. On throwing an exception, the system works back through the established exception handlers to find the first that catches the relevant exception. This process will not continue past a program that uses the TRAPPING ABORTS option of the <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> statement as this option requests that any errors in lower level programs should cause return from the <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span>. An application can test whether there is a handler for a specific named exception by use of the <span style="font-weight: bold;"><a href="qmb_caught.htm" class="topiclink">CAUGHT()</a></span> function.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The SYS$ANY Exception</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A <span style="font-weight: bold;">CATCH</span> clause that references the SYS$ANY exception name will catch any exception and can be used as a general error handler. When used, this exception name must be the last one referenced in the <span style="font-weight: bold;">CATCH</span> clauses associated with the <span style="font-weight: bold;">TRY</span>. The exception name returned via <a href="at_variables.htm#exception" class="topiclink">@EXCEPTION</a> will be that of the actual exception thrown, not SYS$ANY.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This exception can be used in much the same way as the TRAPPING ABORTS option of the <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> statement to act as a firewall beyond which no exceptions will be thrown.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The SYS$UNHANDLED Exception</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A <span style="font-weight: bold;">CATCH</span> clause that references the SYS$UNHANDLED exception name will be executed if there is no specific handler for the thrown exception or SYS$ANY. The check for this handler occurs after checking the entire exception handler stack for the named exception or SYS$ANY, therefore SYS$ANY effectively takes priority over SYS$UNHANDLED regardless of their relative positions in the exception handler stack.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">System Generated Exceptions</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Many of the situations that would otherwise cause an abort event to be generated such as a data type error can be trapped by exceptions from the SYS exception group.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If there is no handler for the exception, including the SYS$ANY and SYS$UNHANDLED handlers described above, the application will abort in the usual way. Note that the abort error message is stored in both <a href="at_variables.htm#abort.message" class="topiclink">@ABORT.MESSAGE</a> and <a href="at_variables.htm#exception.data" class="topiclink">@EXCEPTION.DATA</a> but is not displayed if it is caught by an exception handler.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The full list of exception names in the SYS group is shown hierarchically below. In all cases, the name is formed by adding the desired hierarchical elements to a &quot;SYS.&quot; prefix. For example, a deadlock situation throws an exception named &quot;SYS.LOCKS.DEADLOCK&quot;.</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">ABORT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">User initiated abort</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">EXTCALL</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">External Call Interface</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ABORT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Abort requested by external call handler</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_ARGCT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Incorrect argument count</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IO_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Data transfer error</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; SETUP_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Child process creation failed</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; SIZE_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid data size</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">FILESYS</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">File system</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; CREATION_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Error creating file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_FILE_TYPE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid file type for this operation</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_PARTNO</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid distributed file part number</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_PATHNAME</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Pathname is invalid</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_RECORD_ID</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Record id is invalid</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IO_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Data transfer error</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; LOCK_REQUIRED</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Record is not locked</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NOT_DISTRFL</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Distributed file required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; OPEN_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Error opening file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PERMISSIONS</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Permissions error</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Permissions do not allow this operation</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;READ_ONLY</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">File is open in read-only mode</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; TRIGGER</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Trigger function errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Error code returned by trigger function</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;INVALID_ARGCT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Incorrect argument count in trigger function</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">KERNEL</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Kernel errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NO_MEMORY</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Insufficient memory available</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">LOCKS</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Locking errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DEADLOCK</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Deadlock detected</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; MAXRLOCK</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Maximum number of record locks in process reached</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; TASK_LOCK</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Task lock errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;INVALID</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid task lock number</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">PRINTER</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Printer and terminal errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IO_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Data transfer error</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_KEY</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid key value</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_OPERATION</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Operation not permitted</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_REGION</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid screen region</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_UNIT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid print unit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">PROGRAM</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">QMBasic errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DATATYPE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Data type errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;ECS_CHAR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Data outside 8-bit character set not valid</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;INVALID</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Data type is invalid for this usage</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;INVALID_SOCKET</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid socket type for this usage</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_COLLECTION</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Data collection variable required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_FILE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">File variable required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_IMAGE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Screen image variable required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_MATRIX</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Dimensioned matrix required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_NUMERIC</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Non-numeric where numeric required &nbsp;(Not thrown if NON.NUMERIC.WARNING option is enabled)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_OBJECT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Instantiated object required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_SEQ_FILE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Sequential file variable required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_SOCKET</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Socket variable required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NOT_SORT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Sort session variable required</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NULL_STRING</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Null string is invalid for this usage</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;UNASSIGNED</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Variable is unassigned</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DIV_ZERO</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Divide by zero &nbsp;(Not thrown if DIV.ZERO.WARNING option is enabled)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_ARGCT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Incorrect argument count</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_CALL_NAME</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid subroutine/function/class name</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_DATA_SIZE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid data size for this operation</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_IN_TXN</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Operation is not valid in a transaction</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_ITYPE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">I-type object code is invalid</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_KEY</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid key value in function call</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_MATRIX_INDEX</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Matrix index is out of range</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_MATRIX_SIZE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid matrix dimensions</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_NAME</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid data collection element name</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_OBJECT_REFERENCE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid object method/property reference</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IS_CLASS</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Program is a class module</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; LIMIT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">System limit reached</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;CALL_DEPTH</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Subroutine call depth limit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NUM_FILES</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">System file count limit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;GOSUB_DEPTH</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Internal subroutine depth limit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;MAX_BREAKPOINTS</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Debugger breakpoint limit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; LOAD_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Error loading program</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;READ_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Error reading object code</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;VERSION</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Unsupported object code version</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NO_PDEBUG</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Phantom debugger not active</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NO_PROPERTY_VALUE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Object did not return property value</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NOT_FOUND</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Program not found</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NOT_OBJECT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Program is not an instantiated object</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NOT_TXN</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Operation is only valid in a transaction</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RANGE</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Value is out of range for this operation</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RESIZE_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Error resizing common or matrix</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">SELECT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Select list processing errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_LIST_NO</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid select list number</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">SHELL</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Shell command execution errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; EXECUTION_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Command execution error</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">SORT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Sort subsystem errors</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_DATA_LENGTH</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Sort data exceeds maximum allowed length</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_KEY_COUNT</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Invalid number of sort keys</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_KEY_LENGTH</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Sort key exceeds maximum allowed length</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INVALID_OPERATION</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Sort operation invalid at this time</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:333px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IO_ERROR</span></p>
+</td>
+<td style="vertical-align:top; width:521px; padding:4px; border:none"><p class="p_Normal">Data transfer error</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="qmb_caught.htm" class="topiclink">CAUGHT()</a></span>, <span style="font-weight: bold;"><a href="qmb_throw.htm" class="topiclink">THROW</a></span>, <span style="font-weight: bold;"><a href="qmb_try.htm" class="topiclink">TRY/CATCH</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

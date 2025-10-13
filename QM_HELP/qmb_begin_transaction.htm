@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>BEGIN TRANSACTION</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="BEGIN TRANSACTION,COMMIT,ROLLBACK" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_begin_transaction.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">BEGIN TRANSACTION</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_case.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_bindkey.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">BEGIN TRANSACTION</span> statement marks the start of a new transaction.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">BEGIN TRANSACTION</span></p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;">statements</span>}</p>
+<p style="margin: 0 0 0 60px;"><span style="font-weight: bold;">COMMIT / ROLLBACK</span></p>
+<p style="margin: 0 0 0 60px;"><span style="font-weight: bold;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">END TRANSACTION</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A transaction is a group of updates that must either be performed in their entirety or not at all. The <span style="font-weight: bold;">BEGIN TRANSACTION </span>statement starts a new transaction. All updates until a corresponding <span style="font-weight: bold;">END TRANSACTION </span>are cached and only applied to the database when a <span style="font-weight: bold;">COMMIT</span> statement is executed. Execution of the program then continues at the statement following the <span style="font-weight: bold;">END TRANSACTION</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ROLLBACK</span> statement discards any cached updates and continues at the statement following the <span style="font-weight: bold;">END TRANSACTION</span>. A roll-back is implied if the program executes the <span style="font-weight: bold;">END TRANSACTION</span> directly.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Testing the value of the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function immediately after the <span style="font-weight: bold;">END TRANSACTION</span> statement will return 0 if the transaction committed successfully, ER_COMMIT_FAIL if an error occurred during the commit action, or ER_ROLLBACK if the transaction was rolled back.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Deletes and writes inside a transaction will fail unless the program holds an update lock on the record or the file. All locks obtained inside the transaction are retained until the transaction terminates and are then released. Locks already owned when the transaction begins will still be present after the transaction terminates, even if the record is updated or deleted within the transaction.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Closing a file inside a transaction appears to work in that the file variable is destroyed though the actual close is deferred until the transaction terminates and any updates have been applied to the file. Rolling back the transaction will not reinstate the file variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Access to indices using <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span>, <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT</a></span> or  <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span> inside a transaction will not reflect any updates within the transaction as these have not been committed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Updates to sequential records opened using <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> are not affected by transactions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Transactions may be nested. If the <span style="font-weight: bold;">BEGIN TRANSACTION</span> statement is executed inside an active transaction, the active transaction is stacked and a new transaction commences. Termination of the new transaction reverts to the stacked transaction. The default behaviour of QM is that transactions are durable such that updates in a child transaction are applied to the data files on use of <span style="font-weight: bold;">COMMIT</span>. The NON.DURABLE.TXN setting of the QMBasic <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive, makes transactions non-durable such that updates in a child transaction are inherited by the parent transaction on <span style="font-weight: bold;">COMMIT</span><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;">.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following operations are banned inside transactions:</p>
+<p style="margin: 0 0 0 30px;">CLEARFILE</p>
+<p style="margin: 0 0 0 30px;">PHANTOM</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">BEGIN TRANSACTION</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READU CUST1.REC FROM CUST.F, CUST1.ID ELSE ROLLBACK</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; CUST1.REC&lt;C.BALANCE&gt; -= TRANSFER.VALUE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; WRITE CUST1.REC TO CUST.F, CUST1.ID</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READU CUST2.REC FROM CUST.F, CUST2.ID ELSE ROLLBACK</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; CUST2.REC&lt;C.BALANCE&gt; += TRANSFER.VALUE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; WRITE CUST2.REC TO CUST.F, CUST2.ID</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; COMMIT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END TRANSACTION</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment transfers money between two customer accounts. The updates are only committed if the entire transaction is successful.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="transactions.htm" class="topiclink">Transactions</a>,<span style="font-weight: bold;"> <a href="qmb_transaction.htm" class="topiclink">TRANSACTION</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

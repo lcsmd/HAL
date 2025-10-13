@@ -1,0 +1,98 @@
+     PROGRAM APPLY.CP
+     OPEN 'I2.PRODUCT' TO I2.PRODUCT ELSE PRINT 'I2.PRODUCT' ; STOP
+     OPEN 'PRODUCT' TO PRODUCT ELSE PRINT 'PRODUCT' ; STOP
+     OPEN 'PROD.LINE' TO PROD.LINE ELSE PRINT 'PROD.LINE' ; STOP
+     OPEN 'PSVNO' TO PSVNO ELSE PRINT 'PSVNO';STOP
+     OPEN 'PRICE.GROUP' TO PRICE.GROUP ELSE PRINT 'PRICE.GROUP' ; STOP
+     OPEN 'CUSTOM.PRICES' TO CUSTOM.PRICES ELSE PRINT 'CUSTOM.PRICES' ; STOP
+     OPEN 'PRICE.ROLLUP' TO PRICE.ROLLUP ELSE PRINT 'PRICE.ROLLUP' ; STOP
+     LM=0
+     TODAY = DATE()
+
+     I2.PIK = TRIM(FIELD(@SENTENCE," ",2))
+     COMMAND = TRIM(FIELD(@SENTENCE," ",3))
+     IF COMMAND = "" THEN COMMAND = "UPDATE"
+     IF I2.PIK = "" THEN PRINT "PRICE.SERVICE NUMBER SELECT.LIST NAME OR ALL REQUIRED";STOP
+     IF I2.PIK = "ALL" THEN
+          EXECUTE "SELECT CUSTOM.PRICES WITH C4.COST"
+          READLIST I2.PIKS ELSE PRINT "UNABLE TO READ LIST";STOP
+     END ELSE
+          EXECUTE "GET-LIST ":I2.PIK CAPTURING CAP
+          IF INDEX(CAP,"selected",1) THEN
+               READLIST I2.PIKS ELSE PRINT "UNABLE TO READ LIST";STOP
+          END ELSE
+               READ I2.PIK.B FROM CUSTOM.PRICES,I2.PIK THEN
+                    I2.PIKS = I2.PIK
+               END ELSE PRINT I2.PIK:" NOT FOUND";STOP
+          END
+     END
+     I2.CT = DCOUNT(I2.PIKS,@FM)
+     IF I2.CT THEN GOSUB UPDATE.ITEMS:
+     STOP
+
+UPDATE.ITEMS:
+     FOR I.X = 1 TO I2.CT
+          I2.PIK = I2.PIKS<I.X>
+          PROD.B = ""
+          PNO = ""
+          READ CPBUFF FROM CUSTOM.PRICES,I2.PIK THEN
+               IF COMMAND = "CLEAR" THEN
+                    GOSUB CLEAR.COST:
+               END
+               IF COMMAND = "UPDATE" THEN
+                    GOSUB CLEAR.COST:
+                    GOSUB UPDATE.COST:
+               END
+               NEW.B = ""
+               IF PROD.B AND PNO THEN
+                    PRICE.GROUP = PROD.B<112>
+                    IF NEW.B <> PROD.B THEN WRITE NEW.B ON PRODUCT,PNO
+               END
+          END
+          IF NOT(MOD(I.X,100)) THEN PRINT I.X
+     NEXT I.X
+     RETURN
+
+CLEAR.COST:
+     UPC = PROD.B<18>
+     CATNUM = ''
+     PNO = ''
+     READV PNO FROM PSVNO,I2.PIK,1 ELSE PNO = ""
+     IF PNO THEN
+          PROD.B<161> = ""
+          PROD.B<180> = ""
+          PROD.B<62> = ""
+          PROD.B<63> = ""
+          PROD.B<17> = ""
+          PROD.B<40> = ""
+          PROD.B<124> = ""
+          PROD.B<125> = ""
+          WRITE PROD.B ON PRODUCT,PNO
+     END
+     RETURN
+
+UPDATE.COST:
+     READV PNO FROM PSVNO,I2.PIK,1 ELSE PNO = ""
+     IF PNO THEN
+          READ PROD.B FROM PRODUCT,PNO THEN
+               READ CPBUFF.O FROM CUSTOM.PRICES,I2.PIK THEN CPBUFF = CPBUFF.O ELSE CPBUFF = ""
+               CPBUFF.O = ""
+               IF LM = 1 THEN PRINT "DATES:":EFF.DATE:" | ":EXP.DATE
+               CUSTOM.COST.TYPE = CPBUFF<2>
+               UPDATE.TYPE = CPBUFF<2>
+               EFF.DATE = CPBUFF<3>
+               EXP.DATE = CPBUFF<4>
+               C4.COST = CPBUFF<8>
+               C4.COST.DT = CPBUFF<12>
+               IF NOT(C4.COST.DT) THEN C4.COST.DT = CPBUFF<1>
+               IF NOT(C4.COST.DT) THEN C4.COST.DT = TODAY
+               PRICE.SOURCE.NUMBER = CPBUFF<10>
+               PRICE.SOURCE.NAME = CPBUFF<11>
+               EFFDATE = C4.COST.DT
+               CALL SET.C7(PROD.B,C4.COST,C4.COST.DT)
+          END
+     END
+     RETURN
+
+
+

@@ -1,0 +1,85 @@
+      LM=0
+      FILENAME = FIELD(@SENTENCE," ",2)
+      OPTION = FIELD(@SENTENCE," ",3)
+      IF INDEX(@SENTENCE,"?",1) OR FILENAME = "" THEN
+         PRINT "DIR <directory file> [-s] | [-d]"
+         PRINT "    sort by size and/or date.  Use . for root directory"
+         STOP
+      END
+      IF FILENAME = "." THEN FILENAME = ""
+      *CR = CHAR(13)
+      EXECUTE "ANALYZE.FILE ":FILENAME CAPTURING ROOT
+      PRINT ROOT
+      ACCOUNT.PATH = TRIM(CHANGE(ROOT<1>,"Account           :",""))
+      PATH.NAME = TRIM(CHANGE(ROOT<3>,"Path name         :",""))
+      ROOT<2> = CHANGE(ROOT<1>,"\",@VM)
+      LEVEL.CT = DCOUNT(ROOT<2>,@VM)
+      ACCOUNT = ROOT<1,LEVEL.CT>
+      IF LM THEN
+         PRINT ACCOUNT.PATH
+         PRINT ROOT<2>
+         PRINT ACCOUNT
+      END
+      OPEN "LCS.DIR" TO DIRECTORY ELSE PRINT "LCS.DIR";STOP
+      OPEN 'MD' TO MD ELSE PRINT 'MD';STOP
+      IF LM THEN
+         PRINT "FN:":FILENAME
+      END
+      IF FILENAME > "" THEN
+         READ MDBUFF FROM MD,FILENAME ELSE
+            PRINT "FILE NOT FOUND"
+            STOP
+         END
+      END ELSE
+         MDBUFF = ""
+      END
+      IF LM THEN
+         PRINT "FN:":FILENAME
+         PRINT MDBUFF
+      END
+      IF MDBUFF<1> = "Q" THEN
+         QACCOUNT = MDBUFF<2>
+         ROOT = CHANGE(ROOT<1>,ACCOUNT,QACCOUNT)
+         FILENAME = MDBUFF<3>
+      END
+      CMD = 'DIR ':PATH.NAME
+      CMD = 'SH ':CMD
+      *PRINT CMD
+      *INPUT ANS,1
+      IF LM THEN PRINT CMD
+      EXECUTE CMD CAPTURING CAP
+      *PRINT CAP
+      *INPUT ANS,1
+      **FILE.LIST = CHANGE(CAP,CRLF,@FM)
+      FILE.LIST = CAP
+      FILE.CT = DCOUNT(FILE.LIST,@FM)
+      FOR FILE.X = 8 TO FILE.CT
+         FLINE = TRIM(FILE.LIST<FILE.X>)
+         FLINE = CHANGE(FLINE," ",@FM)
+         *PRINT FLINE
+         FNAME = FLINE<5>
+         FDATE = FLINE[1,10]
+         FTIME = FLINE<2>
+         FAMPM = FLINE<3>
+         FSIZE = FLINE<4>
+         FKEY = FILENAME:":":FNAME
+         DBUFF = ""
+         DBUFF<1> = ICONV(FDATE,"D")
+         DBUFF<2> = FTIME:" ":FAMPM
+         DBUFF<3> = FSIZE
+         IF (FAMPM= "AM" OR FAMPM = "PM") THEN
+            WRITE DBUFF ON DIRECTORY,FKEY
+            *PRINT FLINE
+            *PRINT FLINE<1>
+            *PRINT DBUFF
+            *PRINT DBUFF<1>
+            IF LM THEN PRINT FLINE<1>:" : ":ICONV(FLINE<1>,"D")
+         END
+      NEXT FILE.X
+      *     INPUT ANS,1
+      IF OPTION = "-S" THEN BY.SORT = " BY-DSND SIZE" ELSE BY.SORT = ""
+      IF OPTION = "-D" THEN BY.SORT := " BY-DSND DATE BY-DSND TIME"
+      SELECT.STR = 'SORT LCS.DIR WITH FILE = "':FILENAME:'"':BY.SORT:' @'
+      IF LM THEN PRINT SELECT.STR
+      EXECUTE SELECT.STR
+      END

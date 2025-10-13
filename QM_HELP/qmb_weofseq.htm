@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>WEOFSEQ</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="WEOFSEQ" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_weofseq.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">WEOFSEQ</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_wake.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_while.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WEOFSEQ</span> statement truncates a record open for sequential access at the current position.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">WEOFSEQ</span> <span style="font-style: italic;">file.var</span> {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with the record by a previous <span style="font-weight: bold;">OPENSEQ</span> statement.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statement(s) to be executed if the action fails. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WEOFSEQ</span> statement truncates the record at the current position. Performed immediately after the <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span>, this will remove all data from the record. Performed after one or more <span style="font-weight: bold;"><a href="qmb_readseq.htm" class="topiclink">READSEQ</a></span> operations have been performed, all subsequent data is cleared from the record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ON ERROR</span> clause is executed if a fatal error occurs. The  <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function can be used to determine the cause of the error. If no <span style="font-weight: bold;">ON ERROR</span> clause is present, a fatal error causes an abort.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPENSEQ &quot;STOCKS&quot;, &quot;STOCK.LIST&quot; TO STOCK.LIST THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; WEOFSEQ STOCK.LIST</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ELSE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IF STATUS() THEN ABORT &quot;Cannot open stocks list&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment opens the record STOCKS for sequential access. If it already exists, the <span style="font-weight: bold;">THEN</span> clause of the <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> is taken and the existing data is removed using <span style="font-weight: bold;">WEOFSEQ</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_closeseq.htm" class="topiclink">CLOSESEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_create.htm" class="topiclink">CREATE</a></span>, <span style="font-weight: bold;"><a href="qmb_nobuf.htm" class="topiclink">NOBUF</a></span>, <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_readblk.htm" class="topiclink">READBLK</a></span>, <span style="font-weight: bold;"><a href="qmb_readcsv.htm" class="topiclink">READCSV</a></span>, <span style="font-weight: bold;"><a href="qmb_readseq.htm" class="topiclink">READSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a></span>, <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span>, <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQF</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

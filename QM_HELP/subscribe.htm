@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SUBSCRIBE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SUBSCRIBE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "subscribe.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SUBSCRIBE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="stop.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="t_dump.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SUBSCRIBE</span> command starts a phantom process that will poll a replication publisher for updates.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SUBSCRIBE</span> <span style="font-style: italic;">server</span>{:<span style="font-style: italic;">port</span>} <span style="font-style: italic;">username</span> <span style="font-style: italic;">password</span> {<span style="font-style: italic;">options</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">server</span></td><td style="border:none;padding:0">is the network name or ip address of the publisher.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">port</span></td><td style="border:none;padding:0">is the port number for connection to the publisher. This must correspond to the value of the <a href="configparams.htm#replport" class="topiclink">REPLPORT</a> configuration parameter on the publisher and defaults to 4244 if omitted.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">username</span></td><td style="border:none;padding:0">is the user name to be used for the server process established on the publisher.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">password</span></td><td style="border:none;padding:0">is the password associated with <span style="font-style: italic;">username</span>. For security, this should be encrypted using the <span style="font-weight: bold;"><a href="authenticate.htm" class="topiclink">AUTHKEY</a></span> command and specified with an ENCR: prefix.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">are chosen from:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">INTERVAL</span> <span style="font-style: italic;">n</span></td><td style="border:none;padding:0">specifies the interval in seconds at which the publisher will be polled for updates. This must be in the range 1 to 300 and defaults to 5.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">RAW</span></td><td style="border:none;padding:0">specifies that data transferred between the publisher and subscriber systems should not be encrypted. There is a marginal performance benefit in using this when the network is considered to be secure.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SUBSCRIBE</span> command starts a phantom process that polls for and applies data updates from the specified publisher. It should normally be executed using the <a href="configparams.htm#startup" class="topiclink">STARTUP</a> configuration parameter. The command can only be executed in the QMSYS account and by users with administrator rights.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When subscribing to files that use encryption, the user name of the subscriber process must have full access to the associated encryption keys.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <a href="configparams.htm#replsrvr" class="topiclink">REPLSRVR</a> configuration parameter must be set to match the subscriber server name as used when publishing the files with the <span style="font-weight: bold;"><a href="publish.htm" class="topiclink">PUBLISH</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="replication.htm" class="topiclink">Replication</a>, <span style="font-weight: bold;"><a href="disable_publishing.htm" class="topiclink">DISABLE.PUBLISHING</a></span>, <span style="font-weight: bold;"><a href="enable_publishing.htm" class="topiclink">ENABLE.PUBLISHING</a></span>, <span style="font-weight: bold;"><a href="publish.htm" class="topiclink">PUBLISH</a></span>, <span style="font-weight: bold;"><a href="publish_account.htm" class="topiclink">PUBLISH.ACCOUNT</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

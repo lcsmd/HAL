@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Substitution Conversion (S)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Substitution conversion (S)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_subst.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Substitution Conversion (S;value1;value2)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_soundex.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_tfile.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The <span style="font-weight: bold;">S</span> (substitution) conversion code allows an application to handle zero or null data items as a special case.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The full format of this conversion code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">S;</span><span style="font-style: italic;">value1</span><span style="font-style: italic; font-weight: bold;">;</span><span style="font-style: italic;">value2</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">S</span> code returns a value determined by <span style="font-style: italic;">value1</span> if the source data is not zero or null, or the value determined by <span style="font-style: italic;">value2</span> if the source data is zero or null.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">value1</span> and <span style="font-style: italic;">value2</span> items may be:</p>
+<p style="margin: 10px 0 0 30px;">A number specifying the field from @RECORD (the current record being processed in a query) to be returned. A value of zero returns the content of @ID.</p>
+<p style="margin: 10px 0 0 30px;">A literal string enclosed in single quotes, double quotes or backslashes.</p>
+<p style="margin: 10px 0 0 30px;">An asterisk indicating that the original data is to be returned.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If either <span style="font-style: italic;">value</span> is omitted, it defaults to a null string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A file has a date field that contains zero when it is not significant. Using a date conversion would return this as 31 Dec 1967. The S conversion code could be used to replace the zero by a null string before applying the date conversion. The dictionary conversion code field could be</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S;*;''</span><span style="font-size: 6pt; font-family: 'Courier New',Courier,monospace;">VM</span><span style="font-family: 'Courier New',Courier,monospace;">D4DMY</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following table shows a variety of conversions for a data record of &quot;F1<span style="font-size: 6pt;">FM</span>F2&quot; and a record id of &quot;ID&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="width:400px; border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Conversion</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Data</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">S;1;2</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">F2</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p>S;1;2</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>F2</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p>S;1;2</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>5</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>F1</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p>S;1;2</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>XX</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>F1</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p>S;*;'ZZ'</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>ZZ</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p>S;*;'ZZ'</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>2</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>2</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p>S;0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p>S;0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>1</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>ID</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p>S;;0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p>ID</p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>IF</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="IF" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "if.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">IF</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="hush.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="inhibit_login.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">IF</span> command allows conditional execution of sentences within paragraphs.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">IF</span> <span style="font-style: italic;">value.1 rel.op</span> {<span style="font-weight: bold;">NO.CASE</span>}<span style="font-style: italic;"> value.2</span> <span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">sentence</span></p>
+<p style="margin: 6px 0 0 30px;"><span style="font-weight: bold;">IF EXISTS</span><span style="font-style: italic;"> filename id </span><span style="font-weight: bold;">THEN</span><span style="font-style: italic;"> sentence</span></p>
+<p style="margin: 6px 0 0 30px;"><span style="font-weight: bold;">IF NOT.EXISTS</span><span style="font-style: italic;"> filename id </span><span style="font-weight: bold;">THEN</span><span style="font-style: italic;"> sentence</span></p>
+<p style="margin: 6px 0 0 30px;"><span style="font-weight: bold;">IF</span> <span style="font-style: italic;">value.1</span> <span style="font-weight: bold;">IN</span> {<span style="font-weight: bold;">NO.CASE</span>} <span style="font-style: italic;">value.2</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">value.3...</span> <span style="font-weight: bold;">THEN</span><span style="font-style: italic;"> sentence</span></p>
+<p style="margin: 6px 0 0 30px;"><span style="font-weight: bold;">IF</span> <span style="font-style: italic;">value.1</span> <span style="font-weight: bold;">NOT.IN</span> {<span style="font-weight: bold;">NO.CASE</span>} <span style="font-style: italic;">value.2</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">value.3...</span> <span style="font-weight: bold;">THEN</span><span style="font-style: italic;"> sentence</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">value.1</span>, <span style="font-style: italic;">value.2</span></td><td style="border:none;padding:0">are two items to be compared. These may be inline prompts, constants or @­variables as described below.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">rel.op</span></td><td style="border:none;padding:0">is the relational operator to be applied to the two values.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">sentence</span></td><td style="border:none;padding:0">is the sentence to be executed if the condition is True.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">filename</span></td><td style="border:none;padding:0">is the name of a file in which existence of a record is to be checked.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">id</span></td><td style="border:none;padding:0">is the name of a record for which existence is to be checked.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In its first form, the <span style="font-weight: bold;">IF</span> command compares two values using a specified relational operator. The values may be <a href="inlineprompts.htm" class="topiclink">inline prompts</a>, constants or <a href="at_variables.htm" class="topiclink">@-variables</a>. Null strings or string constants which include spaces should be enclosed in single or double quotation marks. The <span style="font-style: italic;">value.1</span> and <span style="font-style: italic;">value.2</span> items need to be quoted if they may evaluate to strings with embedded spaces or to reserved words such as the relational operators.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that because inline prompts are evaluated as the first stage of processing a command, an inline prompt in the <span style="font-style: italic;">sentence</span> component of an <span style="font-weight: bold;">IF</span> statement will be evaluated before determining whether the condition is True. To avoid this problem, a statement such as</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF @SYSTEM.RETURN.CODE = 1 THEN LIST &lt;&lt;Filename&gt;&gt;</span></p>
+<p>must be written as</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF @SYSTEM.RETURN.CODE # 1 THEN GO SKIP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; LIST &lt;&lt;Filename&gt;&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SKIP:</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The relational operator may be any of:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>&lt;</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>LT</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><p>BEFORE</p>
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><p>LESS</p>
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>&lt;=</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>LE</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><p>=&lt;</p>
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>=</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>EQ</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><p>EQUAL</p>
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>&gt;=</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>GE</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><p>=&gt;</p>
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>&gt;</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>GT</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><p>AFTER</p>
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><p>GREATER</p>
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>#</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>NE</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><p>&lt;&gt;</p>
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><p>&gt;&lt;</p>
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><p>NOT</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>LIKE</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>MATCHES</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><p>MATCHING</p>
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>UNLIKE</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>NOT.MATCHES</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; height:30px; padding:2px; border:none"><p>~</p>
+</td>
+<td style="vertical-align:top; width:167px; height:30px; padding:2px; border:none"><p>SAID</p>
+</td>
+<td style="vertical-align:top; width:128px; height:30px; padding:2px; border:none"><p>SPOKEN</p>
+</td>
+<td style="vertical-align:top; width:118px; height:30px; padding:2px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:63px; height:30px; padding:2px; border:none"><br />
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The function of each relational operator as applied to values of different types is the same as its QMBasic equivalent </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The forms of <span style="font-weight: bold;">IF</span> using <span style="font-weight: bold;">EXISTS</span> or <span style="font-weight: bold;">NOT.EXISTS</span> check the existence or non-existence of a record. The filename and id values are identify the file and record id. If the record id contains spaces or other special characters, it must be enclosed in quotes.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The forms of <span style="font-weight: bold;">IF</span> using <span style="font-weight: bold;">IN</span> or <span style="font-weight: bold;">NOT.IN</span> test whether <span style="font-style: italic;">value.1</span> is in or not in the list of literal values.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The optional <span style="font-weight: bold;">NO.CASE</span> qualifier performs a case insensitive comparison.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>Multiple conditions may be linked by the keywords <span style="font-weight: bold;">AND</span> and <span style="font-weight: bold;">OR</span>. These operators are of equal priority and are evaluated left to right. Use of brackets to alter the order of interpretation is not supported in the <span style="font-weight: bold;">IF</span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PA</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">BASIC &lt;&lt;Program name&gt;&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF @SYSTEM.RETURN.CODE = 1 THEN CATALOGUE &lt;&lt;Program name&gt;&gt;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This paragraph compiles a QMBasic program (the record name of which it obtains using an inline prompt) and, if successful, adds the program to the system catalogue. In this example, use of the inline prompt in the conditioned statement is not a problem as the prompt was displayed as part of processing of the previous line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF EXISTS VOC &lt;&lt;@LOGNAME&gt;&gt; THEN &lt;&lt;@LOGNAME&gt;&gt;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This example shows how it is possible to produce the effect found in some other multivalue products where each user may have a separate initialisation script instead of the single LOGIN paragraph used in QM. Inserting this line in the LOGIN paragraph would check if there was a paragraph with the same name as the user's login name and, if so, execute it.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">IF @TTY IN 'phantom', 'startup', 'vbsrvr' THEN STOP</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above command used in the LOGIN paragraph would terminate the paragraph if the value of the @TTY variable was any of the listed values.</p>
+
+</td></tr></table>
+
+</body>
+</html>

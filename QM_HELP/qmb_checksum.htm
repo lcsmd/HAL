@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>CHECKSUM()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CHECKSUM()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_checksum.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">CHECKSUM()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_char.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_child.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CHECKSUM()</span> function returns a checksum value for supplied data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CHECKSUM(</span><span style="font-style: italic;">data</span> {<span style="font-weight: bold;">, </span><span style="font-style: italic;">mode</span>}<span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">data</span></td><td style="border:none;padding:0">is the character string for which a checksum is to be calculated.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">mode</span></td><td style="border:none;padding:0">specifies the algorithm to be used. Defaults to 0 if omitted.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CHECKSUM()</span> function calculates a cyclic redundancy checksum (CRC) value for the supplied <span style="font-style: italic;">data</span> item. Note that the various multivalue products implement this function using different algorithms, not all of which are available in QM. The default algorithm used by QM is a simple rotate and merge but several alternative algorithms used by other software packages are available by use of the optional <span style="font-style: italic;">mode</span> argument.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The checksum value produced by an ECS mode system for data that contains only characters from the 8-bit set is identical to that produced for the same data on a non-ECS mode system. The CRC algorithms are usually based on byte structured data. Applications using ECS mode may sometimes need to use the <a href="conv_bs.htm" class="topiclink">BSL</a> or <a href="conv_bs.htm" class="topiclink">BSH</a> conversion code to form a hardware byte order specific representation of the data prior to use of the <span style="font-weight: bold;">CHECKSUM()</span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">data</span> is a null string or <span style="font-style: italic;">mode</span> is invalid, the <span style="font-weight: bold;">CHECKSUM()</span> function returns zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Algorithms</span></p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">0</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$QM</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">QM default rotate and merge algorithm</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">1</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$XMODEM</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CCITT XModem (as used by some other multivalue products, e.g. UniVerse)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">2</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$CCITT.FALSE</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CCITT with 0xFFFF initialiser</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">3</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$CCITT.AUG</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CCITT with 0x1D0F initialiser</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">4</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$KERMIT</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CCITT Kermit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">5</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$16</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CRC-16</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">6</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$MODBUS</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CCITT Modbus</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">7</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$BYTE</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">Simple byte addition</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">8</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$DNP</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CRC-DNP (IEEE 1815)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">9</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$32</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CRC-32</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">10</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$16.SICK</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">CRC-16 &quot;Sick&quot; variant</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:50px; padding:0; border:none"><p class="p_Normal" style="margin: 0 0 8px 0;">11</p>
+</td>
+<td style="vertical-align:top; width:169px; padding:0; border:none"><p class="p_Normal">CRC$PARITY</p>
+</td>
+<td style="vertical-align:top; width:1007px; padding:0; border:none"><p class="p_Normal">Longitudinal byte parity (Bitwise exclusive OR of all bytes)</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY CHECKSUM(REC)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement displays a checksum value for the data in the REC variable using the default algorithm.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY CHECKSUM(REC, CRC$CMODEM)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement displays a checksum value for the data in the REC variable using the CCITT-XModem algorithm.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_md5.htm" class="topiclink">MD5()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

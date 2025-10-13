@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>VALIDATE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="VALIDATE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_validate.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">VALIDATE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_upcase.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_vartype.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-weight: bold;">VALIDATE()</span> function validates a record against <a href="constraints.htm" class="topiclink">data integrity constraints</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">VALIDATE(</span><span style="font-style: italic;">fvar</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">id</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">data</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">fvar</span></td><td style="border:none;padding:0">is the file variable associated with an open file.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">id</span></td><td style="border:none;padding:0">is the id of the record being processed.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">data</span></td><td style="border:none;padding:0">is the data record.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">VALIDATE()</span> function allows an application to test whether the record in <span style="font-style: italic;">data</span> satisfies the validation rules for the file open to <span style="font-style: italic;">fvar</span>. If successful, the function returns True. Using <span style="font-weight: bold;">VALIDATE()</span> against a hashed file that has no constraints defined will also return True.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the validation fails, <span style="font-weight: bold;">VALIDATE()</span> returns False and the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function can be used to determine why it failed. A status of zero indicates that the constraints rules were not met. The failing field number will be in @FNO and the corresponding field name will be in @FNAME. A non-zero status value indicates that some other error occurred such as the file being of an inappropriate type.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The processing performed by the VERIFY.CONSTRAINTS command is essentially as below:</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LOOP</span></p>
+<p class="p_CodeBody"> &nbsp; <span class="f_CodeBody">READNEXT ID FROM ID.LIST ELSE EXIT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; READ REC FROM DATA.F, ID THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;IF NOT(VALIDATE(DATA.F, ID, REC)) THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY ID : ' (FIELD ' : @FNO ; ')'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;END</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; END</span></p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">REPEAT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="constraints.htm" class="topiclink">Data integrity constraints</a>, <span style="font-weight: bold;"><a href="verify_constraints.htm" class="topiclink">VERIFY.CONSTRAINTS</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

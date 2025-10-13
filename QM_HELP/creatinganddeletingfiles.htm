@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Creating and Deleting Files</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Creating and deleting files" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "creatinganddeletingfiles.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Creating and Deleting Files</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmfiles.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="directoryfiles.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>As a general rule, files that may be accessed &nbsp;from the operating system level must be <a href="directoryfiles.htm" class="topiclink">directory files</a> and all other files should be <a href="dynamicfiles.htm" class="topiclink">dynamic files.</a> Dynamic files give best performance but records cannot be accessed from outside of QM.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMBasic source programs are normally stored in directory files. Dictionaries are automatically created as dynamic files regardless of the type of the associated data file as a directory file dictionary could cause severe performance degradation in query processor commands.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Files are created using the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command which normally creates both a data and dictionary portion for the file. Either may be created individually by use of the <span style="font-weight: bold;">DATA</span> or <span style="font-weight: bold;">DICT</span> keywords. Dictionary portions are not required for files used to hold QMBasic source programs or include records.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command creates the file and also writes an  <a href="voc_f.htm" class="topiclink">F-type</a> record to the <a href="voc.htm" class="topiclink">VOC</a>. If the file is to be accessed from more than one account, this <a href="voc_f.htm" class="topiclink">F-type</a> record may be duplicated in the other accounts, changing the pathnames in fields 2 and 3 to include the drive and directory components as necessary. A better method is to use <a href="voc_q.htm" class="topiclink">Q-type</a> VOC entries for remote file pointers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The data portion of a file is created at the specified or default minimum modulus size and with no records. The dictionary portion has a single record, <span style="font-weight: bold;">@ID</span>, added to it to represent the record key.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Files may be deleted using the <span style="font-weight: bold;"><a href="delete_file.htm" class="topiclink">DELETE.FILE</a></span> command. The <span style="font-weight: bold;">DATA</span> or <span style="font-weight: bold;">DICT</span> keywords allow deletion of just the appropriate portion of the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where the file's pathname in the VOC includes drive or directory components, the <span style="font-weight: bold;"><a href="delete_file.htm" class="topiclink">DELETE.FILE</a></span> command assumes the file to be in some other account and prompts for confirmation that it should be deleted. If the file is to be retained but the reference to it from the current account is to be deleted, use the <span style="font-weight: bold;"><a href="delete.htm" class="topiclink">DELETE</a></span> command to delete the VOC record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Rules and Restrictions</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QM file system uses the underlying operating system file structures to store its data. This imposes some rules on how the operating system level files should be managed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A QM filename may contain any characters except for control characters (chars 0 to 31), spaces, or mark characters (chars 251 to 255). On an ECS mode system, the name must contain only characters from the 8-bit set. If the QM filename contains characters that are not valid in operating system file names, its pathname is modified to use substitute characters. This translation is automatic and usually not visible to the application. A full list of the substitutions is shown in the <a href="directoryfiles.htm" class="topiclink">directory files</a> section as this is where the issue most commonly arises.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>On Windows XP and later systems, use of mapped drives can assign different physical locations to the same drive letter for different users or conversely lead to a file having different pathnames in different processes. This will cause serious problems to QM as it is impossible to identify a file uniquely. In particular, the locking system is likely to become unreliable, including the low level internal locks that control structural integrity of files.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>All QM users should use the same mappings. For users entering QM via a network connection, including connections looped back to the same machine, the NET USE command may need to be used to create the drive mapping. This can be included in the <a href="command_scripts.htm" class="topiclink">LOGIN</a> or <a href="command_scripts.htm" class="topiclink">MASTER.LOGIN</a> paragraphs in the form</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SH NET USE X: \\SERVER\DIR </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">password</span><span style="font-family: 'Courier New',Courier,monospace;"> /USER:</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">username</span></p>
+<p>where &nbsp;X: is the mapped drive letter and \\SERVER\DIR is the target directory to which X: is to be mapped.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Similarly, use of chroot on non-Windows systems destroys the uniqueness of file names. Although this may work in some cases, it can lead to ambiguities that will cause QM to fail in unpredictable ways. Use of this command is at the user's own risk.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where the mapped drive would reference another system running QM, the <a href="qmnet.htm" class="topiclink">QMNet</a> network file access mechanism should be used instead. This guarantees correct concurrency control between the two servers.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Systems other than Windows allow a file to be renamed or deleted while it is in use. This action is likely to cause QM to fail and should not be used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Mark Mapping</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Database records are often entered, modified or retrieved by the <span style="font-weight: bold;"><a href="ed.htm" class="topiclink">ED</a></span>,<span style="font-weight: bold;"> <a href="sed.htm" class="topiclink">SED</a></span> and <span style="font-weight: bold;"><a href="modify.htm" class="topiclink">MODIFY</a></span> commands. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In directory files, the internal field mark character is replaced by the ASCII newline character when a record is written to disk so that fields appear as lines if the record is viewed, edited or printed from outside QM. Conversely, ASCII newlines are converted to field marks on reading a record. Mechanisms are provided in QMBasic (see the <span style="font-weight: bold;"><a href="qmb_mark_mapping.htm" class="topiclink">MARK.MAPPING</a></span> statement) to turn off this translation when handling binary data.</p>
+
+</td></tr></table>
+
+</body>
+</html>

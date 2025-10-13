@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LISTU</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LISTU,SORTU" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "listu.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LISTU, SORTU</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="lists.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="listv.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LISTU</span> command lists the users currently in QM sorted by user number. The <span style="font-weight: bold;">SORTU</span> command is identical except that it sorts by user name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LISTU </span>{<span style="font-weight: bold;">DETAIL</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LISTU</span> command displays a list of users in QM. For each user, it shows their QM user number, the corresponding operating system process id and their network address or device name, user name and account name. The network address is shown as &quot;Console&quot; for console users (sessions running QM directly rather than a network connection) or &quot;Phantom&quot; for a background process. The login time is shown in the local time zone of the user executing the command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The user executing the <span style="font-weight: bold;">LISTU</span> command is marked by an asterisk at the left edge of the displayed report. For phantom users, the parent user number is shown unless the original parent process has logged out. The parent user number is followed by &quot;G&quot; if the phantom process is grouped to logout with its parent.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <span style="font-weight: bold;">DETAIL</span> keyword adds a line at the start of the report that shows:</p>
+<p style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>the current number of interactive (terminal user) processes</p><p style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>the current number of QMClient processes</p><p style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>the current number of interactive phantom processes that consume a QM licence</p><p style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>the current number of other phantom processes that do not consume a QM licence</p><p style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>the peak number of processes that consumed a licence since QM was started. Note that on a system with device licensing, this figure can be lower than the current total process count.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The user count detail information can be retrieved in a QMBasic program using <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> with key value 1056 (SYS$USER.COUNTS).</p>
+<p class="p_Normal"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LISTU</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp;User &nbsp;Pid &nbsp; &nbsp; Puid &nbsp;Login time &nbsp; &nbsp;Origin : User name, Account</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;">* &nbsp; &nbsp;1 &nbsp;156 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 15 Apr 11:48 &nbsp;Console: ADMINISTRATOR, QMSYS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 2 &nbsp;186 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 15 Apr 11:21 &nbsp;193.118.13.10: JSMITH, SALES</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 4 &nbsp;196 &nbsp; &nbsp; &nbsp; &nbsp;2 &nbsp;15 Apr 12:02 &nbsp;Phantom: ADMINISTRATOR, QMSYS</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The example report above shows three processes logged on. The user running this command is marked with an asterisk.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <span style="font-weight: bold;">DETAIL</span> keyword might produce a report such as that below, showing the current count of each process type and the peak number of processes that were included in the licensed user count.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LISTU DETAIL</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp;2 interactive, 0 QMClient, 0 iPhantom, 1 phantom, 6 peak</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp;User &nbsp;Pid &nbsp; &nbsp; Puid &nbsp;Login time &nbsp; &nbsp;Origin : User name, Account</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;">* &nbsp; &nbsp;1 &nbsp;156 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 15 Apr 11:48 &nbsp;Console: ADMINISTRATOR, QMSYS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 2 &nbsp;186 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 15 Apr 11:21 &nbsp;193.118.13.10: JSMITH, SALES</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 4 &nbsp;196 &nbsp; &nbsp; &nbsp; &nbsp;2 &nbsp;15 Apr 12:02 &nbsp;Phantom: ADMINISTRATOR, QMSYS</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="list_phantoms.htm" class="topiclink">LIST.PHANTOMS</a>, <a href="status.htm" class="topiclink">STATUS</a></span>, <span style="font-weight: bold;"><a href="qmbs_listu.htm" class="topiclink">!LISTU()</a></span>, <a href="configparams.htm#lgnwait" class="topiclink">LGNWAIT</a> configuration parameter</p>
+
+</td></tr></table>
+
+</body>
+</html>

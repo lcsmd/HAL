@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>COMMON</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="COMMON" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_common.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">COMMON</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_collection.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_compare.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COMMON</span> statement declares variables in a common block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">COMMON</span> {/<span style="font-style: italic;">name</span><span style="font-weight: bold;">/</span>} <span style="font-style: italic;">var1</span> {<span style="font-weight: bold;">,</span><span style="font-style: italic;">var2</span>...}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of the common block</td></tr></table></div><p style="text-indent: -91px; margin: 0 0 0 121px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">var1</span>, etc</td><td style="border:none;padding:0">are variable names</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COMMON</span> statement is used to define variables as being in common blocks, that is, memory areas that may be used to pass data between different programs and subroutines.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The variable names may extend over multiple lines by splitting the statement after a comma. For example</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON /VARS/ VAR1, VAR2,</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VAR3, VAR4</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">or after the block name</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON /VARS/</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; VAR1, VAR2,</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; VAR3, VAR4</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The same common block could be defined as</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON/VARS/ VAR1</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON/VARS/ VAR2</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON/VARS/ VAR3</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON/VARS/ VAR4</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The compiler assumes that definitions of variables with the same common block name are a continuation of previous definitions in the same block.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Common blocks are identified by the <span style="font-style: italic;">name</span> that is used in the <span style="font-weight: bold;">COMMON</span> statement. The name of a common block must conform to the same rules as a variable name. Multiple programs in the same process using the same name share the same variables. Named common blocks are created on the first reference to the name and remain in existence until exit from QM. There is also a common block with no name (<span style="font-weight: bold;">unnamed common</span>) which may be referred to by a <span style="font-weight: bold;">COMMON</span> statement of the form</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON var1, var2</span></p>
+<p>or</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON // var1, var2</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The unnamed common block is associated with a single command and is discarded on termination of the command that created it. Use of the <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> statement saves and removes any current unnamed common and restores it on completion of the executed command. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A common block may contain any number of variables but the number of variables may not be increased by later redefinition. It is valid for a program to define fewer variables than in the original common block declaration. This is useful if a new item has been added at the end of a common block but not all programs have yet been recompiled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Variables within a common block are referenced internally by position, not by name. Thus it would be possible (though not recommended) for different programs to use different names when accessing the same common block. Normally, the structure of a common block is best defined in an include record so that the same definition is used by all parts of the application.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By default, the variables in a common block are initialised to integer zero when the block is created. It is thus possible to include QMBasic code to perform further initialisation just once by statements of the form</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON /MYCOMMON/ INITIALISED,</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VAR1,</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VAR2,</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VAR3,...etc...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF NOT(INITIALISED) THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ...</span><span style="font-style: italic;">do initialisation tasks</span>...</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INITIALISED = @TRUE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with some other systems, the UNASSIGNED.COMMON option of the <a href="qmbd_mode.htm" class="topiclink">$MODE</a> compiler directive can be used to specify that common blocks are to be created with their component variables left unassigned instead of being set to zero. This directive only affects the program that actually creates the common block (i.e. the first program executed that references the common). It has no effect if the common has already been created. It is possible for an application to mix assigned and unassigned common by careful placement of the $MODE directive.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Common blocks may contain matrices. These are defined by including the row and column bounds in the <span style="font-weight: bold;">COMMON</span> statement, for example</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON /MYCOMMON/ MAT1(5,3)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM supports two styles of matrix with different characteristics. The <a href="qmbd_mode.htm" class="topiclink">$MODE</a> compiler directive can be used to select Pick style matrices.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default style of matrix includes a zero element and is resizeable. A common block declared as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">COMMON A,B(3),C</span></p>
+<p class="p_Normal">has three variables, one of which is a matrix:</p>
+<p class="p_Normal"><img alt="common1" width="375" height="112" style="margin:0;width:375px;height:112px;border:none" src="common1_zoom75.png"/></p>
+<p class="p_Normal">&nbsp;</p>
+<p>A matrix of this type in a common block can be re-dimensioned by a later <span style="font-weight: bold;"><a href="qmb_dim.htm" class="topiclink">DIM</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pick style matrices do not have a zero element and cannot be resized. A matrix of this type in a common block is equivalent to a series of simple variables:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><img alt="common2" width="456" height="47" style="margin:0;width:456px;height:47px;border:none" src="common2_zoom75.png"/></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although not recommended, three programs could use very different views of the same five element common block when using Pick style matrices:</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON A,B(3),C</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON X(2),Y,Z(2)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COMMON P,Q,R,S,T</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_clearcommon.htm" class="topiclink">CLEARCOMMON</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Building a CGI Web Server Application</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Web server" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "cgi.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Building a CGI Web Server Application</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sxa.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmclient.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are advanced third party web based packages available for QM such as Pavuk or DesignBais but for many applications use of built-in QM features may be sufficient. See <a href="simple_web_services.htm" class="topiclink">Simple Web Services</a> for more information.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Alternatively, a simple CGI program gives an easy way to achieve web connectivity with no additional software as described below. This uses the QMClient API which can also be called from PHP, ASP, etc for alternative development styles.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">See &quot;<span style="font-style: italic;">Using the C API</span>&quot; in the <a href="qmclient.htm" class="topiclink">QMClient API</a> section for details of libraries that must be included when this application is compiled and linked. The executable program file should be placed in the cgi-bin subdirectory of the relevant web account.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#include &lt;stdio.h&gt;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#include &lt;string.h&gt;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#include &lt;stdlib.h&gt;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#include &lt;\qmsys\syscom\qmclilib.h&gt; &nbsp; &nbsp; &nbsp; [ Windows ]</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#include &lt;/usr/qmsys/SYSCOM/qmclilib.h&gt; &nbsp; [ Unix/Linux based systems ]</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">// Set the following six lines as appropriate for your system</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#define SERVER_ADDRESS &quot;localhost&quot; /* Server network address or name... */</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#define SERVER_PORT 4243 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /* ...and port on which to connect */</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#define SERVER_USER &quot;xxx&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;/* Server user name... */</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#define SERVER_PASSWORD &quot;xxxxx&quot; &nbsp; &nbsp;/* ...and password */</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#define SERVER_ACCOUNT &quot;xxxxx&quot; &nbsp; &nbsp; /* Web server QM account name */</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">#define SERVER_PROGRAM &quot;xxxxx&quot; &nbsp; &nbsp; /* Catalogued program to run on server */</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">char NullString[] = &quot;&quot;;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">char InputData[32767] = &quot;&quot;; &nbsp; /* Incoming data stream */</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">char Response[99999] = &quot;&quot;; &nbsp; &nbsp;/* Response to send */</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">char * ClientIP; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;/* Client IP address */</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">char * ClientUser; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;/* User name if web authentication used */</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">/* ====================================================================== */</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">int main()</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">{</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> char * RequestMethod;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> char * p;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> RequestMethod = getenv(&quot;REQUEST_METHOD&quot;);</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> if (RequestMethod == NULL)</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;{</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; printf(&quot;Program must be executed by a Web browser\n&quot;);</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; return 1;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> ClientIP = ((p = getenv(&quot;REMOTE_ADDR&quot;)) != NULL)?p:NullString;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> ClientUser = ((p = getenv(&quot;REMOTE_USER&quot;)) != NULL)?p:NullString;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> if (!strcmp(RequestMethod,&quot;GET&quot;))</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;{</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; if ((p = getenv(&quot;QUERY_STRING&quot;)) != NULL) strcpy(InputData, p);</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;}</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> else if (!strcmp(RequestMethod,&quot;POST&quot;))</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;{</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; if ((p = getenv(&quot;CONTENT_LENGTH&quot;)) != NULL)</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;{</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; fread(InputData, atoi(p), 1, stdin);</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;}</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> /* Check for locally processed screens */</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> ParseInputData();</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">if (!QMConnect(SERVER_ADDRESS, SERVER_PORT, SERVER_USER, SERVER_PASSWORD, SERVER_ACCOUNT))</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;{</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; strcpy(Response, &quot;Failed to connect. The server may be offline.&quot;);</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;}</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> else</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;{</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; QMCall(SERVER_PROGRAM, 4, InputData, ClientIP, ClientUser, Response);</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; QMDisconnect();</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> printf(&quot;Content-type: text/html\n\n&quot;);</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> printf(&quot;&lt;meta http-equiv=\&quot;Pragma\&quot; content=\&quot;no-cache\&quot;&gt;\n&quot;);</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> printf(&quot;%s\n&quot;, Response);</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> return 0;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Web requests received by this program will be passed to the catalogued QMBasic subroutine identified by SERVER_PROGRAM. The declaration of this is</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SUBROUTINE SERVER(INPUT.DATA, CLIENT.IP, CLIENT.USER, RESPONSE)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When used with HTML forms with the method attribute set to &quot;post&quot; or &quot;get&quot;, any data sent with the form will be passed to the QM server program via the first argument (INPUT.DATA). Typically, the form would include an item in this data that can be used to determine the screen being processed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The CLIENT.IP is the network address of the client user and can be used for simple security checking.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the user has been authenticated using the conventional web user authentication process, the user name appears in CLIENT.USER. If authentication has not been performed, this will be a null string.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The server subroutine must return valid HTML data to be returned to the web client via the RESPONSE argument. For applications that return very large HTML strings it may be better for the QMBasic component to write the data to a temporary file and pass this name back to the C program. This avoids the need for the Response variable in the above example to be sized to fit the largest string that could ever be returned.</p>
+
+</td></tr></table>
+
+</body>
+</html>

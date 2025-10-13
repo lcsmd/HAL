@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Select lists in QMClient sessions</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Select lists in QMClient sessions" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmclient_select.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Select lists in QMClient sessions</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmclient.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmclientsecurity.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because a QMClient session operates in two parts, one on the client and one on the server, it is important to understand how this affects use of select lists.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A select list may be constructed on the server by use of the <span style="font-weight: bold;"><a href="qmselect.htm" class="topiclink">QMSelect()</a></span> or <span style="font-weight: bold;"><a href="qmselectpartial.htm" class="topiclink">QMSelectPartial()</a></span> functions or by execution of a program (<span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall</a></span>) or a command (<span style="font-weight: bold;"><a href="qmexecute.htm" class="topiclink">QMExecute</a></span>).</p>
+<p class="p_Normal">&nbsp;</p>
+<p>Using the <span style="font-weight: bold;"><a href="qmselect.htm" class="topiclink">QMSelect()</a></span> function followed by repeated use of the <span style="font-weight: bold;"><a href="qmreadnext.htm" class="topiclink">QMReadNext()</a></span> function builds the select list on the server and then returns items one by one. This will use the same group by group optimisation that is described with the QMBasic <span style="font-weight: bold;"><a href="qmb_select.htm" class="topiclink">SELECT</a></span> statement but, because the select list is maintained on the server, retrieval of each entry requires passing of a message pair between the client and the server which may be slow. However, because the select list actually exists at the server side of the QMClient session, it is available for use by commands and programs executed on the server within the session.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A QMClient application can read the entire select list in a single operation using the <span style="font-weight: bold;"><a href="qmreadlist.htm" class="topiclink">QMReadList()</a></span> function and then extract entries using the <span style="font-weight: bold;"><a href="qmextract.htm" class="topiclink">QMExtract()</a></span> function. This requires the list to be fully constructed before it can be returned to the client and hence loses the performance advantage gained from the group by group selection process.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of <span style="font-weight: bold;"><a href="qmselectpartial.htm" class="topiclink">QMSelectPartial()</a></span> provides a way to gain much of the performance advantage of the group by group select but without needing to retrieve each record id separately. This function performs an optimised select operation on the server and then returns a number of ids as a field mark delimited string. The <span style="font-weight: bold;"><a href="qmnextpartial.htm" class="topiclink">QMNextPartial()</a></span> function then retrieves a further set of record ids until the list is exhausted. Because <span style="font-weight: bold;"><a href="qmselectpartial.htm" class="topiclink">QMSelectPartial()</a></span> returns the first part of the list immediately, the full list is not available on the server for use by commands or programs executed within the QMClient session.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;"><a href="qmnextpartial.htm" class="topiclink">QMNextPartial()</a></span> is effectively the same as a series of <span style="font-weight: bold;"><a href="qmreadnext.htm" class="topiclink">QMReadNext()</a></span> operations that merge the results into a single string before returning it to the server. It can therefore also be used to retrieve data from a select list constructed by <span style="font-weight: bold;"><a href="qmselect.htm" class="topiclink">QMSelect()</a></span>, a program or a command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There is a further consideration for processes that use <span style="font-weight: bold;"><a href="qmreadnext.htm" class="topiclink">QMReadNext()</a></span> or <span style="font-weight: bold;"><a href="qmnextpartial.htm" class="topiclink">QMNextPartial()</a></span> and also update the file by adding new records. Because the optimised selection process is finding records one by one as processing progresses, any records written during the processing may appear later in the returned list. Using <span style="font-weight: bold;"><a href="qmreadlist.htm" class="topiclink">QMReadList()</a></span> to construct and retrieve the entire list before processing commences ensures that records added during processing will not be included in the list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If a QMClient application uses <span style="font-weight: bold;"><a href="qmselectpartial.htm" class="topiclink">QMSelectPartial()</a></span> but the server pre-dates introduction of this function, the entire list is returned similar to use of <span style="font-weight: bold;"><a href="qmselect.htm" class="topiclink">QMSelect()</a></span> followed by <span style="font-weight: bold;"><a href="qmreadlist.htm" class="topiclink">QMReadList()</a></span>. Similarly, use of <span style="font-weight: bold;"><a href="qmnextpartial.htm" class="topiclink">QMNextPartial()</a></span> with a server that does not support it is equivalent to use of <span style="font-weight: bold;"><a href="qmreadlist.htm" class="topiclink">QMReadList()</a></span>.</p>
+
+</td></tr></table>
+
+</body>
+</html>

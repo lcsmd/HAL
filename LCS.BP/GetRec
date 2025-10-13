@@ -1,0 +1,56 @@
+      FUNCTION GetRec(FileName, RecordID, FieldNames)
+      INCLUDE QM.INC COMMON
+
+      * Convert field names to field numbers
+      FieldNumbers = ""
+      IF FieldNames # "" THEN
+         OPEN "DICT.":FileName TO DictFile ELSE
+            PRINT "Unable to open dictionary for file ":FileName
+            RETURN ""
+         END
+         FOR EachField IN 1 TO DCOUNT(FieldNames, " ")
+            FieldName = FIELD(FieldNames, " ", EachField)
+            READ DictRec FROM DictFile, FieldName ELSE
+               PRINT "Field name ":FieldName:" not found in dictionary"
+               RETURN ""
+            END
+            FieldNumber = DictRec<1>  * Assuming the attribute number is in the first field of the dictionary record
+            IF FieldNumbers = "" THEN
+               FieldNumbers = FieldNumber
+               ELSE
+                  FieldNumbers := " ":FieldNumber
+               END
+            NEXT EachField
+         END
+
+         * Construct the command to list the specific fields or the entire record
+         Command = "LIST ":FileName:" ":RecordID
+
+         IF NOT(FieldNumbers = "") THEN
+            Command := " BY-EXP ":FieldNumbers
+         END
+
+         EXECUTE Command CAPTURING CmdOutput
+
+         * Process the captured output to extract the required fields or the entire record
+         IF FieldNumbers = "" THEN
+            Output = TRIM(CmdOutput)
+            ELSE
+               * Assuming the output is a single line with fields separated by spaces
+               Line = FIELD(CmdOutput, @AM, 1)  ! Extract the first line of output
+               Output = ""
+
+               FOR EachField IN DCOUNT(FieldNumbers, " ")
+                  FieldNumber = FIELD(FieldNumbers, " ", EachField)
+                  FieldValue = FIELD(Line, ' ', FieldNumber)
+                  IF Output = "" THEN
+                     Output = FieldValue
+                     ELSE
+                        Output := ' ':FieldValue
+                     END
+                  NEXT EachField
+               END
+
+               RETURN Output
+            END FUNCTION
+

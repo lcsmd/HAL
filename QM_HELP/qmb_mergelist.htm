@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MERGELIST()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MERGELIST()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_mergelist.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MERGELIST()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_md5.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_min.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MERGELIST()</span> function combines two field mark delimited lists, returning the intersection, union or difference as a result list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MERGELIST(</span><span style="font-style: italic;">list1</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">list2</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">modes</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-style: italic;">list1, list2</span></td><td style="border:none;padding:0">are the two lists to be combined. These may be strings or select list variables.</td></tr></table></div><p style="text-indent: -119px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-style: italic;">modes</span></td><td style="border:none;padding:0">identifies the operation to be performed and the manner in which the lists are sorted.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The <span style="font-weight: bold;">MERGELIST()</span> function provides an efficient way to merge two field mark delimited lists. It is intended for use with lists of record ids such as select lists but can combine other lists where the elements are no more than 255 characters. Unless the ML$UNSORTED option is present, <span style="font-style: italic;">list1</span> and <span style="font-style: italic;">list2</span> must be in sorted order.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-style: italic;">modes</span> argument must be one of the following token that are defined in the SYSCOM KEYS.H include record:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">ML$INTER</td><td style="border:none;padding:0">Return a list of items in both <span style="font-style: italic;">list1</span> and <span style="font-style: italic;">list2</span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">ML$UNION</td><td style="border:none;padding:0">Return a list of items in either <span style="font-style: italic;">list1</span> and <span style="font-style: italic;">list2</span> but not duplicating items in both lists</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">ML$DIFF</td><td style="border:none;padding:0">Return a list of items in <span style="font-style: italic;">list1</span> but not in <span style="font-style: italic;">list2</span>.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In addition, one of the following tokens may be added to the <span style="font-style: italic;">modes</span> value to indicate how the data in <span style="font-style: italic;">list1</span> and <span style="font-style: italic;">list2</span> is sorted:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">SRT$LEFT</td><td style="border:none;padding:0">A simple left aligned sort (default).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">SRT$RIGHT</td><td style="border:none;padding:0">A simple right aligned sort, sorting integer numeric values as numbers.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">SRT$COMPOUND</td><td style="border:none;padding:0">A compound sort.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">SRT$RIGHT.FLOAT</td><td style="border:none;padding:0">A right aligned sort, sorting both integer and floating point values as numbers.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The additive ML$UNSORTED <span style="font-style: italic;">modes</span> value indicates that the lists to be merged may not be in sorted order. In this case, the lists will be sorted in the manner specified by use of the SRT$xxx tokens prior to merging. If the ML$UNSORTED mode is not present and the supplied lists are not in the specified sort order, the effects of the <span style="font-weight: bold;">MERGELIST()</span> function are indeterminate.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For more information on the different sort modes, see the <span style="font-weight: bold;"><a href="qmb_sort.htm" class="topiclink">SORT()</a></span> function.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The list to be sorted may be strings or select list variables. The result returned by the <span style="font-weight: bold;">MERGELIST()</span> function is always a field mark delimited dynamic array. It can be converted to a select list using <span style="font-weight: bold;"><a href="qmb_formlist.htm" class="topiclink">FORMLIST()</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SELECTINDEXV 'CUSTNO', CUSTOMER FROM ORDERS.F TO CUST.ORDERS</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SELECTINDEXV 'MONTH', ORDER.MONTH FROM ORDERS.F TO MONTHLY.ORDERS</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">JULY.ORDERS = MERGELIST(CUST.ORDERS, MONTHLY.ORDERS, ML$INTER)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above example extracts data from two indices; one for all orders placed by a specific customer, the other for all orders placed in a specific month. It then uses <span style="font-weight: bold;">MERGELIST()</span> to combine these to give a list of all orders placed by that customer in the given month. Because <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEXV</a></span> returns the index values in sorted order, no additional sorting is required. </p>
+
+</td></tr></table>
+
+</body>
+</html>

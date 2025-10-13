@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>User Exits</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="User exits" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "user-exits.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">User Exits</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conversion-tools.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="system_limits.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A user exit is essentially an extension to the QMBasic language. They originated in Pick systems and QM provides equivalent functionality as subroutines that are included in source form in the BP file of the QMSYS account. In most cases, the user exit subroutine is just one or two lines of QMBasic. Ideally, application code that calls a user exit should be modified to perform the relevant action inline.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A user exit is identified by a four digit hexadecimal number and executed by use of the OCONV() function with the conversion code formed from the letter U followed by the user exit number.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The user exits provided are:</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0003</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the command line that started the program. Equivalent to use of @SENTENCE.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0004</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns terminal settings such as characters per line and lines per page.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0005</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Clear the type-ahead buffer. Equivalent to use of INPUTCLEAR.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">000E</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the current account name. Equivalent to use of @ACCOUNT.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">001C</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the number of fields used after a MATREAD. Equivalent to use of INMAT().</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0021</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the lowercase version of a string. Equivalent to use of DOWNCASE().</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0022</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the uppercase version of a string. Equivalent to use of UPCASE().</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0032</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Logs user off. Equivalent to chaining to the QUIT command.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0033</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns a number as Roman numerals. Equivalent to use of the NR conversion code.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">003F</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Converts a hexadecimal string to characters and sends this to the default printer. Equivalent to printing the result of an MX0C conversion.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0089</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the result of converting a hexadecimal string to a binary number. Equivalent to a combination of XTD() and the MB conversion code.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0091</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the value of an environment variable. Equivalent to use of ENV().</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">009E</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the result of replacing a substring. Equivalent to use of CHANGE().</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">009F</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the result of converting a binary number to a hexadecimal string. Equivalent to a combination of DTX() and the MB conversion code.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">00B9</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the soundex code for a string. Equivalent to use of SOUNDEX().</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">017E</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Outputs data to the terminal or a printer. Equivalent to use of PRINT.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">0209</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns only the alphanumeric characters from a string. Equivalent to use of the MCAN conversion code.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">1072</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns a multi-field dynamic array in sorted order. Equivalent to use of the QMBasic sorting functions.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">307A</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Sleep until a specific time. Equivalent to use of SLEEP.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">3090</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Abort. Equivalent to use of ABORT.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">4070</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Direct output from PRINT to the screen. Equivalent to use of PRINTER OFF.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">407A</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Sleep for a specified interval. Equivalent to use of SLEEP.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">50BB</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns user number, account name and login name. Equivalent to use of @USERNO, @WHO and @LOGNAME.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">60BB</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns login name and account name. Equivalent to use of @LOGNAME and @WHO.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">6193</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the last three characters of a string. Equivalent to use of a trailing substring operator.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">7000</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the number of characters in a database record. Equivalent to use of TRANS() and LEN().</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">7193</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Converts an external form of US date (mm dd yy) to a European date (dd mm yy). Equivalent to a concatenation of three substrings.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">7201</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Test whether there is keyboard input waiting. Equivalent to use of INPUT with a negative length qualifier.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">8194</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Returns the number of records selected after a SELECT. Equivalent to use of @SELECTED.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">A116</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Logout a specified user. Equivalent to execution of a LOGOUT command.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">B070</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Return the absolute value of a number. Equivalent to use of ABS().</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In addition, the Proc processor supports three user exits that are only meaningful in a Proc. These are documented in more detail with the <a href="voc_pq.htm" class="topiclink">Proc processor</a>.</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">01A6</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Emit text and control codes to the screen.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">01AD</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Fetch data from a file.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:66px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">31AD</p>
+</td>
+<td style="vertical-align:top; width:1141px; padding:0; border:none"><p class="p_Normal" style="margin: 8px 0 0 0;">Get the user number, placing it in a Proc buffer or displaying it on the screen.</p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+</body>
+</html>

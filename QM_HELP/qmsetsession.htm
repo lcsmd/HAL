@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMSetSession()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMSetSession()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmsetsession.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMSetSession()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmsetleft.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmstatus.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMSetSession()</span> function selects an active QMClient session to be referenced by subsequent function calls.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A single client may open multiple QMClient connections, each identified by a session number. The <span style="font-weight: bold;">QMSetSession()</span> function determines to which session subsequent QMClient function calls relate.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The return value from this function is True if successful, False if the specified session does not exist.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMSetSession()</span> function has no equivalent in the QMBasic class module, Java or Python variants of the QMClient API as each session is managed by a separate instantiation of the object.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The examples below save the current session number into a variable named OldSesNum, open a new connection (which will create a new session), perform some processing, disconnect the new session and then use <span style="font-weight: bold;">QMSetSession()</span> to revert to the original session.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">void QMSetSession(int</span> SesNum<span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">OldSesNum = QMGetSession();</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">if (QMConnectLocal(&quot;SALES&quot;))</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;QMDisconnect();</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> }</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SetSession(OldSesNum);</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMSetSession(SesNum as Integer)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">OldSesNum = QMGetSession()</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">If QMConnectLocal(&quot;SALES&quot;) Then</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;QMDisconnect()</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">End If</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SetSession(OldSesNum)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="qmgetsession.htm" class="topiclink">QMGetSession()</a></span></p>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

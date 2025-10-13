@@ -1,0 +1,107 @@
+      *---> Recovered document: CX
+      tab = char(9)
+      cr = char(13)
+      lf = char(10)
+      crlf = cr:lf
+      space=char(20)
+      vmax = 0
+      lm =1
+      v2max = 0
+      s=""
+      r=""
+      true = 1
+      false = 0
+      file.item.name = field(@sentence, " ", 2)
+      if lm then print "file.item.name:":file.item.name
+      if index(file.item.name, ",", 1) then
+         file.name = field(file.item.name, ",", 1)
+         item.name = field(file.item.name, ",", 2)
+      end else
+         file.name = "lcs.xls"
+         item.name = file.item.name
+      end
+      if file.name = "" then file.name = "lcs.xls"
+      print "file.name:":file.name
+      print "item.name:":item.name
+      item = field(item.name, ".", 1)
+      ext = field(item.name, ".", 2)
+      open file.name to f.file.name else print file.name;stop
+      open 'control' to f.control else print 'control';stop
+      open 'trans' to f.trans else print 'trans';stop
+      open 'account' to f.account else print 'account';stop
+      openseq file.name, item:".csv" to csv.file else create csv.file else print "cannot open ":file.name;stop
+      year = field(item.name, "_", 3)[1, 4]
+      yeara = "/":year
+      if lm then print year:" ":yeara
+      gosub clear.vals:
+      date.val = "Date"
+      desc.val ="Description"
+      amt.val ="Amount"
+      bal.val = "Balance"
+      gosub add.row:
+      loop
+         gosub clear.vals:
+      while
+         readcsv from csv.file delimiter "<tab>" to date.val, desc.val, amt.val, bal.val then
+            if len(date.val) = 5 and date.val[3,1] = "/" then
+               desc.val = change(desc.val,lf,space)
+               desc.val = trim(desc.val)
+               date.val := yeara
+               gosub print.line:
+               gosub add.row:
+            end
+         repeat
+         *write buff on f.file.name,item:"-3.TXT"
+
+         *print buff
+         *print buff2
+         *end else print item.name:' not found'
+         closeseq csv.file
+         close file.name
+         stop
+
+clear.vals:
+         date.val = ""
+         desc.val =""
+         amt.val =""
+         bal.val = ""
+         return
+
+print.line:
+         print line
+         print desc.val
+         print row.buff
+         print
+         return
+
+add.row:
+         trans.id += 1
+         trans.id = ("0000000":trans.id) "r#7"
+
+         row+=1
+         row.buff=""
+         row.buff<1>=date.val
+         *row.buff<2>=type.val---------------------------------
+         row.buff<2>=desc.val
+         desc.len = len(desc.val)
+         *if trim(desc.val[len(desc.val)-1,1]) = "-" then
+         *mat.val = "-":amt.val
+         *desc.val = desc.val[1, desc.len-1]
+         *end
+         row.buff<4>=amt.val
+         row.buff<5>=bal.val
+         bal.val=field(bal.val, " ", 1)
+         row.buff = change(row.buff, @fm, tab)
+         date.val=""
+         type.val=""
+         desc.val=""
+         amt.val=""
+         bal.val=""
+         buff3<row>=row.buff
+         writeseq date.val,desc.val,amt.val,bal.val to csv.file
+         return
+      end
+
+
+
+

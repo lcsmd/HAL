@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>I-type expressions</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="I-type expressions" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "itypeexpressions.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">I-Type Expressions</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="associations.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_code.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An I-type dictionary record defines a calculation based on data in the data file records. Once an I-type item is defined, it can be referenced in query processor sentences exactly as though it was a real data field. I-type items are sometimes known as <span style="font-weight: bold;">virtual attributes</span>, a term which emphasises the fact that their values are not physically stored in the database.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An I-type dictionary item differs from a <a href="voc_d.htm" class="topiclink">D-type</a> item only in that field 1 contains the type code I and field 2 contains an expression that defines the actual calculation to be performed. The remaining fields are the same as in a D-type entry.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Consider a simple stock management system in which each inventory item has two price figures; the price that we paid to buy the item into the shop and the price that we will charge the customer. If these are defined by dictionary items named COST and SELL, we can calculate the profit we make selling an item with a simple I-type expression:</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SELL - COST</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An I-type expression consists data item names, constants, functions and operators in exactly the same way as a QMBasic expression. Whereas a QMBasic program would refer to variable names, an I-type expression uses field names defined in the file's dictionary. These names may be any data defining type (A, C, D, E, I or S). A field may also be referenced as F<span style="font-style: italic;">n</span> where <span style="font-style: italic;">n</span> is the field number.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Dictionaries migrated to QM from other environments frequently contain data defining items that have hyphens in their names such as CUST-NO. Applying strict QMBasic expression rules to this name would interpret this as calculating the value of CUST minus NO. To allow names of this form, the I-type compiler treats this as a special case and correctly references the CUST-NO item. If CUST and NO were also defined in the dictionary, they take priority in resolving the expression.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Many of the <a href="at_variables.htm" class="topiclink">@­variables</a> used by QMBasic are also available in I-types. The following @-variables are specific to I-types though some can be used by QMBasic programs to set up the working environment for the I-type.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">@ARGS</td><td style="border:none;padding:0">Field mark delimited list of arguments to be passed in to evaluation of an I-type.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">@FILE.NAME</td><td style="border:none;padding:0">The name of the file being processed by the command.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">@FILENAME</td><td style="border:none;padding:0">Synonym for @FILE.NAME.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">@ID</td><td style="border:none;padding:0">The record id of the current record.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">@NB</td><td style="border:none;padding:0">Break level number.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">@NI</td><td style="border:none;padding:0">Item counter.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">@RECORD</td><td style="border:none;padding:0">The data of the record being processed by the command.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Most QMBasic functions are also available in I-type expressions. The following functions are either specific to I-type expressions or modified from their QMBasic form:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;"><a href="qmb_total.htm" class="topiclink">TOTAL()</a></span></td><td style="border:none;padding:0">Accumulate totals for use with the query processor <span style="font-weight: bold;"><a href="calc.htm" class="topiclink">CALC</a></span> keyword.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span></td><td style="border:none;padding:0">Fetch data from another file.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;"><a href="qmb_subr.htm" class="topiclink">SUBR()</a></span></td><td style="border:none;padding:0">Call a QMBasic subroutine.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Just like a QMBasic program, an I-type must be compiled before it can be used. The query processor will do this automatically though I-types can be compiled explicitly using the <span style="font-weight: bold;"><a href="compile_dict.htm" class="topiclink">COMPILE.DICT</a></span> (synonym <span style="font-weight: bold;">CD</span>) command which compiles one or more I-types in a dictionary. The <span style="font-weight: bold;"><a href="modify.htm" class="topiclink">MODIFY</a></span> command also provides facilities to compile I-types when they are edited. The object code is stored in the dictionary record though <span style="font-weight: bold;"><a href="ed.htm" class="topiclink">ED</a></span> and <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> both hide it.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that where one I-type expression uses the result of another, this is handled by a compile time substitution rather than a run time subroutine call. The implication of this is that, if the inner expression is changed, both must be recompiled. The safest way to ensure that everything is consistent is to use the <span style="font-weight: bold;"><a href="compile_dict.htm" class="topiclink">COMPILE.DICT</a></span> command to compile the entire dictionary after editing an I-type that might be used in another expression.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Arguments</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A reference to an I-type in a query processor command may include a comma separated list of numeric or string constants in round brackets after the I-type name. The values of these arguments may be referenced in the I-type expression as $1, $2, etc.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using the QMBasic <span style="font-weight: bold;">ITYPE()</span> function, the argument values may be saved in the @ARGS variable before evaluating the expression.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Compound I-Types</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A compound I-type has multiple elements separated by semicolons, each of which is evaluated in turn, left to right. The value of the first element is stored in an internal variable named @1, the second in @2, and so on. These variables may be referenced in later elements within the compound I-type. The value of the immediately previous element may also be referred to by the symbol @<span style="font-weight: bold;">.</span> The overall value of the I-type is the value of the final expression. QM can nest compound I-types.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of compound I-types can simplify complex expressions. For example, we might want to calculate someone's age in whole years from their date of birth. This is actually more complex than it may at first seem because we need to allow for people born on February 29 or performing the calculation on February 29. It might be written as a two stage compound I-type:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OCONV(DATE(), &quot;D4Y&quot;) - OCONV(DOB, &quot;D4Y&quot;); IF OCONV(@DATE,&quot;DMD&quot;) &gt; OCONV(DOB,&quot;DMD&quot;) THEN @ + 1 ELSE @</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>To simplify editing of compound I-type expressions, the &quot;edit values&quot; mode of both the <span style="font-weight: bold;"><a href="ed.htm" class="topiclink">ED</a></span> and <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> editors can be used to break the expression such that each element appears on a separate line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Working with Dynamic Arrays</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p>The QMBasic language has a large number of functions that work on each element of a multivalued data item in turn. These allow developers to write very elegant solutions to apparently complex tasks without resorting to use of a subroutine with loops. For more details, see <a href="multivalue_functions.htm" class="topiclink">Multivalue Functions</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><a id="itype.modes" class="hmanchor"></a><span class="f_BoldSubheading">Compiler Modes</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An I-type expression can be prefixed by one or more <a href="qmbd_mode.htm" class="topiclink">mode</a> settings separated by semicolons with the same effect as use of these modes in a QMBasic program. The available modes are</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;">$MODE CHANGE.NO.OVERLAP</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;">$MODE COMPATIBLE.APPEND</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;">$MODE COUNT.OVERLAP</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;">$MODE INDEX.OVERLAP</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;">$MODE NOCASE.STRINGS</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;">$MODE TIME.MS</p>
+<p class="p_Normal"><span style="width:48px;display:inline-block">&nbsp;</span>  &nbsp; &nbsp; &nbsp; &nbsp;</p>
+<p class="p_Normal">For example:</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">$MODE INDEX.OVERLAP;INDEX(TEXT, 'AB', 3)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The I-type compiler does not use the $BASIC.OPTIONS record to set default modes.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An I-type expression that is referenced from another I-type cannot include mode settings.</p>
+
+</td></tr></table>
+
+</body>
+</html>

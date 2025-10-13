@@ -1,0 +1,18 @@
+     OPEN 'INVENT' TO INVENT ELSE PRINT 'INVENT';STOP
+
+     SELECT.STR = 'SELECT INVENT WITH VA.LEN < 2'
+
+     PRINT SELECT.STR
+     EXECUTE SELECT.STR CAPTURING CAP
+     PRINT CAP
+     READLIST KEYS THEN
+          KC = DCOUNT(KEYS,@FM)
+          FOR X = 1 TO KC
+               KEY = KEYS<X>
+               READ IBUFF FROM INVENT,KEY THEN
+                    IBUFF<28> = ""
+                    IBUFF<6> = ""
+                    WRITE IBUFF ON INVENT,KEY
+               END
+          NEXT X
+     END

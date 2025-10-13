@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Alternate Key Indices</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Alternate key indices" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "ak.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Alternate Key Indices</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="selectlists.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="triggers.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An <span style="font-weight: bold;">alternate key index</span> provides a method to access data file other than by the primary key (record id).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Consider a file holding information about orders with, for example, 100,000 records in it. For simplicity, assume that these records are made up of 10 orders from each of 10,000 customers. To locate all the orders placed by a specific customer would require all 100,000 records to be processed to find the 10 that we want.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Using an alternate key index on the customer number field of the order records, QM can look up the customer in the index and then go directly to the 10 order records. The application goes 10,000 times faster.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An alternate key index is created using the <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span> command. This defines the index content but does not populate it. The <span style="font-weight: bold;"><a href="build_index.htm" class="topiclink">BUILD.INDEX</a></span> command builds the actual index and activates it. From that point forwards, QM will maintain the index automatically and the query processor will use it automatically where possible. No changes are required to application software.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The functions of the <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span> and <span style="font-weight: bold;"><a href="build_index.htm" class="topiclink">BUILD.INDEX</a></span> commands are combined in the <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Once an index has been built, it is maintained totally automatically by QM such that it is impossible to write or delete a record without the corresponding index updates being applied. It is essential that applications lock records (or the entire file) when writing or deleting in a file that uses indices. If this rule is obeyed, the only situation where it could be possible for an index not to correctly reflect the data in the file is after a power failure or similar event where some data may not have been flushed to disk. In this case, the <span style="font-weight: bold;"><a href="rebuild_all_indices.htm" class="topiclink">REBUILD.ALL.INDICES</a></span> command can be used to rebuild all indices in an account. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The query processor will also use the index totally automatically where it appears relevant. If the query processing speed suggests that it is not using an index where use was expected, the <a href="require_index.htm" class="topiclink">REQUIRE.INDEX</a> keyword can be added to the query. If an index cannot be used, a diagnostic message is displayed to show the reason.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Indices can be built on real data stored in the file (dictionary D-type, A/S-type without a correlative, or E-type) or on calculated values (dictionary C/I-type or A/S-type with a correlative). When using calculated values, it is essential that the expression relies only on data from the file to which the index applies and is not time variant. Thus an index using data retrieved from another file using the <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> function, a T-conversion or a subroutine that performs a read will fail because the index will not be updated if the remote file is modified. Similarly, an index built using a calculation that uses the date or time (age calculated from a date of birth, for example) will fail because the expression does not always return the same output value for the same input. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>These are both examples of the one and only rule that determines whether an index based on a calculated value will work: <span style="font-weight: bold;">The virtual attribute expression must always return the same value when evaluated for the same input data</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When using a C-type index or an I-type that calls a subroutine, the index expression must not cause any write or delete operations to occur in the file to which the index applies.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For an index to be effective, each entry in the index should lead to a very small proportion of the data in the file. Index entries that lead to very large numbers of records are less effective and may also be costly to access or update. The worst case of this is indexing on a simple yes/no value or other data with only two choices.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>As an example, consider a file that uses 10 character record ids has 100,000 records for which the indexed field is null (empty). Internally, the index stores the list of record ids for each indexed value as a dynamic array. The list of record ids for the null indexed value in this example will be 1,100,000 characters, including the separator character between each id. This is stored in the index file on disk in 4kb blocks and hence requires approximately 270 blocks to be read or written for every access to the index every time the index entry is updated. If the application actually has no interest in being able to find the records with the indexed field empty, use of the NO.NULLS keyword when creating the index will omit this index record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A similar situation may arise with fields that have only a few values, some of which are common to many records. Consider for example a sales tracking system in which each sale is represented by a record that includes a status field holding a single letter code representing the state of the sale. Values might be A for accepted, P for in progress, S for shipped, D for delivered and X for cancelled. The application may need to locate the records with a status of A, P or S rapidly and hence use an index, however, the D and X status values indicate that actions for the sale are complete and are not frequently used in record selection. In particular, the majority of records are likely to have a status of D, leading to a very large index record for this status value. It would be possible to index on an I-type value that converts D to a null string and then use the NO.NULLS option but this is likely to be inconvenient in the application design. Instead,QM offers the option of index exclusions where specific values are not recorded in the index. In this example, we might choose to exclude D and X. There would be no index record for these. A query processor command selecting records with a status of D will automatically ignore the index. Index exclusions are specified when using <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span> or <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A file may have up to 32 indices. The more indices there are, the longer it will take to update a record in the data file though this should be outweighed by the advantage of being able to use the indices in queries. Also, it should be remembered that indexing on a multivalued field may require many index entries to be updated when writing a data record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Indices can be deleted using the <span style="font-weight: bold;"><a href="delete_index.htm" class="topiclink">DELETE.INDEX</a></span> command if they are no longer wanted. A report of any or all indices on a file can be produced with the <span style="font-weight: bold;"><a href="list_index.htm" class="topiclink">LIST.INDEX</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A large data import or other process involving extensive updates to a file may run faster with indexing disabled. A subsequent use of <span style="font-weight: bold;"><a href="build_index.htm" class="topiclink">BUILD.INDEX</a></span> may be significantly faster than the time saved by disabling the index because it can process the data in sorted order, optimising the way in which the underlying index structures are built. To enable this mode of operation, use the <span style="font-weight: bold;"><a href="disable_index.htm" class="topiclink">DISABLE.INDEX</a></span> command to turn off the indices, perform the data import or processing, and then use <span style="font-weight: bold;"><a href="build_index.htm" class="topiclink">BUILD.INDEX</a></span> to reconstruct the indices. QM does not support the <span style="font-weight: bold;">ENABLE.INDEX</span> and <span style="font-weight: bold;">UPDATE.INDEX</span> commands found in some other multivalue products as the possibility of enabling the index without reconstructing it means that the index will not reliably reflect the stored data. QM's implementation of <span style="font-weight: bold;"><a href="disable_index.htm" class="topiclink">DISABLE.INDEX</a></span> allows individual indices to be disabled. Also note that while an index is disabled, it will not be used by the query processor.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Index Structure and Case Sensitivity</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Internally, an AK is stored as a balanced tree structure in which the index keys (data field values) are in sorted order. When the index is built in case sensitive mode (the default), the sort order of the indexed data is in accordance with the ASCII character set. Thus an index might contain, in sorted order:</p>
+<p class="p_CodeBody"><span class="f_CodeBody">Lucy</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">MICHAEL</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Mick</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Peter</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">martin</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For languages that use characters from the upper half of the character set (e.g. accented characters), this may not correspond to the conventional way in which the alphabet is sequenced.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An index can also be constructed in case insensitive form. Internally, this is performed by converting the indexed values to uppercase. Thus, the above example would be stored internally as</p>
+<p class="p_CodeBody"><span class="f_CodeBody">LUCY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">MARTIN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">MICHAEL</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">MICK</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">PETER</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Notice how the sort order has also changed. Because of this, a case sensitive index cannot be used to resolve query processor selection clauses that use case insensitive operators and vice versa.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Equivalent Indices</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An index is not identified internally by its name but rather by what it indexes. If two dictionary items have the same type, field number or expression, justification and single/multivalue status an index built on one item can be used in resolving selection criteria for the other. Thus, for example, if a file has two dictionary entries that reference the same date field but display it with a different conversion, and index built using one of the field names is equally applicable to the other. The <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span> and <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span> commands will not allow separate indices to be created for equivalent items.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Changing an Index</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the definition of the indexed data changes as a result of, for example, modifying an I-type expression that derives the indexed value, it is necessary to delete, recreate and build the index. This is because the definition of the index item is stored in the file at the point when the index is created. Subsequently modifying the dictionary will not affect the index. To simplify this process, both the <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span> and <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span> commands have a DELETING option that deletes any old index before creating the new index.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Use of Indices in QMBasic</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A program can determine whether a file has indices by use of the <span style="font-weight: bold;"><a href="qmb_fileinfo.htm" class="topiclink">FILEINFO()</a></span> function with action key FL$AK:</p>
+<p style="margin: 6px 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">IF FILEINFO(FVAR, FL$AK) THEN DISPLAY 'File has indices'</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The names of the indices that exist for a file can be determined using the <span style="font-weight: bold;"><a href="qmb_indices.htm" class="topiclink">INDICES()</a></span> function:</p>
+<p style="margin: 6px 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">NAMES = INDICES(FVAR)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An extended form of the <span style="font-weight: bold;"><a href="qmb_indices.htm" class="topiclink">INDICES()</a></span> function can be used to retrieve the details of a specific index by name:</p>
+<p style="margin: 6px 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">INDEX.DATA = INDICES(FVAR, NAME)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Programmers can gain access to the index itself using the QMBasic <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span> statement and advanced index scanning operations can be performed using <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT</a></span>, <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span>, <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETLEFT</a></span> and <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span> as described below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+<span style="font-weight: bold;">Scanning an Index</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Because the index keys (data field values) are in sorted order, the index can be used to find records where the indexed data field value lies within a specified range of values.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span> statement is used by QMBasic programs to build a select list of records that have a specific value in an indexed field. As a side effect, this operation leaves a pointer into the index structure at the position identified by the value referenced in the <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span>. If there are no records with the requested indexed value, the pointer is left positioned where such a value should go. Thus, if the index contained references to records with indexed values 1, 3, 5 and 7, a <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span> operation to build a list of records with an indexed value of 4 would return an empty list but would leave the index pointer between the entries for 3 and 5.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Alternatively, the <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETLEFT</a></span> or <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span> statements may be used to position the pointer at the extreme left or right of the indexed values.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span> or <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT</a></span> statements can be used to walk through the index, starting at the position of the index pointer and moving to the right (ascending order of indexed value) or left (descending order of indexed value). This operation creates a select list of records with the next indexed value in the direction of the scan.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Thus, to walk through an index from beginning to end in ascending order, a program would use <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETLEFT</a></span> to position at the start of the data and then perform a series of <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT </a></span>operations until no further data is available. For example, if we have an orders file open as ORD.F and there is an index named CUST.NO for the customer number, we could process orders in ascending customer number with a loop such as:</p>
+<p style="margin: 5px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SETLEFT 'CUST.NO' FROM ORD.F</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; SELECTRIGHT 'CUST.NO' FROM ORD.F SETTING CUST</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;READNEXT ORD.ID ELSE EXIT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; REPEAT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">UNTIL STATUS()</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The outer loop walks through the index returning a select list of orders for each customer, also setting CUST to the corresponding customer number. The inner loop processes the orders for the customer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There is a sample QMBasic class module named INDEX.CLS in the BP file of the QMSYS account, catalogued as !INDEX.CLS. This class allows an application to scan an index one record id at a time instead of one indexed value at a time. Full details of its use and internal operation can be found in the source code.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM has partial support for the <span style="font-weight: bold;"><a href="qmb_root.htm" class="topiclink">ROOT</a></span> and <span style="font-weight: bold;"><a href="qmb_key.htm" class="topiclink">KEY</a></span> statements found in other multivalue products. Use of these may simplify migration but it is strongly recommended that the statements described above should be used in new developments.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Partial Key Look-up</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Sometimes it is useful to allow a user to type in a text item and, as each character is entered, display a list of items that start with as much as has been typed. The following code shows the principles behind a subroutine that provides this functionality.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">SUBROUTINE LOOKUP(FVAR, INDEX.NAME, WIDTH)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">* FVAR = file variable of file to search</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">* INDEX.NAME = name of indexed field</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">* WIDTH = maximum number of characters in search value</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">$INCLUDE KEYIN.H</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; CRT @(-1) :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; * Loop around gathering characters for the look-up key</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; KEY = ''</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;DISPLAY @(0,22) : '[' : FMT(KEY, WIDTH:'L') : ']' :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;DISPLAY @(1+LEN(KEY), 22) :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;C = KEYCODEV()</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; UNTIL C = KV$RETURN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; * Terminate at return key</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;BEGIN CASE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; CASE C = KV$BACKSPACE &nbsp; &nbsp; &nbsp; &nbsp; ; * Backspace</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;KEY = KEY[1,LEN(KEY)-1]</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; CASE C &gt;= 32 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; * Data character - add to key</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;IF LEN(KEY) &lt; WIDTH THEN KEY := CHAR(C)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;END CASE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;* Show data matching partial key</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;LN = 2</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;IF LEN(KEY) THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; SELECTINDEX INDEX.NAME, KEY FROM FVAR</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; ACTUAL.KEY = KEY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;IF @SELECTED THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY @(0,LN) : ACTUAL.KEY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; LN += 1</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;END</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SELECTRIGHT INDEX.NAME FROM FVAR SETTING ACTUAL.KEY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; UNTIL STATUS()</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; WHILE ACTUAL.KEY[1, LEN(KEY)] = KEY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; REPEAT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;END</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;* Clear any unused display lines</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;DISPLAY @(0,LN) : @(-3) :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; REPEAT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; RETURN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In the code under the &quot;Show data matching partial key&quot; comment, the SELECTINDEX statement attempts to find a perfect match for the data in the KEY variable, building a select list of records that have that data. As a side effect the SELECTINDEX sets the scan position at the item that it found. If, as is more likely, it does not find a perfect match, an empty select list will be returned and the scan position is set to where the item would have been if it were present.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The loop under the SELECTINDEX then walks through the index until an item is encountered that no longer matches the entered text. On each cycle, it displays the indexed value that has been found.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Index Encryption</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The ENCRYPT option to <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span> or <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span> creates an encrypted index. This is only possible when the data file being indexed uses record level encryption. The same encryption key is used for the indices and the data file. There is a significant performance penalty in using encrypted indices.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">Tracking Sequential Record Ids</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Sometimes an application may build an AK on the primary key. This can be useful where, for example, the ids are not simple sequential numbers. For this discussion, we will imagine a log file for which the record id is a timestamp value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Using a left to right scan loop similar to that above would allow the application to walk through the log records. Instead of terminating the loop when we reach the end of the index data, we could use <span style="font-weight: bold;"><a href="qmb_sleep.htm" class="topiclink">SLEEP</a></span> to pause for a while and then try again. This would allow us to process new records as they are added to the log.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span> positions after the last record in ascending sort order. Instead of scanning the entire log from left to right, we could use <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span> to position at the extreme right and then process only records added after our program starts.</p>
+
+</td></tr></table>
+
+</body>
+</html>

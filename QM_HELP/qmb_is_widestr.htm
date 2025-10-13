@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>IS.WIDESTR()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="IS.WIDESTR()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_is_widestr.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">IS.WIDESTR()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_is_null.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_itype.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">IS.WIDESTR()</span> function determines whether a string contains any wide characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 29px;"><span style="font-weight: bold;">IS.WIDESTR(</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is the string to be tested.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On ECS mode systems,the character maps assign type attributes to each character. The &quot;wide&quot; (or double width) attribute identifies that the associated character occupies two positions on a terminal display or printer. The <span style="font-weight: bold;">IS.WIDESTR()</span> function returns True if the supplied <span style="font-style: italic;">string</span> contains one or more wide characters, False if there are none.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On a non-ECS mode system, the attributes applicable to the members of the 8-bit character set are fixed and there is no concept of a wide character. This function always returns False on such systems.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">INPUT TITLE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF IS.WIDESTR(TITLE) THEN TITLE = SUBSTRDW(TITLE, 1, WIDTH)</span></p>
+<p class="p_Normal">&nbsp;<br />
+The above program fragment gets data from the user terminal and, if it contains wide characters, truncates it to fit in a specific width.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="qmb_is_chartype.htm" class="topiclink">IS.WIDE()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

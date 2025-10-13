@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>GETLIST, GETLISTV</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="GETLIST,GETLISTV" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_getlist.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">GETLIST, GETLISTV</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_get_port_params.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_getlocks.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="page-break-after: avoid; margin: 0 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">GETLIST </span>statement restores a select list from the $SAVEDLISTS file. The <span style="font-weight: bold;">GETLISTV</span> statement is similar but creates a select list variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">GETLIST </span><span style="font-style: italic;">name</span> {<span style="font-weight: bold;">TO</span> <span style="font-style: italic;">list.no</span>} {<span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">count.var</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">GETLISTV </span><span style="font-style: italic;">name</span> <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">list.var</span> {<span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">count.var</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of the $SAVEDLISTS entry to be restored.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">list.no</span></td><td style="border:none;padding:0">is the select list number to which it is to be restored. If omitted, this defaults to zero.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">list.var</span></td><td style="border:none;padding:0">is the select list variable to be created.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">count.var</span></td><td style="border:none;padding:0">is the variable to receive the item count.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statements to be executed depending on the outcome of the operation.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">GETLIST</span> and <span style="font-weight: bold;">GETLISTV</span> statements restore the previously saved select list identified by <span style="font-style: italic;">name</span> from the $SAVEDLISTS file. The disk copy is not removed by this operation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <a href="at_variables.htm#selected" class="topiclink">@SELECTED</a> variable can be examined to determine the number of items in the list. Alternatively, the <span style="font-weight: bold;">SETTING</span> clause can be used to set <span style="font-style: italic;">count.var</span> to this value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present. If the list is successfully restored, the <span style="font-weight: bold;">THEN</span> clause is executed. If the list does not exists or cannot be restored for any other reason, the <span style="font-weight: bold;">ELSE</span> clause is executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_savelist.htm" class="topiclink">SAVELIST</a></span><a href="qmb_savelist.htm" class="topiclink">,</a> <span style="font-weight: bold;"><a href="qmb_writelist.htm" class="topiclink">WRITELIST</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

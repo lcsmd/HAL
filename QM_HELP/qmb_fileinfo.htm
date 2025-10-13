@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FILEINFO()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FILEINFO()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_fileinfo.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FILEINFO()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_file_event.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_filelock.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FILEINFO()</span> function returns information about an open file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FILEINFO(</span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">key</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with the file.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">key</span></td><td style="border:none;padding:0">identifies the action to be performed.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Values for the <span style="font-style: italic;">key</span> to the <span style="font-weight: bold;">FILEINFO()</span> function are defined in the KEYS.H record in the SYSCOM file. These are</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$OPEN</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Check if file is open. Returns True if <span style="font-style: italic;">file.var</span> is associated with an open file, False if it is not.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$VOCNAME</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns the VOC name used to open the file. For a file opened via QMNet, this is the <span style="font-style: italic;">server</span>:<span style="font-style: italic;">account</span>:<span style="font-style: italic;">file</span> form of the file name.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>2</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$PATH</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns pathname of open file.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>3</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$TYPE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>File type. Returns one of</p>
+<p>FL$TYPE.DH (3) - Dynamic file, including data collections</p>
+<p>FL$TYPE.DIR (4) - Directory file</p>
+<p>FL$TYPE.SEQ (5) - Sequential file</p>
+<p>FL$TYPE.VFS (6) - Virtual file system</p>
+<p>FL$TYPE.DIST (7) - Distributed file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>5</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$MODULUS</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>File modulus (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>6</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$MINMOD</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Minimum modulus (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>7</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$GRPSIZE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Group size in multiples of 1024 bytes (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>8</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$LARGEREC</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Large record size (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>9</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$MERGE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Merge load percentage (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>10</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$SPLIT</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Split load percentage (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>11</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$LOAD</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Current load percentage (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>13</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$AK</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>File has AK indices (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>14</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$LINE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Line to read or write next (sequential files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>15</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$PARTS</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Field mark delimited list of part file numbers (distributed files)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1000</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$LOADBYTES</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Current load bytes (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1001</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$READONLY</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns True is file is read-only</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1002</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$TRIGGER</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns trigger function name, null if none</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1003</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$PHYSBYTES</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns total size of file, excluding indices</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1004</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$VERSION</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Internal file version (dynamic files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1005</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$STATS.QUERY</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns True if file statistics gathering is enabled</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1006</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$SEQPOS</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>File position (sequential files only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1007</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$TRG.MODES</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns mode flags for trigger function</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1008</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$NOCASE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns True if the file uses case insensitive ids.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1009</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$FILENO</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns the internal file number for <span style="font-style: italic;">file.var</span>. This may change each time the file is opened.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1011</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$AKPATH</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns the pathname of the alternate key index directory. This is a null string if the indices are in their default location.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1012</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$ID</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns the id of the last record read from the file. Used with a dynamic file that is configured for case insensitive record ids, this will return the actual id as stored in the file, which may differ in casing from that supplied in the associated <span style="font-weight: bold;">READ</span> statement.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1013</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$STATUS</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns a dynamic array as for the <span style="font-weight: bold;">STATUS</span> statement.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1014</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$MARK.MAPPING</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns True if mark mapping is enabled, False if not (directory files).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1015</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$RECORD.COUNT</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns a count of the number of records in the file (dynamic files only). This count may be incorrect if the file was not closed in the event of an abnormal process termination such as a system failure. The counter will be corrected by use of a select operation during which there were no updates to the file or by use of the QMFix utility. The value will be returned as -1 until the count is set or for non-dynamic files.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1016</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$PRI.BYTES</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Physical size of the primary subfile in bytes (dynamic files only). This figure will include space previously used by groups that have been discarded as the result of a merge operation.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1017</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$OVF.BYTES</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Physical size of the overflow subfile in bytes (dynamic files only). This figure will include space previously used by overflow blocks that are no longer active and are retained for future use.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1018</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$NO.RESIZE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Is resizing inhibited on this file? See the description of <a href="dynamicfiles.htm" class="topiclink">dynamic files</a> for more information.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1019</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$UPDATE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns the file update counter. This counter, shared across all users of the file, is initially set to 1 when a file is first opened and is incremented by every write, delete or clear file operation. It can be used to detect whether a file has been updated by another process. </p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1020</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$ENCRYPTED</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns True if the file uses encryption, False otherwise.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1021</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$WHO</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns field mark delimited list of QM user numbers of users that have the file open. The process that executes the <span style="font-weight: bold;">FILEINFO()</span> function will not appear in this list if <span style="font-style: italic;">file.var</span> is the only file variable referencing the file.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1022</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$NETFILE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns True if this is a QMNet file, otherwise returns False.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1023</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$SEQTYPE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Sequential file sub-type:</p>
+<p>FL$SEQTYPE.PORT (1) - Serial port</p>
+<p>FL$SEQTYPE.CHDEV (2) - Character device</p>
+<p>FL$SEQTYPE.FIFO (3) - FIFO</p>
+<p>FL$SEQTYPE.DRIVE (4) - Disk drive or other block device</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1024</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$REPLICATED</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns a field mark delimited list of replication targets.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1025</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$NOMAP</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns True if this is a directory file with character translation of record ids suppressed.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1026</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$ECS</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns True if this is a hashed file created in ECS mode.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1027</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$ECS.MAP.NAME</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns the ECS map name associated with the file.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1028</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$ENCODING</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns the data encoding name for a directory file.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1029</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$LAST.PART</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>Returns the part number returned by the last evaluation of the partitioning algorithm.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1030</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$INDEX.SCAN</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p>File supports index scanning operations (<span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETLEFT</a></span>, <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span>, <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT</a></span>, <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span>). Primarily intended for detection of <a href="virtual_file_system.htm" class="topiclink">VFS handlers</a> that do not provide this functionality.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1031</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$SEQ.KEY</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">Returns the sequential record id associated with this file. Unless the value has been updated using <span style="font-weight: bold;"><a href="qmb_fcontrol.htm" class="topiclink">FCONTROL()</a></span>, this will be the id of the last record written using the CREATING.SEQKEY option of the <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1032</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$NON.TXN</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">Opened with NON.TRANSACTIONAL option?</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1033</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$SYNC</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">Opened with SYNC option (hashed files only)?</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1034</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$ID.CASING</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">If file uses forced id casing, returns &quot;L&quot; or &quot;U&quot; for lowercase / uppercase, otherwise returns a null string.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1035</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$COLLECTION</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">Returns True if the file is a data collection.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1036</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$OWNER</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">Returns the owner of the file (Windows only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1037</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$TEMP</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">Returns true if <span style="font-style: italic;">file.var</span> references a temporary file.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1038</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$TXN.UPDATE</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">Returns True if file is updated in the current transaction.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1039</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$LOCKS</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">Returns a field mark delimited list of locks owned by the current user in this file. Each entry is formed from two values; the lock type code and the record id.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>1040</p>
+</td>
+<td style="vertical-align:top; width:255px; padding:4px; border:none"><p>FL$CONSTRAINTS</p>
+</td>
+<td style="vertical-align:top; width:617px; padding:4px; border:none"><p class="p_Normal">File uses data integrity constraints?</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF FILEINFO(FVAR, FL$TYPE) # FL$TYPE.DH THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ABORT &quot;Dynamic file required&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment checks whether a file variable is associated with a dynamic file and, if not, aborts.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_status_statement.htm" class="topiclink">STATUS</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

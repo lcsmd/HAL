@@ -1,0 +1,86 @@
+      $DEBUG
+      program import.file
+      fmode = ""
+      sent = upcase(@sentence)
+      if index(sent, "DICT", 1) then
+         fmode = "dict"
+         sent = change(sent, " DICT", "")
+      end
+      if index(sent, "DATA", 1) then
+         fmode = "data"
+         sent = change(sent, "DATA", "")
+      end
+      csv.dir = "FLAT.CSV"
+      source.file = upcase(trim(field(sent, " ", 2)))
+      start.num = field(sent,' ',4)
+      if not(num(start.num)) then
+         start.num = field(sent,' ',3)
+         if not(num(start.num)) then start.num = 0
+      end
+      print "startnum:":start.num
+      source.file.csv = source.file:".CSV"
+      dict.file = "DICT,":source.file
+      dict.file.csv = "D_":source.file:".CSV"
+      spath = ""
+      ct=0
+      tab=char(9)
+      buff=""
+
+      *dict
+      if (fmode = "dict" or fmode = "") then
+         spath = upcase("E:\ACCOUNTS\DDI\FLAT.CSV\":dict.file.csv)
+         print "opening ":spath:' to d.seq'
+         openseq spath readonly to d.seq else print 'unable to openseq ':spath;stop
+         print "opening DICT,":SOURCE.FILE:" TO d.filein"
+         open "DICT", source.file to d.filein else print 'unable to open DICT,':source.file;stop
+         ct=0
+         loop while readseq line from d.seq do
+            ct+=1
+            buff = change(line, tab, @fm)
+            key = buff<1>
+            del buff<1>
+            if right(key, 2) = '.D' then
+               key = left(key, len(key)-2)
+            end
+            print ct "l#4 ":key
+            write buff on d.filein, key
+         repeat
+         print ct:" items imported into DICT file ":source.file:".DIC"
+      end
+
+      *data
+      if (fmode = "data" or fmode = "") then
+         spath = upcase("E:\ACCOUNTS\DDI\FLAT.CSV\":source.file.csv)
+         print "opening ":spath:' to f.seq'
+         openseq spath readonly to f.seq else print 'unable to openseq ':spath;stop
+         print "opening ":SOURCE.FILE:" TO f.filein"
+         open source.file to f.filein else print 'unable to open ':source.file.csv;stop
+         ct=0
+         readseq data.header from f.seq else data.header = ""
+         print "start.num:":start.num
+         if start.num then
+            loop while readseq junk from f.seq do
+               ct+=1
+               if not(mod(start.num,1000)) then print "skippping ":start.num
+               start.num -= 1
+            until start.num = 0
+            repeat
+         end
+         loop while readseq line from f.seq do
+            ct+=1
+            buff = change(line, tab, @fm)
+            buff = change(buff,",",@fm)
+            buff = change(buff, "^|", @vm)
+            buff = change(buff, "^~", @svm)
+            key = buff<1>
+            del buff<1>
+            if key then
+               write buff on f.filein,key
+            end
+            if not(mod(ct, 1000)) then print ct:"   ":key:"   ":buff
+         repeat
+         print ct:" items imported into file":source.file
+      end
+
+      stop
+

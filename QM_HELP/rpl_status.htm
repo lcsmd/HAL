@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>RPL.STATUS</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="RPL.STATUS" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "rpl_status.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">RPL.STATUS</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="rpl_pause.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="run.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RPL.STATUS</span> command displays a summary of the replication system status.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">RPL.STATUS</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">RPL.STATUS</span> command is normally only present in the VOC of the QMSYS account but it can be copied to other accounts if needed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The report produced by this command has two sections:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The first section shows information relating to the system as a publisher. This is the settings of the <a href="configparams.htm#repldir" class="topiclink">REPLDIR</a> and <a href="configparams.htm#replport" class="topiclink">REPLPORT</a> configuration parameters followed by a list of the servers to which data is being published. A system is shown if there is a replication log directory for that server. Where a system is no longer used as a replication target, it will continue to be shown until the replication log directory is deleted. For each system, the report shows it as active (subscriber phantom on the remote system is running) or inactive (subscriber phantom not running). It will also show a warning if there is a backlog of replication updates.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The second section shows information relating to the system as a subscriber. This is the setting of the <a href="configparams.htm#replsrvr" class="topiclink">REPLSRVR</a> configuration parameter followed by a list of the systems from which the local server is subscribing updates. This shows the remote server name and the QM user number of the subscriber phantom.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">Information about this system as a publisher</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">--------------------------------------------</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Replication log location (REPLDIR): /media/ssd/repldir</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Listening port (REPLPORT): 4244</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Publishing to:</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; LBS1 (inactive)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; LBS21 (active)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; ZSRVR (active)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span style="width:18px;display:inline-block">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Information about this system as a subscriber</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">---------------------------------------------</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Subscriber server name (REPLSRVR): LBS20</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">Subscribing from:</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; LBS1 (local user 3)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; LBS21 (local user 393)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span><br />
+<a href="replication.htm" class="topiclink">Replication</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

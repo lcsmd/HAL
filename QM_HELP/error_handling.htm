@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Error Handling</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Error handling" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "error_handling.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Error Handling</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="dates_times_and_epoch_values.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmfiles.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM provides a number of ways to trap errors, some applicable to the command environment, some to QMBasic programs. This section summarises the features of QM error handling.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Error Numbers</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM uses a simple system of error numbers to identify the cause of an error. The formal definition of these numbers is in a QMBasic include record named ERR.H in the SYSCOM file. The list can also be found in the <a href="errors.htm" class="topiclink">Error Numbers</a> section of this manual.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The @SYSTEM.RETURN.CODE Variable</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Many commands leave status information in the @SYSTEM.RETURN.CODE variable. The value of this variable can be tested within a paragraph or a QMBasic program to determine whether the command was successful. In general, success is indicated by the value of this variable being zero. Because the query processor uses @SYSTEM.RETURN.CODE to return the number of records processed, error values are usually returned as the negative of the error number.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="report_src.htm" class="topiclink">REPORT.SRC</a></span> command can be used to enable automatic display of the value of @SYSTEM.RETURN.CODE after every command. This is useful as a debugging aid during application development.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The @USER.RETURN.CODE Variable</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">User written programs cannot update @SYSTEM.RETURN.CODE. QM provides a similar variable, @USER.RETURN.CODE, for use in user written programs. This variable starts zero and is never updated by QM itself. It can be set from programs or by use of the <span style="font-weight: bold;"><a href="set.htm" class="topiclink">SET</a></span> command in a paragraph.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The QMBasic STATUS() Function</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Many QMBasic program operations leave status information that can be accessed using the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function. Although often used for error numbers, the data returned by the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS() </a></span>function may have other roles. For example, some operations that attempt to get locks return the user number of the user who owns the lock if the action cannot be completed. Use of the  <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function is documented with the relevant QMBasic statements and functions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The QMBasic OS.ERROR() Function</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where an error reported by QM is related to some underlying error reported by the operating system, the original operating system error code can often be obtained using the <span style="font-weight: bold;"><a href="qmb_os_error.htm" class="topiclink">OS.ERROR()</a></span> function. The QM errors for which this extended error information is available are documented with the relevant QMBasic statements and functions. They are also marked in the SYSCOM ERR.H record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Operating system error numbers vary between platforms and are documented by the operating system vendor.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The QMBasic ON ERROR Clause</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Many QMBasic statements that could fail due to external influence have an optional <span style="font-weight: bold;">ON ERROR</span> clause. This would be executed, for example, when attempting to write to a file for which the user does not have write access.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default action of QM to this type of error if no <span style="font-weight: bold;">ON ERROR</span> clause is present is to abort the program with a suitable diagnostic message. The <span style="font-weight: bold;">ON ERROR</span> clause allows the program to catch this error and handle it internally instead of aborting.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Very few programs ever need to use the <span style="font-weight: bold;">ON ERROR</span> clause. It is only applicable in situations where the program can take some meaningful action to recover from the error. The default action of QM is usually appropriate and informative. A program that simply uses the <span style="font-weight: bold;">ON ERROR</span> clause to abort is likely to produce a less helpful diagnostic message than would have been displayed without this clause.</p>
+
+</td></tr></table>
+
+</body>
+</html>

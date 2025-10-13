@@ -1,0 +1,181 @@
+     SUBROUTINE PRICE.ROLLUP.SUB (F.PRODUCT, F.PROD.LINE, F.PRICE.GROUP, PNO, PROD.B, NEW.B, XMISC)
+     !
+     !                                XMISC<1> = 1 Save Roll-Up History
+     !                                           0/'' No Update
+     INCLUDE UTLSBP ASSIGN.VAR
+     !
+     F = ''
+     OPEN 'PRICE.ROLLUP' TO F.PRICE.ROLLUP ELSE F = F:',PRICE.ROLLUP'
+     !
+     IF F # '' THEN PRINT FILE.ERRORS:F:BCK:; INPUT NL; STOP
+     !
+     NEW.B = PROD.B
+     READ ORIG.B FROM F.PRODUCT, PNO ELSE ORIG.B = ''
+     !
+     ! DETERMINE IF ROLLUP ID BASED ON PRICE GROUP OR PRODUCT LINE
+     !
+     ROLLUP.B = ''
+     OVRD = FALSE
+     FOR I = 1 TO 8
+          IF PROD.B<161,1,I> # '' THEN OVRD = TRUE
+     NEXT I
+     IF OVRD THEN
+          ROLLUP.B = PROD.B<161>
+          ROLLUP.B = CHANGE(ROLLUP.B,IVM,IAMC)
+          ROLLUP.B = CHANGE(ROLLUP.B,ISVM,IVM)
+     END ELSE
+          IF PROD.B<180> THEN
+               RID = "|":PROD.B<180>
+               READ ROLLUP.B FROM F.PRICE.ROLLUP,RID ELSE ROLLUP.B = ""
+          END
+          IF NOT(ROLLUP.B) THEN
+               IF PROD.B<26> # '' & PROD.B<112> # '' THEN
+                    RID = PROD.B<26>:'|':PROD.B<112>
+                    READ ROLLUP.B FROM F.PRICE.ROLLUP, RID ELSE ROLLUP.B = ''
+               END
+               IF ROLLUP.B = '' THEN
+                    RID = '|':PROD.B<112>
+                    READ ROLLUP.B FROM F.PRICE.ROLLUP, RID ELSE
+                         RID = PROD.B<26>:'|'
+                         READ ROLLUP.B FROM F.PRICE.ROLLUP, RID ELSE
+                              USE.FIRST.3 = OCONV('PRICE.ROLLUP.USE.FIRST.3','TCONTROL;X;1;1')
+                              IF USE.FIRST.3 = 'Y' THEN
+                                   RID = '|':PROD.B<112>[1,3]
+                                   READ ROLLUP.B FROM F.PRICE.ROLLUP, RID ELSE ROLLUP.B = ''
+                              END ELSE ROLLUP.B = ''
+                         END
+                    END
+               END
+          END
+     END
+     !
+     ! GROUP SEQ OF EVENTS
+     !
+     PRICE.EVENT.CLMS = '3ý62ý122ý124ý13ý64ý66ý126'
+     ALL.PRICE.CLMS = 'C1ýC2ýC3ýC4ýC5ýC6ýC7ýL1ýL2ýL3ýL4'
+     ALL.PRICE.CLMS<2> = '3ý5ý19ý62ý120ý122ý124ý13ý64ý66ý126'
+     ALL.PRICE.CLMS<3> = '4ý6ý54ý63ý121ý123ý125ý14ý65ý67ý127'
+     EVENTS = DCOUNT(ROLLUP.B<1>,CHAR(253)); EVENT.B = ''; CTR = 0
+     LOOP
+          CTR = CTR + 1
+     WHILE CTR LE EVENTS DO
+          IF ROLLUP.B<1,CTR> # '' THEN
+               LOCATE ROLLUP.B<1,CTR> IN EVENT.B<1> BY 'AR' SETTING VM ELSE NULL
+               CLM = PRICE.EVENT.CLMS<1,CTR>
+               INS ROLLUP.B<1,CTR> BEFORE EVENT.B<1,VM>; * Event Seq#
+               INS CLM BEFORE EVENT.B<2,VM>; * Price Clm Update
+               INS ROLLUP.B<3,CTR> BEFORE EVENT.B<3,VM>; * Base Column
+               INS ROLLUP.B<4,CTR> BEFORE EVENT.B<4,VM>; * +/-
+               INS ROLLUP.B<5,CTR> BEFORE EVENT.B<5,VM>; * %/$
+               INS ROLLUP.B<6,CTR> BEFORE EVENT.B<6,VM>; * Amount
+          END
+     REPEAT
+     EVENTNO = 10
+     ALL.EVENT.CLMS = DCOUNT(PRICE.EVENT.CLMS<1>,CHAR(253)); CTR = 0
+     LOOP
+          CTR = CTR + 1
+     WHILE CTR LE ALL.EVENT.CLMS DO
+          ATTR.CLM = PRICE.EVENT.CLMS<1,CTR>
+          LOCATE ATTR.CLM IN EVENT.B<2> SETTING VM ELSE
+               LOCATE ATTR.CLM IN ALL.PRICE.CLMS<2> SETTING VM THEN
+                    CLM = ALL.PRICE.CLMS<1,VM>
+                    EVENTNO = EVENTNO + 1
+                    EVENT.B<1,-1> = EVENTNO
+                    EVENT.B<2,-1> = ATTR.CLM
+                    EVENT.B<3,-1> = CLM
+                    EVENT.B<4,-1> = '='
+                    EVENT.B<5,-1> = ' '
+                    EVENT.B<6,-1> = ' '
+               END
+          END
+     REPEAT
+     !
+     ! UPDATE PRICE COLUMNS IN EVENT SEQ
+     !
+     CHANGE = FALSE
+     EVENTS = DCOUNT(EVENT.B<1>,CHAR(253)); CTR = 0
+     LOOP
+          CTR = CTR + 1
+     WHILE CTR LE EVENTS DO
+          LOCATE EVENT.B<3,CTR> IN ALL.PRICE.CLMS<1> SETTING VM THEN
+               BASE.ATTR = ALL.PRICE.CLMS<2,VM>
+               LOCATE EVENT.B<2,CTR> IN ALL.PRICE.CLMS<2> SETTING VM THEN
+                    RSLTAMT.ATTR = ALL.PRICE.CLMS<2,VM>
+                    RSLTDTE.ATTR = ALL.PRICE.CLMS<3,VM>
+                    SIGN = EVENT.B<4,CTR>
+                    TYPE = EVENT.B<5,CTR>
+                    AMOUNT = EVENT.B<6,CTR>
+                    VALUE = 99999
+                    IF SIGN = '=' THEN NEW.B<RSLTAMT.ATTR> = PROD.B<RSLTAMT.ATTR> ELSE
+                         IF TYPE = '$' THEN
+                              VALUE = AMOUNT
+                              IF NOT(OVRD) THEN VALUE = VALUE * 100
+                         END ELSE
+                              VALUE = INT(OCONV(NEW.B<BASE.ATTR>,'MD4') * AMOUNT)
+                              IF OVRD THEN VALUE = VALUE / 100
+                         END
+                         IF SIGN = '+' THEN
+                              NEW.B<RSLTAMT.ATTR> = NEW.B<BASE.ATTR> + VALUE
+                         END ELSE NEW.B<RSLTAMT.ATTR> = NEW.B<BASE.ATTR> - VALUE
+                    END
+                    IF NEW.B<RSLTAMT.ATTR> + 0 # ORIG.B<RSLTAMT.ATTR> + 0 THEN
+                         UPD.DATE = DATE()
+                    END ELSE UPD.DATE = PROD.B<RSLTDTE.ATTR>
+                    NEW.B<RSLTDTE.ATTR> = UPD.DATE
+                    IF NEW.B<41>="T" AND RSLTAMT.ATTR="124" THEN
+                         NEW.B<124>=PROD.B<124>
+                         NEW.B<125>=PROD.B<125>
+                    END
+                    *LCS ABOVE 4 LINES
+                    IF NEW.B<RSLTAMT.ATTR> + 0 # ORIG.B<RSLTAMT.ATTR> + 0 THEN CHANGE = TRUE
+                    IF NEW.B<RSLTAMT.ATTR> + 0 = 0 THEN
+                         IF PROD.B<RSLTDTE.ATTR> = '' THEN
+                              NEW.B<RSLTAMT.ATTR> = ''
+                              NEW.B<RSLTDTE.ATTR> = ''
+                         END
+                    END
+                    IF CHANGE & XMISC<1> THEN
+                         LOCATE DATE()-1 IN NEW.B<128> BY 'DR' SETTING RVM ELSE
+                              FOR I = 128 TO 136
+                                   INS '' BEFORE NEW.B<I,RVM>
+                              NEXT I
+                              INS '' BEFORE NEW.B<142,RVM>
+                              *LCS
+                         END
+                         NEW.B<128,RVM> = DATE() - 1
+                         NEW.B<129,RVM> = ORIG.B<3>; * Prior C1
+                         NEW.B<130,RVM> = ORIG.B<62>; * Prior C4
+                         NEW.B<131,RVM> = ORIG.B<122>; * Prior C6
+                         NEW.B<132,RVM> = ORIG.B<124>; * Prior C7
+                         NEW.B<133,RVM> = ORIG.B<13>; * Prior L1
+                         NEW.B<134,RVM> = ORIG.B<64>; * Prior L2
+                         NEW.B<135,RVM> = ORIG.B<66>; * Prior L3
+                         NEW.B<136,RVM> = ORIG.B<126>; * Prior L4
+                         NEW.B<142,RVM> = ORIG.B<141>; * Prior Price Source
+                         *LCS
+                    END
+               END
+          END
+     REPEAT
+     IF CHANGE & XMISC<1> THEN
+          PRIOR.INFO = FALSE
+          CTR = 128
+          LOOP
+               CTR = CTR + 1
+          WHILE CTR LE 136 & NOT(PRIOR.INFO) DO
+               IF NEW.B<CTR,RVM> # '' THEN PRIOR.INFO = TRUE
+          REPEAT
+          IF NEW.B<142,RVM> # '' THEN PRIOR.INFO = TRUE
+          *LCS
+          IF NOT(PRIOR.INFO) THEN
+               FOR I = 128 TO 136
+                    DEL NEW.B<I,RVM>
+               NEXT I
+               DEL NEW.B<142,RVM>
+               *LCS
+          END
+     END
+     !
+     ! RETURN TO CALLING PROGRAM
+     !
+     RETURN

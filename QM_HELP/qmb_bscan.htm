@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>BSCAN</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="BSCAN" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_bscan.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">BSCAN</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_break_count.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_call.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal" style="text-align: center;">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">BSCAN</span> statement provides a method to scan an alternate key index. It is provided for compatibility with another multivalue product and is best replaced by use of <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETLEFT</a></span>, <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span>, <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT </a></span>and <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">BSCAN</span> <span style="font-style: italic;">indexed.value</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">ids</span>} <span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">fvar</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">value</span>} <span style="font-weight: bold;">USING</span> <span style="font-style: italic;">index</span> {<span style="font-weight: bold;">RESET</span>} {<span style="font-weight: bold;">BY</span> <span style="font-style: italic;">seq</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 33px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:63px"><span style="font-style: italic;">indexed.value</span></td><td style="border:none;padding:0">is the variable to receive the indexed value of the index entry found.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 33px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:63px"><span style="font-style: italic;">ids</span></td><td style="border:none;padding:0">is the variable to receive the list of ids for the index entry.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 33px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:63px"><span style="font-style: italic;">fvar</span></td><td style="border:none;padding:0">is the file variable for the data file.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 33px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:63px"><span style="font-style: italic;">value</span></td><td style="border:none;padding:0">is the indexed value to be located. If omitted, the BSCAN statement moves to the next indexed value in the direction specified in the BY clause.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 33px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:63px"><span style="font-style: italic;">index</span></td><td style="border:none;padding:0">is the name of the index to be scanned.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 33px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:63px"><span style="font-weight: bold;">RESET</span></td><td style="border:none;padding:0">causes <span style="font-weight: bold;">BSCAN</span> to position at the extreme left or right of the index depending on the BY clause.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 33px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:63px"><span style="font-style: italic;">seq</span></td><td style="border:none;padding:0">is &quot;A&quot; (ascending) to scan left to right or &quot;D&quot; (descending) to scan right to left. If omitted, ascending is used by default.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present. The <span style="font-weight: bold;">THEN</span> clause will be executed if the action is successful. The <span style="font-weight: bold;">ELSE</span> clause will be executed at an error and the value of the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will provide further information regarding the cause of the failure.</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:48px">0</td><td style="border:none;padding:0">The scan has reached the end of the index. <span style="font-style: italic;">indexed.value</span> and <span style="font-style: italic;">ids</span> are returned as null strings.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:48px">1</td><td style="border:none;padding:0">An index entry was found. The indexed value will be in <span style="font-style: italic;">indexed.value</span> and <span style="font-style: italic;">ids</span> will be a list of data file record ids for that indexed value.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:48px">2</td><td style="border:none;padding:0">No index entry with the given <span style="font-style: italic;">value</span> was found.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:48px">3</td><td style="border:none;padding:0">Inappropriate file type.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:48px">4</td><td style="border:none;padding:0">Index does not exist.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:48px">5</td><td style="border:none;padding:0"><span style="font-style: italic;">seq</span> is not A or D.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:48px">10</td><td style="border:none;padding:0">Some other unspecified error has occurred.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If <span style="font-style: italic;">value</span> is specified, the <span style="font-weight: bold;">BSCAN</span> operation positions at that value in the index or, if there is no index entry for the value, at the position where it would have been. The nearest index entry in the scan order is returned.</p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

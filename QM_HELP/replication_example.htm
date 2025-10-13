@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Replication Example</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "replication_example.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Replication Example</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="replication.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qm_commands.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This example gives a step by step guide to setting up a simple replication system. It is based on the simple sales processing database created by the <span style="font-weight: bold;"><a href="setup_demo.htm" class="topiclink">SETUP.DEMO</a></span> command, creating a reporting server that mirrors the data from the STORE account on the live production system. Pathnames below are as appropriate for a Linux system but can be substituted with Windows pathnames.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><img alt="Replication" width="750" height="285" style="margin:0;width:750px;height:285px;border:none" src="replication.png"/></p>
+<p class="p_Normal"><span style="font-size: 12pt; font-weight: bold; color: #993300;">The Reporting Server - Part 1</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">1. The reporting server should be set up with a copy of the STORE account from the live server, typically by restoring a backup.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">2. Use EDIT.CONFIG or a text editor to set the NETFILES configuration parameter to allow incoming QMNet connections and set REPLSRVR to the name that will be used by the live server to reference the reporting server.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">NETFILES=2</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">REPLSRVR=REPORTING</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">3. Restart QM.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-size: 12pt; font-weight: bold; color: #993300;">The Live Server</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">1. Log to the QMSYS account</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LOGTO QMSYS</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">2. Add a QMNet server definition that allows access to the reporting server using the server name set in the REPLSRVR parameter above.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">SET.SERVER REPORTING</span></p>
+<p class="p_Normal">Enter appropriate network and user authentication details.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">3. Use EDIT.CONFIG or a text editor to add the REPLDIR configuration parameter that identifies where replication log files will be stored.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">REPLDIR=/usr/replication</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">4. Restart QM.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">5. Log to the account holding the files to be published.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LOGTO STORE</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">6. Publish the data files that are to be replicated</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">PUBLISH STOCK REPORTING:STORE:STOCK</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">PUBLISH SALES REPORTING:STORE:SALES</span></p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">PUBLISH CUSTOMERS REPORTING:STORE:CUSTOMERS</span></p>
+<p class="p_Normal">If many files are to be published, use of the PUBLISH.ACCOUNT command will be simpler.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">7. If the files to be published may have changed on the live server since the copy was created on the reporting server, copy the current versions of these files across.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">8. Ensure that the port to be used by replication (set by REPLPORT parameter on the reporting server, default 4244) is open in any firewall.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-size: 12pt; font-weight: bold; color: #993300;">The Reporting Server - Part 2</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">1. Determine the user name to be used for the subscriber phantom process. This user must have full access to all files that are being updated by the replication process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">2. Ensure that any subroutines called from I-type dictionary items used by alternate key indices on replicated files are either globally catalogued or catalogued within the QMSYS account.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">3. Use the AUTHKEY command in the QMSYS account to form the encrypted password for this user.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">AUTHKEY </span><span class="f_CodeTopLine" style="font-style: italic;">password</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">4. Use EDIT.CONFIG or a text editor to add a STARTUP configuration parameter that will start the subscriber phantom automatically whenever QM is started.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">STARTUP=SUBSCRIBE 123.123.123.123 </span><span class="f_CodeTopLine" style="font-style: italic;">username</span><span class="f_CodeTopLine"> ENCR:</span><span class="f_CodeTopLine" style="font-style: italic;">password</span></p>
+<p class="p_Normal">where <span style="font-style: italic;">123.123.123.123</span> is the network address or name of the live server, <span style="font-style: italic;">username</span> is the user name for the subscriber phantom and <span style="font-style: italic;">password</span> is the encrypted password.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">5. Either restart QM or start the subscriber phantom manually using the command from the STARTUP configuration parameter above.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">All updates to published files on the live system should now be applied automatically to the same files on the reporting server.</p>
+
+</td></tr></table>
+
+</body>
+</html>

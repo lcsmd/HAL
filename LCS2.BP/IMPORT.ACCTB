@@ -1,0 +1,50 @@
+     INCLUDE FILE.EQU TRANS.EQ
+     FILE.LIST = "RULES,TRANS,ACCOUNTS"
+     FILE.LIST = CHANGE(FILE.LIST,",",@FM)
+     FILE.CT = DCOUNT(FILE.LIST,@FM)
+     FOR F.X = 1 TO FILE.CT
+          FILE.NAME = FILE.LIST<F.X>
+          GOSUB IMPORT.FILE:
+     NEXT F.X
+     PRINT "FINISHED"
+     STOP
+
+IMPORT.FILE:
+     OPENSEQ 'CSV',FILE.NAME:'.TXT' TO S.FILE ELSE PRINT 'CSV,':FILE.NAME:'.TXT';STOP
+     OPEN FILE.NAME TO F.FILE ELSE PRINT FILE.NAME;STOP
+     DOS.CMD = 'CLEAR-FILE DATA ':FILE.NAME
+     PRINT DOS.CMD
+     EXECUTE DOS.CMD
+     LOOP
+     WHILE READSEQ LINE FROM S.FILE DO
+          FILE.B = CHANGE(LINE,CHAR(9),@FM)
+          FILE.ID = FILE.B<1>
+          DEL FILE.B<1>
+          IF FILE.ID > "" THEN
+               IF FILE.NAME = 'RULES' THEN 
+                    FILE.ID += 1000
+               IF FILE.NAME = 'TRANS' THEN
+                    GOSUB TRANS:
+               END ELSE
+                    WRITE FILE.B ON F.FILE,FILE.ID
+               END
+               PRINT FILE.ID:" ":FILE.B
+          END
+     REPEAT
+
+     RETURN
+
+TRANS:
+     TR.B = FILE.B
+     *TR.AMT = ICONV(TR.AMT,'MD2')
+     *TR.CREDIT = ICONV(TR.CREDIT,'MD2')
+     *TR.DEBIT = ICONV(TR.DEBIT,'MD2')
+     TR.MONTH = TR.DATE[1,2]
+     TR.YEAR = TR.DATE[7,4]
+     TR.PER.ID = TR.YEAR:TR.MONTH
+     *TR.DATE = ICONV(TR.DATE,"D4")
+*DEBUG
+     WRITE TR.B ON F.FILE,FILE.ID
+     PRINT FILE.ID
+     *IF TRANS.ID TRANS.ID += 1
+     RETURN

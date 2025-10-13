@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ITYPE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ITYPE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_itype.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ITYPE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_is_widestr.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_jbuild.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ITYPE()</span> function executes a compiled I or C-type dictionary record or an A or S-type with a correlative. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ITYPE(</span><span style="font-style: italic;">itype</span><span style="font-weight: bold;">)</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">itype</span></td><td style="border:none;padding:0">is a previously compiled record read from a dictionary. </td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ITYPE()</span> function evaluates expression compiled as part of the given I-type dictionary record and returns its result. C-type and A/S-type records with correlatives can also be evaluated using this function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The working environment for the <span style="font-weight: bold;">ITYPE()</span> function must be established by setting <a href="at_variables.htm#id" class="topiclink">@ID</a> to the key of the record being processed and <a href="at_variables.htm#record" class="topiclink">@RECORD</a> to the record data if these are used by the expression. These variables are also used internally by the query processor to store the id and data for the current record. If the expression evaluated by the <span style="font-weight: bold;">ITYPE()</span> function calls a subroutine that modifies these variables, the original values must be saved and reinstated if the dictionary item is to be usable within the query processor.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An I-type expression can reference argument values as $1, $2, etc. Values may be set via a qualifier to the I-type name in a query command or programmatically by setting the @ARGS variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The dictionary record must have been compiled before the <span style="font-weight: bold;">ITYPE()</span> function is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the byte ordering of the object code in the <span style="font-style: italic;">itype</span> variable is not the same as that of the machine on which it is being executed, it will be converted automatically and the <span style="font-style: italic;">itype</span> variable will be modified to contain the converted object code so that a subsequent call to the <span style="font-weight: bold;">ITYPE()</span> function will not repeat the conversion.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ITYPE()</span> function can also be used to evaluate D-type items and A or S type items that do not include a correlative. Although the performance of this use of the function will be significantly lower than simple field extraction in the calling program, it may allow some programs that do not require best performance to adopt a generalised interface for all dictionary record types that define data item values.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">READ IREC FROM DICT.FILE, &quot;AGE&quot; THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; @RECORD = REC</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; AGE = ITYPE(IREC)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment reads dictionary record &quot;AGE&quot; to IREC. This might, perhaps, be an I-type to calculate a person's age from their date of birth. The <a href="at_variables.htm#record" class="topiclink">@RECORD</a> variable is set to the data to be processed and the <span style="font-weight: bold;">ITYPE()</span> function is used to execute the I-type.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span><br />
+<span style="font-weight: bold;"><a href="qmb_evaluate.htm" class="topiclink">EVALUATE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

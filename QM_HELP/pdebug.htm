@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>PDEBUG</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="PDEBUG" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "pdebug.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">PDEBUG</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="pause.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="pdump.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PDEBUG</span> command runs the phantom debugger.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">PDEBUG</span> {<span style="font-style: italic;">command</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">PDEBUG USER</span> <span style="font-style: italic;">userno</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">command</span></td><td style="border:none;padding:0">is the command to be executed by the phantom process.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">userno</span></td><td style="border:none;padding:0">is the QM user number of the phantom process to be debugged.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PDEBUG</span> command allows debugging of a QMBasic program in a phantom or QMClient process using the same debugger interface as for foreground processes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first form of the <span style="font-weight: bold;">PDEBUG</span> command waits for a phantom or QMClient process running in the same account and as the same user name to attempt to enter the debugger. At that point, the process executing the <span style="font-weight: bold;">PDEBUG</span> command will enter the <a href="qmb_debugger.htm" class="topiclink">QMBasic debugger</a> and can use this in the usual way except that it is not possible to view the application screen because a phantom process is not associated with a terminal device.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The phantom process to be debugged may be started separately or by use of the <span style="font-style: italic;">command</span> option to the <span style="font-weight: bold;">PDEBUG</span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The second form of the <span style="font-weight: bold;">PDEBUG</span> command forces the phantom process with the specified user number into debug mode. It is equivalent to the application executing a QMBasic <span style="font-weight: bold;"><a href="qmb_debug.htm" class="topiclink">DEBUG</a></span> statement. Actual entry to the phantom debugger will occur when the process next executes a statement in a program compiled in debug mode.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If a phantom process attempts to enter the debugger but there is no <span style="font-weight: bold;">PDEBUG</span> command waiting to trap this situation, the phantom process will normally be terminated. Alternatively, this situation can be trapped as a SYS.PROGRAM.NO_PDEBUG exception in the phantom process. This exception is only thrown if there is a handler to catch it.</p>
+
+</td></tr></table>
+
+</body>
+</html>

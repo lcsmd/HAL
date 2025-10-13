@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Pattern Matching Conversion (P)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Pattern matching conversion (P)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_p.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Pattern Matching Conversion (P)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_nr.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_r.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">P</span> conversion code attempts to match the supplied data against one or more pattern templates</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The full format of this conversion code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">P(</span><span style="font-style: italic;">template</span><span style="font-weight: bold;">)</span>{<span style="font-weight: bold;">;(</span><span style="font-style: italic;">template</span><span style="font-weight: bold;">)</span>...}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">template</span></td><td style="border:none;padding:0">is a pattern template as for the <span style="font-weight: bold;"><a href="patterns.htm" class="topiclink">MATCHES</a></span> operator and must be enclosed in brackets. If more than one <span style="font-style: italic;">template</span> is supplied, they may be separated by semicolons (;) or forward slashes (/).</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">P</span> conversion code tests whether the input data matches <span style="font-style: italic;">template</span>. If a match is found, the original data is returned. If no match is found, a null string is returned.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If more than one <span style="font-style: italic;">template</span> is provided, the input value is tested against each in turn.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A null input value always returns a null result.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="width:400px; border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Conversion</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Data</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">P(3A)</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">123</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">P(3A)</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">ABC</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">ABC</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">P(1-2N)</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">74</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">74</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">P(1-2N)</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">123</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">P(2A);(3N)</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">12</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">P(2A);(3N)</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">AB</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">AB</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">P(2A);(3N)</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">123</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">123</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">P(2A)</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">&nbsp;</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p class="p_Normal" style="margin: 6px 0 0 0;">&nbsp;</p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+</body>
+</html>

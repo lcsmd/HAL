@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>DELIMITER</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="DELIMITER,TO (redirect delimited report)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "delimiter.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">DELIMITER</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="default.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="det_sup.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DELIMITER</span> display option keyword specifies the separating character(s) to be used in a delimited report.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">DELIMITER &quot;</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">&quot;</span> {<span style="font-weight: bold;">TO </span><span style="font-style: italic;">pathname</span> | <span style="font-weight: bold;">AS</span> <span style="font-style: italic;">file id</span><span style="font-style: italic;"> </span>{<span style="font-weight: bold;">ENCODING</span> <span style="font-style: italic;">name</span>}<span style="font-style: italic;"> </span>{<span style="font-weight: bold;">NO.QUERY</span> | <span style="font-weight: bold;">APPENDING</span>}}</p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is the character sequence to be placed between report &quot;columns&quot;.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">pathname</span></td><td style="border:none;padding:0">is the pathname of the file to receive the output.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">file &nbsp;id</span></td><td style="border:none;padding:0">is a filename and record id pair identifying the destination for the output.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A delimited report displays it output as a series of items separated by the given <span style="font-style: italic;">string</span> instead of the usual tabular style of report. The <span style="font-weight: bold;">DELIMITER</span> keyword causes the query processor to produce this style of report and specifies the separator to be used. The output from a delimited report can, for example, be structured with comma separators, sent to a file using the <span style="font-weight: bold;"><a href="lptr.htm" class="topiclink">LPTR</a> </span>keyword and then read into applications such as Microsoft Excel.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">string</span> may contain tab characters by use of the special syntax &quot;&lt;TAB&gt;&quot;. Other non-printing characters can be included by use of the ^<span style="font-style: italic;">nnn</span> notation where <span style="font-style: italic;">nnn</span> is the three digit character number from the ASCII character set.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Multivalued items will be split over multiple lines of delimited output. If an item is defined as single valued in the dictionary (or by use of the <span style="font-weight: bold;"><a href="single_value.htm" class="topiclink">SINGLE.VALUE</a></span> keyword) but the corresponding data contains value marks, the marks are treated as normal data characters and the entire multivalued item, including the embedded value marks, will be output as a single element of the delimited output.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">TO</span> option directs output to an operating system file by pathname. The <span style="font-weight: bold;">AS</span> option directs output to a named record in a QM directory file. If the destination item already exists, the user will be prompted to confirm whether it should be overwritten. The <span style="font-weight: bold;">NO.QUERY</span> option suppresses this prompt, overwriting the existing file. The <span style="font-weight: bold;">APPENDING</span> option causes the output to be appended to the output file if it already exists. The <span style="font-weight: bold;">NO.QUERY</span> and <span style="font-weight: bold;">APPENDING</span> options may not be used together. The optional <span style="font-weight: bold;">ENCODING</span> qualifier can be used to set or override the character encoding for the destination file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of <span style="font-weight: bold;">TO</span> or <span style="font-weight: bold;">AS</span> implies use of <span style="font-weight: bold;"><a href="hdr_sup.htm" class="topiclink">HDR.SUP</a></span> as the output is not paginated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In normal usage, the page heading and record counts would probably need to be suppressed using the <span style="font-weight: bold;"><a href="hdr_sup.htm" class="topiclink">HDR.SUP</a></span> and  <span style="font-weight: bold;"><a href="count_sup.htm" class="topiclink">COUNT.SUP</a></span> keywords. The <span style="font-weight: bold;"><a href="col_sup.htm" class="topiclink">COL.SUP</a></span> keyword can be used to suppress column headings.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES VALUE CUSTOMER.NAME DELIMITER &quot;,&quot; HDR.SUP COL.SUP COUNT.SUP</span></p>
+<p>would produce a display such as that below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">74529,£1712.43,J McTavish</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">74273,£95.23,County Newspapers</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">63940,£141.00,R Bryant</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">74993,£9.29,Write Right Stationery</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES VALUE CUSTOMER.NAME DELIMITER &quot;&lt;tab&gt;&quot; HDR.SUP COUNT.SUP</span></p>
+<p>would produce a display such as that below where the spacing is performed by tab characters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">74529 &nbsp; &nbsp; £1712.43 &nbsp;J McTavish</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">74273 &nbsp; &nbsp; £95.23 &nbsp; &nbsp;County Newspapers</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">63940 &nbsp; &nbsp; £141.00 &nbsp; R Bryant</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">74993 &nbsp; &nbsp; £9.29 &nbsp; &nbsp; Write Right Stationery</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A command such as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LIST SALES ITEM.NO DELIMITER &quot;,&quot;</span></p>
+<p>where ITEM.NO is multivalued might produce a report containing</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">26832,176</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">,218</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">,398</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Modifying the command to be</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LIST SALES ITEM.NO SINGLE..VALUE DELIMITER</span></p>
+<p>would change the output to be</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">16832,176</span><span style="font-size: 6pt;">VM</span><span class="f_CodeSingleLine">218</span><span style="font-size: 6pt;">VM</span><span class="f_CodeSingleLine">398</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>See also: <span style="font-weight: bold;"><a href="csv.htm" class="topiclink">CSV</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

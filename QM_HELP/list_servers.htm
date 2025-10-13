@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LIST.SERVERS</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LIST.SERVERS" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "list_servers.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LIST.SERVERS</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="list_replicated.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="list_term_types.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LIST.SERVERS</span> command shows a list of QMNet and VFS servers known to the system.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LIST.SERVERS</span> {<span style="font-weight: bold;">ALL</span>} {<span style="font-weight: bold;">DETAIL</span>} {<span style="font-weight: bold;">LPTR</span> {<span style="font-style: italic;">n</span>}}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMNet allows an application to access QM data files on other servers as though they were local files, with complete support for concurrency control via file and record locks. Public servers are visible to all users and are defined by the system administrator using the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> command. Private servers are defined using <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.PRIVATE.SERVER</a></span> and are local to the QM session in which they are defined.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The Virtual File System (VFS) allows an application to access other file systems as though they were local files. VFS servers are visible to all users and are defined by the system administrator using the <span style="font-weight: bold;"><a href="set_vfs_server.htm" class="topiclink">SET.VFS.SERVER</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LIST.SERVERS</span> command displays a list of the server names that have been defined and to which the user has access. It shows the QM name for the server, the IP address or network name, the port number, the security status, and the user name that will be used to connect. For a VFS server, the VFS handler name is also shown.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The security status column, applicable only to public servers, indicates whether specific security rules have been set for this server. See the <span style="font-weight: bold;"><a href="admin_server.htm" class="topiclink">ADMIN.SERVER</a></span> command for more details.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ALL</span> option, available only to users with administrative rights, includes servers to which the user has no access.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DETAIL</span> keyword, available only to users with administrative rights, extends the report to show the users/groups that have access for each remote user name. This report needs a screen width of at least 120 characters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LPTR</span> keyword directs the report to a printer. If the unit number <span style="font-style: italic;">n</span> is not given, the default printer (unit 0) is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST.SERVERS</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Public Servers.. &nbsp;IP address.............. &nbsp;Port... &nbsp;Sec &nbsp;User name...........</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">SALES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 193.100.13.11 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Default &nbsp;No &nbsp; martin</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">ADMIN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 193.100.13.18 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4000 &nbsp; &nbsp; Yes &nbsp;root</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Private Servers. &nbsp;IP address.............. &nbsp;Port... &nbsp;Sec &nbsp;User name...........</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">HR &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;193.100.13.41 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Default &nbsp; &nbsp; &nbsp; tony</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="virtual_file_system.htm" class="topiclink">The Virtual File System</a>, <a href="qmnet.htm" class="topiclink">QMNet</a>, <span style="font-weight: bold;"><a href="admin_server.htm" class="topiclink">ADMIN.SERVER</a></span>, <span style="font-weight: bold;"><a href="delete_server.htm" class="topiclink">DELETE.SERVER</a></span>, <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

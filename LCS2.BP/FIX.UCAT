@@ -1,0 +1,93 @@
+      DEFFUN STRIP.NG(DESC)
+
+      INCLUDE FILE.EQU I2.KEYS.EQ
+      LM=0
+      OPEN 'I2.KEYS' TO I2.KEYS ELSE PRINT 'I2.KEYS' ; STOP
+      OPEN 'I2.PRODUCT' TO I2.PRODUCT ELSE PRINT I2.PRODUCT;STOP
+      OPEN 'PRODUCT' TO PRODUCT ELSE PRINT 'PRODUCT';STOP
+      OPEN 'TS.VEND' TO TS.VEND ELSE PRINT 'TS.VEND';STOP
+
+      SELECT I2.KEYS
+      CT=0
+      UCT=0
+      LOOP
+         CT+=1
+         P_G=""
+         UCAT=""
+         UCAT1=""
+         UCAT2=""
+         UCAT3=""
+         UCAT4=""
+         UCAT5=""
+         SOUNDEX=""
+      WHILE READNEXT I2.K DO
+         VEND = ""
+         CATNUM=""
+         CATNUM_S = ""
+         READ I2.B FROM I2.KEYS,I2.K THEN
+            I2.BO = I2.B
+            IF (LM OR NOT(MOD(CT,100))) THEN PRINT CT:"::":I2.B
+            PSVNO = I2.B<10>
+            PNO = I2.B<9>
+            UPC = I2.B<5>
+            IF UPC THEN
+               VEND = UPC[1,6]
+            END
+            IF PSVNO THEN
+               READ LIB.B FROM I2.PRODUCT,PSVNO THEN
+                  IF NOT(VEND) THEN VEND = LIB.B<4>
+                  IF NOT(CATNUM) THEN CATNUM = LIB.B<22>
+               END
+            END
+            IF PNO THEN READ PROD.B FROM PRODUCT,PNO THEN
+               IF NOT(VEND) THEN VEND=PROD.B<18>[1,6]
+               IF PROD.B<112> THEN P_G = PROD.B<112>[1,3]
+               IF NOT(CATNUM) THEN
+                  CATNUM = FIELD(PROD.B<1>," ",2)
+                  IF NOT(CATNUM) THEN CATNUM = PROD.B<1>
+               END
+            END
+            IF NOT(P_G) THEN
+               IF VEND THEN
+                  READV P_G FROM TS.VEND,VEND,3 ELSE
+                     IF I2.B<7> THEN
+                        P_G = I2.B<7>[1.3]
+                     END
+                  END
+               END
+            END
+            IF I2.B<6> THEN
+               IF NOT(CATNUM) THEN CATNUM = I2.B<6>
+            END
+            IF CATNUM THEN CATNUM_S = STRIP.NG(CATNUM)
+            FIRST = P_G[1,1]
+            UCAT1 = P_G:CATNUM
+            IF CATNUM_S THEN UCAT2 = P_G:CATNUM_S ELSE UCAT2 = ""
+            UCAT3 = FIRST:CATNUM
+            IF CATNUM_S THEN UCAT4 = FIRST:CATNUM_S ELSE UCAT4 = ""
+            UCAT5 = CATNUM_S
+            UCAT = UCAT3
+            SOUNDEX = SOUNDEX(UCAT)
+            I2.B<36> = UCAT
+            I2.B<37> = UCAT1
+            I2.B<38> = UCAT2
+            I2.B<39> = UCAT3
+            I2.B<40> = UCAT4
+            I2.B<41> = UCAT5
+            I2.B<42> = SOUNDEX
+            I2.B<43> = P_G
+            I2.B<44> = FIRST
+            I2.B<45> = CATNUM_S
+            IF I2.BO <> I2.B THEN 
+               WRITE I2.B ON I2.KEYS,I2.K
+               UCT+=1
+            END
+            IF (LM OR NOT(MOD(CT,100))) THEN
+               PRINT UCT:" / ":CT:" *** "
+               PRINT I2.K:"::":I2.B
+               PRINT
+            END
+         END
+      REPEAT
+      STOP
+

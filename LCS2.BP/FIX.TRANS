@@ -1,0 +1,15 @@
+     OPEN 'TRANS' TO TRANS ELSE PRINT 'TRANS' ; STOP
+     OPEN 'TRANS.U' TO TRANS.U ELSE PRINT 'TRANS.U' ; STOP
+     SELECT TRANS
+     CT=0
+     SP = SPACE(5)
+     LOOP
+          CT+=1
+     WHILE READNEXT ID DO
+          READ BUFF FROM TRANS,ID THEN
+               BUFF = UPCASE(BUFF)
+               WRITE BUFF ON TRANS,ID
+          END
+          IF NOT(MOD(CT,100)) THEN PRINT CT
+     REPEAT
+     PRINT "FINISHED"

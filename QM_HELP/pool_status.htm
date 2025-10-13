@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>POOL.STATUS</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="POOL.STATUS" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "pool_status.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">POOL.STATUS</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="phantom.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="printer.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">POOL.STATUS</span> command displays the status of connection pooling.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">POOL.STATUS</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">POOL.STATUS</span> command is normally only present in the VOC of the QMSYS account but it can be copied to other accounts if needed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">Pool name...... &nbsp;Limit &nbsp;Timeout &nbsp;Idle &nbsp;Peak &nbsp;Active &nbsp;Peak</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">WEBPOOL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 10 &nbsp; &nbsp; &nbsp;20 &nbsp; &nbsp; &nbsp;3 &nbsp; &nbsp; 7 &nbsp; &nbsp; &nbsp; 6 &nbsp; &nbsp; 8</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">DEV &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 30 &nbsp; &nbsp; &nbsp;40 &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; 2</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The figures shown for each pool are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:72px">Limit</td><td style="border:none;padding:0">The maximum number of processes allowed to enter the idles state at one time.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:72px">Timeout</td><td style="border:none;padding:0">The period in seconds after which an idle process will be terminated.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:72px">Idle</td><td style="border:none;padding:0">The current number of idle processes.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:72px">Peak</td><td style="border:none;padding:0">The highest number of idle processes since the QM system was last started.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:72px">Active</td><td style="border:none;padding:0">The current number of active processes associated with this pool.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:72px">Peak</td><td style="border:none;padding:0">Th highest number of active processes since the QM system was last started.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span><br />
+<a href="connection_pooling.htm" class="topiclink">Connection pooling</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

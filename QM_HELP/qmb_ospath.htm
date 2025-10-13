@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>OSPATH()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="OSPATH()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_ospath.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">OSPATH()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_osdelete.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_osread.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">OSPATH()</span> function performs actions on operating system files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">OSPATH(</span><span style="font-style: italic;">path</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">key</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">OSPATH(</span><span style="font-style: italic;">path</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">key</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">qualifier</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">path</span></td><td style="border:none;padding:0">evaluates to a pathname.</td></tr></table></div><p class="p_Normal" style="text-indent: -60px; margin: 0 0 0 90px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">key</span></td><td style="border:none;padding:0">identifies the action to be performed.</td></tr></table></div><p class="p_Normal" style="text-indent: -89px; margin: 0 0 0 119px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">qualifier</span></td><td style="border:none;padding:0">provides additional information for the action to be performed.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">OSPATH()</span> function returns information about <span style="font-style: italic;">path</span>. &nbsp;The values of <span style="font-style: italic;">key</span> and their associated actions are as below. The key names in the second column are defined in the KEYS.H include record in the SYSCOM file.</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">0</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$PATHNAME</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Test if <span style="font-style: italic;">path</span> is a syntactically valid pathname (True/False).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">1</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$FILENAME</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Test if <span style="font-style: italic;">path</span> is a syntactically valid filename (True/False).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">2</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$EXISTS</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Test if <span style="font-style: italic;">path</span> exists as either file or directory (True/False).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">3</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$UNIQUE</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Returns a unique file name.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">4</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$FULLPATH</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Return full path name of <span style="font-style: italic;">path</span>. On case insensitive file systems, the returned path will be upper case.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">5</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$DELETE</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Deletes <span style="font-style: italic;">path</span>. Returns success (True/False).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">6</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$OPEN</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Check if file is open by pathname (True/False).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">7</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$DTM</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Returns date/time modified of <span style="font-style: italic;">path</span> as an epoch value, zero if path does not exist.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">8</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$FLUSH.CACHE</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Flush dynamic file cache in local process. Always returns True.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">9</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$FULLPATHX</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Return full path name of <span style="font-style: italic;">path</span>, preserving casing.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">10</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$PARENT</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Return parent directory of <span style="font-style: italic;">path</span>. If <span style="font-style: italic;">path</span> is a top level directory, the same pathname is returned.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">11</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$UID</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Get UID of <span style="font-style: italic;">path</span> (not Windows), zero if path does not exist.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">12</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$GID</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Get GID of <span style="font-style: italic;">path</span> (not Windows), zero if path does not exist.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">13</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$MKDIR</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Creates directory <span style="font-style: italic;">path</span>. Returns success (True/False).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">14</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$MKPATH</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Creates directory <span style="font-style: italic;">path </span>and any intermediate levels. Returns success (True/False).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">15</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$MODES</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Returns file access modes of <span style="font-style: italic;">path</span> (not Windows) as the decimal representation of a Linux mode value, zero if path does not exist. See below.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">16</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$IS.FILE</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Test if <span style="font-style: italic;">path</span> exists as a file (True/False)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">17</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$IS.DIR</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Test if <span style="font-style: italic;">path</span> exists as a directory (True/False)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">18</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$OWNER</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Returns the owner of the file (Windows only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">19</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$MKFIFO</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Create named pipe (Linux only)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">20</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$INFO</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Returns a dynamic array of information similar to the <span style="font-weight: bold;"><a href="qmb_status_statement.htm" class="topiclink">STATUS</a></span> statement.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">21</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$SPACE</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Returns partition size and available space, separated by a field mark</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">512</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$CHMOD</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Sets file permissions from <span style="font-style: italic;">qualifier</span> as the decimal representation of a Linux access mode value. See below. Returns success (True/False).</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">513</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$SET.LINK</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Create a hard link. The <span style="font-style: italic;">qualifier</span> is the name of the link to be created.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p class="p_Normal">514</p>
+</td>
+<td style="vertical-align:top; width:177px; padding:4px; border:none"><p class="p_Normal">OS$SET.UID.GID</p>
+</td>
+<td style="vertical-align:top; width:560px; padding:4px; border:none"><p class="p_Normal">Set uid and gid for named file. The <span style="font-style: italic;">qualifier</span> is formed from the uid and gid, separated by a comma. These may be given as numeric values or as names. A null name indicates that the uid or gid is not to be changed. The return value is a Boolean value indicating the success of the action. (not Windows).</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">File Permission Values</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of OS$MODES to retrieve the file access permissions or OS$CHMOD to set permissions is complicated by the conventional use of an octal representation of the bit significant mode value in Linux commands or in C programs. QMBasic has no syntax for an octal constant and hence these actions work with the decimal representation of the modes.</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Octal</span></p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Decimal</span></p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Meaning</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">400</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">256</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Owner, read access</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">200</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">128</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Owner, write access</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">100</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">64</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Owner, execute access</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">040</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">32</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Group, read access</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">020</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">16</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Group, write access</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">010</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">8</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Group, execute access</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">004</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">4</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Other, read access</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">002</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">2</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Other, write access</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:80px; padding:0; border:none"><p class="p_Normal">001</p>
+</td>
+<td style="vertical-align:top; width:77px; padding:0; border:none"><p class="p_Normal">1</p>
+</td>
+<td style="vertical-align:top; width:582px; padding:0; border:none"><p class="p_Normal">Other, execute access</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF NOT(OSPATH(RID, OS$FILENAME)) THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY 'Not a valid filename'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The program fragment above validates a filename.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF NOT(OSPATH('MYFILE', OS$SET.UID.GID, '100,staff')) THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY 'Error ' : OS.ERROR() : ' setting uid/gid'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The program fragment above updates ownership of MYFILE.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">OK = OSPATH('MYFILE', OS$CHMOD, ICONV('740', 'MO'))</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The statement above sets modes octal 740 on MYFILE. This is more readable than using the decimal equivalent</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">OK = OSPATH('MYFILE', OS$CHMOD, 480)</p>
+
+</td></tr></table>
+
+</body>
+</html>

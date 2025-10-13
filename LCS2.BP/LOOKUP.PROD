@@ -1,0 +1,61 @@
+     SUBROUTINE LOOKUP.PROD(I2.PIK,UPC,CATNUM,PNO)
+
+     OPEN 'PRODUCT' TO F.PRODUCT ELSE PRINT 'PRODUCT';STOP
+     OPEN 'UPC.PSVNO.XREF' TO F.UPC.PSVNO.XREF ELSE PRINT 'UPC.PSVNO.XREF';STOP
+     OPEN 'PSVNO' TO F.PSVNO ELSE PRINT 'PSVNO';STOP
+     OPEN 'I2.PRODUCT' TO F.I2.PRODUCT ELSE PRINT 'I2.PRODUCT';STOP
+
+LOOKUP.PRODUCT:
+     PNO.T = ""
+     PROD.B.T = ""
+     I2.PIK.T = ""
+     IF I2.PIK THEN
+          PNO.T = "!":I2.PIK
+          READ PROD.B.T FROM F.PRODUCT,PNO.T ELSE
+               READV PNO.T FROM F.PSVNO,I2.PIK,9 ELSE
+                    SELECT.STR = "SELECT PRODUCT WITH PRICE.SRVC# = ":I2.PIK
+                    EXECUTE SELECT.STR CAPTURING CAP
+                    IF FIELD(CAP<2>," ",1) <> "0" THEN
+                         READLIST PNOS THEN
+                              PNO.T = PNOS<1,1>
+                         END
+                    END
+               END
+          END
+     END ELSE
+          IF UPC THEN
+               READV I2.PIK.T FROM F.UPC.PSVNO.XREF,UPC,1 ELSE
+                    UPC = UPC[1,11]
+                    READV I2.PIK.T FROM F.UPC.PSVNO.XREF,UPC,1 ELSE
+                         UPC = "0":UPC
+                         READV I2.PIK.T FROM F.UPC.PSVNO.XREF,UPC,1 ELSE
+                              UPC=UPC[1,11]
+                              READV I2.PIK.T FROM F.UPC.PSVNO.XREF,UPC,1 ELSE
+                                   READV PNO.T FROM F.I2.PRODUCT,I2.PIK,9 ELSE
+                                        READ PNO.T FROM F.PSVNO,UPC ELSE
+                                             SELECT.STR = "SELECT PRODUCT WITH UPC = ":UPC
+                                             EXECUTE SELECT.STR CAPTURING CAP
+                                             IF FIELD(CAP<2>," ",1) <> "0" THEN
+                                                  READLIST PNOS THEN
+                                                       PNO.T = PNOS<1,1>
+                                                  END
+                                             END
+                                        END
+                                   END
+                              END
+                         END
+                    END
+               END
+          END
+     END
+     IF I2.PIK.T THEN
+          I2.PIK = I2.PIK.T
+          READV PNO.T FROM F.PSVNO,I2.PIK,1 ELSE PNO.T = ""
+     END
+     IF PNO.T THEN
+          PNO = PNO.T
+     END
+
+     RETURN
+
+

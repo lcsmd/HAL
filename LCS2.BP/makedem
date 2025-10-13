@@ -1,0 +1,385 @@
+      *
+      * Copyright (c) 2020 Zumasys, Inc. All rights reserved.
+      *
+      * Record generation program for testing
+      *
+      * UNIVERSE VERSION
+
+      PROMPT ""
+      sentence.var=sentence()
+      *
+      ** universe is automatically changing (N to NOPAGE so change back
+      *
+      no.page=index(sentence.var,' NOPAGE',1)
+      if no.page then
+         sentence.var=sentence.var[1,no.page]:'(N'
+      end
+      sentence.var=trim(sentence.var)
+      system.1000=sentence.var
+      convert ' ' to @am in system.1000
+      if system.1000<1> = 'MAKE.DEMO.FILE' then
+         system.1000=delete(system.1000,1,0,0)
+      end
+      recount=system.1000<1>
+
+      IF recount EQ "-?" OR oconv(recount,'MCU') EQ "-H" THEN
+         CRT
+         CRT "Description:  Record generation program"
+         CRT
+         CRT "Usage:  make.demo.file {number of records {{filename {file type}}}} {(options}"
+         CRT "        make.demo.file {-?|-h}"
+         CRT
+         CRT "        number of records  - This is how many records will be written to the file"
+         CRT
+         CRT "        filename           - The name of the file; if it does not exist then it will be created"
+         CRT "                             at the appropriate size based on the number of records."
+         CRT
+         CRT "        file type          - Can be 18 (hashed), 19 (directory, or DYNAMIC"
+         CRT "                             (18 is the default)"
+         CRT
+         CRT "Options:"
+         CRT
+         CRT "        C - Clears the target file if it exists"
+         CRT
+         CRT "        N - Create numbered dictionaries"
+         CRT
+         CRT "Examples:"
+         CRT
+         CRT "        make.demo.file"
+         CRT "        [Prompts for the number of records, filename and file type]"
+         CRT
+         CRT "        make.demo.file 1000 JDEMO"
+         CRT "        [Creates the file JDEMO with 1000 records, prompts for the file type]"
+         CRT
+         CRT "        make.demo.file 99999 TESTFILE 18"
+         CRT "        [Creates the file TESTFILE with 99999 records as file type 18]"
+         CRT
+         CRT "        make.demo.file (C"
+         CRT "        [Prompts for the number of records, filename and file type,"
+         CRT "         clears the file if it exists and encrypts the data]"
+         CRT "        make.demo.file (C"
+         CRT "        [Prompts for the number of records, "
+         CRT "         and clears the file if it exists]"
+         CRT
+         STOP
+      END
+
+      lastword = OCONV(system.1000<DCOUNT(system.1000, @AM)>,'MCU')
+      encrypted.text=''
+      case.text = ""
+      numbered.dict = 0
+      IF lastword[1,1] = "(" THEN
+         IF INDEX(lastword,"N",1) THEN
+            numbered.dict = 1
+         END
+      END
+
+      IF recount[1,1] EQ "(" OR NOT(NUM(recount)) OR recount EQ "" THEN
+         CRT 'Enter <X> at any prompt to eXit.'
+         CRT
+         CRT "How many records to create: ":
+         INPUT recount
+      END
+      IF recount = '' OR OCONV(recount, 'MCU') = 'X' THEN STOP
+      IF NOT(NUM(recount)) THEN CRT 'Must be a number!'; STOP
+      IF recount <= 0 THEN recount = 1000
+      idfmt = "R%":LEN(recount) ;* IDs will only be as long as they need to be
+
+      filename=system.1000<2>
+      IF filename[1,1] EQ "(" OR filename = "" THEN
+         CRT "Filename: ":
+         INPUT filename
+         IF filename = '' OR OCONV(filename,'MCU') = 'X' THEN STOP
+      END
+
+      OPEN filename TO m THEN
+         IF lastword[1,1] = "(" AND INDEX(lastword, "C", 1) THEN
+            CLEARFILE m
+         END ELSE
+            CRT "File already exists, clear it (y/n/x=stop)? ":
+            INPUT reply
+            reply = OCONV(reply, 'MCU')
+            BEGIN CASE
+               CASE reply = 'N'
+               CASE reply = 'X'; STOP
+               CASE reply = 'Y'; CLEARFILE m
+               CASE 1
+                  CRT 'Invalid reply!'
+                  STOP
+            END CASE
+         END
+      END ELSE
+         filetype = system.1000<3>
+         IF filetype[1,1] EQ "(" OR filetype EQ "" THEN
+            CRT "File Type (18=hashed=default, 19=Directory, DYNAMIC, or X=Exit): ":
+            INPUT filetype
+         END
+         filetype = OCONV(filetype,'MCU')
+         IF filetype = 'X' THEN STOP
+         IF filetype = '' THEN filetype = '18'
+
+         BEGIN CASE
+            CASE filetype = 18
+               mod = recount / 14
+               mod = int(mod)
+               IF mod < 11 THEN mod = 11
+               execute "CREATE.FILE ":filename:" 1 ":mod
+            CASE filetype = 19
+               DATA "1"
+               DATA "1"
+               DATA "19"
+               DATA ""
+               EXECUTE "CREATE.FILE ":filename:" 1"
+            CASE filetype = 'DYNAMIC'
+               EXECUTE 'CREATE.FILE ':filename:' 1 DYNAMIC'
+            CASE 1
+               CRT 'Invalid File Type!'
+               STOP
+         END CASE
+         OPEN filename TO m ELSE ABORT 201, filename
+      END
+
+      OPEN "DICT ":filename TO dm ELSE ABORT 201, "DICT ":filename
+
+      firstname = "JOHN"
+      firstname<-1> = "DANIEL"
+      firstname<-1> = "HARRY"
+      firstname<-1> = "BILL"
+      firstname<-1> = "STEVE"
+      firstname<-1> = "ERIC"
+      firstname<-1> = "GREG"
+      firstname<-1> = "ALAN"
+      firstname<-1> = "JASON"
+      firstname<-1> = "CLIVE"
+      firstname<-1> = "CHRIS"
+      firstname<-1> = "MIKE"
+      firstname<-1> = "MICK"
+      firstname<-1> = "PATE"
+      firstname<-1> = "BRUCE"
+      firstname<-1> = "DOUG"
+      firstname<-1> = "DAVID"
+      firstname<-1> = "JAMES"
+      firstname<-1> = "AMANDA"
+      firstname<-1> = "MARTIN"
+      firstname<-1> = "PHILIP"
+      firstname<-1> = "TED"
+      firstname<-1> = "TERRY"
+      firstname<-1> = "RON"
+      firstname<-1> = "HERVE"
+      firstname<-1> = "RAPH"
+      firstname<-1> = "FB"
+      firstname<-1> = "DELLA"
+
+      lastname = "ATKINS"
+      lastname<-1> = "KLEIN"
+      lastname<-1> = "GATES"
+      lastname<-1> = "JOHNSON"
+      lastname<-1> = "McNEALY"
+      lastname<-1> = "COOPER"
+      lastname<-1> = "MURPHY"
+      lastname<-1> = "LAMBERT"
+      lastname<-1> = "MURPHY"
+      lastname<-1> = "AUBERT"
+      lastname<-1> = "HARRIS"
+      lastname<-1> = "WILLIS"
+      lastname<-1> = "SMITH"
+      lastname<-1> = "JONES"
+      lastname<-1> = "FLETCHER"
+      lastname<-1> = "POGSON"
+      lastname<-1> = "WATERS"
+      lastname<-1> = "JACKSON"
+      lastname<-1> = "BLACK"
+      lastname<-1> = "WALKER"
+      lastname<-1> = "BAILEY"
+      lastname<-1> = "GIBSON"
+      lastname<-1> = "DEAN"
+      lastname<-1> = "TRAVERS"
+      lastname<-1> = "CLARKE"
+      lastname<-1> = "GRABBIT"
+      lastname<-1> = "LEGGIT"
+      lastname<-1> = "SMOOCH"
+
+      addr1 = "10260 SW GREENBURG RD"
+      addr1<-1> = "1 MICROSOFT WAY"
+      addr1<-1> = "1 SUN AVENUE"
+      addr1<-1> = "999 LETSBE AVENUE"
+      addr1<-1> = "42 MILLI WAYS"
+      addr1<-1> = "121 ELEVEN SQUARE "
+      addr1<-1> = "64 HADDOCKEN PLACE"
+      addr1<-1> = "123 MAIN ST"
+
+      addr2 = "#1020"
+      addr2<-1> = "SUITE 23"
+      addr2<-1> = "APT 42"
+      addr2<-1> = "LEVEL 42"
+      addr2<-1> = ""
+
+      city = "LOS ANGLES"
+      city<-1> = "PORTLAND"
+      city<-1> = "RENO"
+      city<-1> = "SEATTLE"
+      city<-1> = "SAN JOSE"
+      city<-1> = "SYDNEY"
+      city<-1> = "NEW YORK"
+      city<-1> = "SPRINGFIELD"
+      city<-1> = "CLEVELAND"
+
+      state = "OR"
+      state<-1> = "FL"
+      state<-1> = "NSW"
+      state<-1> = "CA"
+      state<-1> = "MD"
+      state<-1> = "NY"
+      state<-1> = "MI"
+      state<-1> = "WA"
+      state<-1> = "IN"
+      state<-1> = "IL"
+      state<-1> = "MA"
+      state<-1> = "OH"
+
+      zip = "97223"
+      zip<-1> = "12345"
+      zip<-1> = "72344"
+      zip<-1> = "09324"
+      zip<-1> = "24358"
+      zip<-1> = "09284"
+      zip<-1> = "44223"
+
+      hometel = "(666) 246-0149"
+      hometel<-1> = "(555) 555-1237"
+      hometel<-1> = "(524) 555-2437"
+      hometel<-1> = "(125) 555-1337"
+      hometel<-1> = "(124) 555-1337"
+
+      worktel = "(666) 246-0149"
+      worktel<-1> = "(555) 555-1237"
+      worktel<-1> = "(524) 555-2437"
+      worktel<-1> = "(125) 555-1337"
+      worktel<-1> = "(124) 555-1337"
+
+      email = "@jbase.com"
+      email<-1> = "@compa.com"
+      email<-1> = "@compb.com"
+      email<-1> = "@compc.com"
+      email<-1> = "@compd.com"
+      email<-1> = "@compe.com"
+      email<-1> = "@spam.com"
+      email<-1> = "@nospam.com"
+      email<-1> = "@compz.com"
+      email<-1> = "@morespam.com"
+      email<-1> = "@alice.com"
+      email<-1> = "@mason.com"
+      email<-1> = "@lint.com"
+      email<-1> = "@hoho.com"
+      email<-1> = "@zumasys.com"
+
+      hardware = "HP"
+      hardware<-1> = "ZSERIES"
+      hardware<-1> = "PSERIES"
+      hardware<-1> = "XSERIES"
+      hardware<-1> = "ISERIES"
+      hardware<-1> = "DIGITAL"
+      hardware<-1> = "SOLARIS"
+      hardware<-1> = "COMPAQ"
+      hardware<-1> = "SPARC"
+      hardware<-1> = "ASUS"
+
+      os = "NT"
+      os <-1> = "AIX"
+      os <-1> = "HPUX"
+      os <-1> = "SOLARIS"
+      os <-1> = "LINUX RH7"
+      os <-1> = "LINUX RH8"
+      os <-1> = "TRU64"
+      os <-1> = "LINUX RH9"
+
+      systemtype = "jBASE"
+      systemtype<-1> = "ROS"
+      systemtype<-1> = "U2"
+      systemtype<-1> = "D3"
+      systemtype<-1> = "IN2"
+      systemtype<-1> = "QM"
+
+      * OK, NOW TO MAKE UP A BILLION RECORDS
+      cfirstname = DCOUNT(firstname, @AM)
+      clastname = DCOUNT(lastname ,@AM)
+      caddr1 = DCOUNT(addr1 ,@AM)
+      caddr2 = DCOUNT(addr2 ,@AM)
+      ccity = DCOUNT(city ,@AM)
+      cstate = DCOUNT(state ,@AM)
+      czip = DCOUNT(zip ,@AM)
+      chometel = DCOUNT(hometel ,@AM)
+      cworktel = DCOUNT(worktel ,@AM)
+      cemail = DCOUNT(email ,@AM)
+      chardware = DCOUNT(hardware ,@AM)
+      cos = DCOUNT(os ,@AM)
+      csystemtype = DCOUNT(systemtype ,@AM)
+
+      * Create the dictionary entries
+      dictlist = ""
+      dictlist<-1> = 'FIRSTNAME'  : @VM : 'A' : @VM :  '1' : @VM : 'First Name'     : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '24'
+      dictlist<-1> = 'LASTNAME'   : @VM : 'A' : @VM :  '2' : @VM : 'Last Name'      : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '20'
+      dictlist<-1> = 'ADDR1'      : @VM : 'A' : @VM :  '3' : @VM : 'Address Line 1' : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM :  '6'
+      dictlist<-1> = 'ADDR2'      : @VM : 'A' : @VM :  '4' : @VM : 'Address Line 2' : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '20'
+      dictlist<-1> = 'CITY'       : @VM : 'A' : @VM :  '5' : @VM : 'City'           : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '10'
+      dictlist<-1> = 'STATE'      : @VM : 'A' : @VM :  '6' : @VM : 'State'          : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM :  '3'
+      dictlist<-1> = 'ZIP'        : @VM : 'A' : @VM :  '7' : @VM : 'Zip'            : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '12'
+      dictlist<-1> = 'HOMETEL'    : @VM : 'A' : @VM :  '8' : @VM : 'Home Tel'       : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '16'
+      dictlist<-1> = 'WORKTEL'    : @VM : 'A' : @VM :  '9' : @VM : 'Work Tel'       : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '16'
+      dictlist<-1> = 'EMAIL'      : @VM : 'A' : @VM : '10' : @VM : 'Email'          : @VM : ''           : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '22'
+      dictlist<-1> = 'HARDWARE'   : @VM : 'A' : @VM : '11' : @VM : 'Hardware'       : @VM : 'C;12;13;14' : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '15'
+      dictlist<-1> = 'OS'         : @VM : 'A' : @VM : '12' : @VM : 'OS'             : @VM : 'D;11'       : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '15'
+      dictlist<-1> = 'NUMUSERS'   : @VM : 'A' : @VM : '14' : @VM : 'Num Users'      : @VM : 'D;11'       : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM :  '6'
+      dictlist<-1> = 'SYSTEMTYPE' : @VM : 'A' : @VM : '13' : @VM : 'MVDBASE'        : @VM : 'D;11'       : @VM : '' : @VM : '' : @VM : '' : @VM : '' : @VM : 'L' : @VM : '24'
+
+      dec = 1
+      LOOP
+         dictentry = dictlist<dec>
+         dec=dec+1
+      WHILE dictentry # "" DO
+         CONVERT @VM TO @AM IN dictentry
+         id = dictentry<1>
+         DEL dictentry<1>
+         WRITE dictentry ON dm, id
+         IF numbered.dict THEN
+            WRITE dictentry ON dm, dec-1
+         END
+      REPEAT
+      CLOSE dm
+
+      FOR i = 1 TO recount
+         attr1 = firstname<1+RND(cfirstname)>
+         attr2 = lastname<1+RND(clastname)>
+         rec =   attr1 : @AM; * :         \
+         rec :=         attr2 : @AM; * :         \
+         rec :=         addr1<1+RND(caddr1)> : @AM; * :    \
+         rec :=         addr2<1+RND(caddr2)> : @AM; * :    \
+         rec :=         city<1+RND(ccity)> : @AM; * :     \
+         rec :=         state<1+RND(cstate)> : @AM; * :    \
+         rec :=         zip<1+RND(czip)> : @AM; * :     \
+         rec :=         hometel<1+RND(chometel)> : @AM; * :   \
+         rec :=         worktel<1+RND(cworktel)>  : @AM; * :    \
+         rec :=         OCONV(attr1:attr2[1,1],"MCL"):email<1+RND(cemail)>
+
+         cc = RND(8)
+         attr11 = hardware<1+RND(chardware)>
+         attr12 = os<1+RND(cos)>
+         attr13 = systemtype<1+RND(csystemtype)>
+         attr14 = 50 + RND(2000)
+         FOR x = 1 TO cc
+            attr11 := @VM : hardware<1+RND(chardware)>
+            attr12 := @VM : os<1+RND(cos)>
+            attr13 := @VM : systemtype<1+RND(csystemtype)>
+            attr14 := @VM : 50 + RND(2000)
+         NEXT x
+         rec<11> = attr11 : @AM : attr12 : @AM : attr13 : @AM : attr14
+
+         id = i idfmt
+         WRITE rec ON m, id
+         IF MOD(i, 5000) ELSE CRT @(0):OCONV(i, 'MD0,'):" processed":
+      NEXT i
+      CLOSE m
+
+      CRT
+      CRT @(0):OCONV(recount, 'MD0,'):" records created."
+      end

@@ -1,0 +1,102 @@
+      PROGRAM ManagePrompts
+      ! OpenQM BASIC program to create, edit, or delete a text prompt
+
+      PROMPT_FILE = "PROMPTS"
+      *NEXT_IDS = "NEXT_IDS"
+      OPEN PROMPT_FILE TO PROMPT.F ELSE PRINT PROMPT_FILE;STOP
+      *OPEN NEXT_IDS TO NEXT_IDS.F ELSE PRINT NEXT_IDS;STOP
+      NextID = 100001
+
+MENU:
+      CRT "Choose an action:"
+      CRT "1. Create a new prompt"
+      CRT "2. Edit an existing prompt"
+      CRT "3. Delete a prompt"
+      CRT "4. Exit"
+      INPUT Choice
+
+      BEGIN CASE
+         CASE Choice = "1"
+            GOSUB CreatePrompt
+         CASE Choice = "2"
+            GOSUB EditPrompt
+         CASE Choice = "3"
+            GOSUB DeletePrompt
+         CASE Choice = "4"
+            RETURN
+         CASE 1
+            CRT "Invalid option. Please try again."
+      END CASE
+
+      GO MENU
+
+      ! Subroutine to create a new prompt
+CreatePrompt:
+      CRT "Creating a new prompt..."
+
+      *CALL GetNextID(PROMPT.F, NextID)
+      RECORD_ID = NextID
+      NextID += 1
+
+      CRT "New prompt ID: ":RECORD_ID
+      PRINT "Enter prompt name: ":; INPUT NAME
+      PRINT "Enter category: ": ;INPUT CATEGORY
+      PRINT "Enter role: " ; INPUT ROLE
+      PRINT "Enter description: ":; INPUT DESCRIPTION
+
+      PROMPT.REC<1> = NAME
+      PROMPT.REC<2> = CATEGORY
+      PROMPT.REC<3> = ROLE
+      PROMPT.REC<4> = DESCRIPTION
+
+      WRITE PROMPT.REC ON PROMPT.F, RECORD_ID
+      CRT "Prompt created successfully with ID ":RECORD_ID
+
+      RETURN
+
+      ! Subroutine to edit an existing prompt
+EditPrompt:
+      PRINT "Enter the prompt ID to edit: "; INPUT RECORD_ID
+      READ PROMPT.REC FROM PROMPT.F, RECORD_ID ELSE CRT "Prompt not found!" ; RETURN
+
+      CRT "Editing prompt with ID ":RECORD_ID
+      CRT "Current name: ":PROMPT.REC<1>
+      CRT "Current category: ":PROMPT.REC<2>
+      CRT "Current role: ":PROMPT.REC<3>
+      CRT "Current description: ":PROMPT.REC<4>
+
+      PRINT "Enter new name (or leave blank to keep current): ";INPUT NAME
+      PRINT "Enter new category (or leave blank to keep current): ";INPUT CATEGORY
+      PRINT "Enter new role (or leave blank to keep current): ";INPUT ROLE
+      PRINT "Enter new description (or leave blank to keep current): ";INPUT DESCRIPTION
+
+      IF NAME # "" THEN PROMPT.REC<1> = NAME
+      IF CATEGORY # "" THEN PROMPT.REC<2> = CATEGORY
+      IF ROLE # "" THEN PROMPT.REC<3> = ROLE
+      IF DESCRIPTION # "" THEN PROMPT.REC<4> = DESCRIPTION
+
+      WRITE PROMPT.REC ON PROMPT.F, RECORD_ID
+      CRT "Prompt successfully updated with ID ":RECORD_ID
+
+      RETURN
+
+      ! Subroutine to delete an existing prompt
+DeletePrompt:
+      PRINT "Enter the prompt ID to delete: "; INPUT RECORD_ID
+      READ PROMPT.REC FROM PROMPT.F, RECORD_ID ELSE CRT "Prompt not found!" ; RETURN
+
+      CRT "Are you sure you want to delete prompt with ID ":RECORD_ID:" (Y/N)? ";
+      INPUT Answer
+
+      IF Answer = "Y" OR Answer = "y" THEN
+         DELETE PROMPT.F, RECORD_ID
+         CRT "Prompt with ID ":RECORD_ID:" has been deleted."
+      END ELSE
+         CRT "Deletion cancelled."
+      END
+
+      RETURN
+
+
+
+      END

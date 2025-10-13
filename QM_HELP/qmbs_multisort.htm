@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>!MULTISORT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="!MULTISORT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbs_multisort.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">!MULTISORT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbs_listu.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbs_oscopy.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!MULTISORT()</span> subroutine sorts multiple related lists simultaneously.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CALL !MULTISORT(</span><span style="font-style: italic;">mode</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">keys</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">data1</span> {<span style="font-weight: bold;">, </span><span style="font-style: italic;">data2</span>...}<span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">mode</span></td><td style="border:none;padding:0">is the the sort mode to be used.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">keys</span></td><td style="border:none;padding:0">is a field mark delimited list to be sorted.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">data1</span></td><td style="border:none;padding:0">is a parallel list to be sorted, maintaining pairing of items with <span style="font-style: italic;">keys</span>. A minimum of 1 and a maximum of 10 <span style="font-style: italic;">data</span> lists may be specified.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!MULTISORT()</span> subroutine sorts multiple field mark delimited lists in parallel, maintaining the relationship between items in the <span style="font-style: italic;">keys</span> list and the <span style="font-style: italic;">data</span> lists. The <span style="font-style: italic;">keys</span> and <span style="font-style: italic;">data</span> lists are updated on return.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The subroutine uses char(0) internally so the lists to be sorted must not contain this character.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The mode argument determines how the data will be sorted</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:8px;">
+<tr>
+<td colspan="3"  style="vertical-align:top; width:1071px; padding:0; border:none"><p class="p_Normal">At most one of the following sort styles:</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">0</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$LEFT</p>
+</td>
+<td style="vertical-align:top; width:768px; padding:0; border:none"><p class="p_Normal">A simple left justified comparison, examining corresponding characters from the start of each string until either a difference is found or the end of both strings has been reached.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">1</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$RIGHT</p>
+</td>
+<td style="vertical-align:top; width:768px; padding:0; border:none"><p class="p_Normal">A simple right justified comparison in which the shorter item is effectively padded with leading spaces and the resultant strings are compared character by character from the start until either a difference is found or the end of both strings has been reached. If both strings can be treated as integer values, possibly with a leading sign character, a numeric comparison is performed.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">2</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$COMPOUND</p>
+</td>
+<td style="vertical-align:top; width:768px; padding:0; border:none"><p class="p_Normal">A compound sort in which the two strings are considered to be formed from a series of alternating numeric and non-numeric elements. Numeric elements are sorted into numerical value, non-numeric elements are sorted into collating sequence order. If the first element is numeric, it may have an optional leading sign character. Sign characters appearing later in the strings are treated as being non-numeric characters.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">3</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$RIGHT.FLOAT</p>
+</td>
+<td style="vertical-align:top; width:768px; padding:0; border:none"><p class="p_Normal">The same as mode 1 except that the test for numeric items allows non-integer values.</p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:1071px; padding:0; border:none"><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Any combination of the following sort options:</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">16</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$DESCENDING</p>
+</td>
+<td style="vertical-align:top; width:768px; padding:0; border:none"><p class="p_Normal">The result of the comparison operation is reversed.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">32</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$UNIQUE</p>
+</td>
+<td style="vertical-align:top; width:768px; padding:0; border:none"><p class="p_Normal">Duplicate key values are ignored.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">64</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$NOCASE</p>
+</td>
+<td style="vertical-align:top; width:768px; padding:0; border:none"><p class="p_Normal">Case insensitive sort.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">KEYS = CHANGE('17|4|38|25|66', '|', @FM)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">DATA = CHANGE('A|B|C|D|E', '|', @FM)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">CALL !MULTISORT(SRT$RIGHT, KEYS, DATA)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">FOR I = 1 TO 5</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY KEYS&lt;I&gt;, DATA&lt;I&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">NEXT I</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above program fragment sets up KEYS and DATA as two parallel lists. The CHANGE() function is used here for clarity as a literal string cannot contain a field mark. After using the <span style="font-weight: bold;">!MULTISORT()</span> subroutine the displayed data would be:</p>
+<p class="p_CodeBody"><span class="f_CodeBody">4 &nbsp; &nbsp;B</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">17 &nbsp; A</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">25 &nbsp; D</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">38 &nbsp; C</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">66 &nbsp; E</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="qmb_sort.htm" class="topiclink">SORT()</a></span></p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

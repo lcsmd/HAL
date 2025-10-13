@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SUBR()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SUBR()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_subr.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SUBR()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_str.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_subroutine.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SUBR()</span> function calls a subroutine as a function in an expression. It is normally only used in dictionary I-type items.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SUBR</span>(<span style="font-style: italic;">name</span> {<span style="font-weight: bold;">,</span><span style="font-style: italic;">arg1</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">arg2</span>...}<span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">evaluates to the name of the subroutine to be called.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">arg1</span>, etc</td><td style="border:none;padding:0">are the arguments to the subroutine.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SUBR()</span> function calls catalogued subroutine <span style="font-style: italic;">name</span>, passing <span style="font-style: italic;">arg1</span>, <span style="font-style: italic;">arg2</span>, etc to it as its arguments. The subroutine must be written to have an additional first argument through which it returns its result which is used as the value of the <span style="font-weight: bold;">SUBR()</span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A statement such as</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = B + SUBR(&quot;EVALUATE&quot;, C, D)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>is equivalent to</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CALL EVALUATE(X, C, D)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = B + X</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">name</span> argument may be any expression that evaluates to the name of the subroutine. The catalogue look-up process is performed for each execution of the <span style="font-weight: bold;">SUBR()</span> function unlike a  <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span> statement where the look-up is performed just once for each invocation of the calling program.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When used from a dictionary <a href="itypeexpressions.htm" class="topiclink">I-type</a> expression evaluated by the query processor, the <a href="at_variables.htm#id" class="topiclink">@ID</a> and <a href="at_variables.htm#record" class="topiclink">@RECORD</a> variables will contain the id and data of the record currently being processed. If the subroutine called with <span style="font-weight: bold;">SUBR()</span> modifies these variables, perhaps to use the <span style="font-weight: bold;"><a href="qmb_itype.htm" class="topiclink">ITYPE()</a></span> function internally, the original values must be saved and reinstated if the dictionary item is to be usable within the query processor.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When used in a QMBasic program, the <span style="font-weight: bold;">SUBR()</span> function does not support the <span style="font-weight: bold;">MAT</span> keyword to pass a whole matrix as an argument. The <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span> statement must be used to achieve this.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; SUBROUTINE CUST.ORD(RESULT, CUST.NO)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; $INCLUDE FILES.H</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;SELECTINDEX 'CUST', CUST.NO FROM ORDERS.F TO 1</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;READLIST RESULT FROM 1 ELSE NULL</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;RETURN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above subroutine takes a customer number as its second argument and uses this to access an alternate key index, returning a list of all orders that were placed by the given customer. This example assumes that the ORDERS.F file variable is in a common block defined in the FILES.H include record and that the file is already open.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The subroutine could alternatively be written as a function:</p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; FUNCTION CUST.ORD(CUST.NO)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; $INCLUDE FILES.H</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;SELECTINDEX 'CUST', CUST.NO FROM ORDERS.F TO 1</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;READLIST RESULT FROM 1 ELSE NULL</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;RETURN RESULT</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In either case, assuming that the subroutine or function is catalogued as CUST.ORD, it could be used from within a dictionary I-type item by use of a <span style="font-weight: bold;">SUBR()</span> function such as:</p>
+<p class="p_CodeSingleLine"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; SUBR('CUST.ORD', CUST.NO)</span></p>
+<p>where CUST.NO is the name of a field within the data records being processed.</p>
+
+</td></tr></table>
+
+</body>
+</html>

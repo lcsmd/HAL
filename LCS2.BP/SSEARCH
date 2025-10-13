@@ -1,0 +1,25 @@
+     OPEN 'LCS.CONTROL' TO LCS.CONTROL ELSE PRINT 'LCS.CONTOL';STOP
+     Q = FIELD(@SENTENCE," ",1)
+     CRLF = CHAR(13):CHAR(10)
+     READV LCS.BPS FROM LCS.CONTROL,'LCS.BPS',1 THEN
+          LC = DCOUNT(LCS.BPS,@VM)
+          FOR L = 1 TO LC
+               PRINT L
+               LFILE = LCS.BPS<L>
+               SELECT.STR = "SEARCH ":LFILE
+               PRINT SELECT.STR:"  ":Q
+               DATA Q,CRLF
+               EXECUTE SELECT.STR CAPTURING CAP
+               PRINT CAP
+               EXECUTE "SAVE-LIST ":LFILE
+          NEXT L
+          FOR L = 1 TO L
+               PRINT L
+               LFILE = LCS.BPS<L>
+               SELECT.STR = "GET-LIST ":LFILE
+               EXECUTE SELECT.STR
+               SELECT.STR = "DIR ":LFILE:" -D"
+               EXECUTE SELECT.STR
+          NEXT L
+     END
+     STOP

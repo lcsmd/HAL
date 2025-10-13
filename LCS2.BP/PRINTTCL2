@@ -1,0 +1,97 @@
+     ! LCS.BP LISTP
+     !
+     !
+     !
+     !-------------------------------------------------------------------------
+     INCLUDE UTLSBP ASSIGN.VAR
+     !
+     ! OPEN FILES
+     !
+     F = ''
+     IL = ''
+     CMND = ''
+     OPEN 'CONTROL'         TO CTRL.F ELSE F=F:', CONTROL'
+     OPEN 'MD' TO MD ELSE PRINT 'MD';STOP
+     !
+     IF TRIM(F) # '' THEN PRINT FILE.ERRORS:F:BCK:; INPUT NL,1_; STOP
+     !
+     READ COMP.B FROM CTRL.F, 'COMPANY' ELSE
+          MSG = 'CONTROL COMPANY Record Missing !'
+          CALL ERRORS.SUB (MSG)
+          STOP
+     END
+     !
+     ! USER INFORMATION
+     !
+     CALL USERINFO (CTRL.F, ONAME, UCODE, ULEVEL, INTLS, '')
+     !
+     ! CHECK FOR VALID ACCESS LEVEL
+     !
+     PATH = 'PRINT PROGRAM SOURCE'
+     *      CALL ACCESS.SUB (CTRL.F, PATH, VALID, REDISPLAY)
+     *      IF NOT(VALID) THEN STOP
+     !
+     TITLE = 'PRINT TCL OUTPUT'
+     SCR = CLS
+     CALL SCREENTITLE (TITLE, NEWTITLE, COL)
+     SCR = SCR:@(COL,0):WIDE:NEWTITLE
+100  PRINT SCR
+     PRINT @(5,3):"ENTER TCL COMMANDS -- TYPE 'DONE' WHEN FINISHED :"
+     LN = 0
+     *COMMANDS = CHANGE(TRIM(CHANGE(@SENTENCE,"PRINTTCL ","")),"|",@FM)
+     *IF COMMANDS = "" THEN
+     LOOP
+          LN = LN + 1
+          CALL CIP(1,LN+3,79,'',IBUFF,ESCFLG,'')
+          IF ESCFLG THEN GOTO 900
+          IF IBUFF # "DONE" THEN IL<-1> = IBUFF
+     UNTIL IBUFF = "DONE" REPEAT
+     *END ELSE IBUFF = COMMANDS
+     !
+     ! OK TO CONTINUE
+     !
+     LOOP
+          PRINT C22:@(20):'OK to CONTNUE ? (Y)es/(N)o   [ ]'
+          XMISC='';CALL CIP(50,22,1,'',RESP,ESCFLG,XMISC)
+          IF ESCFLG THEN STOP
+     UNTIL RESP = 'Y' ! RESP = 'N' DO REPEAT
+     IF RESP = 'N' THEN STOP
+     !
+     !
+     ! PRINTER CONTROL
+     !
+     XMISC = 'O'; XMISC<2> = 'N'; XMISC<3> = 'Y'
+     CALL PRINTER.CONTROL (CTRL.F, DEVICE, ESCFLG, XMISC)
+     IF ESCFLG THEN STOP
+     PRINT C22:@(27):FON:'Selecting, Please Wait...':FOFF:
+     !
+     ! EXECUTE COMMAND
+     !
+     *
+     LOOP
+     WHILE IL # "" DO
+          CURLIN = IL<1>
+          IF CURLIN > "" THEN
+               IF IL<1>[LEN(IL<1>)-1,1] = "_" THEN
+                    IL<1> = IL<1>[1,LEN(IL<1>)-1]:IL<2>
+                    DEL IL<2>
+               END ELSE
+                    CMND<-1> = IL<1>
+                    PRINT IL<1>
+                    DEL IL<1>
+               END
+          END ELSE DEL IL<1>
+     REPEAT
+     *CMND='LIST DICT ':FN
+     *CNAME = COMP.B<1>
+     * CMND = CMND:' HEADING "':"'T' ":SPACE(7):"USER: ":ONAME
+     *      CMND = CMND:SPACE(7):"PAGE 'PLL'"
+     *      CMND = CMND:CNAME:"'LL'"
+     *      NHDR = 'SALES REPORT BY DATE'
+     *      CMND = CMND:NHDR:"'LL'"
+     *      CMND = CMND:'"'
+     *      CMND = CMND:' (P'
+     !
+     EXECUTE CMND
+     CALL PRINTER.CONTROL (CTRL.F, DEVICE, ESCFLG, 'C')
+900  END

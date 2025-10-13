@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>AUTHENTICATE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="AUTHENTICATE,AUTHKEY" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "authenticate.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">AUTHENTICATE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="analyse_file.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="autologout.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">AUTHENTICATE</span> command reduces a user's privileges in a startup command script.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">AUTHENTICATE</span> <span style="font-style: italic;">username &nbsp;password</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">username</span></td><td style="border:none;padding:0">is the user name to be used for the revised privileges.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">password</span></td><td style="border:none;padding:0">is the password for <span style="font-style: italic;">username</span>.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A QM process started via the <a href="configparams.htm#startup" class="topiclink">STARTUP</a> configuration parameter without specifying a user name runs as SYSTEM on Windows and root on other operating systems. These users have very high levels of privilege that are probably inappropriate to the QM process. The <span style="font-weight: bold;">AUTHENTICATE</span> command allows a process running as one of these users to revise its level of access to that associated with some other user known to the operating system.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Typically, the STARTUP configuration parameter is used to run a paragraph in the VOC of the QMSYS account. This might contain, for example,</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">1: PA</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">2: LOGTO SALES</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">3: PHANTOM RUN MONITOR</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">4: PHANTOM RUN WEB.SERVER</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The phantom processes created by this example would run as SYSTEM or root. Inserting</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">AUTHENTICATE </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">username password</span></p>
+<p>as the first command in the paragraph would cause the phantoms to run as the specified user. Alternatively, each phantom could contain its own use of <span style="font-weight: bold;">AUTHENTICATE</span> to become a different user.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">AUTHENTICATE</span> command can only be used by SYSTEM and root. Restrictions imposed by the operating system mean that it is not possible for a user process running under any other user name to change its access privileges.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the above example, the user's password has been stored in the paragraph as clear text which may reduce system security. It would be possible to adapt this example to retrieve the password from an encrypted file where access to the encryption key is restricted. Alternatively, the <span style="font-weight: bold;">AUTHENTICATE</span> command supports direct use of an encrypted password on the command line. To use this, the <span style="font-style: italic;">password</span> element of the command is replaced by the encrypted password prefixed with ENCR: (case insensitive). The encrypted form of the password is derived using the <span style="font-weight: bold;">AUTHKEY</span> command in the QMSYS account as described below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">AUTHKEY</span> command is available only in the QMSYS account and is restricted to users with administrator rights. The format of this command is</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-weight: bold;">AUTHKEY</span> <span style="font-style: italic;">password</span></p>
+<p>The <span style="font-style: italic;">password</span> should be enclosed in quotes if it contains spaces. The encrypted password value is displayed on the user's screen and can be transferred easily into the <span style="font-weight: bold;">AUTHENTICATE</span> command using cut and paste in the terminal emulator. The encrypted password is further transformed into a hexadecimal encoded form to ensure that non-graphic characters cannot cause problems.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The STARTUP configuration parameter also has an extended form that includes the account name, user name and password. In this case, the password may be encrypted using <span style="font-weight: bold;">AUTHKEY</span> in the same way as for <span style="font-weight: bold;">AUTHENTICATE</span> and inserted into the STARTUP parameter with a ENCR: prefix.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The earlier example, adapted to use an encrypted password, might appear as</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">1: PA</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">2: AUTHENTICATE jsmith encr:6EAE7F355E276053A27FB87E</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">3: LOGTO SALES</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">4: PHANTOM RUN MONITOR</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">5: PHANTOM RUN WEB.SERVER</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

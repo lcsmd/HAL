@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>WAIT.FILE.EVENT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="WAIT.FILE.EVENT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_wait_file_event.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">WAIT.FILE.EVENT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_vslice.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_wake.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WAIT.FILE.EVENT()</span> function waits for a file monitoring event (Windows only).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">WAIT.FILE.EVENT(</span><span style="font-style: italic;">event</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">timeout</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">event</span></td><td style="border:none;padding:0">is either an event monitoring variable created using <span style="font-weight: bold;"><a href="qmb_file_event.htm" class="topiclink">FILE.EVENT()</a></span> or a dimensioned matrix containing these variables.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">timeout</span></td><td style="border:none;padding:0">is the maximum period in seconds to wait. A zero or negative value causes an infinite wait.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WAIT.FILE.EVENT()</span> function allows a program to wait for a change within the Windows file system. It can be used, for example, to wait until a new file is created within a directory without needing to write a loop that periodically compares the directory content with a previously recorded list of items.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The event(s) to be monitored are established using the <span style="font-weight: bold;"><a href="qmb_file_event.htm" class="topiclink">FILE.EVENT()</a></span> function. Where only a single event is to be monitored, the value returned by this function can be stored in a simple scalar variable. If multiple events are to be monitored, the returned values should be stored in a dimensioned array. The <span style="font-weight: bold;">WAIT.FILE.EVENT()</span> function will ignore any elements of the array that are not file monitoring event values. See <span style="font-weight: bold;"><a href="qmb_file_event.htm" class="topiclink">FILE.EVENT()</a></span> for a list of the events that can be trapped.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WAIT.FILE.EVENT()</span> function uses an efficient event waiting mechanism within the Windows operating system. When a monitored event occurs, the function returns the index of the associated element of the <span style="font-style: italic;">event</span> array or, if this was a scalar variable, 1. If the function returns because the timeout has expired, it returns zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When using an array of events, an event can be removed from the list by overwriting the relevant element of the <span style="font-style: italic;">event</span> array with any other type of data. Because use of a file event monitoring variable in any other way returns a non-negative number, setting the element to a negative value or a null string provides a reliable way to recognise unused entries. If the array contains no file event monitoring variables, the <span style="font-weight: bold;">WAIT.FILE.EVENT()</span> function simply sleeps for the given <span style="font-style: italic;">timeout</span> period.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Beware that when the <a href="configparams.htm#safedir" class="topiclink">SAFEDIR</a> configuration parameter is set to 1, if this function is used to monitor a directory into which items are written using QM, two file notification events will occur for each write.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">EVT = FILE.EVENT(&quot;C:\IMPORT&quot;, FE$FILE.NAME)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; IF WAIT.FILE.EVENT(EVT, 10) &gt; 0 THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp;  </span><span class="f_CodeBody" style="font-style: italic;">...Processing...</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; END ELSE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;...</span><span class="f_CodeBody" style="font-style: italic;">Periodic actions</span><span class="f_CodeBody">...</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; END</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">REPEAT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment creates a file monitoring event to trap changes to the C:\IMPORT directory as a result of creating, deleting or renaming a file. The <span style="font-weight: bold;">WAIT.FILE.EVENT()</span> function waits for an event to occur and then executes some processing code before waiting for the next event. In this example, the wait includes a ten second timeout to allow the program to perform some other periodic tasks.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">DIM EVT(3)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">EVT(1) = FILE.EVENT(&quot;C:\IMPORT&quot;, FE$FILE.NAME + FE$SUBTREE)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">EVT(2) = FILE.EVENT(&quot;C:\EXPORT&quot;, FE$FILE.NAME + FE$SUBTREE)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; IF WAIT.FILE.EVENT(EVT, 0) &gt; 0 THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp;  </span><span class="f_CodeBody" style="font-style: italic;">...Processing...</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; END</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">REPEAT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In this example, two directories and their sub-directories are monitored. Note that the EVT array has been dimensioned as three elements but only two are used. The <span style="font-weight: bold;">WAIT.FILE.EVENT()</span> function will ignore the unused element. Monitoring of either directory could be temporarily disabled in the processing code by setting the EVT array element to -1. Similarly, the processing code could add a new monitored event in EVT(3).</p>
+
+</td></tr></table>
+
+</body>
+</html>

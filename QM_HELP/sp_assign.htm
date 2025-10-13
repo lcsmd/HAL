@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SP.ASSIGN</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SP.ASSIGN" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sp_assign.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SP.ASSIGN</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sort_list.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sp_open.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SP.ASSIGN</span> command uses a form queue number to set the destination and other options for printer output.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SP.ASSIGN </span>{<span style="font-style: italic;">options</span>} {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">setptr.options</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where <span style="font-style: italic;">options</span> are chosen from:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">is the number of copies to print.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">F</span><span style="font-style: italic;">qno</span></td><td style="border:none;padding:0">specifies the form queue number in the range 0 to 999.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">H</span></td><td style="border:none;padding:0">directs output to the hold file.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">O</span></td><td style="border:none;padding:0">keeps the print unit open until the <span style="font-weight: bold;"><a href="printer.htm" class="topiclink">PRINTER CLOSE</a></span> command is used.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">Q</span><span style="font-style: italic;">qno</span></td><td style="border:none;padding:0">Same as <span style="font-weight: bold;">F</span><span style="font-style: italic;">qno</span>.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">R</span><span style="font-style: italic;">unit</span></td><td style="border:none;padding:0">uses the specified print unit, zero if omitted.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">S</span></td><td style="border:none;padding:0">Suppresses printing.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 270px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SP.ASSIGN</span> command references the $FORMS file (set up using <span style="font-weight: bold;"><a href="set_queue.htm" class="topiclink">SET.QUEUE</a></span>) to relate Pick style form queue numbers to the corresponding <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span> options. The options to <span style="font-weight: bold;">SP.ASSIGN</span> can be used to override the settings in the form queue definition.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">F</span><span style="font-style: italic;">qno</span> or <span style="font-weight: bold;">Q</span><span style="font-style: italic;">qno</span> options specify the form queue to be used. This defaults to zero if omitted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The queue number is used to read the corresponding print unit details from the $FORMS file. The remaining options can be used to override settings in the $FORMS entry.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of both the <span style="font-weight: bold;">H</span> and <span style="font-weight: bold;">S</span> options selects mode 3 printing, directing output to the hold file. When the <span style="font-weight: bold;">H</span> option is used without the <span style="font-weight: bold;">S</span> option, print mode 6 is selected causing the output to be written to a file and also printed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">SP.ASSIGN</span> sets the characteristics of print unit zero, the default printer, unless the <span style="font-weight: bold;">R</span><span style="font-style: italic;">unit</span> option is given.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If no options are given, the <span style="font-weight: bold;">SP.ASSIGN</span> command shows the form queue number associated with the default print unit and the settings of this printer. This is equivalent to the SP-ASSIGN ? command in Pick style systems.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">If the $SETPTR.DEFAULTS record exists (see <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span>), the default options are applied at the point when the <span style="font-weight: bold;"><a href="sp_assign.htm" class="topiclink">SP.ASSIGN</a></span> command is used.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-style: italic;">setptr.options</span> clause can be used to specify additional <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span> options that are to be applied to the selected form queue. A comma is required before this clause and between each <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span> option.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note: <span style="font-weight: bold;">SP.ASSIGN</span> is provided to ease migration of applications from Pick style environments. It is strongly recommended that new applications should make direct use of <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SP.ASSIGN F3</span></p>
+<p>This command uses the definition of form queue 3 to process output sent to the default printer (print unit 0).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SP.ASSIGN HSF3</span></p>
+<p>This command uses the definition of form queue 3 but forces use of print mode 3 to send the data to a file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SP.ASSIGN HF3</span></p>
+<p>This is similar to the previous example except that the data is saved to a file and also printed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SP.ASSIGN 2R4F6</span></p>
+<p>This command uses the definition of form queue 6 to process output sent to print unit 4 but forces the number of copies to be 2.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SP.ASSIGN F3,BANNER &quot;Sales&quot;</span></p>
+<p>This command uses the definition of form queue 3 but also includes the BANNER option to set the banner page text.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="printing.htm" class="topiclink">Printing</a>, <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span>, <span style="font-weight: bold;"><a href="set_queue.htm" class="topiclink">SET.QUEUE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

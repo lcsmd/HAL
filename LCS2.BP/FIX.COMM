@@ -1,0 +1,15 @@
+     OPEN 'I2.PRODUCT' TO I2.PRODUCT ELSE PRINT 'I2.PRODUCT' ; STOP
+     SELECT I2.PRODUCT
+     LOOP WHILE READNEXT AA DO
+          PRINT AA:
+          READV COMM.PIK1 FROM I2.PRODUCT,AA,33 THEN
+               COMM.PIK1 = TRIM(COMM.PIK1)
+               COMM.PIK2 = "000":COMM.PIK1<1>
+               COMM.PIK3 = COMM.PIK2 "R#4"
+               WRITEV COMM.PIK3 ON I2.PRODUCT,AA,33
+          END
+          *PRINT AA:"  ":COMM.PIK1:"  ==> ":COMM.PIK2:" ===> ":COMM.PIK3
+          CT += 1
+          IF NOT(MOD(CT,100)) THEN PRINT CT
+     REPEAT
+     PRINT 'FINISHED'

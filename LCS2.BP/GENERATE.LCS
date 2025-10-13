@@ -1,0 +1,91 @@
+      FN = FIELD(@SENTENCE," ",2)
+      PRE = FIELD(@SENTENCE," ",3)
+      OPEN 'LCS.CONTROL' TO LCS.CONTROL ELSE PRINT 'LCS.CONTROL';STOP
+      OPEN 'FILE.EQU' TO FILE.EQU ELSE PRINT 'FILE.EQU';STOP
+      OPEN 'DICT',FN TO D.FN ELSE PRINT 'DICT,':FN;STOP
+      READ INC FROM D.FN,"$INCLUDE" ELSE
+         READ INC FROM LCS.CONTROL,"$INCLUDE" ELSE INC = ""
+         INC = CHANGE(INC,"[FN]",FN)
+         WRITE INC ON D.FN,"$INCLUDE"
+      END
+      SECTIONS = INC<12>
+      IF INDEX(SECTIONS,"D",1) THEN DYNAMIC = 1 ELSE DYNAMIC = 0
+      IF INDEX(SECTIONS,'M',1) THEN MATRIX = 1 ELSE MATRIX = 0
+      IF INDEX(SECTIONS,'H',1) THEN SCALAR = 1 ELSE SCALAR = 0
+      EXECUTE "GENERATE ":FN
+      READ INCLUDE FROM FILE.EQU,FN:".EQ" THEN
+         CT1 = DCOUNT(INCLUDE,@FM)
+         *DEFINE BLOCK
+         BLOCK.CT = CT1-5
+         BLOCK = ""
+         FOR X = 6 TO CT1
+
+            BLOCK<X-5> = INCLUDE<X>
+         NEXT X
+         *
+         INCLUDE2 = "";* INITIALIZE NEW INCLUDE
+         CT = 0
+         * ADD HEADER STUFF FROM OLD INCLUDE
+         FOR X = 1 TO 4
+            CT+=1
+            INCLUDE2<X> = INCLUDE<X>
+         NEXT X
+         * IF MATRIX ADD MATRIX SECTION
+         IF MATRIX THEN
+            CT = 5
+            INCLUDE2<CT> = "*"
+            CT+=1
+            INCLUDE2<CT> = "* MATRIX"
+            FOR X = 5 TO CT1
+               CT+=1
+               INCLUDE2<CT> = INCLUDE<X>
+            NEXT X
+            CT = CT1+1
+         END
+         BLOCK1 = BLOCK
+         BLOCK1 = CHANGE(BLOCK1,'.M.','.')
+         BLOCK1 = CHANGE(BLOCK1,' to [PRE].M(',' to [PRE].B<')
+         BLOCK1 = CHANGE(BLOCK1,')','>')
+         * IF DYNAMIC ADD DYNAMIC
+         IF DYNAMIC THEN
+            CT+=1
+            INCLUDE2<CT> = "*"
+            CT+=1
+            INCLUDE2<CT> = "* DYNAMIC"
+            FOR X = 1 TO BLOCK.CT
+               CT+=1
+               INCLUDE2<CT> = BLOCK1<X>
+            NEXT X
+         END
+         IF SCALAR THEN
+            CT+=1
+            INCLUDE2<CT> = "*"
+            CT+=1
+            INCLUDE2<CT> = "* SCALAR"
+            BLOCK2 = CHANGE(BLOCK1,"[PRE].B<","")
+            BLOCK2 = CHANGE(BLOCK2,">","")
+            FOR X = 1 TO BLOCK.CT
+               CT+=1
+               LINE = CHANGE(BLOCK2<X>," ",@VM)
+               LINE<1,2> := ".H"
+               LINE = CHANGE(LINE,@VM," ")
+               INCLUDE2<CT> = LINE
+            NEXT X
+         END
+         INCLUDE2 = CHANGE(INCLUDE2,"[PRE]",PRE)
+         PRINT
+         WRITE INCLUDE2 ON FILE.EQU,FN:".EQ"
+         GOSUB DIS.INC:
+         STOP
+DIS.INC:
+         PRINT
+         PRINT "INCLUDE2"
+         I.CT = DCOUNT(INCLUDE2,@FM)
+         FOR I.X = 1 TO I.CT
+            PRINT INCLUDE2<I.X>
+         NEXT I.X
+         RETURN
+
+      END
+
+

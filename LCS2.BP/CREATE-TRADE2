@@ -1,0 +1,120 @@
+     SUBROUTINE(INARGS,OUTARGS)
+     LM=1
+     AFILE.DICT.KEY = INARGS<1>
+     AFILE.SORT.ATT = INARGS<2>
+     AFILE.NAME = INARGS<3>
+     AFILE.SORT = INARGS<4>
+     AFILE.DESC.ATT = INARGS<5>
+     BFILE.NAME = INARGS<6>
+     BFILE.PATH = INARGS<7>
+
+
+     OPEN AFILE.NAME TO AFILE ELSE PRINT AFILE.NAME;STOP
+     OPEN 'DICT',AFILE.NAME TO D_AFILE ELSE PRINT 'DICT ':AFILE.NAME;STOP
+     OPEN 'LCS.CONTROL' TO LCS.CONTROL ELSE PRINT 'LCS.CONTROL';STOP
+     OPEN 'DICT',BFILE.NAME TO D_BFILE ELSE PRINT 'DICT ':BFILE.NAME;STOP
+     OPEN BFILE.NAME TO BFILE ELSE PRINT BFILE.NAME;STOP
+
+     *READ I2.HEAD FROM LCS.CONTROL,"I2.HEADER" ELSE PRINT "I2.HEADER MISSING";STOP
+     CMD.STRING = "CLEAR-FILE DATA ":BFILE.NAME
+     IF LM THEN PRINT CMD.STRING
+     EXECUTE CMD.STRING CAPTURING CAP
+     IF LM THEN PRINT CAP
+     ATTS = ""
+     TAB = CHAR(9)
+
+     READ DICT.ITEM FROM D_AFILE,DICT.KEY THEN
+          HEADER = DICT.ITEM<2>
+          DICT.KEY = "@SELECT"
+          IF LM THEN PRINT "HEADER:":HEADER
+          IF LM THEN PRINT "WRITING HEADER ON DICT ":BFILE.NAME:" WITH KEY ":AFILE.DICT.KEY:" ":DICT.ITEM
+          WRITE DICT.ITEM ON D_BFILE,AFILE.DICT.KEY
+          HEADER = CHANGE(HEADER," ",@FM)
+          LENGTHS = ""
+          ATT.CT = DCOUNT(HEADER,@FM)
+          PRINT "CREATING FILE WITH THE FOLLOWING FIELDS IN ":BFILE.NAME
+          FOR ATT.X = 1 TO ATT.CT
+               LENGTHS<ATT.X> = 0
+               ATTS.NAME = HEADER<ATT.X>
+               IF LM THEN PRINT ATTS.NAME:" ":
+               READ DBUFF FROM D_AFILE,ATTS.NAME THEN
+                    HEADERN<ATT.X> = DBUFF<4>
+                    ATTS<ATT.X> = DBUFF<2>
+                    DBUFF<2> = ATT.X
+                    IF LM THEN PRINT ATT.X:" <----> ":
+                    WRITE DBUFF ON D_BFILE,ATTS.NAME
+                    IF LM THEN PRINT ATTS<ATT.X>:" IN ":AFILE.NAME
+               END
+          NEXT ATT.X
+          TXT.FILE.PATH = BFILE.PATH
+          DOS.CMD = "DEL ":TXT.FILE.PATH
+          IF LM THEN PRINT DOS.CMD
+          EXECUTE "DOS /C ":DOS.CMD
+          OPENSEQ TXT.FILE.PATH TO BFILE2 ELSE CREATE BFILE2 ELSE PRINT BFILE.NAME:'2';STOP
+          HEADER = CHANGE(HEADERN,@FM,TAB)
+          PRINT "HEADER:":HEADERN
+          WRITESEQ HEADERN ON BFILE2 ELSE PRINT "UNABLE TO WRITE HEADER";STOP
+          CT = 0
+          SELECT.STR = "SSELECT ":AFILE.NAME:" BY ":AFILE.SORT
+          PRINT SELECT.STR
+          EXECUTE SELECT.STR CAPTURING CAP
+          IF LM THEN PRINT CAP
+          PRINT
+          PRINT "HIT ANY KEY WHEN READY OR Q TO QUIT":;INPUT ANS,1
+          IF ANS="Q" THEN STOP
+          LOOP
+               CT += 1
+               LINE = ""
+          WHILE READNEXT LIB.KEY DO
+               READ LIB.B FROM AFILE.NAME,LIB.KEY THEN
+                    LINE = LIB.B<1>
+                    LINE2 = LIB.KEY
+                    VAL.LEN = LEN(LINE)
+                    IF VAL.LEN > LENGTHS<1> THEN LENGTHS<1> = VAL.LEN
+                    FOR ATT.X = 2 TO ATT.CT
+                         NEW.FIELD = LIB.B<ATTS<ATT.X>>
+                         GOSUB CHECK.FIELDS:
+                         VAL.LEN = LEN(NEW.FIELD)
+                         IF VAL.LEN > LENGTHS<ATT.X> THEN
+                              LENGTHS<ATT.X> = VAL.LEN
+                         END
+                         LINE := @FM:NEW.FIELD
+                         LINE2 := TAB:NEW.FIELD
+                    NEXT ATT.X
+                    WRITE LINE ON BFILE,LIB.KEY
+                    WRITESEQ LINE2 ON BFILE2 ELSE PRINT "CANNOT WRITE TO FILE";STOP
+               END
+               IF NOT(MOD(CT,100)) THEN PRINT CT:"  ":LIB.B<AFILE.SORT.ATT>:" ":LIB.B<AFILE.DESC.ATT>
+          REPEAT
+          TOTAL.LEN = 0
+          FOR ATT.X = 1 TO ATT.CT
+               VAL.LEN = LENGTHS<ATT.X>
+               FORM = VAL.LEN:"L"
+               ATTS.NAME = HEADER<ATT.X>
+               TOTAL.LEN += VAL.LEN
+               WRITEV FORM ON D_BFILE,HEADER<ATT.X>,6
+               PRINT ATTS.NAME "L#25  ":FORM
+          NEXT ATT.X
+          PRINT
+          PRINT "TOTAL MAX LENGTH:":TOTAL.LEN
+          CLOSESEQ BFILE2
+          PRINT "FINISHED"
+          STOP
+     END ELSE
+          PRINT AFILE.DICT.KEY:" NOT FOUND IN DICT ":AFILE.NAME
+          PRINT "FINISHED WITH ERROR"
+          STOP
+
+FIX.PRICE.SOURCE:
+          PRICE.SOURCE = LIB.B<42>
+          IF PRICE.SOURCE[1,6] <> "L1425:" THEN
+               PRICE.SOURCE = "L1425:0":RIGHT(PRICE.SOURCE,8)
+               LIB.B<42> = PRICE.SOURCE
+               WRITEV PRICE.SOURCE ON AFILE.NAME,LIB.KEY,42
+          END
+          RETURN
+
+CHECK.FIELDS:
+          IF HEADER<ATT.X> = 'UPC' THEN NEW.FIELD = LEFT(NEW.FIELD,11)
+          RETURN
+     END

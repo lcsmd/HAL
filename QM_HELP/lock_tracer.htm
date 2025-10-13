@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LOCK.TRACER</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LOCK.TRACER" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "lock_tracer.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LOCK.TRACER</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="lock.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="login_port.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_ImageCaption"><span class="f_ImageCaption">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LOCK.TRACER</span> command enables or disables lock tracing and provides a tool to display the logged data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">LOCK.TRACER</span> <span style="font-weight: bold;">ON</span></td><td style="border:none;padding:0">Start logging</td></tr></table></div><p style="text-indent: -306px; margin: 0 0 0 336px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">LOCK.TRACER OFF</span></td><td style="border:none;padding:0">Stop logging</td></tr></table></div><p style="text-indent: -306px; margin: 0 0 0 336px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">LOCK.TRACER</span> {<span style="font-weight: bold;">USER</span><span style="font-style: italic;"> n</span>}<span style="font-weight: bold;"> </span>{<span style="font-weight: bold;">LPTR</span> {<span style="font-style: italic;">n</span>}}</td><td style="border:none;padding:0">Display or print logged data</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">LOCK.TRACER</span> command requires administrative rights and is normally only present in the VOC of the QMSYS account. The V-type VOC entry can be copied to other accounts if required.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Enabling lock tracing logs locking related actions for all users. The volume of data recorded and the impact on performance are likely to be significant so it is best to enable logging only for short periods. The <span style="font-weight: bold;">USER</span> option to the command filters data on display to show only actions relating to the specified QM user number.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The logged data is written to a file named locktrace in the TEMP subdirectory of the QMSYS account. On ECS mode systems, this file will be recorded with UTF-8 encoding. Re-enabling the lock tracer will overwrite any existing locktrace file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The report displayed by the third form of the <span style="font-weight: bold;">LOCK.TRACER</span> command requires a terminal width of 132 characters. When using a QMConsole session on Windows, the window will automatically adjust size. For all other terminal types, the width must be configured in the terminal emulator.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Users may wish to write their own log analysis tool to perform more advanced filtering. Each line of the log is a value mark delimited dynamic array where the values are:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 0 0 0 23px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">1.</span>Timestamp as an epoch value</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 0 0 0 23px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">2.</span>QM user number</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 0 0 0 23px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">3.</span>File pathname</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 0 0 0 23px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">4.</span>Record id</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 0 0 0 23px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">5.</span>Action code</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 0 0 0 23px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">6.</span>Program name</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 0 0 0 23px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">7.</span>Program execution offset as a hexadecimal value</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 0 0 0 23px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">8.</span>Program line number, -1 if not available</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The action code is a numeric value. The list below shows the actions for each value, and short text used in the default report.</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 23px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:26px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">1</p>
+</td>
+<td style="vertical-align:top; width:89px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Get RU</p>
+</td>
+<td style="vertical-align:top; width:274px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Get record update lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:26px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">2</p>
+</td>
+<td style="vertical-align:top; width:89px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Get RL</p>
+</td>
+<td style="vertical-align:top; width:274px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Get shareable read lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:26px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">3</p>
+</td>
+<td style="vertical-align:top; width:89px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">RU-&gt;RL</p>
+</td>
+<td style="vertical-align:top; width:274px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Downgrade record update lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:26px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">4</p>
+</td>
+<td style="vertical-align:top; width:89px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">RL-&gt;RU</p>
+</td>
+<td style="vertical-align:top; width:274px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Upgrade shareable record lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:26px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">5</p>
+</td>
+<td style="vertical-align:top; width:89px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Get FX</p>
+</td>
+<td style="vertical-align:top; width:274px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Get file exclusive lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:26px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">6</p>
+</td>
+<td style="vertical-align:top; width:89px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Rel RX</p>
+</td>
+<td style="vertical-align:top; width:274px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Release record lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:26px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">7</p>
+</td>
+<td style="vertical-align:top; width:89px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Rel FX</p>
+</td>
+<td style="vertical-align:top; width:274px; padding:0; border:none"><p class="p_Normal" style="margin: 4px 0 0 0;">Release file lock</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="profiling.htm" class="topiclink">Application Profiling</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

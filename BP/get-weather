@@ -1,0 +1,67 @@
+      PROGRAM GET_WEATHER
+      * This program demonstrates using !CALLHTTP to fetch weather data
+      *
+      *SESSION = OBJECT('!CALLHTTP', 'www.openqm.com')
+      *
+      *SESSION->PARAMS = 't0=h&t1=openqm'
+      *
+      *IF SESSION->GET('/') THEN
+      *
+      *DISPLAY SESSION->BODY
+      *
+      *END ELSE
+      *
+      *DISPLAY SESSION->ERROR
+      *
+      *END
+      * Create a new !CALLHTTP object
+      SESSION = object("!CALLHTTP", 'api.open-meteo.com')
+
+      * Set up the request parameters
+
+      SESSION->PARAMS = '/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m'
+      *= "city=New York&units=metric"
+      * Add query parameters
+      IF SESSION->GET('/') THEN
+         DISPLAY SESSION->BODY
+      END ELSE
+         DISPLAY SESSION->ERROR
+      END
+      * Set headers
+      *SESSION->set.header("Accept", "application/json")
+      **http->set.header("API-Key", "your_api_key_here")
+*
+      ** Make the API call
+      *status = SESSION->call()
+
+
+      *IF status THEN
+         ** Request was successful
+         *PRINT "Request successful"
+         *PRINT "Status code: " : SESSION->status.code
+*
+         ** Print the response body
+         *PRINT "Response:"
+         *PRINT SESSION->response
+*
+         ** If you know it's JSON, you could parse it
+         ** (Note: JSON parsing would require additional handling)
+         *weather_data = SESSION->response
+*
+         ** Process the weather data as needed
+         ** (This is a simplified example; actual JSON parsing would be more complex)
+         *temperature = FIELD(weather_data, '"temperature":', 2)
+         *temperature = FIELD(temperature, ',', 1)
+*
+         *PRINT "Current temperature: " : temperature : "øC"
+      *end ELSE
+         ** Request failed
+         *PRINT "Request failed"
+         *PRINT "Error message: " : SESSION->error.message
+      *END
+*
+      ** Clean up
+      **delete object, http
+
+      END
+

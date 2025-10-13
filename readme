@@ -1,0 +1,45 @@
+MVConnect for QM
+
+The installer will have placed the MVConnect programs in either the private
+or global catalogue directory and created the VOC entry for the WEBSVC simple
+web services program.
+
+The command to activate the web server is
+   WEBSVC MVCONNECTSVR PORT 8180
+where the apapropriate port number should be specified.
+
+There is an optional DEBUGGING qualifier to this command that will create a
+simple log file in $COMO.
+
+To run the post-installation test, open your browser and navigate to
+   http://<ip of box>:8180/api/wresttest
+
+Endpoints are created by creating new entries in WDB.RESOURCE. This file will
+be automatically created if it does not already exist. Two default items will
+be created, a CONFIG item and a testing endpoint API*WRESTTEST.
+
+The api endpoint format is <HANDLER>*<ENDPOINT>.  This relates to
+http://ip/<HANDLER>/<ENDPOINT>.
+
+When MVConnect processes a request it will pull the first two elements in the
+url and http://ip/<HANDLER>/<ENDPONT> called HANDLER and ENDPOINT and
+concantenate them with a * and look it up in WDB resource. The format of the
+WDB resource file is
+   1> P
+   2> Free text description
+   3> Name of program to run.
+   4> Not used for REST
+   5> Parse cgi (1 yes).
+   6> Enabled (1 yes)
+   7> Populate wdb.debug file (1 yes, only works if file already exists)
+   8> Account to logto before running #3
+
+
+ WDEBUG
+
+Transactions can be recorded and re-ran with WDEBUG. To run this on
+
+   1. Enter a 1 in attributes 7 of the WDB.RESOURCE file
+   2. Hit the service with your browser
+   3. From TCL run WDEBUG. It will list recorded transaction and you can
+      replay them

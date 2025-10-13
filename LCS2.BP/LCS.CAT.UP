@@ -1,0 +1,92 @@
+     open 'LCS.CAT' to lcs.cat else print 'lcs.cat';stop
+     open 'LCS.CONTROL' to lcs.control else print 'lcs.control';stop
+     open 'MD' to md else print 'md';stop
+
+     *equ actual.acct to ibuff<1>
+     *equ actual.dir to ibuff<2>
+     *equ actual.name to ibuff<3>
+     *equ item.dir.names to ibuff<9>
+     *equ item.dir.accts to ibuff<8>
+     ibuff = ""
+     PROMPT ""
+
+     execute "who" capturing s.who
+     current.acct.now = upcase(field(s.who," ",2))
+     read dirlist from lcs.control,"dirlist" else dirlist = "lcs.bp lcs.bpq lcs.i2 lcs.i2,pu lcs.ddi.bp lcs.bpl"
+     dirlist=upcase(dirlist)
+     dirlist = change(dirlist," ",@fm)
+     write dirlist on lcs.control,"DIRLIST"
+     dir.ct = dcount(dirlist,@fm)
+     for dir.x = 1 to dir.ct
+          dir = dirlist<dir.x>
+          current.dir = dir
+          print "processing directory ":current.dir
+          gosub get.dir.info:
+          if current.dir.name then
+               select.str = "sselect ":current.dir.name
+               execute select.str
+               readlist items then
+                    gosub process.items
+               end
+          end else print dir:" not found in MD"
+     next dir.x
+     stop
+
+process.items:
+     i.ct = dcount(items,@fm)
+     for i.x = 1 to i.ct
+          item = items<i.x>
+          print "       processing item ":item
+          read ibuff from lcs.cat,item then
+               locate current.dir in ibuff<4> setting pos else
+                    ibuff<4> := @vm:current.dir
+                    ibuff<5> := @vm:current.dir.type
+                    ibuff<6> := @vm:current.dir.acct
+                    ibuff<7> := @vm:current.dir.name
+               end
+          end else
+               ibuff = ""
+               ibuff<4> = current.dir
+               ibuff<5> = current.dir.type
+               ibuff<6> = current.dir.acct
+               ibuff<7> = current.dir.name
+               gosub get.active:
+          end
+          PRINT ibuff
+          *INPUT ANS,1
+          *IF ANS = 'Q' THEN STOP
+          write ibuff on lcs.cat,item
+     next i.x
+     return
+
+get.active:
+     read itemmd from md,item then
+          item.type = itemmd<1>
+          if itemmd<1> = 'V' then
+               ibuff<1> = current.acct.now
+               ibuff<2> = field(itemmd<2>,"/",1)
+               ibuff<3> = field(itemmd<2>,"/",2)
+
+          end
+     end
+     return
+
+get.dir.info:
+     read dirmd from md,current.dir then
+          current.dir.type = dirmd<1>
+          if current.dir.type = 'Q' then
+               current.dir.acct = dirmd<2>
+               current.dir.name = dirmd<3>
+          end else
+               if current.dir.type = 'F' then
+                    current.dir.acct = current.acct.now
+                    current.dir.name = dirmd<2>
+               end
+          end
+     end else
+          current.dir.type = ""
+          current.dir.acct = ""
+          current.dir.name = ""
+     end
+     return
+

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>!PICK()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="!PICK()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbs_pick.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">!PICK()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbs_phlog.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbs_picklist.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!PICK()</span> subroutine displays a list of entries from which a user may select one.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CALL !PICK(</span><span style="font-style: italic;">item</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">top.line</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">item.list</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">title</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">pos</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">item</span></td><td style="border:none;padding:0">is the returned item. This will be returned as a null string if no item is selected</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 360px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">top.line</span></td><td style="border:none;padding:0">is the line number of the topmost display line to be used. The pick list display uses from this line to the bottom of the screen.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 360px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">item.list</span></td><td style="border:none;padding:0">is a field mark delimited list of items to display. Long items will be truncated to fit a single line.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">title</span></td><td style="border:none;padding:0">is a short text description of the items being processed. This is displayed alongside the item count at the bottom of the screen. This may be a null string to omit the title.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">pos</span></td><td style="border:none;padding:0">enables programs to return to a pick list at the position of a previously displayed item. On initial entry, this should be zero or a null string. If a variable name is used for <span style="font-style: italic;">pos</span>, this variable will be updated to contain position information related to the list. A subsequent call to <span style="font-weight: bold;">!PICK()</span> using this updated value will display the screen as it was when the previous item was selected. Programs should not make any assumption about the format of this variable as it may change between QM releases.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!PICK()</span> subroutine displays a list of items as specified in <span style="font-style: italic;">list</span>. The user can move through this list using the following keys:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Down one line:</p>
+</td>
+<td style="vertical-align:top; width:125px; padding:4px; border:none"><p>Cursor down</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>D</p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:none"><p>Ctrl-N</p>
+</td>
+<td style="vertical-align:top; width:100px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Up one line:</p>
+</td>
+<td style="vertical-align:top; width:125px; padding:4px; border:none"><p>Cursor up</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>U</p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:none"><p>Ctrl-P</p>
+</td>
+<td style="vertical-align:top; width:100px; padding:4px; border:none"><p>Ctrl-Z</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Down page:</p>
+</td>
+<td style="vertical-align:top; width:125px; padding:4px; border:none"><p>Page down</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>N</p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:none"><p>Ctrl-V</p>
+</td>
+<td style="vertical-align:top; width:100px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Up page:</p>
+</td>
+<td style="vertical-align:top; width:125px; padding:4px; border:none"><p>Page up</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>P</p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:none"><p>Esc-V</p>
+</td>
+<td style="vertical-align:top; width:100px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Top:</p>
+</td>
+<td style="vertical-align:top; width:125px; padding:4px; border:none"><p>Home</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>T</p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:none"><p>Esc-&lt;</p>
+</td>
+<td style="vertical-align:top; width:100px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Bottom:</p>
+</td>
+<td style="vertical-align:top; width:125px; padding:4px; border:none"><p>End</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>B</p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:none"><p>Esc-&gt;</p>
+</td>
+<td style="vertical-align:top; width:100px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPEN &quot;ACCOUNTS&quot; TO ACC.F ELSE STOP &quot;Cannot open ACCOUNTS file&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SSELECT ACC.F</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">READLIST LIST ELSE NULL</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CALL !PICK(ITEM, 0, LIST, &quot;Accounts&quot;, POS)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF ITEM # &quot;&quot; THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READ ACC.REC FROM ACC.F, ITEM THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above example shows a list of records in the ACCOUNTS file and processes the selected record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmbs_picklist.htm" class="topiclink">!PICKLIST()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

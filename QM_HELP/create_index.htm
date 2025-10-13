@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>CREATE.INDEX</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CREATE.INDEX" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "create_index.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">CREATE.INDEX</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="create_file.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="create_key.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CREATE.INDEX</span> command creates an <a href="ak.htm" class="topiclink">alternate key index</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CREATE.INDEX</span> <span style="font-style: italic;">filename</span>  <span style="font-style: italic;">field(s)</span> &nbsp;{<span style="font-style: italic;">options</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">filename</span></td><td style="border:none;padding:0">is the name of the file for which the index is to be built.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">field(s)</span></td><td style="border:none;padding:0">is one or more field names for which indices are to be created.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">are any combination of the following:</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 234px;">DELETING</p>
+<p style="text-indent: -90px; margin: 0 0 0 234px;">ENCRYPT</p>
+<p style="text-indent: -90px; margin: 0 0 0 234px;">EXCLUDE &quot;<span style="font-style: italic;">value</span>&quot;</p>
+<p style="text-indent: -90px; margin: 0 0 0 234px;">NO.CASE</p>
+<p style="text-indent: -90px; margin: 0 0 0 234px;">NO.NULLS</p>
+<p style="text-indent: -90px; margin: 0 0 0 234px;">PATHNAME <span style="font-style: italic;">index.path</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CREATE.INDEX</span> command creates the file structures to hold an alternate key index. The index must subsequently be populated using <span style="font-weight: bold;"><a href="build_index.htm" class="topiclink">BUILD.INDEX</a></span> before it can be used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">field(s)</span> referenced in the command must correspond to C, D, E, I, A or S-type dictionary items. The dictionary items can be deleted once the index has been constructed as all details of the indexed field are stored in the index file but this is not recommended. The value to be indexed must not exceed 255 characters. Values longer than this will not be included in the index.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Indices constructed on I or C-type dictionary items or on A or S-type items that use correlative expressions should be such that they always produce the same result when executed for the same data. Examples of possibly invalid I-type expressions would be those that use the date or time and those that use the <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> function to access other files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">DELETING</span> option causes <span style="font-weight: bold;">CREATE.INDEX</span> to delete any previous version of the same index. It is useful when, for example, the index must be recreated because an I-type expression that derives the indexed value has been modified.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-weight: bold;">NO.NULLS</span> option specifies that no entry is to be added to the index for records where the indexed field is null.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">NO.CASE</span> option specifies that the index is to be built using case insensitive key values. The internal sort order of the index is based on the uppercase form of the data being indexed. A case insensitive index can be used with case insensitive comparison operators in the query processor but not with case sensitive operations because of the sort order difference. Conversely, a case sensitive index can be used with case sensitive comparison operators in the query processor but not with case insensitive operations.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The <span style="font-weight: bold;">ENCRYPT</span> option creates an encrypted index. This is only possible when the data file being indexed uses record level encryption. There is a significant performance penalty in using encrypted indices with files that are frequently updated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">EXCLUDE</span> option causes QM to omit index entries for the specified <span style="font-style: italic;">value</span>. Multiple values can be excluded by use of a comma separate list such as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CREATE.INDEX SALES EXCLUDE &quot;D&quot;, &quot;X&quot;</span></p>
+<p class="p_Normal">See the discussion of index exclusions in the <a href="ak.htm" class="topiclink">alternate key index overview</a> for more detail of this feature.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>Normally, the indices are stored as subfiles in the directory that represents the data file. The <span style="font-weight: bold;">PATHNAME</span> option allows the indices to be stored in an alternative location. This might be useful, for example, to balance loads across multiple disks or to exclude indices from backups as they can always be recreated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>All indices for a single data file must be stored together. The <span style="font-weight: bold;">PATHNAME</span> option can be used when creating the first index and specifies the pathname of a new directory that will be created at the same time as the index. If this option is included when creating subsequent indices the <span style="font-style: italic;">index.path</span> must be the same as for the first index. It is suggested that the pathname should be based on the data file name for ease of recognition.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the <span style="font-weight: bold;">PATHNAME</span> option is not included, the <span style="font-weight: bold;">CREATE.INDEX</span> command looks for an X-type VOC record named $INDEX.PATH in which the second field contains the pathname of a directory under which indices are to be created by default. If found, a subdirectory with the same name as the final element of the data file pathname is created under this location. For example, when creating an index for a file with pathname /hd1/sales/invoices, a $INDEX.PATH record that contains</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">1: X</span></p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">2: /hd2/indices</span></p>
+<p>would place the indices in /hd2/indices/invoices.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of <span style="font-weight: bold;">PATHNAME DEFAULT</span> will ignore the $INDEX.PATH record, placing the indices in the same directory as the data file elements.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Index subfiles can be moved using the operating system level <a href="qmidx.htm" class="topiclink">qmidx</a> utility.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Data Encryption</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Alternate key indices may be applied to files that use record level data encryption and the index itself can also be encrypted as described above. Files using field level encryption cannot have indices on encrypted fields. Also, indices constructed from calculated values such as I-types that use encrypted fields will fail if the record is updated by a user that does not have access to the relevant encryption key.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CREATE.INDEX ORDERS DATE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">BUILD.INDEX ORDERS DATE</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above commands create and build an index on the DATE field of the ORDERS file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="build_index.htm" class="topiclink">BUILD.INDEX</a></span>, <span style="font-weight: bold;"><a href="delete_index.htm" class="topiclink">DELETE.INDEX</a></span>, <span style="font-weight: bold;"><a href="disable_index.htm" class="topiclink">DISABLE.INDEX</a></span>, <span style="font-weight: bold;"><a href="list_index.htm" class="topiclink">LIST.INDEX</a></span>, <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span>, <span style="font-weight: bold;"><a href="rebuild_all_indices.htm" class="topiclink">REBUILD.ALL.INDICES</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

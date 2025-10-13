@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>The QM File System</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Files" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmfiles.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">The QM File System</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="error_handling.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="creatinganddeletingfiles.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">File Types</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The files (or <span style="font-weight: bold;">tables</span>) used by<span style="font-family: Souvenir; font-weight: bold;"> </span>QM are of two types; <a href="directoryfiles.htm" class="topiclink">directory files</a> and <a href="dynamicfiles.htm" class="topiclink">dynamic hashed files</a>. Directory files do not give high performance but allow data to be accessed from outside of the QM environment. They are therefore frequently used for data interchange with other software. Dynamic hashed files offer very high performance and are typically used for the bulk of the data stored by an application. In addition, QM supports <a href="distributed_files.htm" class="topiclink">distributed files</a> which are a way of viewing a collection of separate hashed files as though they are one file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Facilities are provided to create data files, enter, modify and retrieve data, produce reports and, where the data processing operation required cannot be achieved using the standard commands, to construct powerful programs with the minimum of effort.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Most files consist of two parts; a <span style="font-weight: bold;">data part</span> holding the actual data and a <span style="font-weight: bold;">dictionary part</span> holding a description of the structure of data records. Files do not have to have both parts. Files with no dictionary portion are fairly common. Dictionaries with no data part usually exist only to provide a single dictionary common to the data portion of many files. Multiple files that have identical data structure may share a single dictionary.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with other multivalue database products, QM also supports <span style="font-weight: bold;">multifiles</span>. These are a collection of data files that share a common dictionary where the component files are referenced by a two part name consisting of a file name and a subfile name separated by a comma. The subfile name will be treated as case insensitive if the VOC (and hence the file name) is case insensitive. See the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command for further details.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Files contain data stored as <span style="font-weight: bold;">records</span> which are the basic unit of file access. Each record has a <span style="font-weight: bold;">record id</span> (or <span style="font-weight: bold;">key</span>) which must be unique within the file. A record id may contain any character except the mark characters (chars 251 to 255) or the ASCII NUL character (char 0). Null record ids (zero length) are not allowed in QM and the key length must not exceed the setting of the <a href="configparams.htm#maxidlen" class="topiclink">MAXIDLEN</a> configuration parameter. If the system is in ECS mode, characters outside the 8-bit character set are only valid for files configured in ECS mode. The <span style="font-weight: bold;"><a href="qmb_fcontrol.htm" class="topiclink">FCONTROL()</a></span> function with action key FC$VALID.ID can be used in an application to validate a record id.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Special Filename Syntaxes</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Normally, QM commands that reference files use a file name that corresponds to an F or Q-type VOC entry which, in turn, references the actual operating system file to be accessed. There are four special extended syntaxes for filenames that allow access to files without needing a VOC entry. Use of these is controlled by the <a href="configparams.htm#filerule" class="topiclink">FILERULE</a> configuration option. Users should consider any impact on the security of their system before enabling these.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The four extended syntaxes are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">Implicit Q-pointer</td><td style="border:none;padding:0"><span style="font-style: italic;">account</span>:<span style="font-style: italic;">file</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">Implicit QMNet pointer</td><td style="border:none;padding:0"><span style="font-style: italic;">server</span>:<span style="font-style: italic;">account:file</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">Pathname</td><td style="border:none;padding:0">PATH:<span style="font-style: italic;">pathname</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">Virtual file system</td><td style="border:none;padding:0">VFS:<span style="font-style: italic;">server</span>:<span style="font-style: italic;">qualifier</span></td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that in the pathname form, depending on context, Windows users may need to use forward slash characters (/) as directory delimiters because the backslash (\) is reserved as a string quote. Alternatively, the entire &quot;PATH:<span style="font-style: italic;">pathname</span>&quot; construct can be quoted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Because some VFS handlers may need to process filenames that include spaces (e.g. DICT <span style="font-style: italic;">name</span>), any tilde characters (~) in the <span style="font-style: italic;">qualifier</span> of a VFS reference will be replaced by spaces.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>These special syntaxes cannot be used with a multifile component name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For details of file processing from QMBasic programs, see <a href="file_processing.htm" class="topiclink">File Processing</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 0;"><a href="creatinganddeletingfiles.htm" class="topiclink">Creating and Deleting Files</a></p>
+<p style="margin: 0 0 10px 0;"><a href="creatingandmodifyingdata.htm" class="topiclink">Creating and Modifying Data</a></p>
+<p style="margin: 0 0 10px 0;"><a href="locks.htm" class="topiclink">Locks</a></p>
+<p style="margin: 0 0 10px 0;"><a href="ak.htm" class="topiclink">Alternate key indices</a></p>
+<p style="margin: 0 0 10px 0;"><a href="triggers.htm" class="topiclink">Triggers</a></p>
+<p style="margin: 0 0 10px 0;"><a href="fstat.htm" class="topiclink">Monitoring the File System</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

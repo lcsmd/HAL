@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SORT.COMPARE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SORT.COMPARE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_sort_compare.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SORT.COMPARE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_sortnext.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_soundex.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SORT.COMPARE()</span> function compares two items using a specified set of comparison rules.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SORT.COMPARE(</span><span style="font-style: italic;">string1</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">string2</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">mode</span> {<span style="font-weight: bold;">, </span><span style="font-style: italic;">no.case</span>}<span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">string1</span></td><td style="border:none;padding:0">is the first string to be compared.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">string2</span></td><td style="border:none;padding:0">is the second string to be compared.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">mode</span></td><td style="border:none;padding:0">identifies the manner in which the comparison is to be performed.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">no.case</span></td><td style="border:none;padding:0">a Boolean value indicating whether the comparison should be case insensitive. This argument is retained for compatibility with earlier releases but case insensitivity can be specified in the <span style="font-style: italic;">mode</span> value.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SORT.COMPARE()</span> function compares <span style="font-style: italic;">string1</span> and <span style="font-style: italic;">string2</span> according to the sort rules specified by the <span style="font-style: italic;">mode</span> value which may be specified as a numeric value or by use of the tokens from the SYSCOM KEYS.H include record shown below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">Mode 0</td><td style="border:none;padding:0">SRT$LEFT. A simple left justified comparison, examining corresponding characters from the start of each string until either a difference is found or the end of both strings has been reached.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">Mode 1</td><td style="border:none;padding:0">SRT$RIGHT. A simple right justified comparison in which the shorter item is effectively padded with leading spaces and the resultant strings are compared character by character from the start until either a difference is found or the end of both strings has been reached. If both strings can be treated as integer values, possibly with a leading sign character, a numeric comparison is performed.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">Mode 2</td><td style="border:none;padding:0">SRT$COMPOUND. A compound sort in which the two strings are considered to be formed from a series of alternating numeric and non-numeric elements. Numeric elements are sorted into numerical value, non-numeric elements are sorted into collating sequence order. If the first element is numeric, it may have an optional leading sign character. Sign characters appearing later in the strings are treated as being non-numeric characters.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">Mode 3</td><td style="border:none;padding:0">SRT$RIGHT.FLOAT. The same as mode 1 except that the test for numeric items allows non-integer values.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">Mode 4</td><td style="border:none;padding:0">SRT$STRICT. Similar to a compound sort but numerically equivalent elements such as &quot;28&quot; and &quot;028&quot; to be treated as being different.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Other additive mode flags are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:211px">SRT$DESCENDING</td><td style="border:none;padding:0">The result of the comparison operation is reversed.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:211px">SRT$NOCASE</td><td style="border:none;padding:0">Perform a case insensitive comparison. &nbsp; &nbsp; &nbsp; &nbsp;</td></tr></table></div><p class="p_Normal" style="text-indent: -211px; margin: 10px 0 0 241px;">&nbsp;</p>
+<p>In all cases, the <span style="font-style: italic;">no.case</span> argument can be used to specify that alphabetic items should be treated as case insensitive, effectively replacing lower case letters with their upper case equivalents.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SORT.COMPARE()</span> function returns</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:44px">-1</td><td style="border:none;padding:0"><span style="font-style: italic;">string1</span> comes before <span style="font-style: italic;">string2</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:44px">0</td><td style="border:none;padding:0"><span style="font-style: italic;">string1</span> is equal to <span style="font-style: italic;">string2</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:44px">1</td><td style="border:none;padding:0"><span style="font-style: italic;">string1</span> comes after <span style="font-style: italic;">string2</span></td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+<span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Using the modes indicated below, the effect of sorting GC5, ND620, GC41, CD631, 55, 3AB and GC would be</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Mode 0</td><td style="border:none;padding:0">3AB, 55, CD631, GC, GC41, GC5, ND620</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Mode 1</td><td style="border:none;padding:0">55, GC, 3AB, GC5, GC41, CD631, ND620</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Mode 2</td><td style="border:none;padding:0">3AB, 55, CD631, GC, GC5, GC41, ND620</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_compare.htm" class="topiclink">COMPARE()</a></span><a href="qmb_compare.htm" class="topiclink">,</a> <span style="font-weight: bold;"><a href="qmbs_sort.htm" class="topiclink">!SORT()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SCAN</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SCAN (Query processor)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "scan.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SCAN</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="displayclause.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="select.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SCAN</span> verb prompts for entry of one or more text strings. Records that meet any other selection criteria given on the command line are tested for the presence of the search strings at any position in the record, displaying the lines that contain the specified strings.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SCAN</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span></p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">USING</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;"><a href="selectionclause.htm" class="topiclink">selection.clause</a></span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;"><a href="sortclause.htm" class="topiclink">sort.clause</a></span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;">record.id...</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">ALL</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">FOR</span> <span style="font-style: italic;">string1 string2</span> ...}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">select.list.no</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">STRINGS</span> <span style="font-style: italic;">file.name record.id</span>}</p>
+<p style="margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The <span style="font-weight: bold;">SCAN</span> command is equivalent to <span style="font-weight: bold;"><a href="search.htm" class="topiclink">SEARCH</a></span> with the <span style="font-weight: bold;">DISPLAY</span> option.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Multiple search strings may be specified. The default action is to prompt for entry of search strings, terminating the list by entering a blank response to the prompt. Two &nbsp;alternative methods of specifying the search strings are available. Use of the <span style="font-weight: bold;"><a href="for.htm" class="topiclink">FOR</a></span> keyword allows search strings to be specified on the command line. Use of the <span style="font-weight: bold;"><a href="strings.htm" class="topiclink">STRINGS</a></span> keyword takes the search strings from the specified file and record, each field being taken as a separate search string.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default action is for the search to scan only the record data. Use of the <span style="font-weight: bold;">ALL</span> keyword extends the search to include the record id.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The optional <span style="font-weight: bold;"><a href="no_case.htm" class="topiclink">NO.CASE</a></span> keyword makes the search string test case insensitive.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By default, the <span style="font-weight: bold;">SCAN</span> command shows the lines that contain any of the supplied search strings. This can be changed by use of the <span style="font-weight: bold;"><a href="all_match.htm" class="topiclink">ALL.MATCH</a></span> keyword which specifies that the selected records must contain all of the supplied strings.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SCAN BP FOR &quot;!SORT&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above command would search all QMBasic source programs in the BP file for references to the <span style="font-weight: bold;">!SORT()</span> subroutine and display the lines on which they occur.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="search.htm" class="topiclink">SEARCH</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

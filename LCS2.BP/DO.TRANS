@@ -1,0 +1,318 @@
+      OPEN 'TRANS' TO TRANS ELSE PRINT 'TRANS';STOP
+      OPEN 'LCS.CONTROL' TO LCS.CONTROL ELSE PRINT 'LCS.CONTROL';STOP
+      OPEN 'RULES' TO RULES ELSE PRINT 'RULES';STOP
+      OPEN 'ACCOUNTS' TO ACCOUNTS ELSE PRINT 'ACCOUNTS';STOP
+      INCLUDE FILE.EQU TRANS.EQ
+      INCLUDE FILE.EQU RULES.EQ
+      PROMPT ''
+      READ NEXT.RULE.ID FROM LCS.CONTROL,"NEXT.RULE.ID" ELSE NEXT.RULE.ID = "5001"
+      LOOP
+      READV EXISTS FROM RULES,NEXT.RULE.ID,0 ELSE EXISTS = 0
+       WHILE EXISTS 
+      REPEAT
+      ADD.RULE = FIELD(@SENTENCE," ",2)
+
+      LABS = "KEYWORD,NAME,ACCOUNT.ID,ACCOUNT NAME,CLASS,DEPT"
+      LABL = "20,20,15,40,10,10"
+      CLASSES="Practice,Personal"
+      DEPTs="NONE,LCS,JMB,MAG,RILEY,DISPUTE"
+      CLASSES= CHANGE(CLASSES,",",@FM)
+      DEPTS=CHANGE(DEPTS,",",@FM)
+      LABS = CHANGE(LABS,',',@FM)
+      LABL = CHANGE(LABL,',',@FM)
+      LABC = DCOUNT(LABS,@FM)
+      DEPTC = DCOUNT(DEPTS,@FM)
+      CLASSC = DCOUNT(CLASSES,@FM)
+      LAB= ""
+      LABLINE = ""
+      FOR LABX = 1 TO LABC
+         *LAB<LABX>=LABS<LABX>:SPACE(LABL<LABX>-LEN(LABS<LABX>))
+         LABLINE :=LABS<LABX>:SPACE(LABL<LABX>-LEN(LABS<LABX>))
+      NEXT LABX
+      LM = 1
+      CRLF = CHAR(13):CHAR(10)
+      FINISHED = @FALSE
+      FILTER.MODE = 4
+      ESC = CHAR(27)
+      FILTER = ""
+      SORTBY = 'TR.DESC'
+      A.TRANS.POINT = 1
+      FILTER<1,1> = ' ';FILTER<1,2> = 'NO FILTER'
+      FILTER<2,1> = ' WITH RULE = "" ';FILTER<2,2> = 'NO RULE'
+      FILTER<3,1> = ' WITH NAME = "" ';FILTER<3,2> = 'UNNAMED'
+      FILTER<4,1> = ' WITH ACCOUNT.ID = "" ';FILTER<4,2> = 'UNCLASSIFIED'
+
+
+      ITEM.CT = 0
+      ITEM.CT += 1
+      SCREEN.WIDTH = 190
+      SCREEN.LENGTH = 48
+      DISPLAY.ROWS = 40
+      COMMAND.LOC= DISPLAY.ROWS+5
+      GOSUB WYSE.WIDE:
+      HEADER.LINE = ""
+      IF ADD.RULE = "ADD" THEN
+         GOSUB GET.RULE:
+         STOP
+      END
+MAIN: LOOP
+
+      WHILE NOT(FINISHED) DO
+         IF ADD.RULE <> "ADD" THEN GOSUB SHOW.TRANS:
+         GOSUB GET.COMMAND:
+      REPEAT
+      GOSUB RESET.SESSION:
+      PRINT ITEM.CT :" ITEMS PROCESSED"
+
+      STOP
+
+GET.COMMAND:
+      PRINT STR("-",80)
+      PRINT " (.) Back (/) Forward, (F)ilter (T)opm (A)mt (Q)uit:":;INPUT COMMAND,1:
+      COMMAND = UPCASE(COMMAND)
+      BEGIN CASE
+         CASE COMMAND = "/"
+            A.TRANS.POINT = A.TRANS.POINT + DISPLAY.ROWS
+            IF A.TRANS.POINT > A.KEY.CT THEN A.TRANS.POINT = 1
+            GOSUB SHOW.TRANS:
+         CASE COMMAND = "."
+            A.TRANS.POINT = A.TRANS.POINT - DISPLAY.ROWS
+            IF A.TRANS.POINT < 1 THEN A.TRANS.POINT = A.KEY.CT-DISPLAY.ROWS
+            GOSUB SHOW.TRANS:
+         CASE COMMAND = ""
+            GOSUB GET.RULE:
+         CASE COMMAND = "Q"
+            FINISHED = @TRUE
+         CASE COMMAND = "F"
+            FILTER.MODE += 1
+            IF FILTER.MODE > 4 THEN FILTER.MODE = 1
+            GOSUB REFRESH.LIST:
+         CASE COMMAND = "T"
+            GOSUB REFRESH.LIST:
+         CASE COMMAND = "A"
+            SORTBY="AMOUNT"
+            GOSUB REFRESH.LIST:
+         CASE COMMAND = "D"
+            SORTBY = "TR.DESC"
+            GOSUB REFRESH.LIST:
+      END CASE
+      RETURN
+
+GET.RULE:
+      RULE.EXP = ""
+      RULE.NUM = ""
+      YPOS = COMMAND.LOC+2
+      PRINT @(1,45):LABLINE:
+      DATAL=""
+KEY:  DLX=1
+      RULE.EXP = ""
+      XPOS=1
+      *INPUT @(x, y) {,} {:} var {, length {, fill}} {_} {:} {format} {modes}
+      LEN.IN = LABL<DLX>
+      INPUT @(XPOS,YPOS):KEYWD,LEN.IN,"*":
+      IF KEYWD[1,2] = "X " THEN
+         RULE.EXP = UPCASE(TRIM(KEYWD[3,25]))
+      END ELSE
+         IF KEYWD = "Q" THEN STOP
+NAME:    DLX=2
+         NAME = KEYWD
+         LEN.IN = LABL<DLX>
+         XPOS+=LABL<DLX-1>
+         INPUT @(XPOS,YPOS):NAME,LEN.IN,"*":
+ACCT.ID: DLX=3
+         IF NAME = "Q" THEN STOP
+         ACCT.KEY = ""
+         XPOS+=LABL<DLX-1>
+         LEN.IN=LABL<DLX>
+         ACCT.ID = ""
+         LOOP WHILE ACCT.ID = ""
+            INPUT @(XPOS,YPOS):ACCT.KEY,LEN.IN,"*":
+            IF ACCT.KEY = "Q" THEN STOP
+            READV ACCOUNT.NAME FROM ACCOUNTS,ACCT.KEY,1 THEN
+               ACCT.ID = ACCT.KEY
+            END ELSE
+               SELECT.STR = 'SSELECT ACCOUNTS WITH NAME LIKE "...':ACCT.KEY:'..."'
+               EXECUTE SELECT.STR CAPTURING CAP
+               READLIST ACCTS.ID THEN
+                  ACCT.CT = DCOUNT(ACCTS.ID,@FM)
+                  IF ACCT.CT > 0 THEN
+                     IF ACCT.CT=1 THEN
+                        ACCT.ID=ACCTS.ID<1>
+                        READV ACCOUNT.NAME FROM ACCOUNTS,ACCT.ID,1 ELSE ACCOUNT.NAME = ""
+                     END ELSE
+                        ACCT.ID = ""
+                        PTR = 1
+                        LOOP WHILE ACCT.ID="" DO
+                           READV ACCOUNT.NAME FROM ACCOUNTS,ACCTS.ID<PTR>,1 ELSE ACCOUNT.NAME = ""
+                           PRINT @(XPOS,YPOS):ACCTS.ID<PTR>:SPACE(LABL<3>-LEN(ACCTS.ID<PTR>)):@(XPOS+LABL<DLX>,YPOS):ACCOUNT.NAME:SPACE(LABL<4>-LEN(ACCOUNT.NAME)):@(XPOS+LEN(ACCTS.ID<PTR>)):
+                           INPUT TRIGGER,1:
+                           IF TRIGGER="Q" THEN STOP
+                           IF TRIGGER = " " THEN
+                              PTR+=1
+                              IF PTR > ACCT.CT THEN PTR =1
+                           END ELSE
+                              IF TRIGGER = "" THEN
+                                 ACCT.ID=ACCTS.ID<PTR>
+                              END ELSE
+                                 ACCT.ID=TRIGGER
+                                 INPUT @(XPOS,YPOS):ACCT.ID,LEN.IN,"*": APPEND
+                              END
+                           END
+                        REPEAT
+                     END
+                  END
+               END
+            END
+         REPEAT
+         PRINT @(XPOS,YPOS):ACCT.ID:SPACE(LABL<3>-LEN(ACCT.ID)):ACCOUNT.NAME:SPACE(LABL<4>-LEN(ACCOUNT.NAME)):
+         XPOS+=LABL<3>+LABL<4>
+CLASS:   DLX=5
+         PTR=1
+         LEN.IN=LABL<DLX>
+         CLASS = ""
+         LOOP WHILE NOT(CLASS) DO
+            PRINT @(XPOS,YPOS):CLASSES<PTR>:SPACE(LABL<5>-LEN(CLASSES<PTR>)):@(XPOS+LEN(CLASSES<PTR>)):
+            INPUT TRIGGER,1:
+            IF TRIGGER="Q" THEN STOP
+
+            IF TRIGGER = " " THEN
+               PTR+=1
+               IF PTR > CLASSC THEN PTR = 1
+            END ELSE
+               IF TRIGGER = "" THEN
+                  CLASS = CLASSES<PTR>
+               END ELSE
+                  CLASS = TRIGGER
+                  INPUT @(XPOS,YPOS):CLASS,LEN.IN,"*": APPEND
+                  IF CLASS = "Q" THEN STOP
+               END
+            END
+         REPEAT
+         PRINT @(XPOS,YPOS):CLASS:SPACE(LABL<5>-LEN(CLASS)):
+         XPOS+=LABL<DLX>
+DEPT:    DLX=6
+         PTR=1
+         DEPT=''
+         LEN.IN=LABL<DLX>
+         LOOP WHILE NOT(DEPT) DO
+            PRINT @(XPOS,YPOS):DEPTS<PTR>:SPACE(LABL<6>-LEN(DEPTS<PTR>)):@(XPOS+LEN(DEPT<PTR>)):
+            INPUT TRIGGER,1:
+            IF TRIGGER="Q" THEN STOP
+
+            IF TRIGGER = " " THEN
+               PTR+=1
+               IF PTR > DEPTC THEN PTR = 1
+            END ELSE
+               IF TRIGGER = "" THEN
+                  DEPT = DEPTS<PTR>
+               END ELSE
+                  DEPT = TRIGGER
+                  INPUT @(XPOS,YPOS):DEPT,LEN.IN,"*": APPEND
+                  IF DEPT = "Q" THEN STOP
+               END
+            END
+         REPEAT
+         PRINT @(XPOS,YPOS):DEPT:SPACE(LABL<6>-LEN(DEPT)):
+      END
+      RULE.NUM = NEXT.RULE.ID
+      RU.B = ""
+      IF DEPT ="NONE" THEN DEPT = ""
+      RU.KEYWORD = KEYWD
+      RU.ACCT.ID = ACCT.ID
+      RU.DEPT = DEPT
+      RU.PAYEE.NAME = NAME
+      RU.CLASS.NAME = CLASS
+      WRITE RU.B ON RULES,RULE.NUM
+      NEXT.RULE.ID +=1
+      WRITE NEXT.RULE.ID ON LCS.CONTROL,"NEXT.RULE.ID"
+      CALL RUN.RULE(RULES,TRANS,RULE.EXP,RULE.NUM)
+EXIT: GOSUB REFRESH.LIST:
+      RETURN
+
+SHOW.TRANS:
+      A.TRANS.END = A.TRANS.POINT + DISPLAY.ROWS
+      STATUS.LINE = "*** MODE: ":FILTER<FILTER.MODE,2>:"  UNCATEGORIZED: ":A.KEY.CT:"      LINE #:":A.TRANS.POINT:"-":A.TRANS.END
+      GOSUB BUILD.KEY.BLOCK:
+      SELECT.STR = "LIST TRANS ":KEY.BLOCK:" @1 HDR.SUP COUNT.SUP"
+      WRITE SELECT.STR ON LCS.CONTROL,"SELECT"
+      IF LM THEN PRINT SELECT.STR
+      EXECUTE SELECT.STR CAPTURING SCREEN
+      CONVERT ESC TO "" IN SCREEN
+      HEADER.LINE = SCREEN<1>[5,190]
+      DEL SCREEN<1>
+      DEL SCREEN<2>
+      SCREEN = CHANGE(SCREEN,@FM,CRLF)
+      PRINT @(-1):STATUS.LINE
+      PRINT HEADER.LINE
+      PRINT SCREEN
+      RETURN
+
+REFRESH.LIST:
+      IF ADD.RULE = "" THEN
+         SELECT.STR = 'SSELECT TRANS ':FILTER<FILTER.MODE,1>:'BY TR.TYPE BY ':SORTBY
+         IF LM THEN PRINT SELECT.STR
+         EXECUTE SELECT.STR CAPTURING CAP
+         A.KEY.CT = FIELD(CAP," ",1)
+         IF A.KEY.CT > 0 THEN
+            READLIST A.KEYS ELSE A.KEYS = ""
+            A.TRANS.POINT = 1
+         END ELSE
+            PRINT " NO RECORDS FOUND WITH ":FILTER<FILTER.MODE,1>
+            SLEEP 5
+         END
+      END
+      RETURN
+
+      !
+      ! WYSE WIDE CHARATER SET
+      !
+WYSE.WIDE: *
+
+      ************
+SET.SESSION:
+      ************
+      SET.CMND = "AT.SS":@FM
+      SET.CMND:="DATA SET":@FM
+      SET.CMND:="DATA ,,1,1,"
+      IF SCREEN.WIDTH GE 82 THEN
+         SET.CMND:=SCREEN.WIDTH:",":SCREEN.LENGTH:",,,1"
+      END ELSE
+         SET.CMND:=",,":SCREEN.WIDTH:",":SCREEN.LENGTH:",0"
+      END
+      EXECUTE SET.CMND
+      RETURN
+      ***************
+RESET.SESSION:
+      **************
+      EXECUTE "AT.SS":@FM:"DATA RESET":@FM:"DATA "
+      RETURN
+      *
+BUILD.KEY.BLOCK:
+      KEY.BLOCK = ""
+      FOR BLOCK.X = A.TRANS.POINT TO A.TRANS.END
+         KEY.BLOCK := A.KEYS<BLOCK.X>:" "
+      NEXT BLOCK.X
+      RETURN
+
+      *TEST.BLOCK:
+      *A.TRANS.POINT = 1
+      *A.TRANS.END = 40
+      *EXECUTE "SELECT TRANS WITH TR.TYPE = AMERICAN"
+      *READLIST A.KEYS THEN
+      *KEY.CT=DCOUNT(A.KEYS,@FM)
+      *KEY.BLOCK = ""
+      *FOR X = 1 TO KEY.CT
+      *KEY.BLOCK = A.KEYS<X>:" "
+      *UNTIL X = KEY.CT
+      *NEXT X
+      *END
+      *
+      *
+      *
+      *
+      *A.TRANS.POINT = 1
+      *A.TRANS.START= 1
+      *A.TRANS.END = 40
+      *
+
+      end

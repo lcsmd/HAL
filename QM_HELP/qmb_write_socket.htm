@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>WRITE.SOCKET()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="WRITE.SOCKET()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_write_socket.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">WRITE.SOCKET()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_write.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_writeblk.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WRITE.SOCKET()</span> function writes data to a socket.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">WRITE.SOCKET(</span><span style="font-style: italic;">skt</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">data</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">flags</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">timeout</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">skt</span></td><td style="border:none;padding:0">is the socket variable returned by <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION()</a></span> (stream connection), <span style="font-weight: bold;"><a href="qmb_create_server_socket.htm" class="topiclink">CREATE.SERVER.SOCKET()</a></span> (datagram connection) or <span style="font-weight: bold;"><a href="qmb_open_socket.htm" class="topiclink">OPEN.SOCKET()</a></span>.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">data</span></td><td style="border:none;padding:0">is the data to be written.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">flags</span></td><td style="border:none;padding:0">is a value determining the mode of operation of the socket for this write, formed by adding the values of tokens defined in the SYSCOM KEYS.H record. The flags available in this release are:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">SKT$BLOCKING</td><td style="border:none;padding:0">Sets the mode of data transfer as blocking.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">SKT$NON.BLOCKING</td><td style="border:none;padding:0">Sets the mode of data transfer as non-blocking.</td></tr></table></div><p style="margin: 0 0 0 120px;">If neither blocking flag is given, the blocking mode set when the socket was opened is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">timeout</span></td><td style="border:none;padding:0">is the timeout period in milliseconds. A value of zero implies no timeout.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WRITE.SOCKET()</span> function writes the given data and returns the number of bytes written. If non-blocking mode is used or a timeout occurs, this byte count may be less than the length of the data. The remaining data can be written with a subsequent call to <span style="font-weight: bold;">WRITE.SOCKET()</span> when buffer space becomes available.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function returns zero if the action is successful, or a non-zero error code if an error occurs. A timeout will return an error code of ER$TIMEOUT as defined in the SYSCOM ERR.H record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SKT = OPEN.SOCKET(&quot;193.118.13.14&quot;, 3000, SKT$BLOCKING)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF STATUS() THEN STOP 'Cannot open socket'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = WRITE.SOCKET(SKT, DATA, 0, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLOSE.SOCKET SKT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment opens a connection to port 3000 of IP address 193.118.13.14, sends the data in DATA and then closes the socket.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="using_socket_connections.htm" class="topiclink">Using Socket Connections</a>, <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION</a></span>, <span style="font-weight: bold;"><a href="qmb_close_socket.htm" class="topiclink">CLOSE.SOCKET</a></span>, <span style="font-weight: bold;"><a href="qmb_create_server_socket.htm" class="topiclink">CREATE.SERVER.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_open_socket.htm" class="topiclink">OPEN.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_select_socket.htm" class="topiclink">SELECT.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_server_addr.htm" class="topiclink">SERVER.ADDR()</a></span>, <span style="font-weight: bold;"><a href="qmb_set_socket_mode.htm" class="topiclink">SET.SOCKET.MODE()</a></span>, <span style="font-weight: bold;"><a href="qmb_socket_info.htm" class="topiclink">SOCKET.INFO()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

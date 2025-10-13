@@ -1,0 +1,12 @@
+      OPEN "QM_HELP" TO F.HELP ELSE PRINT "QM_HELP";STOP
+      SELECT F.HELP
+      LOOP
+         READNEXT AA ELSE EXIT
+         topic = field(aa,".",1)
+         CMD = "PYTHON convert_htm_md.py ":topic
+         os.execute CMD capturing cap
+         print cap
+         CMD = "PYTHON convert_htm_md2.py ":topic
+         os.execute CMD capturing cap
+         print cap
+         

@@ -1,0 +1,27 @@
+      PROGRAM LIST.DIR
+
+      $INCLUDE INCLUDE COMMON.VAR
+      $INCLUDE INCLUDE QM.INC
+      S=@SENTENCE
+      FN=FIELD(S," ",2)
+      FILEPATH = QM.ACCOUNT.PATH:"\":FN
+      ITEMS = DIR(FILEPATH)
+
+      NUM.FILES = DCOUNT(ITEMS, @FM)
+
+      FOR I = 1 TO NUM.FILES
+
+         IF FILES(I)<2> = 'F' THEN
+            FILE.NAME = FILES(I)<1>
+            FILE.DT = FILES(I)<4>
+            FILE.SIZE  = FILES(I)<5>
+            IF FILE.NAME THEN
+               PRINT FILE.NAME:"    ":
+               PRINT FILE.DT:"    ":
+               PRINT FILE.SIZE
+            END
+         END
+      NEXT I
+      END
+
+

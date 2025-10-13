@@ -1,0 +1,14 @@
+      PROGRAM fix.invent
+      OPEN 'INVENT' TO INVENT ELSE PRINT 'INVENT';STOP
+      OPEN 'INV-DASH' TO DASH ELSE PRINT 'INV-DASH';STOP
+      select invent
+      loop while readnext aa do
+         read buff from invent,aa then
+            read new.desc from dash,aa THEN
+               buff<45> = buff<3>
+               buff<3> = new.desc
+               write buff on invent,aa
+               print "writing ":buff<3>:"   ":buff<45>
+            END
+         END
+      REPEAT

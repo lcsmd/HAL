@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ADMIN.SERVER</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ADMIN.SERVER" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "admin_server.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ADMIN.SERVER</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="admin.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="admin_user.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ADMIN.SERVER</span> command allows a system administrator to set security rules on definitions of <a href="qmnet.htm" class="topiclink">QMNet</a> public servers and VFS servers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ADMIN.SERVER</span> {<span style="font-style: italic;">name</span>}</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of the server for which the details are to be updated. If this is not present on the command line, a prompt appears.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If <span style="font-style: italic;">name </span>does not correspond to an existing server, the <span style="font-weight: bold;">ADMIN.SERVER</span> command will offer to create a new server definition. This will prompt for the network address and optional port number and then enter the screen described below. If a port number is specified, this may be separated from the network address with a colon or a semicolon. If an IPV6 format address is used, which contains colons as part of its syntax, a semicolon must be used before the port number.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default behaviour of the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> or <span style="font-weight: bold;"><a href="set_vfs_server.htm" class="topiclink">SET.VFS.SERVER</a></span> command is to create a server definition that may be accessed by all users of the system. There is a potential security weakness here because the process started on the remote system to handle the connection runs as the user name specified in the server definition, regardless of the user name of the local user accessing the remote file. Security can be improved by arranging that the user name used for the remote process is dependent on the user name or user group of the local user. This can be achieved by use of the <span style="font-weight: bold;">ADMIN.SERVER</span> command. Because there is no way in which QM can determine the password for a specific user, it is not possible for the remote server login to automatically using the same user name and password as the session from which QMNet or the VFS is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The screen display from this command is as shown below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:solid thin #000000; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:569px; padding:0; border:none"><p><span class="f_CourierFixed">Remote user: george</span></p>
+<p><span class="f_CourierFixed">Local users: gsmith, dave</span></p>
+<p><span class="f_CourierFixed">O/S groups :</span></p>
+<p><span class="f_CourierFixed">QM groups &nbsp;:</span></p>
+<p><span class="f_CourierFixed">--------------------------------------------------------------</span></p>
+<p><span class="f_CourierFixed">Remote user: root</span></p>
+<p><span class="f_CourierFixed">Local users: </span></p>
+<p><span class="f_CourierFixed">O/S groups : admin</span></p>
+<p><span class="f_CourierFixed">QM groups &nbsp;: admin</span></p>
+<p><span class="f_CourierFixed">--------------------------------------------------------------</span></p>
+<p><span class="f_CourierFixed">Remote user: sales</span></p>
+<p><span class="f_CourierFixed">Local users: ALL</span></p>
+<p><span class="f_CourierFixed">O/S groups :</span></p>
+<p><span class="f_CourierFixed">QM groups &nbsp;:</span></p>
+<p><span class="f_CourierFixed">--------------------------------------------------------------</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span class="f_CourierFixed" style="color: #ffffff; background-color: #000000;">SALES &nbsp;193.118.14.97 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;F1=Help&nbsp;</span></p>
+<p><span class="f_CourierFixed" style="color: #ffffff; background-color: #000000;">Enter remote user name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The display consists of a series of four line entries with a horizontal separator. Each entry identifies the remote user name that will be used for the remote process based on criteria related to the local user accessing the file. When creating a connection, the list is scanned from the top downwards looking for the first entry that is applicable to the user.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">Remote user</td><td style="border:none;padding:0">The user name to be used for the remote process. Changing this name will also prompt for the associated password. Domain style user names should be entered as user@domain.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">Local users</td><td style="border:none;padding:0">A comma separated list of user names on the local system who will connect as the associated remote user name. Specifying this field as ALL, allows connection by all users.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">O/S groups</td><td style="border:none;padding:0">A comma separated list of operating system user group names. If the user is a member of a named group, access is granted with the associated remote user name. This field &nbsp;is ignored on Windows.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">QM groups</td><td style="border:none;padding:0">A comma separated list of QM user group names as set with <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span>. If the user is a member of a named group, access is granted with the associated remote user name.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the above example, users logged in to the local system as gsmith or dave will connect to the remote server with user name george. Users who are members of either the operating system user group named admin or the QM user group of the same name will connect as user name root. All other users will connect as user name sales.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the local user does not meet the conditions set by any entry in the list, connection to the server is not permitted. If a user fits the conditions for more than one entry in the list, the first one found applies.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default action of the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> command is to create a server definition in which the remote user is as specified in the command and the local users field is set to ALL.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>To move through the entries in the displayed list, use any of the following keys:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:94px; padding:4px; border:none"><p>Ctrl-N</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Cursor down</p>
+</td>
+<td style="vertical-align:top; width:342px; padding:4px; border:none"><p>Move down to next line</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:94px; padding:4px; border:none"><p>Ctrl-P</p>
+<p>Ctrl-Z</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Cursor up</p>
+</td>
+<td style="vertical-align:top; width:342px; padding:4px; border:none"><p>Move up to previous line</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:94px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Page down</p>
+</td>
+<td style="vertical-align:top; width:342px; padding:4px; border:none"><p>Move down one page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:94px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Page up</p>
+</td>
+<td style="vertical-align:top; width:342px; padding:4px; border:none"><p>Move up one page</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The amend a line, simply type new data or use any of the standard editing keys:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>Ctrl-A</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Home</p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Position the cursor at the start of the input data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>Ctrl-B</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Cursor left</p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Move the cursor left one character</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>Ctrl-D</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Delete</p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Delete character under cursor</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>Ctrl-E</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>End</p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Position the cursor at the end of the input data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>Ctrl-F</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Cursor right</p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Move the cursor right one character</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>Ctrl-H</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Backspace</p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Backspace one character</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>Ctrl-K</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Delete all characters after the cursor</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Insert</p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Toggle insert/overlay mode. When overlay mode is enabled, data entered by the user replaces the character under the cursor rather than being inserted before this character.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>F1</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Display help text</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>F2</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Move current entry up by one place</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>F3</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Move current entry down by one place</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:93px; padding:4px; border:none"><p>F4</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:595px; padding:4px; border:none"><p>Import security settings from another server. A prompt box appears asking for the server name. Entry of a blank response aborts the action.</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Clearing the remote user name deletes the associated entry.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>To insert a new entry, navigate to the bottom of the list and type in new data. The entry can be moved up if necessary with the F2 key.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+To terminate the edit, optionally saving changes, press the Esc key.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p>The <a href="virtual_file_system.htm" class="topiclink">Virtual file system</a>, <a href="qmnet.htm" class="topiclink">QMNet</a>, <span style="font-weight: bold;"><a href="delete_server.htm" class="topiclink">DELETE.SERVER</a></span>, <span style="font-weight: bold;"><a href="list_servers.htm" class="topiclink">LIST.SERVERS</a></span>, <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

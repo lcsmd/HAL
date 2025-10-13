@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Dynamic Hashed Files</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Dynamic files" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "dynamicfiles.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Dynamic Hashed Files</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="directoryfiles.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="data_collection_files.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A <span style="font-weight: bold;">dynamic hashed file</span> is represented by an operating system directory, the records within it stored in a fast access file format in the directory. Users should not place any other files in the directory or make any modifications to the files placed there by QM. Dynamic files are so called because of the dynamic reconfiguration of the file which takes place automatically to compensate for changes in the file's size and record distribution.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By default, record keys may have between 1 and 63 characters but these may not include mark characters or the ASCII null character. This length limit can be increased to a maximum of 255 by changing the value of the <a href="configparams.htm#maxidlen" class="topiclink">MAXIDLEN</a> configuration parameter but this can lead to compatibility problems when transferring data to other systems and increases the size of QM's internal locking tables.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A dynamic file has two parts; a <span style="font-weight: bold;">primary subfile</span> which is examined first when looking for data and an <span style="font-weight: bold;">overflow subfile</span> which contains data which does not fit into its correct location in the primary subfile. The primary and overflow subfiles are represented by operating system files named %0 and %1. Prior to release 2.8-0, the names were ~0 and ~1 but this caused problems with some poorly designed system cleanup utilities that assumed names commencing with a tilde represented temporary items that could be deleted. There may be additional items named %2, %3, etc that store data for <a href="ak.htm" class="topiclink">alternate key indices</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Users do not need to understand the mechanisms that are involved in accessing dynamic files though the following information will help in determining settings for the parameters which control file configuration and hence performance. In most cases these can be left at their default values.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Data within a dynamic file is stored in record <span style="font-weight: bold;">groups</span>. The number of groups in the files is known as the <span style="font-weight: bold;">modulus</span>. The group in which a record is located is determined mathematically by using the <span style="font-weight: bold;">hashing algorithm</span> associated with the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A group consists of a fixed sized area in the primary subfile and, if the data assigned to the group does not all fit into this area, as many additional overflow subfile blocks as are needed will be created. A dynamic file performs best when the data is distributed evenly across each group and no group extends into the overflow area. In reality, this is almost impossible to achieve whilst still keeping each group reasonably full. A well tuned dynamic file typically has less than 20 percent of its data in overflow.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">group size</span> parameter determines the size of the primary subfile groups as a multiple of 1024 bytes. This parameter may have a value in the range 1 to 8 and defaults to 1 though this default can be changed using the <a href="configparams.htm#grpsize" class="topiclink">GRPSIZE</a> configuration parameter. It should be set to a multiple of the disk block size if this value is known. As a general rule, use values of 1, 2, 4 or 8, avoiding numbers that are not powers of two as these can lead to data alignment related performance issues.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where a file contains very large records, performance can be improved by placing these in disk blocks of their own with just the record key and a reference to their location stored in the primary subfile. Such records are known as <span style="font-weight: bold;">large records</span> and the size above which data is handled in this way is configurable. The default value of 80% of the group size is good for most purposes. Because a large record has only its key stored in the primary subfile, a <span style="font-weight: bold;">SELECT</span> operation will be faster if the group is mainly large records but reading the record's data will require at least two disk accesses. Also, since large records are held in their own disk block(s) rather than sharing with other records, surplus space at the end of the final block is wasted resulting in higher disk space usage. If the file will be used frequently in <span style="font-weight: bold;">SELECT</span> operations where selection is based only on the record id, a lower large record size may be beneficial. If data records are frequently read from the file, a higher large record size may help. In general it is best only to change the large record size if performance problems are seen.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The number of groups in a dynamic file changes with time. QM uses two parameters to determine when the number of groups should change. At any time, the file's <span style="font-weight: bold;">load value</span> is the total size of the data records (excluding large records) as a percentage of the primary subfile size. This value changes as records are added, modified or deleted. It may have a value in excess of 100%, indicating that there is very high usage of overflow space. The <span style="font-weight: bold;">split load</span> value (default 80%) determines the load percentage at which an additional group will be added to the file by splitting the records in one group into two. The <span style="font-weight: bold;">merge load</span> value (default 50%) determines the point at which two groups are merged back into one. A split may result in the load falling below the merge load or, conversely, a merge may result in a new load value above the split load. In neither case will the file be immediately reconfigured back again.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The split and merge loads determine the way in which the file's modulus and hence actual load vary. A low load results in reduced overflow at the expense of increased disk space. Conversely, a high load increases overflow but reduces disk usage. High overflow in turn results in poor performance as more disk blocks must be read to find a record. The split load value determines the load at which a group will be split into two, the merge load determines the load at which groups will be merged. The difference between the two values needs to be reasonably large to avoid continual splitting and merging of groups.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">minimum modulus</span> value determines the size below which the file will not merge groups. The default setting of this parameter is one, resulting in full dynamic reconfiguration. If the file is subject to frequent addition or deletion of large numbers of records so that its modulus varies widely, it may be worth setting the minimum modulus to a typical average size or higher, however, a file with a higher modulus than is necessary is relatively slow in <span style="font-weight: bold;">SELECT</span> operations that must read the entire file. The minimum modulus parameter can also be used to pre-allocate primary subfile disk space when creating a new file, minimising fragmentation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Record ids in dynamic files are normally case sensitive. Case insensitive ids can be selected when the file is created or a file can be converted at a later date using the <span style="font-weight: bold;"><a href="configure_file.htm" class="topiclink">CONFIGURE.FILE</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The total size of a dynamic file is limited to 2Gb for file versions 0 and 1, and 2147483647 groups (up to 16384Gb) for version 2 upwards.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The F-type VOC entry for a dynamic file has the pathname of the directory that represents the file in field 2.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Synchronous (Forced Write) Mode</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QM file system is highly reliable, however, it is possible for power failures or similar events to cause the system to shutdown without committing to disk data that is in the operating system cache. For critical files, it may be useful to enable synchronous (forced write) mode where every write is flushed to disk immediately. This significantly reduces the risk of file corruption at system failure but will have a severe impact on performance if the file is updated frequently.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Synchronous mode can be enabled in a number of ways:</p>
+<p style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The FSYNC configuration parameter. This is an additive value that has three modes of operation to control when forced writes occur (see <a href="configparams.htm" class="topiclink">Configuration Parameters</a>).</p><p style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Using the SYNC qualifier in a QMBasic <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> or <span style="font-weight: bold;"><a href="qmb_openpath.htm" class="topiclink">OPENPATH</a></span> statement.</p><p style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Using the QMBasic <span style="font-weight: bold;"><a href="qmb_fcontrol.htm" class="topiclink">FCONTROL()</a></span> function to set synchronous mode.</p><p style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Setting the S flag in field 6 of the <a href="voc_f.htm" class="topiclink">F-type</a> VOC entry that describes the file.</p><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Disabling File Resizing</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although dynamic files are very reliable, the split/merge mechanism that maintains optimum file performance introduces the possibility of file corruption in the event of a power failure or other situation that causes outstanding write operations not to be completed. QM offers a mode of operation that forms a hybrid between the dynamic file system and the static files found in many other database products.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The NO.RESIZE option of the <span style="font-weight: bold;"><a href="configure_file.htm" class="topiclink">CONFIGURE.FILE</a></span> command can be used to disable splits and merges, locking the file at its configuration when the command is issued. As new data is added, the file will extend into overflow, reducing performance. Conversely, if large volumes of data are deleted, the groups will become less tightly packed, again resulting in reduced performance. Files can be created with this mode set by use of the NO.RESIZE option to the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The file can be reconfigured using the IMMEDIATE mode of the <span style="font-weight: bold;"><a href="configure_file.htm" class="topiclink">CONFIGURE.FILE</a></span> command. This performs the outstanding splits or merges, bringing the file back to the configuration that it would have had if resizing had not been disabled. For typical file update patterns and reasonably frequent use, this should be considerably faster than the equivalent resizing of a static file system.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>One scenario for use of this mechanism would be to operate the file(s) with resizing disabled during normal day time activity, perform backups at the start of an overnight downtime period and then use <span style="font-weight: bold;"><a href="configure_file.htm" class="topiclink">CONFIGURE.FILE</a></span> to reconfigure the files ready for the next day. In the unlikely event of a system failure during the reconfiguration process, the backup provides an up to date copy of the data. This resizing operation is fully interruptible and can be performed while the file is in use.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><a id="seqkey" class="hmanchor"></a><span style="font-weight: bold;">Automatic Sequential Record Key Generation</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Although most applications use their own mechanism for allocating unique record ids, QM includes the ability to do this automatically as a simple sequential number. This is used by the CREATING.SEQKEY qualifier of the QMBasic <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement or by use of the CREATING.SEQKEY command line option of the <span style="font-weight: bold;"><a href="ed.htm" class="topiclink">ED</a></span>, <span style="font-weight: bold;"><a href="modify.htm" class="topiclink">MODIFY</a></span> and <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> editors.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The initial value of this sequential counter can be set by use of the NEXT option of the <span style="font-weight: bold;"><a href="configure_file.htm" class="topiclink">CONFIGURE.FILE</a></span> command and defaults to 1 if not explicitly initialised. The same command allows display of the next sequential key value.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Application software can use the QMBasic <span style="font-weight: bold;"><a href="qmb_fcontrol.htm" class="topiclink">FCONTROL()</a></span> function to set or get this value or <span style="font-weight: bold;"><a href="qmb_fileinfo.htm" class="topiclink">FILEINFO()</a></span> to query it.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">The Dynamic Hashed File Cache</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>To improve performance of applications that repeatedly open and close the same file (e.g. a loop that calls a subroutine that opens a file locally), QM maintains a cache of files that have been recently closed at the application level, actually keeping them open at the operating system level. This mechanism, the <span style="font-weight: bold;">DH file cache</span>, means that if the application reopens a file that is in the cache, there is very little work to be done inside QM.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The size of the DH file cache is controlled by a private configuration parameter, <a href="configparams.htm#dhcache" class="topiclink">DHCACHE</a>, that defaults to 10 and may take any value between 0 and 50. For most applications, the default value will work well.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The cache is automatically flushed at any action within QM itself that may require a cached file to be closed (e.g. deleting the file), including situations where the action of one QM user may require the cache to be flushed in some other user's process. The cache is always flushed on return to the command prompt. A QM process can force the cache to be flushed in all processes using the QMBasic <span style="font-weight: bold;"><a href="qmb_flush_dh_cache.htm" class="topiclink">FLUSH.DH.CACHE</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Operating System Related Performance Issues</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A dynamic hashed file will usually perform best if the group size is a multiple of the operating system page size. In most systems this is 4kb.</p>
+
+</td></tr></table>
+
+</body>
+</html>

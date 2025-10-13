@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Byte String Conversion (BS)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Byte String Conversion" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_bs.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Byte String Conversion (BS)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_b64.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_call.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p>The BS conversion code transforms ECS data to a byte string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The full format of this conversion code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">BS</span>{<span style="font-weight: bold;">L</span> |<span style="font-weight: bold;"> H</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Used with <span style="font-weight: bold;"><a href="qmb_oconv.htm" class="topiclink">OCONV()</a></span>, the <span style="font-weight: bold;">BS</span> conversion code transforms ECS data from its internal 16-bit character form to a series of byte pairs, each stored as two characters with values in the range 0 to 255. Although intended for use on an ECS mode system, this conversion code is also available for use on a non-ECS system where the high order byte of each converted character will always be zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Used with <span style="font-weight: bold;"><a href="qmb_iconv.htm" class="topiclink">ICONV()</a></span>, the <span style="font-weight: bold;">BS</span> conversion code transforms a series of byte pairs into ECS characters. If the source data contains characters with values greater than 255, the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value after conversion will be set to 3. This conversion code is also available for use on a non-ECS system where a non-zero high order byte in the input data will also set a <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value of 3.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default action of the <span style="font-weight: bold;">BS</span> conversion is to adopt the byte ordering of the system on which it is executed such that a character with Unicode code point value U+1234 would correspond to a byte pair hexadecimal 12 followed by hexadecimal 34 on a high byte first (big-endian) system or the reverse on a low byte first (little endian) system. The optional L or H suffix on the conversion code forces conversion using low byte first or high byte first ordering respectively.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">S = ECHAR(0x03A3):'ABC' &nbsp; ;* Greek Sigma followed by ABC</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">X = OCONV(S, 'BSH')</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY OCONV(X, 'MX0C')</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment displays</p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; 03A3004100420043</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

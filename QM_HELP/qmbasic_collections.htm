@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Data Collections</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Data collections" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbasic_collections.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Data Collections</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbasic_scalarsmatricesanddynamicarrays.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbasic_commonblocks.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A data collection is an arbitrarily multi-dimensional set of name / value pairs. Whereas the elements of a dynamic array are referenced by their numeric position, elements of a collection are referenced by case sensitive name. The value associated with each named element may be of any QM data type, including a further collection, thus allowing nesting to a depth limited only by available memory.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A collection can be created in three ways. The <span style="font-weight: bold;"><a href="qmb_collection.htm" class="topiclink">COLLECTION()</a></span> function can be used to create an empty collection</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CLIENT.DATA = COLLECTION()</span></p>
+<p class="p_Normal">or to make a copy of an existing collection</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">CLIENT.DATA = COLLECTION(OLD.CLIENT.DATA)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that a statement such as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CLIENT.DATA = OLD.CLIENT.DATA</span></p>
+<p class="p_Normal">does not copy the collection. Instead, it creates a new reference to the same collection. This is similar to copying file variables or those that reference object oriented programming objects.</p>
+<p class="p_Normal"><span style="width:48px;display:inline-block">&nbsp;</span> &nbsp; &nbsp; &nbsp; &nbsp;</p>
+<p class="p_Normal">Alternatively, a character string containing a JSON (JavaScript Object Notation) representation of the data can be parsed into a collection using the <span style="font-weight: bold;"><a href="qmb_jparse.htm" class="topiclink">JPARSE()</a></span> function</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">CLIENT.DATA = JPARSE(JSON.STRING)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The elements of a collection are referenced using a syntax that is very similar to use of dynamic arrays but uses curly brackets instead of angle brackets and uses names instead of numeric values. Note that in all examples of syntax relating to data collections, the curly brackets are part of the syntax and not indicative of optional elements as elsewhere in the documentation.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">CLIENT.NAME = CLIENT.DATA{'NAME'}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In exactly the same way as with dynamic arrays, the element reference can be a literal value (as above), a variable or an expression that derives the name.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">ITEM = 'NAME'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">CLIENT.NAME = CLIENT.DATA{ITEM}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where an element of a collection is itself a collection, the syntax becomes</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LOCATION = CLIENT.DATA{'ADDRESS', 'TOWN'}</span></p>
+<p class="p_Normal">or</p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">LOCATION = CLIENT.DATA{'ADDRESS'}{'TOWN'}</span></p>
+<p class="p_Normal">The second of these two syntaxes is valid because CLIENT.DATA{'ADDRESS'} is itself a collection and hence can have a further collection element reference applied to it.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A third method of referencing nested collections provides a way to access data for which the dimensionality may not have been known when the program was compiled. In this syntax, the name (the <span style="font-weight: bold;">element path)</span> is formed from multiple parts separated by forward slash characters.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LOCATION = CLIENT.DATA{'ADDRESS/TOWN'}</span></p>
+<p class="p_Normal">Although this example shows this as a literal value for clarity, this syntax would more commonly be used with an indirect reference via a name variable or expression. The three syntaxes can be mixed in any combination.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Referencing a collection element that does not exist returns a null string in the same way as referencing a non-existent dynamic array element, however, the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value will be set to ER$NOT.FOUND for a failed collection reference.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A collection may be an element of a dimensioned array</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">CLIENT.NAME = CLIENT.DATA(CLI.NO){'NAME'}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Enumerating Collection Elements</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The names present in a collection may be enumerated using the <span style="font-weight: bold;"><a href="qmb_enumerate.htm" class="topiclink">ENUMERATE()</a></span> function.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">NAMES = ENUMERATE(CLIENT.DATA)</span></p>
+<p class="p_Normal">The names are returned as a field mark delimited dynamic array, sorted into ascending order based on a simple left aligned, case sensitive sort. For a nested collection, only the level directly referenced by the argument to the function is enumerated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The presence of a single element can be tested using the <span style="font-weight: bold;"><a href="qmb_element_exists.htm" class="topiclink">ELEMENT.EXISTS()</a></span> function.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Scanning the content of a data collection</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As an alternative to use of <span style="font-weight: bold;"><a href="qmb_enumerate.htm" class="topiclink">ENUMERATE()</a></span> followed by a loop that references each element in turn, the <span style="font-weight: bold;"><a href="qmb_scan.htm" class="topiclink">SCAN</a></span> statement provides a simpler and slightly faster way to walk through the elements of a collection.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Adding or Modifying Collection Elements</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An element may be added or updated in a collection using the collection reference on the left of an assignment operator</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CLIENT.DATA{'PHONE'} = PHONE.NO</span></p>
+<p class="p_Normal">or using the <span style="font-weight: bold;"><a href="qmb_ins.htm" class="topiclink">INS</a></span> statement</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">INS PHONE.NO AS CLIENT.DATA{'PHONE'}</span></p>
+<p class="p_Normal">If the element name references intermediate levels of a nested data collection, any absent elements are automatically inserted.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Elements may be copied from one collection to another (or a different name in the same collection) using a statement such as</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">CLIENT.DATA{'PHONE'} = OTHER.CLIENT.DATA{'PHONE'}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Deleting Collection Elements</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An element may be deleted from a collection using the <span style="font-weight: bold;"><a href="qmb_del.htm" class="topiclink">DEL</a></span> statement</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">DEL CLIENT.DATA{'PHONE'}</span></p>
+<p class="p_Normal">If the element name references intermediate levels of a nested data collection, all lower level items are also deleted.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Arrays in Collections</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A data collection may contain single dimensional arrays which are automatically sized to fit their content. An empty array is created using the <span style="font-weight: bold;"><a href="qmb_mat_func.htm" class="topiclink">MAT()</a></span> function</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CLIENT.DATA{'CONTACTS'} = MAT()</span></p>
+<p class="p_Normal">Alternatively, a standard QMBasic array variable can be copied into a collection</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CLIENT.DATA{'CONTACTS'} = MAT(CONTACT.NAMES)</span></p>
+<p class="p_Normal">In the second syntax, if the array is two dimensional, it will be restructured to become a single dimensional array by copying items row by row to the new array.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_mat_func.htm" class="topiclink">MAT()</a></span> function has an optional second argument that sets the maximum number of elements to copy. If omitted or zero, all elements are copied.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Once the array has been created, data values are updated by using the element number as the name of the item.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CLIENT.DATA{'CONTACTS', N} = CONTACT.NAME</span></p>
+<p class="p_Normal">Use of a negative value for the array index will insert a new item on the end of the array in much the same way as use of negative values in dynamic array assignment. There may not be unused elements in an array within a collection. Thus, if the CONTACTS array holds five items, a statement such as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CLIENT.DATA{'CONTACTS', 8} = NEW.NAME</span></p>
+<p class="p_Normal">is invalid as elements 6 and 7 would be undefined, however,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CLIENT.DATA{'CONTACTS', 6} = NEW.NAME</span></p>
+<p class="p_Normal">is valid as the newly created element immediately follows the last existing element.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An element can be deleted from an array using the <span style="font-weight: bold;"><a href="qmb_del.htm" class="topiclink">DEL</a></span> statement</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">DEL CLIENT.DATA{'CONTACTS', N}</span></p>
+<p class="p_Normal">or</p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">DEL CLIENT.DATA{'CONTACTS'}{N}</span></p>
+<p class="p_Normal">Deleting an element renumbers all elements that follow the deleted item, again just like deleting a dynamic array element.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An element can be inserted into an array using the <span style="font-weight: bold;"><a href="qmb_ins.htm" class="topiclink">INS</a></span> statement</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">INS NAME AS CLIENT.DATA{'CONTACTS', N}</span></p>
+<p class="p_Normal">or</p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">INS NAME AS CLIENT.DATA{'CONTACTS'}{N}</span></p>
+<p class="p_Normal">Inserting an element renumbers all elements that follow the inserted item. In the same way as when adding an element to the end of an array, undefined elements are not permitted. The index value identifying the insertion position must be no greater than one more than the current number of elements. A negative value appends an item to the end of the array.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An empty array may be inserted as an element of a collection using the <span style="font-weight: bold;">INS</span> statement</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">INS MAT() AS CLIENT.DATA{'CONTACTS'}</span></p>
+<p class="p_Normal">or an existing QM array can be copied into a collection using</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">INS MAT(NAMES) AS CLIENT.DATA{'CONTACTS'}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Conversely, copying an array from a collection into a standard dimensioned array uses a modified form of the <span style="font-weight: bold;"><a href="qmb_mat.htm" class="topiclink">MAT</a></span> statement</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">MAT NAMES = MAT CLIENT.DATA{'CONTACTS'}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function can be used to find the number of elements in an array within a collection.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">SIZE = INMAT(CLIENT.DATA{'CONTACTS'})</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A collection reference may contain up to a maximum of two uses of an asterisk to indicate that all elements of an array are to be returned as a dynamic array</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">PRODUCTS = ORDER{'DETAIL/*/PRODNO'}</span></p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">SERIAL = ORDER{'DETAIL/*/SERIAL.NO/*'}</span></p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">CONTACT.NAMES = CLIENT.DATA{'CONTACTS/*'}</span></p>
+<p class="p_Normal">In this syntax, the data level within the collection corresponding to the position of the asterisk must be an array and the entire reference must lead to an item that can be represented as a string. Where only one asterisk is present, the dynamic array contains a value for each array element. Where two asterisks are present, the dynamic array has a value for each element of the array referenced by the first asterisk and a subvalue for each element of the array referenced by the second asterisk.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="width:48px;display:inline-block">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Collections and JSON</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">JSON is a way to represent arbitrarily multi-dimensional data as a character string that can be stored in a text file or transmitted over a network. It is primarily intended as a communications format for web based applications.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_jparse.htm" class="topiclink">JPARSE()</a></span> function will parse a JSON string into a data collection. The <span style="font-weight: bold;"><a href="qmb_jbuild.htm" class="topiclink">JBUILD()</a></span> function performs the opposite transformation, building a JSON string from a collection. It is important to understand the issues relating to data types that can occur when using these functions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">JSON supports numeric, string, Boolean and null data types as elements of objects and arrays.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Numeric data may be represented in several formats in JSON but <span style="font-weight: bold;"><a href="qmb_jparse.htm" class="topiclink">JPARSE()</a></span> will yield either an integer or floating point value that has no reference to the original data format. Using <span style="font-weight: bold;"><a href="qmb_jbuild.htm" class="topiclink">JBUILD()</a></span> to reconstruct the JSON string may result in a different but valid representation of the same value.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Boolean values (True and False) will be correctly handled by QM through use of its internal Boolean data type. Parsing and rebuilding a JSON string will maintain the difference between True/False and their alternative numeric representation as 1/0.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">JSON also supports the SQL concept of a null value (not the same as a null string). Support for this in QM is limited to setting and testing null values and will correctly maintain the null value through use of <span style="font-weight: bold;"><a href="qmb_jparse.htm" class="topiclink">JPARSE()</a></span> and <span style="font-weight: bold;"><a href="qmb_jbuild.htm" class="topiclink">JBUILD()</a></span>. Other operations on the null value will usually result in a run time error.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The elements of a data collection may include data of a type that is not supported by JSON (e.g. a file variable). Although it is unlikely that these data types would be present in collections that will be converted to JSON format, the <span style="font-weight: bold;"><a href="qmb_jbuild.htm" class="topiclink">JBUILD()</a></span> function will fail, returning a null string and a <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value of ER$BUILD.ERROR.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Collection Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A collection that has been encoded to a JSON string using <span style="font-weight: bold;"><a href="qmb_jbuild.htm" class="topiclink">JBUILD()</a></span> can be stored as a record in any QM file type. If the strings within the collection do not contain field, value or subvalue marks, the JSON string can also be stored as a field, value or subvalue within a data record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM also supports <a href="data_collection_files.htm" class="topiclink">data collection files</a> which are a variant of a hashed file that stores data as a collection without the need to convert it to a JSON string. A file of this type is created by including the COLLECTION option in the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command. Because the data in a collection file is not a dynamic array (although the values of any strings within the collection could be), dictionary items that reference fields by number other than the record id are invalid. Instead, dictionaries may contain <a href="dict_e.htm" class="topiclink">E-type</a> (element) records which have the same form as a <a href="dict_d.htm" class="topiclink">D-type</a> record except that field 2 holds the element path instead of a field number. The element path may include up to a maximum of two uses of an asterisk to return a multivalued list of array elements as described above.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Dictionary I-type items can reference E-type data definitions and can also use the {<span style="font-style: italic;">name</span>} constructs defined above. The third argument to the <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> function (the item to be returned) may be an E-type item defined in the dictionary of the file being accessed if it is a collection.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A collection file may have indices built on data defined by an E-type dictionary record in exactly the same way as those based on D-type items in other files. It is also possible to define a trigger function in a collection file in which case the record data passed in to the trigger function will be a collection instead of a string. Only record level encryption is supported for collection files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The query processor can access collection files by using E-type dictionary items instead of D-type items. The <a href="element.htm" class="topiclink">ELEMENT</a> &quot;<span style="font-style: italic;">name</span>&quot; construct can be used to reference a collection element on the command line.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Collection files are fully supported by QMNet, data replication, transactions and record level encryption.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Linked Collections</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A data collection stored in a collection file may contain links to other collections in the same file or a different file. The links are stored as a string variable that contains a reference to the linked item as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine" style="font-style: italic;">filename</span><span class="f_CodeSingleLine">:</span><span class="f_CodeSingleLine" style="font-style: italic;">id</span></p>
+<p class="p_Normal">The <span style="font-style: italic;">filename</span> (but not the colon) can be omitted if the link is to a record in a default file (perhaps the same file) but this reduced syntax has implications for the application as described below. There is nothing about this string item that defines it as a link except for how it is used by the application.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where a data collection containing a link has been read into a QMBasic variable, the linked item can be joined onto its parent by use of the <span style="font-weight: bold;"><a href="qmb_expand.htm" class="topiclink">EXPAND()</a></span> function</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">OK = EXPAND(VAR{'link'})</span></p>
+<p class="p_Normal">where <span style="font-style: italic;">link</span> is the element path of the string that defines the link.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the link string uses the reduced syntax that has no <span style="font-style: italic;">filename</span>, an extended form of the <span style="font-weight: bold;"><a href="qmb_expand.htm" class="topiclink">EXPAND()</a></span> function must be used</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">OK = EXPAND(VAR{'link'}, FILEVAR)</span></p>
+<p class="p_Normal">where FILEVAR is a file variable that references the file containing the linked item. This optional function argument is ignored when using the full syntax of the link string.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_expand.htm" class="topiclink">EXPAND()</a></span> function returns True if successful.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">The Collection Editor, CED</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The collection editor allows the content of a data collection to be viewed or edited. It may be used as a QM command to edit a record in a collection file or as a QMBasic subroutine named <span style="font-weight: bold;"><a href="qmbs_ced.htm" class="topiclink">!CED()</a></span> to edit a collection passed in as an argument. See <span style="font-weight: bold;"><a href="ced.htm" class="topiclink">CED</a></span> for details of this editor.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Orphaned Self-Referential Collections</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because an element of a data collection can be any QM data type, including a collection, it is possible to create a self-referential data collection. In its simplest form, this could be achieved with statements of the form:</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">A = COLLECTION()</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">A{&quot;CONTENT&quot;} = A</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Although this is unlikely to have any practical use, it can be done by accident. If the program went on to overwrite variable A</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">A = 99</span></p>
+<p class="p_Normal">the only program visible link to the collection has been lost and the entire collection becomes orphaned. This can never be repaired as there is no longer any way to access the collection.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="ced.htm" class="topiclink">CED</a></span>, <span style="font-weight: bold;"><a href="qmbs_ced.htm" class="topiclink">!CED()</a></span>, <span style="font-weight: bold;"><a href="qmb_collection.htm" class="topiclink">COLLECTION()</a></span>, <a href="data_collection_files.htm" class="topiclink">data collection files</a>, <span style="font-weight: bold;"><a href="qmb_del.htm" class="topiclink">DEL</a></span>, <a href="dict_e.htm" class="topiclink">E-type dictionary records</a>, <span style="font-weight: bold;"><a href="qmb_enumerate.htm" class="topiclink">ENUMERATE(</a>)</span>, <span style="font-weight: bold;"><a href="qmb_expand.htm" class="topiclink">EXPAND()</a></span>, <span style="font-weight: bold;"><a href="qmb_ins.htm" class="topiclink">INS</a></span>, <span style="font-weight: bold;"><a href="qmb_jbuild.htm" class="topiclink">JBUILD()</a></span>, <span style="font-weight: bold;"><a href="qmb_jparse.htm" class="topiclink">JPARSE()</a></span>, <span style="font-weight: bold;"><a href="qmb_mat_func.htm" class="topiclink">MAT()</a></span>, <span style="font-weight: bold;"><a href="qmb_scan.htm" class="topiclink">SCAN</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

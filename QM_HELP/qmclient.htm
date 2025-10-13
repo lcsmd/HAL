@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMClient API</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMClient" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmclient.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMClient API</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="cgi.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmclient_select.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QMClient API allows an external application to connect to a QM server. There are API equivalents to the major file handling statements of QMBasic as well as a range of string functions for dynamic array data manipulations, functions to execute commands and call catalogued subroutines on the server, etc. Where both ends of the connection support it, the network traffic is encrypted for security.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMClient allows multiple simultaneous connections from a single client process. This allows development of applications that draw on data from multiple sources or transfer data between accounts or servers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMClient is usable from many languages and environments. The table below shows the library name, function definition record in the SYSCOM file. Except as noted below, the library files appropriate to the version of QM in use are normally automatically installed in the bin subdirectory of the QMSYS account. Because the client software might be for a different system type, these files are also on the Downloads page of the openqm.com web site. Some QMClient variants are separately downloadable items on the Resources and Solutions page of the openqm.com web site as noted below.</p>
+<p style="margin: 0 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal"><span style="font-weight: bold;">Language</span></p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal"><span style="font-weight: bold;">Library</span></p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal"><span style="font-weight: bold;">Definitions</span></p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><p class="p_Normal"><span style="font-weight: bold;">Notes</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">Visual Basic .Net</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclivb.dll + qmclilib.dll</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><br />
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><p class="p_Normal">Add reference to qmclivb.dll and use &quot;Imports qm.qmclient&quot; to access library functions</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">Visual Basic 2005</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclient.dll + qmclient.lib</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclient2005.vb</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">Power Basic</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclient.dll + qmclient.lib</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclient.inc</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">PureBasic (Windows)</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.dll + qmclilib.lib</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclient.pb</p>
+<p class="p_Normal">qmclient.unicode.pb</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">PureBasic (Linux)</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.so + qmclilib.lib</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclient.pb</p>
+<p class="p_Normal">qmclient.unicode.pb</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">C, C++ (Windows, Microsoft)</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.dll + qmclilib.lib</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.h</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">C, C++ (Linux)</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">libqmclient.a (static)</p>
+<p class="p_Normal">qmclilib.so (shared)</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.h</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">C, C++ (Mac)</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">libqmclient.a (static)</p>
+<p class="p_Normal">qmclilib.dylib (dynamic)</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.h</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">C#</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.dll</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.ansi.cs</p>
+<p class="p_Normal">qmclilib.unicode.cs</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">Java (Windows, JNI)</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">JNI_QMClient.dll</p>
+<p class="p_Normal">QMClient.jar</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><br />
+</td>
+<td rowspan="2"  style="vertical-align:top; padding:4px; border:solid thin #000000;"><p class="p_Normal">These two versions are the original implementation of the QMClient Java API using platform specific Java Native Interface libraries, downloadable from the Resources and Solutions area. They are no longer updated or supported.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">Java (Android, JNI)</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">libqmclilib.so</p>
+<p class="p_Normal">QMClient.jar</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">Java</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclient.jar</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><br />
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><p class="p_Normal">This version is a pure Java implementation of the QMClient Java API and is portable across all platforms.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">PHP (Linux)</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.so</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><br />
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><p class="p_Normal">This item is downloadable from the Resources and Solutions area.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">QMBasic</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">!qmclient</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><br />
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><p class="p_Normal">In global catalogue</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:255px; padding:4px; border:solid thin #000000;"><p class="p_Normal">Python</p>
+</td>
+<td style="vertical-align:top; width:282px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclilib.dll (Windows)</p>
+<p class="p_Normal">qmclilib.so (Linux/Unix)</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:4px; border:solid thin #000000;"><p class="p_Normal">qmclient.py</p>
+</td>
+<td style="vertical-align:top; width:590px; padding:4px; border:solid thin #000000;"><p class="p_Normal">It may be necessary to add the location of the qmclient.py module to the PYTHONPATH environment variable.</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The secret of writing efficient client server applications is to perform the bulk data processing on the server and only handle user interface issues on the client. This minimises the data transferred between the systems and hence optimises performance.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMClient has some <a href="qmclientsecurity.htm" class="topiclink">security issues</a> that need special consideration.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A QMClient session is an interactive use of the system and hence is counted in determining the licensed user limit on the server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QMClient libraries listed above may be freely distributed with application software. The QM licence redistribution clauses apply to the server software, not the QMClient client-side components. Although every attempt is made to ensure compatibility with older versions of the client libraries, there may be times when changes require the distributed client components to be updated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are some aspects of the QMClient API that differ between the various client languages. The following descriptions cover the most commonly used languages. For the less widely used languages such as PowerBasic, see the comments at the head of the relevant item in the SYSCOM file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Using the C API</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the C programmers' API is different depending on the compiler in use. On Unix/Linux based systems, programs need to include the libqmclient.a library when linking the application. The Linux version of QM also includes a shared object version of QMClient API named qmclilib.so. On Windows, the qmclilib.dll dynamic link library is used and the qmclilib.lib import library should be included when linking the application. All of these components can be found in the bin subdirectory of the QMSYS account. The function definitions can be found in the qmclilib.h include record in the SYSCOM file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Functions that return Boolean values, return 0 for False, 1 for True in the C API library.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>With the exception of <span style="font-weight: bold;"><a href="qmerror.htm" class="topiclink">QMError()</a></span>, all API calls that return strings dynamically allocate memory to hold the returned data. It is the calling program's responsibility to release this memory using the <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span> function when it is no longer required. On Windows systems, this function must be used in place of the standard <span style="font-weight: bold;">free()</span> C runtime library routine to ensure compatibility with the memory allocator used by the QMClient library. On other platforms, use of <span style="font-weight: bold;"><a href="qmgetarg.htm" class="topiclink">QMFree()</a></span> is strongly recommended but this should be compatible with the C run time library <span style="font-weight: bold;">free()</span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The QMClient C API has three modes of operation for handling character string data:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin-left: 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">1.</span>The functions documented in the following sections use 8-bit characters. Using these functions to return data that is outside the 8-bit character set (e.g. reading a record containing ECS characters) will return only the low order 8 bits of each character. No error status will be reported.</p><p class="p_Normal">&nbsp;</p>
+<p style="text-indent: 0; padding-left: 20px; margin: 0 0 0 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">2.</span>The <span style="font-weight: bold;"><a href="qmconnectiontype.htm" class="topiclink">QMConnectionType()</a></span> function can be used to select a mode in which the functions that pass character strings in 8-bit form do so using UTF-8 encoding. This allows an application using the 8-bit character functions to use characters from the entire Unicode Basic Multilingual Plane. Note that use of this mode requires that characters in the upper half of the 8-bit character set, including the multivalue mark characters, are correctly encoded as their UTF-8 equivalents. The five mark characters encode as</p><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:149px">Item mark</td><td style="border:none;padding:0">&quot;\xC3\xBF&quot;</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:149px">Field mark</td><td style="border:none;padding:0">&quot;\xC3\xBE&quot;</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:149px">Value mark</td><td style="border:none;padding:0">&quot;\xC3\xBD&quot;</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:149px">Subvalue mark</td><td style="border:none;padding:0">&quot;\xC3\xBC&quot;</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:149px">Text mark</td><td style="border:none;padding:0">&quot;\xC3\xBB&quot;</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: 0; padding-left: 20px; margin: 0 0 0 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">3.</span>All functions in the QMClient C API that return a character string or have at least one character string argument have wide character variants formed by appending a W to the function name. For example, the wide character version of QMDel() is named QMDelW(). In the wide character versions, return values or arguments shown in the function definitions as char * become wchar_t *. Note that, for compatibility with the default behaviour of the C run time library, the definition of this data type is a 16 bit unsigned integer on Windows but a 32 bit unsigned integer on Linux and Unix systems.</p><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 19px;">The wide character API functions can be used regardless of whether the server to which the connection is open is in ECS mode or not, however, passing characters with values over 255 in API calls in this situation may have unexpected effects. The <a href="qmisecs.htm" class="topiclink">QMIsECS()</a> function can be used to determine whether the server supports ECS or not.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QMBasic subroutines and functions can update their argument values. For the C API this would require that the memory space allocated to a subroutine argument that may be updated by the server must be large enough to hold the longest updated value that could occur. Failure to observe this rule may result in memory corruption on the client side of the connection. To avoid this issue, the C API supports an alternative mechanism for handling returned argument values where the original argument variable is not updated but instead the new value can be retrieved with the <span style="font-weight: bold;"><a href="qmgetarg.htm" class="topiclink">QMGetArg()</a></span> function. To make use of this system, the client software should use <span style="font-weight: bold;"><a href="qmcallx.htm" class="topiclink">QMCallx()</a></span> instead of <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span>. The <span style="font-weight: bold;"><a href="qmcreateobject.htm" class="topiclink">QMCreateObject()</a></span>, <span style="font-weight: bold;"><a href="qmget.htm" class="topiclink">QMGet()</a></span> and <span style="font-weight: bold;"><a href="qmset.htm" class="topiclink">QMSet()</a></span> functions also allow updated argument values to be retrieved with <span style="font-weight: bold;"><a href="qmgetarg.htm" class="topiclink">QMGetArg()</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Using the Visual Basic .Net API</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of QMClient from Visual Basic .Net requires two dynamic link libraries; qmclivb.dll and qmclilib.dll. Inclusion of the first of these libraries as a reference from the Visual Basic project and adding</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">Imports qm.qmclient</span></p>
+<p>to the Visual Basic classes makes the QMClient functions available. The descriptions for each QMClient function in this documentation show the VB.Net data types.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The dynamic link libraries must be installed on the client system. They are automatically placed in the Windows directory (not necessarily c:\windows) when QM is installed. These components may be freely copied and distributed as necessary. They can also be downloaded separately from the openqm.com web site.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">All strings in the Visual Basic .Net API are Unicode.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>Where a client application calls a QMBasic subroutine or function on the server that updates its argument values, the modified value will be visible in the client process too when using <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span>. The alternative method of calling subroutines with <span style="font-weight: bold;"><a href="qmcallx.htm" class="topiclink">QMCallx()</a></span> and handling returned argument values via the <span style="font-weight: bold;"><a href="qmgetarg.htm" class="topiclink">QMGetArg()</a></span> function is also available in the Visual Basic .Net API.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span class="f_BoldSubheading">Using the Visual Basic 2005 API</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM currently retains support for Visual Basic 2005 using the qmclient.dll dynamic link library and a Visual Basic module named QMClient 2005.vb in the SYSCOM file that contains the API function definitions. Many of the function argument values passed by the VB.Net API as integers are passed as short integers in the old Visual Basic API and hence differ from the VB.Net definitions shown in the function descriptions in this documentation. See the QMClient2005.vb file for the correct definitions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QMClient.dll library must be installed on the client system. This library is placed in the Windows directory (not necessarily c:\windows) when QM is installed. These components may be freely copied and distributed as necessary.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">All strings in the Visual Basic 2005 API are 8-bit.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>Where a client application uses <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span> to call a QMBasic subroutine or function on the server that updates its argument values, the modified values will be visible in the client process.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Visual Basic versions 5 and 6 are no longer supported though the function definition items for these in the SYSCOM file will not be deleted by the installer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Using the QMBasic Class Module API</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QMClient class module is supplied as a globally catalogued item named !QMCLIENT. To create a QMClient session, the object is instantiated with a statement of the form</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">session = object(&quot;!qmclient&quot;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The session is then connected to a server using the CONNECT() method:</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ok = session-&gt;connect(</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">hostname</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">port</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">user</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">password</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">account</span><span style="font-family: 'Courier New',Courier,monospace;">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There is no equivalent of the <span style="font-weight: bold;"><a href="qmconnectlocal.htm" class="topiclink">QMConnectLocal()</a></span> function in the QMBasic class module API.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>Functions that return Boolean values, return 0 for False, 1 for True in the QMBasic class module API. Status codes referenced with a prefix of SV_ in the function descriptions are defined in the SYSCOM KEYS.H include record with a prefix of SV$. For example, SV_OK becomes SV$OK for the QMBasic variant of the QMClient API.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>All examples in the detailed function descriptions assume that the object has been instantiated as a variable named &quot;session&quot;.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Using the Java QMClient API</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Two distinct versions of the Java API are available. The original implementation is platform specific because it uses the Java Native Interface (JNI). This version can be downloaded from the OpenQM web site <a href="http://www.openqm.com/appdev.htm" target="_blank" class="weblink">Resources and Solutions</a> area. The Java QMClient API installation package includes separate HTML documentation covering its usage.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A pure Java version of the API was introduced at QM release 3.4-7 and can be found on the main <a href="http://www.openqm.com/downloads.htm" target="_blank" class="weblink">downloads</a> page of the web site. This version is portable across all platforms that support Java. Documentation for the functions in this API appears in the sections that follow. To use this API, the client program should use</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">import qmclient.*;</span></p>
+<p class="p_Normal">and then reference the functions in the form qm.Name() such that, for example, the <span style="font-weight: bold;"><a href="qmextract.htm" class="topiclink">QMExtract()</a></span> function becomes</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">var = qm.Extract(</span><span class="f_CodeTopLine" style="font-style: italic;">dyn_array</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">field</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">value</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">subvalue</span><span class="f_CodeTopLine">);</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">All references to the Java API in the following sections relate to the portable Java API. All examples in the function descriptions assume that the object has been instantiated as a variable named &quot;qm&quot;.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Using QMClient from Python</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The qmclient.py item in the SYSCOM file has definitions and descriptions for Python versions of the API functions and also has comment text at the top of the module that describes how to use it. Essentially, the Python program should use</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">import qmclient.py as qm</span></p>
+<p class="p_Normal">and then reference the functions in the form qm.Name() such that, for example, the <span style="font-weight: bold;"><a href="qmextract.htm" class="topiclink">QMExtract()</a></span> function becomes</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">var = qm.Extract(</span><span class="f_CodeTopLine" style="font-style: italic;">dyn_array</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">field</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">value</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">subvalue</span><span class="f_CodeTopLine">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the qmclient.py file is not in the current directory, the PYTHONPATH environment variable must be set as a list of directories to search for imported modules in the same form as used for the PATH environment variable. Also note that on Windows, which has a case insensitive file system, the casing of Python module filenames must match that used in the import statement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because Python does not support passing arguments by reference, QMClient functions that use this capability in other languages are modified to return two items as a list such that, for example, <span style="font-weight: bold;"><a href="qmread.htm" class="topiclink">QMRead()</a></span> becomes</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">rec, err = qm.Read(fno, id)</span></p>
+<p class="p_Normal">or <span style="font-weight: bold;"><a href="qmlocate.htm" class="topiclink">QMLocate()</a></span> becomes</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">found, pos = qm.Locate(</span><span class="f_CodeSingleLine" style="font-style: italic;">item</span><span class="f_CodeSingleLine">, </span><span class="f_CodeSingleLine" style="font-style: italic;">dyn_array</span><span class="f_CodeSingleLine">, </span><span class="f_CodeSingleLine" style="font-style: italic;">field</span><span class="f_CodeSingleLine">, </span><span class="f_CodeSingleLine" style="font-style: italic;">value</span><span class="f_CodeSingleLine">, </span><span class="f_CodeSingleLine" style="font-style: italic;">subvalue</span><span class="f_CodeSingleLine">, </span><span class="f_CodeSingleLine" style="font-style: italic;">order</span><span class="f_CodeSingleLine">)</span></p>
+<p class="p_Normal">All examples in the function descriptions assume that the object has been instantiated as a variable named &quot;qm&quot;.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Error Handling in QMClient Applications</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMClient was originally developed for use in applications that had a directly associated user screen on which error messages could be displayed. It has subsequently found use in applications that do not have a directly associated screen such as the server side of a web application. In such situations when using some languages, it will be necessary to use the <span style="font-weight: bold;"><a href="qmconnectiontype.htm" class="topiclink">QMConnectionType</a></span> function to disable display of error messages. To ensure that older applications continue to run unchanged, the default behaviour of QMClient is to display errors either using a pop-up message box (Windows) or by sending the message to the stderr error channel (Linux).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>From release 2.11-3, nearly all QMClient functions start by setting the <span style="font-weight: bold;"><a href="qmerror.htm" class="topiclink">QMError()</a></span> error string to null. Applications can test if <span style="font-weight: bold;"><a href="qmerror.htm" class="topiclink">QMError()</a></span> is a null string in order to determine whether an error has occurred. Errors are returned in this way even if the older style displayed messages are still enabled. The functions that do not change the <span style="font-weight: bold;"><a href="qmerror.htm" class="topiclink">QMError</a></span> value are <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree</a></span>, <span style="font-weight: bold;"><a href="qmstatus.htm" class="topiclink">QMStatus</a></span> and <span style="font-weight: bold;"><a href="qmerror.htm" class="topiclink">QMError</a></span> itself. Alternatively, applications can check the server status code as described later in this section.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Multi-threading</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QMClient API supports multi-threading so long as two threads do not attempt an operation on the same session simultaneously. If a session could never be accessed by more than one thread simultaneously, no special coding is needed. In languages such as Java or Python where each QM session is instantiated as a separate object, each function call references the specific object to which it applies. For other languages, sessions are identified by a numeric value and a thread may switch between multiple sessions using <span style="font-weight: bold;"><a href="qmsetsession.htm" class="topiclink">QMSetSession()</a></span> in which case QMClient will correctly track the currently active session in each thread. If a single session could be accessed by multiple threads simultaneously, it will be necessary to use semaphores or similar synchronisation techniques to ensure that actions on a single session do not overlap. This includes treating a <span style="font-weight: bold;"><a href="qmexecute.htm" class="topiclink">QMExecute()</a></span> followed by one or more <span style="font-weight: bold;"><a href="qmrespond.htm" class="topiclink">QMRespond()</a></span> requests as a single action.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">API Function Summary</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For the C API, &quot;W&quot; indicates that a wide string version of the function is available.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="width:100%; border:solid 2px #000000; border-spacing:0; border-collapse:collapse;">
+<thead>
+<tr>
+<th style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</th>
+<th style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-weight: bold;">VB.Net</span></p>
+</th>
+<th style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-weight: bold;">VB&nbsp;2005</span></p>
+</th>
+<th style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-weight: bold;">C</span></p>
+</th>
+<th style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-weight: bold;">QMBasic</span></p>
+</th>
+<th style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><br />
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmcall.htm" class="topiclink">QMCall</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Call a subroutine on the server</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmcallx.htm" class="topiclink">QMCallx</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Call a subroutine on the server, returning updated arguments with QMGetArg()</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmchange.htm" class="topiclink">QMChange</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Replace substrings in a string</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmchecksum.htm" class="topiclink">QMChecksum</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Calculate a checksum value</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmclearfile.htm" class="topiclink">QMClearFile</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Clear a file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmclearselect.htm" class="topiclink">QMClearSelect</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Clear a select list</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmclose.htm" class="topiclink">QMClose</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Close a file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmconnect.htm" class="topiclink">QMConnect</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Establish a session via a network connection</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmconnected.htm" class="topiclink">QMConnected</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Verify whether connection is open</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmconnectiontype.htm" class="topiclink">QMConnectionType</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Set options that affect QMClient behaviour</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmconnectlocal.htm" class="topiclink">QMConnectLocal</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Establish a session on the local system</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmconnectpool.htm" class="topiclink">QMConnectPool</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;">Y</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Establish a connection pooling session via a network connection</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmcreateobject.htm" class="topiclink">QMCreateObject</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Instantiate a QMBasic class instance object</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmdcount.htm" class="topiclink">QMDcount</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Count delimited items in a string</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmdecrypt.htm" class="topiclink">QMDecrypt</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Decrypt data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmdel.htm" class="topiclink">QMDel</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Delete a field, value or subvalue from a dynamic array</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmdelete.htm" class="topiclink">QMDelete</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Delete a record from an open file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmdeleteu.htm" class="topiclink">QMDeleteu</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Delete a record from an open file, retaining the lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmdestroyobject.htm" class="topiclink">QMDestroyObject</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Discard a QMBasic class instance object</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmdisconnect.htm" class="topiclink">QMDisconnect</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Terminate a QMClient session</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmdisconnectall.htm" class="topiclink">QMDisconnectAll</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Terminate all QMClient sessions from this client</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmencrypt.htm" class="topiclink">QMEncrypt</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Encrypt data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmencrypt.htm" class="topiclink">QMEncryptx</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Encrypt data with random initialisation vector</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmendcommand.htm" class="topiclink">QMEndCommand</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Terminate a command started with QMExecute()</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmenterpackage.htm" class="topiclink">QMEnterPackage</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Enter a licensed package</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmerror.htm" class="topiclink">QMError</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Return the text associated with the most recent error</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmevaluate.htm" class="topiclink">QMEvalConv</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Evaluate a dictionary data definition item, applying conversion codes</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmevaluate.htm" class="topiclink">QMEvaluate</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Evaluate a dictionary data definition item</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmexecute.htm" class="topiclink">QMExecute</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Execute a command</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmexitpackage.htm" class="topiclink">QMExitPackage</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Exit from a licensed package</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmextract.htm" class="topiclink">QMExtract</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Extract a field, value or subvalue from a dynamic array</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmfield.htm" class="topiclink">QMField</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Extract a substring from a delimited string</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmget.htm" class="topiclink">QMGet</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Return the value of a public variable or function in a QMBasic object</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmgetarg.htm" class="topiclink">QMGetArg</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Get a returned argument value from QMCallx(), QMCreateObject(), QMGet() or QMSet()</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmgetsession.htm" class="topiclink">QMGetSession</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Return currently selected session number</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmgetvar.htm" class="topiclink">QMGetVar</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Fetch the value of an @-variable on the server</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmiconv.htm" class="topiclink">QMIConv</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Apply input conversion codes</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmiconv.htm" class="topiclink">QMIConvs</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Apply input conversion codes to multivalued data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p class="p_Normal"><a href="qmindices.htm" class="topiclink">QMIndices</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p class="p_Normal">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Retrieve information about indices</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmins.htm" class="topiclink">QMIns</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Insert a field, value or subvalue in a dynamic array</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmisecs.htm" class="topiclink">QMIsECS</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Test if server is running in ECS mode</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmlocate.htm" class="topiclink">QMLocate</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Locate a field, value or subvalue in a dynamic array</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmlogto.htm" class="topiclink">QMLogto</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Switch to a different account</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmmarkmapping.htm" class="topiclink">QMMarkMapping</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Enable or disable mark mapping for a directory file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmmatch.htm" class="topiclink">QMMatch</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Match a string against a pattern template</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmmatchfield.htm" class="topiclink">QMMatchfield</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Return the portion of a string that matches a pattern template element</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmnextpartial.htm" class="topiclink">QMNextPartial</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Return next part of a select list</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmoconv.htm" class="topiclink">QMOConv</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Apply output conversion codes</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmoconv.htm" class="topiclink">QMOConvs</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Apply output conversion codes to multivalued data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmopen.htm" class="topiclink">QMOpen</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Open a file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmopenseq.htm" class="topiclink">QMOpenSeq</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Open a sequential file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmpoolidle.htm" class="topiclink">QMPoolIdle</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Move a connection pooling session into an idle wait state</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmread.htm" class="topiclink">QMRead</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Read a record without locking</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmreadblk.htm" class="topiclink">QMReadBlk</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Read a given number of bytes from a sequential file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmreadl.htm" class="topiclink">QMReadl</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Read a record with a shareable read lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmreadlist.htm" class="topiclink">QMReadList</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Read a select list</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmreadnext.htm" class="topiclink">QMReadNext</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Read the next item from a select list</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmreadseq.htm" class="topiclink">QMReadSeq</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Read a line of text from a sequential file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmreadu.htm" class="topiclink">QMReadu</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Read a record with an update lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmrecordlock.htm" class="topiclink">QMRecordlock</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Lock a record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmrecordlocked.htm" class="topiclink">QMRecordlocked</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Query the lock state of a record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmrelease.htm" class="topiclink">QMRelease</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Release a record lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmreplace.htm" class="topiclink">QMReplace</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Replace a field, value or subvalue in a dynamic array</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmrespond.htm" class="topiclink">QMRespond</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Respond to a request for input from a command started with QMExecute()</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmrevision.htm" class="topiclink">QMRevision</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Return the client and server QM version numbers</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmtrans.htm" class="topiclink">QMRTrans</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Perform an RTRANS() function to fetch data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmseek.htm" class="topiclink">QMSeek</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Position in a sequential file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmselect.htm" class="topiclink">QMSelect</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Generate a select list</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmselectindex.htm" class="topiclink">QMSelectIndex</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Generate a select list from an alternate key index</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmselectleft.htm" class="topiclink">QMSelectLeft</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Move left in an alternate key index</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmselectpartial.htm" class="topiclink">QMSelectPartial</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Optimised select operation, returning multiple keys</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmselectleft.htm" class="topiclink">QMSelectRight</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Move right in an alternate key index</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmset.htm" class="topiclink">QMSet</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Set the value of a public variable or execute a public subroutine in a QMBasic object</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmsetleft.htm" class="topiclink">QMSetLeft</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Position at the left in an alternate key index</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmsetleft.htm" class="topiclink">QMSetRight</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Position at the right in an alternate key index</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmsetsession.htm" class="topiclink">QMSetSession</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Select session to which subsequent actions apply</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmstatus.htm" class="topiclink">QMStatus</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Return the STATUS() value from the server</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmsystem.htm" class="topiclink">QMSystem</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><br />
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p class="p_Normal">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Execute a QMBasic SYSTEM() function on the server</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmtrans.htm" class="topiclink">QMTrans</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><br />
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p class="p_Normal">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Perform a TRANS() function to fetch data</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmtrapcallabort.htm" class="topiclink">QMTrapCallAbort</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Enable client trapping of aborts in QMCall()</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmtxn.htm" class="topiclink">QMTxn</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Start, commit or abort a transaction on the server.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmweofseq.htm" class="topiclink">QMWeofSeq</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Truncate a sequential file item</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmwrite.htm" class="topiclink">QMWrite</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Write a record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmwriteblk.htm" class="topiclink">QMWriteBlk</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Write a given number of bytes to a sequential file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmwriteseq.htm" class="topiclink">QMWriteSeq</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Write a line of text to a sequential file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmwriteseqkey.htm" class="topiclink">QMWriteSeqKey</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Write a record using an automatic sequential key</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmwriteu.htm" class="topiclink">QMWriteu</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Write a record, retaining the record lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:188px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;"><a href="qmwriteuseqkey.htm" class="topiclink">QMWriteuSeqKey</a></p>
+</td>
+<td style="vertical-align:top; width:109px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:78px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:83px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">W</p>
+</td>
+<td style="vertical-align:top; width:82px; padding:2px; border:solid thin #000000;"><p style="line-height: 1.0; white-space: nowrap;">Y</p>
+</td>
+<td style="vertical-align:top; width:761px; padding:2px; border:solid thin #000000;"><p class="p_Normal">Write a record using an automatic sequential key, retaining the record lock</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">The Server Status Code</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p>Many functions return a server error status referenced as Err in the detailed function descriptions. In variants of the QMClient API that allow function argument variables to be updated by the function (C, VB.Net, QMBasic class module), this variable is an integer argument, passed by reference. In the Python variant, the error status is returned as a second return value. For the Java variant, applications should test the ServerError property.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In all cases, the value returned will be one of the following that broadly corresponding to the various clauses applicable to the equivalent QMBasic statements.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="width:100%; border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:42px; padding:0; border:none"><p style="margin: 5px 0 0 0;">0</p>
+</td>
+<td style="vertical-align:top; width:263px; padding:0; border:none"><p style="margin: 5px 0 0 0;">SV_OK</p>
+</td>
+<td style="vertical-align:top; width:997px; padding:0; border:none"><p style="margin: 5px 0 0 0;">Action successful</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:42px; padding:0; border:none"><p style="margin: 5px 0 0 0;">1</p>
+</td>
+<td style="vertical-align:top; width:263px; padding:0; border:none"><p style="margin: 5px 0 0 0;">SV_ON_ERROR</p>
+</td>
+<td style="vertical-align:top; width:997px; padding:0; border:none"><p style="margin: 5px 0 0 0;">Action took the ON ERROR clause to recover from a situation that would otherwise cause the server process to abort.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:42px; padding:0; border:none"><p style="margin: 5px 0 0 0;">2</p>
+</td>
+<td style="vertical-align:top; width:263px; padding:0; border:none"><p style="margin: 5px 0 0 0;">SV_ELSE</p>
+</td>
+<td style="vertical-align:top; width:997px; padding:0; border:none"><p style="margin: 5px 0 0 0;">Action took the ELSE clause. In most cases the <span style="font-weight: bold;"><a href="qmstatus.htm" class="topiclink">QMStatus()</a></span> function can be used to determine the error number.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:42px; padding:0; border:none"><p style="margin: 5px 0 0 0;">3</p>
+</td>
+<td style="vertical-align:top; width:263px; padding:0; border:none"><p style="margin: 5px 0 0 0;">SV_ERROR</p>
+</td>
+<td style="vertical-align:top; width:997px; padding:0; border:none"><p style="margin: 5px 0 0 0;">An error occurred for which extended error text can be retrieved using the <span style="font-weight: bold;"><a href="qmerror.htm" class="topiclink">QMError()</a></span> function.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:42px; padding:0; border:none"><p style="margin: 5px 0 0 0;">4</p>
+</td>
+<td style="vertical-align:top; width:263px; padding:0; border:none"><p style="margin: 5px 0 0 0;">SV_LOCKED</p>
+</td>
+<td style="vertical-align:top; width:997px; padding:0; border:none"><p style="margin: 5px 0 0 0;">The action was blocked by a lock held by another user. The <span style="font-weight: bold;"><a href="qmstatus.htm" class="topiclink">QMStatus()</a></span> function can be used to determine the blocking user.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:42px; padding:0; border:none"><p style="margin: 5px 0 0 0;">5</p>
+</td>
+<td style="vertical-align:top; width:263px; padding:0; border:none"><p style="margin: 5px 0 0 0;">SV_PROMPT</p>
+</td>
+<td style="vertical-align:top; width:997px; padding:0; border:none"><p style="margin: 5px 0 0 0;">A command executed on the server is waiting for input. The only valid client functions when this status is returned are <span style="font-weight: bold;"><a href="qmrespond.htm" class="topiclink">QMRespond()</a></span>, <span style="font-weight: bold;"><a href="qmendcommand.htm" class="topiclink">QMEndCommand</a></span> and <span style="font-weight: bold;"><a href="qmdisconnect.htm" class="topiclink">QMDisconnect</a></span>.</p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"></td><td style="border:none;padding:0"></td></tr></table></div><p>The tokens shown above are defined in the SYSCOM include record or module relevant to the language in use. For the Java and QMBasic variants of the API, the names are modified to be SV$xxx instead of SV_xxx.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the function descriptions that follow, the language specific details are presented as an expanding text that can be shown by clicking on the language name in the blue bar for the relevant language.</p>
+
+</td></tr></table>
+
+</body>
+</html>

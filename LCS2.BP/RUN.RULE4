@@ -1,0 +1,113 @@
+      SUBROUTINE RUN.RULE(RULES,TRANS,RULE.EXP,RULE.ID)
+      LM=1
+      OPEN 'ACCOUNTS' TO ACCOUNTS ELSE PRINT 'ACCOUNTS';STOP
+      OPEN 'LCS.CONTROL' TO LCS.CONTROL ELSE PRINT 'LCS.CONTROL';STOP
+      INCLUDE FILE.EQU TRANS.EQ
+      INCLUDE FILE.EQU RULES.EQ
+
+      IF RULE.ID THEN
+         READ RU.B FROM RULES,RULE.ID ELSE RU.B = ""
+      END ELSE
+         READ RULE.ID FROM LCS.CONTROL,'NEXT.RULE.ID' THEN
+            LOOP
+               READV EXISTS FROM RULES,RULE.ID,0 THEN
+                  RULE.ID+=1
+               END
+            REPEAT
+         END ELSE
+            RULE.ID = '5001'
+         END
+         NEXT.RULE.ID = RULE.ID+1
+         WRITE NEXT.RULE.ID ON LCS.CONTROL,'NEXT.RULE.ID'
+         IF RULE.EXP THEN
+            CONVERT "," TO @FM IN RULE.EXP
+            CONVERT ":" TO @VM IN RULE.EXP
+            RU.KEYWORD = TRIM(RULE.EXP<1>)
+            P.CT = DCOUNT(RULE.EXP,@FM)
+            FOR P.X = 2 TO P.CT
+               P.TYPE = RULE.EXP<P.X,1>
+               P.VALUE = RULE.EXP<P.X,2>
+               BEGIN CASE
+                  CASE P.TYPE = "N"
+                     RU.PAYEE.NAME = P.VALUE
+                  CASE P.TYPE = "A"
+                     RU.ACCT.ID = P.VALUE
+                  CASE P.TYPE = "C"
+                     RU.CLASS.NAME = P.VALUE
+                  CASE P.TYPE = "D"
+                     RU.DEPT =  P.VALUE
+               END CASE
+            NEXT P.X
+            WRITE RU.B ON RULES,RULE.ID
+         END
+      END
+
+MAIN:
+      IF RU.B THEN
+         RU.KEYWORD = TRIM(RU.KEYWORD)
+         IF LEN(RU.KEYWORD) > 2 THEN
+            SELECT.STR = 'SELECT TRANS WITH NAME_DESC LIKE ...':TRIM(UPCASE(RU.KEYWORD)):'...'
+            PRINT SELECT.STR
+            TRANS.LIST = ""
+            TRANS.LIST2 = ""
+            TRANS.LIST.CT = 0
+            IF LM THEN PRINT SELECT.STR
+            EXECUTE SELECT.STR CAPTURING CAP
+            IF LM THEN PRINT CAP
+            READLIST TRANS.LIST THEN
+               TRANS.LIST.CT = DCOUNT(TRANS.LIST,@FM)
+               PRINT TRANS.LIST.CT:" FOUND"
+               FOR LIST.X = 1 TO TRANS.LIST.CT
+                  TR.ID = TRANS.LIST<LIST.X>
+                  READ TR.B FROM TRANS,TR.ID THEN
+                     READV RULE.KEY1 FROM RULES,TR.RULE,1 ELSE RULE.KEY1 = ""
+                     RULE.KEY1 = TRIM(RULE.KEY1)
+                     IF RULE.KEY1 <> RU.KEYWORD THEN
+                        PRINT RU.KEYWORD:"  VS ":RULE.KEY1:"   ":
+                        IF LEN(RU.KEYWORD) > LEN(RULE.KEY1) THEN
+                           PRINT RU.KEYWORD:" WON"
+                           PRINT "APPLYING RULE ":RULE.ID:" OVERWRITING PRIOR RULE ":RULE.KEY1:" ":TR.TR.DESC
+                           TR.RULE = RULE.ID
+                           TRANS.LIST2<1,-1> = TR.ID
+                           RU.COUNT += 1
+                           TR.PAYEE = RU.PAYEE.NAME
+                           TR.ACCOUNT.ID = RU.ACCT.ID
+                           READV ACCOUNT.NAME FROM ACCOUNTS,TR.ACCOUNT.ID,1 ELSE
+                              PRINT "TR.ACCOUNT.ID:":TR.ACCOUNT.ID:" NOT FOUND"
+                           END
+                           TR.ACCOUNT.NAME = ACCOUNT.NAME
+                           TR.CLASS = RU.CLASS.NAME
+                           TR.DEPT = RU.DEPT
+                           WRITE TR.B ON TRANS,TR.ID
+                        END ELSE
+                           IF LM THEN PRINT RULE.KEY1:" WON -- IT STAYS AS THE PREVIOUSLY ASSIGNED RULE"
+                        END
+                     END
+                  END
+               NEXT LIST.X
+            END ELSE
+               RU.COUNT = 0
+               RU.TRANS.ID = ""
+               PRINT "NO TRANS FOUND FOR RULE ":RULE.ID
+            END
+            RU.TRANS.ID = TRANS.LIST2
+            WRITE RU.B ON RULES,RULE.ID
+            PRINT "RULE ":RULE.ID:" APPLIED TO ":RU.COUNT:" OUT OF A POTENTIAL ":TRANS.LIST.CT
+            PRINT "APPLIED TO THESE TRANSACTIONS:":CHANGE(RU.B<6>,@VM,",")
+         END ELSE
+            PRINT "RU.KEYWORD NOT VALID"
+            DEBUG
+            SLEEP 5
+         END
+      END
+      *IF RULE.ID THEN
+      *PRINT "RULE.ID:":RULE.ID:" NOT FOUND"
+      *SLEEP 5
+      *END ELSE
+      *PRINT "RULE.ID MISSING"
+      *SLEEP 5
+      *END
+
+      RETURN
+
+

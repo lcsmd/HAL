@@ -1,0 +1,96 @@
+      tab = char(9)
+      cr = char(13)
+      lf = char(10)
+      crlf = cr:lf
+      equ account to trans<1>, period to trans<2>, date.val to trans<3>, desc.val to trans<4>
+      equ bal.val to trans<5> to source.line
+      space=char(20)
+      vmax = 0
+      lm =1
+      v2max = 0
+      s=""
+      r=""
+      true = 1
+      false = 0
+      buff = ""
+      file.item.name = field(@sentence, " ", 2)
+      if lm then print "file.item.name:":file.item.name
+      if index(file.item.name, ",", 1) then
+         csv.file = field(file.item.name, ",", 1)
+         item.name = field(file.item.name, ",", 2)
+      end else
+         csv.file = "lcs.csv"
+         item.name = file.item.name
+      end
+      if csv.file = "" then csv.file = "lcs.csv"
+      print "csv.file:":csv.file
+      print "item.name:":item.name
+      item = field(item.name, ".", 1)
+      ext = field(item.name, ".", 2)
+      account = field(item,"_",1):"_":field(item,"_",2)
+      period = field(item,"_",3)
+      open 'control' to f.control else print 'control';stop
+      open 'trans' to f.trans else print 'trans';stop
+
+      open 'account' to f.account else print 'account';stop
+      openseq csv.file, item:".csv" to csv.file else print "cannot open ":csv.file;stop
+      openseq csv.file2, item:"2.csv" to csv2.file else create csv2.file else print "cannot open ":csv2.file;stop
+      open 'lcs.csv3' to csv.file3 else print 'lcs.csv3';stop
+      buff3 = ""
+      year = field(item.name, "_", 3)[1, 4]
+      yeara = "/":year
+      if lm then print year:" ":yeara
+      gosub clear.vals:
+      date.val = "Date"
+      desc.val ="Description"
+      amt.val ="Amount"
+      bal.val = "Balance"
+      row=0
+      gosub add.row:
+      read trans.id from f.control, 'trans.id' else trans.id = '1000000'
+      loop
+         trans = ""
+         readcsv from csv.file delimiter "<TAB>" to date.val, desc.val, amt.val, bal.val else exit
+         if len(date.val) = 5 and date.val[3, 1] = "/" then
+            desc.val = change(desc.val, lf, space)
+            desc.val = trim(desc.val)
+            date.val date.val:yeara
+            gosub print.line:
+            gosub add.row:
+         end
+      repeat
+      *write buff on f.csv.file,item:"-3.TXT"
+
+      *print buff
+      *print buff2
+      *end else print item.name:' not found'
+      closeseq csv.file
+      closeseq csv2.file
+      write buff3 to csv3.file
+      stop
+
+print.line:
+      print row:" ":date.val:" ":desc.val:" ":amt.val:" ":bal.val
+      return
+
+add.row:
+      row =  row +1
+      desc.len = len(desc.val)
+      bal.val=field(bal.val, " ", 1)
+      if row > 1 then
+         trans.id = trans.id + 1
+         trans.id.key = ("0000000":trans.id) "r#7"
+         write trans on f.trans, trans.id.key
+      end
+      writecsv date.val, desc.val, amt.val, bal.val to csv2.file else
+         print "writecsv error"
+      end
+      buff3<row> = trans:crlf
+      return
+      end
+
+
+
+
+
+

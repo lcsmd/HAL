@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>CREATE.SERVER.SOCKET</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CREATE.SERVER.SOCKET" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_create_server_socket.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">CREATE.SERVER.SOCKET()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_create_file.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_crop.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CREATE.SERVER.SOCKET()</span> function creates a server socket on which a program may wait for incoming connections.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CREATE.SERVER.SOCKET(</span><span style="font-style: italic;">addr</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">port</span><span style="font-weight: bold;">,</span><span style="font-style: italic;"> flags</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">addr</span></td><td style="border:none;padding:0">is the address on which to listen for incoming connections.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">port</span></td><td style="border:none;padding:0">is the port number on which to listen for incoming connections.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">flags</span></td><td style="border:none;padding:0">is a flag value formed from the additive values below. For compatibility with earlier releases, this may be omitted and defaults to a TCP stream connection. The token values are defined in the SYSCOM KEYS.H include record.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 330px;">Socket type, one of:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">SKT$STREAM</td><td style="border:none;padding:0">A stream connection (default)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">SKT$DGRM</td><td style="border:none;padding:0">A datagram type connection</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">SKT$USTREAM</td><td style="border:none;padding:0">A named Unix domain socket connection</td></tr></table></div><p style="text-indent: -181px; margin: 0 0 0 330px;">Protocol, one of:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">SKT$TCP</td><td style="border:none;padding:0">Transmission Control Protocol (default)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">SKT$UDP</td><td style="border:none;padding:0">User Datagram Protocol</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-style: italic;">addr</span> argument may be</p>
+<p style="text-indent: 0; padding-left: 13px; margin: 5px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>An IPV4 network IP address. Only incoming connections from other IPV4 addresses will be accepted.</p><p style="text-indent: 0; padding-left: 13px; margin: 5px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>An IPV6 network IP address Only incoming connections from other IPV6 addresses will be accepted.</p><p style="text-indent: 0; padding-left: 13px; margin: 5px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>A server name that will be translated to a network address</p><p style="text-indent: 0; padding-left: 13px; margin: 5px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>A null string. Connections may be made from either IPV4 or IPV6 addresses.</p><p class="p_Normal" style="text-indent: 0; padding-left: 43px; margin: 5px 0 0 0;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>For Unix domain sockets, the <span style="font-style: italic;">addr</span> argument is the pathname of the socket connection and the <span style="font-style: italic;">port</span> argument is ignored.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When the <a href="configparams.htm#ipaddr" class="topiclink">IPADDR</a> configuration parameter is used to cause QM to listen for incoming telnet, QMClient, QMNet or replication connections on a specific IP address, the <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key 1072 (SYS$SERVER.IP) may be useful as the <span style="font-style: italic;">addr</span> argument so that the same IP address is used by <span style="font-weight: bold;">CREATE.SERVER.SOCKET</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of IPV6 must be enabled using the <a href="configparams.htm#ipv6" class="topiclink">IPV6</a> configuration parameter.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>If the action is successful, this function returns the socket variable associated with the new server port and the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function returns zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If unsuccessful, the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function returns an error code that can be used to determine the cause of failure.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of <span style="font-weight: bold;">CREATE.SERVER.SOCKET()</span> within a phantom process makes that process consume a licence.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SRVR.SKT = CREATE.SERVER.SOCKET(&quot;&quot;, 4000, SKT$STREAM + SKT$TCP)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF STATUS() THEN STOP 'Cannot initialise server socket'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF STATUS() THEN STOP 'Error accepting connection'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DATA = READ.SOCKET(SKT, 100, SKT$BLOCKING, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLOSE.SOCKET SKT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLOSE.SOCKET SRVR.SKT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment creates a server socket, waits for an incoming connection, reads a single data packet from this connection and then closes the sockets.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="using_socket_connections.htm" class="topiclink">Using Socket Connections</a>, <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION</a></span>, <span style="font-weight: bold;"><a href="qmb_close_socket.htm" class="topiclink">CLOSE.SOCKET</a></span>, <span style="font-weight: bold;"><a href="qmb_open_socket.htm" class="topiclink">OPEN.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_select_socket.htm" class="topiclink">SELECT.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_server_addr.htm" class="topiclink">SERVER.ADDR()</a></span>, <span style="font-weight: bold;"><a href="qmb_set_socket_mode.htm" class="topiclink">SET.SOCKET.MODE()</a></span>, <span style="font-weight: bold;"><a href="qmb_socket_info.htm" class="topiclink">SOCKET.INFO()</a></span>, <span style="font-weight: bold;"><a href="qmb_write_socket.htm" class="topiclink">WRITE.SOCKET()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+    OPENSEQ 'CSV','ACCOUNTS.TXT' TO F.CSV ELSE PRINT 'CSV' ; STOP
+      OPEN 'ACCOUNTS' TO ACCOUNTS ELSE PRINT 'ACCOUNTS' ; STOP
+      LOOP
+      WHILE READSEQ LINE FROM F.CSV DO
+         ACCT.B = CHANGE(LINE,CHAR(9),@FM)
+         ACCT.ID = ACCT.B<1>
+         IF NUM(ACCT.ID) THEN
+            DEL ACCT.B<1>
+            WRITE ACCT.B ON ACCOUNTS,ACCT.ID
+            PRINT ACCT.ID:" ":ACCT.B
+         END
+      REPEAT
+      
+      

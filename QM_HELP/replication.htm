@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Replication</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Replication" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "replication.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Replication</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="transactions.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="replication_example.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Data replication provides a mechanism whereby updates to selected files are automatically exported to one or more other files, usually on a different system in order to provide resilience to hardware failure. In normal usage, the intention is to maintain an identical copy of the original files, either so that the second system can take over or for use as a reporting server. It is, however possible to use the replication facility to copy data from disparate sources into a single file, perhaps merging data from satellite offices into a single file at head office.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Basic Principles</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The system that exports data is known as the <span style="font-weight: bold;">publisher</span>. The system receiving the data is known as the <span style="font-weight: bold;">subscriber</span>. Normally this would be a simple relationship with just one publisher/subscriber pair, however, QM imposes few restrictions on how replication is used.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Each published file may be exported to multiple subscribers. A subscriber system can publish these files onwards to further subscribers, cascading data through a series of servers. The only rule is the sequence of exports must not contain a loop where a file is replicated back to itself. There is an exception to this rule as described below under &quot;symmetrical replication&quot;.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A subscriber may receive data from any number of publishers.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM does not prevent other updates to the replicated files on the subscriber system. Although use as a standby system probably requires that updates are not allowed, some other uses of the replication mechanism can require the ability to apply local updates. It is the application designer's responsibility to ensure that appropriate rules are imposed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Replication can be used with hashed files and directory files but, because QM is unaware of changes made to directory files from outside of QM, only updates made by QM applications will be replicated. The subscriber systems may import the data into any type of file. Also, changes made to directory files using sequential file processing (<span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a></span>, etc), <span style="font-weight: bold;"><a href="qmb_oswrite.htm" class="topiclink">OSWRITE</a></span> or <span style="font-weight: bold;"><a href="qmb_osdelete.htm" class="topiclink">OSDELETE</a></span> are not replicated. Some implications of this are that query processor CSV or delimited reports directed to a file and QMBasic compiler listing files are not replicated. As a general rule, replication should not be used to publish files from the QMSYS account.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that replication of a file that uses case insensitive record ids into a file that uses case sensitive record ids is unlikely to work correctly as the update applied at the subscriber will have the casing of the record id as used in the update on the publisher system. Thus updates to a record named &quot;ABC&quot; and a record named &quot;abc&quot; on the publisher in a file with case insensitive ids will reference the same record but these updates replicated to a subscriber file with case insensitive ids will access different records. This is no different from the similar problem that can occur when copying records between case insensitive files and case sensitive files on the one system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The replication export is not instantaneous. The subscribers poll for updates at an interval that is configurable in the range 1 to 300 seconds, defaulting to five seconds. At this default rate, the subscriber system will be on average about three seconds behind the publisher though peak loads may increase this time due to network delays. For a true hot standby where the application does not continue until the update has been committed on the standby system, use QM <a href="triggers.htm" class="topiclink">triggers</a>. The network delays associated with this approach will have a substantial effect on application performance.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A summary report of the replication system status can be produced by use of the <span style="font-weight: bold;"><a href="rpl_status.htm" class="topiclink">RPL.STATUS</a></span> command. This is normally only present in the VOC of the QMSYS account but can be copied to other accounts if needed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Setting up the Publisher</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The publisher side of replication can only be enabled if it is included in your QM licence.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are five configuration parameters related to replication on the publisher system. Of these, only REPLDIR must be set.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The <a href="configparams.htm#replbklg" class="topiclink">REPLBKLG</a> parameter sets the threshold at which a backlog warning gets recorded in the error log based on the number of replication log files waiting for the subscriber to take the updates. It may have any value between 3 and 999, defaulting to 3 if not set. </p><p class="p_Normal" style="text-indent: -13px; margin: 0 0 0 42px;">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The mandatory <a href="configparams.htm#repldir" class="topiclink">REPLDIR</a> parameter specifies the directory where QM will write the log files that contain data waiting for transfer to the subscribers. This directory will be created automatically when QM is started if it does not exist. There will be a separate subdirectory under this location for each subscriber.</p><p class="p_Normal" style="margin: 0 0 0 29px;">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The <a href="configparams.htm#replmax" class="topiclink">REPLMAX</a> parameter specifies the maximum number of simultaneous replication targets that are allowed. Publishing a single file to a large number of targets may have a significant performance impact.</p><p class="p_Normal" style="margin: 0 0 0 29px;">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The <a href="configparams.htm#replport" class="topiclink">REPLPORT</a> parameter specifies the port on which QM will listen for incoming connections from subscriber systems. This defaults to port 4244 if omitted which is the default used by the subscriber.</p><p class="p_Normal" style="margin: 0 0 0 29px;">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The <a href="configparams.htm#replsize" class="topiclink">REPLSIZE</a> parameter specifies the approximate maximum size for a replication log file in Mb before a new log file is started. The default value is 10 which should be appropriate for most systems.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A file is published by use of the <span style="font-weight: bold;"><a href="publish.htm" class="topiclink">PUBLISH</a></span> command by a user with administrator rights:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine" style="font-weight: bold;">PUBLISH</span><span class="f_CodeSingleLine"> {</span><span class="f_CodeSingleLine" style="font-weight: bold;">DICT</span><span class="f_CodeSingleLine">} </span><span class="f_CodeSingleLine" style="font-style: italic;">filename</span><span class="f_CodeSingleLine"> {</span><span class="f_CodeSingleLine" style="font-weight: bold;">DICT</span><span class="f_CodeSingleLine">} </span><span class="f_CodeSingleLine" style="font-style: italic;">server</span><span class="f_CodeSingleLine" style="font-weight: bold;">:</span><span class="f_CodeSingleLine" style="font-style: italic;">account</span><span class="f_CodeSingleLine" style="font-weight: bold;">:</span><span class="f_CodeSingleLine" style="font-style: italic;">filename</span></p>
+<p class="p_Normal">where the first filename references the file to be published and the <span style="font-style: italic;">server</span>:<span style="font-style: italic;">account</span>:<span style="font-style: italic;">filename</span> references the file to which updates are to be exported. Multiple targets may be specified in a single <span style="font-weight: bold;"><a href="publish.htm" class="topiclink">PUBLISH</a></span> command. The subscriber system identified by <span style="font-style: italic;">server</span>  must have been defined with <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> as the command will check for the existence of the target file, however, &nbsp;it is not necessary to enable extended filename syntaxes (see the <a href="configparams.htm#filerule" class="topiclink">FILERULE</a> configuration parameter).</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="publish_account.htm" class="topiclink">PUBLISH.ACCOUNT</a></span> command can be used to simplify publishing a large number of files to the same target server/account.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine" style="font-weight: bold;">PUBLISH.ACCOUNT</span><span class="f_CodeSingleLine"> </span><span class="f_CodeSingleLine" style="font-style: italic;">server</span><span class="f_CodeSingleLine" style="font-weight: bold;">:</span><span class="f_CodeSingleLine" style="font-style: italic;">account</span></p>
+<p class="p_Normal">This command will show a list of files in the current account that are not already published to the specified target. The user can then select files from this list that are to be published.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">From the point when the <span style="font-weight: bold;"><a href="publish.htm" class="topiclink">PUBLISH</a></span> command is executed, all updates to the published files will be logged in the directory specified by the <a href="configparams.htm#repldir" class="topiclink">REPLDIR</a> parameter.</p>
+<p class="p_Normal">&nbsp;<br />
+See <a href="replication_example.htm" class="topiclink">Replication Example</a> for a step by step example of setting up replication.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Setting up the Subscriber</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The subscriber side of replication is not separately licensed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using replication to create a standby system, it is essential that the target files correctly match the corresponding files on the publisher system before enabling subscription. The easiest way to do this is to copy the file at the operating system level while not in use and <span style="text-decoration: underline;">before</span> setting it up for publishing. Alternatively, copy the file using the QM <span style="font-weight: bold;"><a href="copy.htm" class="topiclink">COPY</a></span> command <span style="text-decoration: underline;">after</span> setting it up for publishing. In the latter case, updates to the publisher system that occur during or after the copy will be applied when subscription is enabled.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <a href="configparams.htm#replsrvr" class="topiclink">REPLSRVR</a> configuration parameter must be set to specify the name of the subscriber server. This must match the server name used in the <span style="font-weight: bold;"><a href="publish.htm" class="topiclink">PUBLISH</a></span> commands but does not need to be the same as the network name of the subscriber system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <a href="configparams.htm#numfiles" class="topiclink">NUMFILES</a> configuration parameter must have a value that allows all subscribed files on the system to be open simultaneously.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="subscribe.htm" class="topiclink">SUBSCRIBE</a></span> command is used by a user with administrator rights to apply updates from the publisher to the subscriber. This command starts a phantom process that manages the actual data transfer and is probably &nbsp;best initiated from a <a href="configparams.htm#startup" class="topiclink">STARTUP</a> configuration parameter.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine" style="font-weight: bold;">SUBSCRIBE</span><span class="f_CodeSingleLine"> </span><span class="f_CodeSingleLine" style="font-style: italic;">server</span><span class="f_CodeSingleLine">{</span><span class="f_CodeSingleLine" style="font-weight: bold;">:</span><span class="f_CodeSingleLine" style="font-style: italic;">port</span><span class="f_CodeSingleLine">} </span><span class="f_CodeSingleLine" style="font-style: italic;">username</span><span class="f_CodeSingleLine"> </span><span class="f_CodeSingleLine" style="font-style: italic;">password</span><span class="f_CodeSingleLine"> {</span><span class="f_CodeSingleLine" style="font-style: italic;">options</span><span class="f_CodeSingleLine">}</span></p>
+<p class="p_Normal">The <span style="font-style: italic;">server</span> element of this command may be the network name or ip address of the publisher. The <span style="font-style: italic;">port</span> number defaults to 4244 if omitted. The user name and password must be valid for connection to the publisher system. The password should preferably be encrypted using the <span style="font-weight: bold;"><a href="authenticate.htm" class="topiclink">AUTHKEY</a></span> command for security and specified with a prefix of ENCR: in the command. A server process running as this user will be established on the publisher.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">See the <span style="font-weight: bold;"><a href="subscribe.htm" class="topiclink">SUBSCRIBE</a></span> command for details of the <span style="font-style: italic;">options</span>.  See <a href="replication_example.htm" class="topiclink">Replication Example</a> for a step by step example of setting up replication.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Important Note:</span> Because information about the replication targets is stored in the file, copying the directory that represents a QM file that uses replication will result in the new file also replicating to the same targets.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Transactions</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Updates that were part of a transaction on the publisher will be applied to the subscriber as a group but not strictly as a transaction. There should be no impact on the replication process or data integrity.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Encryption</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Data traffic between the publisher and the subscriber is encrypted though there is an option to suppress this, perhaps when the data path is entirely within a secure network.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If files that use record or field level data encryption are published, the data is exported in encrypted form and imported at the subscriber without change. The implication of this is that the target files on the subscriber system must use the same encryption level and key strings as the source files. This is a logical step if replication is not to weaken system security. Also, the user name of the subscriber phantom must have full access to all relevant encryption keys. &nbsp;Encryption and replication cannot be used together on a directory file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Alternate Key Indices</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because the <span style="font-weight: bold;"><a href="subscribe.htm" class="topiclink">SUBSCRIBE</a></span> command writes data in the same way as any other QM process, indices on the subscriber system will be maintained automatically. The indices defined on the subscriber can be different from those on the publisher.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Triggers</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Trigger functions are not applied on updates at the subscriber. Where triggers are used for data validation on the publisher, the data does not require revalidation on the subscriber. Where triggers are used to trigger other events on the publisher, any updates from these events to published files will also be replicated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Permissions</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">All QM users who may update exported files must have write access to the directory specified by the <a href="configparams.htm#repldir" class="topiclink">REPLDIR</a> parameter on the publisher system. The replication system will set the access rights automatically as each new log file is created.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The user name under which the subscription server process runs on the publisher must have read access to all files that are to be published. Because encrypted data is transferred in encrypted form, this user does not need to have access to encryption keys.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The user name under which the <span style="font-weight: bold;"><a href="subscribe.htm" class="topiclink">SUBSCRIBE</a></span> command runs on the subscriber system must have full access to all subscribed files. When replicating to directory files on the subscriber on a Linux system, new data records will be created with the default umask setting for the system (not one set by the Linux profile script as this does not run for phantom processes). It may be useful to add a <span style="font-weight: bold;"><a href="umask.htm" class="topiclink">UMASK</a></span> command to the LOGIN paragraph of the QMSYS account.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">Cancelling Replication</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Replication of a single file can be cancelled by using the CANCEL keyword of the <span style="font-weight: bold;"><a href="publish.htm" class="topiclink">PUBLISH</a></span> command. Replication of an entire account can be cancelled using the CANCEL keyword with <span style="font-weight: bold;"><a href="publish_account.htm" class="topiclink">PUBLISH.ACCOUNT</a></span>. </p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Copying Replicated Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The details of the replication targets for a published file are stored within the file. If a published file is copied using operating system tools or restored from a backup to a new location, it will usually be necessary to cancel replication of the new file. The <a href="qmfix.htm" class="topiclink">qmfix</a> tool has an option to cancel all replication targets from hashed files as an alternative to use of <span style="font-weight: bold;">PUBLISH.ACCOUNT</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Failure Situations</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where replication is used to provide resilience, it is important to understand the failure situations for which it provides protection and how to recover from them.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">1. Failure of the publisher</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the publisher system fails, the subscriber system can take over. Updates that are currently logged on the publisher but have not been exported to the subscriber will not be present.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The recovery procedure depends on how the subscriber system has been used during the failure period.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If no changes have been made to replicated files on the subscriber system, no action is necessary. The subscriber system will periodically attempt to re-establish connection with the publisher and, when this is successful, the pending updates will be applied.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If users have logged into the subscriber as a standby system and made updates to replicated files, recovery requires a little work.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">a) Terminate the subscriber process <span style="text-decoration: underline;">before</span> restarting the publisher so that it does not attempt to reconnect.</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">b) Consider whether any updates in the replication log files on the publisher are to be allowed to be applied, possibly overwriting change made on the subscriber or whether they should be discarded. If updates are to be discarded, login on the publisher when it is restarted, shutdown any QM processes that may be accessing published files (e.g phantoms created using the <a href="configparams.htm#startup" class="topiclink">STARTUP</a> configuration parameter), and delete the content of the relevant log file directory. This is a subdirectory of the same name as the subscriber system under the directory identified by the <a href="configparams.htm#repldir" class="topiclink">REPLDIR</a> configuration parameter. Delete only the files, not the directory.</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">c) With no QM users logged in on the subscriber system, copy the relevant files back to the publisher using the QM <span style="font-weight: bold;"><a href="copy.htm" class="topiclink">COPY</a></span> command, <span style="text-decoration: underline;">not</span> an operating system level copy.</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">d) Allow users back into QM on the publisher.</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">e) Restart the subscriber process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">2. Failure of the subscriber</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the subscriber system fails, the publisher will continue to run with updates queued in the replication log files. When the subscriber comes back online, these updates will be applied automatically.</p>
+<p class="p_Normal"><span style="width:48px;display:inline-block">&nbsp;</span></p>
+<p class="p_Normal">Updates are queued in log files that are limited to approximately 10Mb, switching to a new log file when this limit is reached. Log files are discarded when they have been completely processed. If the subscriber fails (or the subscription process is not running), the publisher system will generate a message in the error log file if the backlog of updates has three or more files (approximately 30Mb). This message will be repeated at hourly intervals until the situation is resolved.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">3. Failure of the network</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Network failure is essentially no different from subscriber failure except that the data is still available for reporting purposes. Updates will restart automatically shortly after the network connection is restored.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Symmetrical Replication</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where replication is used in a simple one publisher / one subscriber configuration, symmetrical replication can significantly simplify the failure and recovery process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The two systems are configured to publish files to each other. Updates made on either system will be replicated on the other but the replication process will not copy an update from the subscriber back to the publisher from which it came, thus avoiding an endless cycle of updates between the two systems.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the primary publisher system fails, users login to the subscriber standby system and continue work. Updates that they make will be logged for replication back to the primary system and will be applied when it comes back online. The same considerations apply as described above regarding updates that were logged on the primary system but did not get sent to the standby system immediately prior to the failure.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On return of the primary system, users can be moved back at a convenient moment. No data files need to be copied manually.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Whilst symmetrical replication provides a simple recovery strategy, it is very important to ensure that updates are not made to the same records on both systems at the same time as there is no locking between the two systems to control the sequence in which updates would get applied.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Pausing the Subscriber</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A replication subscriber process can be temporarily paused by use of the <span style="font-weight: bold;"><a href="rpl_pause.htm" class="topiclink">RPL.PAUSE</a></span> command. This might be useful, for example, when bringing the system to a quiescent state where the subscriber system can be safely backed up while updates continue on the publisher. The subscriber will catch up when the pause is cancelled.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">Disabling Publishing</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="disable_publishing.htm" class="topiclink">DISABLE.PUBLISHING</a></span> command can be used to suspend recording of updates to published files in the replication log area. It is intended for use when synchronising the publisher and subscriber systems. Updates applied to published files while publishing is disabled will not be replicated. Account replication (see below) is also disabled by this command. Publishing can be resumed using the <span style="font-weight: bold;"><a href="enable_publishing.htm" class="topiclink">ENABLE.PUBLISHING</a></span> command and resumes automatically if QM is restarted.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Moving the Replication Directory</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If it is necessary to move the directory that stores replication log files to a new location, perhaps for load balancing across disk drives, this can be accomplished simply by disabling publishing, modifying the <a href="configparams.htm#repldir" class="topiclink">REPLDIR</a> configuration parameter, moving the directory structure, and re-enabling publishing.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Identifying Replicated Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The files for which replication is enabled can be shown using the <span style="font-weight: bold;"><a href="list_replicated.htm" class="topiclink">LIST.REPLICATED</a></span> command. The <span style="font-weight: bold;"><a href="listf.htm" class="topiclink">LISTF</a></span>, <span style="font-weight: bold;"><a href="listf.htm" class="topiclink">LISTFL</a></span> and <span style="font-weight: bold;"><a href="listf.htm" class="topiclink">LISTFR</a></span> commands also report files with replication but do not show dictionaries.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><a id="accountreplication" class="hmanchor"></a><span style="font-weight: bold;">Account Replication</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using replication to maintain a standby system, it may be useful for the action of some commands executed on the publisher to be replicated on one or more subscriber systems. This capability is provided by an extension to the replication system that is largely independent of the mechanisms discussed above.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To activate account replication, create an X-type VOC item named $REPLICATE in the relevant account(s) on the publisher system. Field 2 of this record should hold the name of the account in which command actions are to be replicated in the form</p>
+<p class="p_Normal" style="margin: 0 0 0 29px;"><span style="font-style: italic;">servername</span>:<span style="font-style: italic;">account</span></p>
+<p class="p_Normal">where <span style="font-style: italic;">servername</span> is an item previously set up with the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> command and <span style="font-style: italic;">account</span> is an account on this server. Multiple targets may be specified separated by value marks. The <a href="configparams.htm#qmclient" class="topiclink">QMCLIENT</a> configuration parameter must be set to zero (its default value) on the remote system. Beware that this may weaken system security.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Fields 3 onwards contain a list of the commands that are to be replicated on the remote system(s) from the list below.</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">ADD.DF</td><td style="border:none;padding:0">Add an element to a distributed file</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">BUILD.INDEX</td><td style="border:none;padding:0">Build an alternate key index</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">CATALOGUE</td><td style="border:none;padding:0">Add program to the system catalogue. The American spelling may be used.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">CREATE.FILE</td><td style="border:none;padding:0">Create a file</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">CREATE.INDEX</td><td style="border:none;padding:0">Create an alternate key index</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">DELETE.CATALOGUE</td><td style="border:none;padding:0">Delete a program from the system catalogue. The American spelling may be used.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">DELETE.FILE</td><td style="border:none;padding:0">Delete a file</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">DELETE.INDEX</td><td style="border:none;padding:0">Delete an alternate key index</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">GRANT.KEY</td><td style="border:none;padding:0">Grant access to an encryption key</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">MAKE.INDEX</td><td style="border:none;padding:0">Create and build an alternate key index</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">REMOVE.DF</td><td style="border:none;padding:0">Remove an element of a distributed file</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">REVOKE.KEY</td><td style="border:none;padding:0">Remove access to an encryption key</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 31px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">SET.FILE</td><td style="border:none;padding:0">Set a Q-pointer to a remote file</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">With the exception of the two alternative spellings referenced above and the interchangeability of hyphens and periods in the names, the account replication system replicates only the commands as listed in the $REPLICATE record. Use of a command that is a user added synonym for one of the above list will not be replicated unless the synonym is also added to the $REPLICATE record. In this case, the synonym must also be present on the remote system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because synonyms not in the above list are not replicated, it is possible to create synonyms for replicated commands that will themselves not be replicated. For example, copying the CREATE.FILE VOC record to CREATE.LOCAL.FILE would allow a choice between CREATE.FILE for file creation that is to be replicated and CREATE.LOCAL.FILE to be used for file creation that is not to be replicated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Any command name in the $REPLICATE record may be followed by a list of space separated mode options . Currently, the only option supported is QUERY which causes the user to be prompted for confirmation that the command is to be replicated. Beware that this option would cause the command to fail in a phantom process and may cause other problems in a QMClient session.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Replication of the <span style="font-weight: bold;"><a href="catalogue.htm" class="topiclink">CATALOGUE</a></span> command also updates the object code in the appropriate file on the target system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In addition, presence of</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">AUTO.PUBLISH</p>
+<p class="p_Normal">in the command list will cause files created using a replicated <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command to be published automatically to a file of the same name in the remote account(s).</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Changes to the $REPLICATE record take effect only on next entry to the account, either as a result of a new login or by use of <span style="font-weight: bold;"><a href="logto.htm" class="topiclink">LOGTO</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="replication_example.htm" class="topiclink">Replication Example</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

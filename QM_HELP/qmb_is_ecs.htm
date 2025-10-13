@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>IS.ECS()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="IS.ECS()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_is_ecs.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">IS.ECS()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_is_chartype.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_is_null.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">IS.ECS()</span> function tests whether a character string contains ECS characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 29px;"><span style="font-weight: bold;">IS.ECS(</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is the string to be tested.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">IS.ECS()</span> function tests whether a character string contains characters outside the 8-bit set and hence requires an ECS mode file or an encoding such as UTF-8 to store it. The function returns True if any of the characters in <span style="font-style: italic;">string</span> is outside the 8-bit set, otherwise it returns False.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Used on a non-ECS mode system, the <span style="font-weight: bold;">IS.ECS()</span> function always returns False.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">S1 = 'ABC'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">S2 = ECHAR(0x03A3)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">DISPLAY IS.ECS(S1), IS.ECS(S2)</span></p>
+<p class="p_Normal">&nbsp;<br />
+The above program fragment creates two strings, S1 containing the ASCII characters &quot;ABC&quot; and S2 containing the character with Unicode code point value U+03A3 (uppercase Greek Sigma). It then displays the result of testing each string with the <span style="font-weight: bold;">IS.ECS()</span> function,</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">0 &nbsp; &nbsp; 1</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FOR / NEXT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FOR,NEXT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_for.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FOR / NEXT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_footing.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_formcsv.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="page-break-after: avoid; margin: 0 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> statement defines a group of statements to be executed with an iterative control variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FOR</span> <span style="font-style: italic;">var</span> <span style="font-weight: bold;"> =</span> <span style="font-style: italic;"> start.expr</span> <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">limit.expr</span> {<span style="font-weight: bold;">STEP</span> <span style="font-style: italic;">step.expr</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">WHILE</span> <span style="font-style: italic;">expr</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">UNTIL</span> <span style="font-style: italic;">expr</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;"> &nbsp; &nbsp; &nbsp;...statement(s)...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">NEXT</span> {<span style="font-style: italic;">var</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FOR</span> <span style="font-style: italic;">var</span> <span style="font-weight: bold;"> =</span> <span style="font-style: italic;"> value1</span><span style="font-weight: bold;">,</span><span style="font-style: italic;"> value2</span><span style="font-weight: bold;">,</span><span style="font-style: italic;"> value3...</span></p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">WHILE</span> <span style="font-style: italic;">expr</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">UNTIL</span> <span style="font-style: italic;">expr</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;"> &nbsp; &nbsp; &nbsp;...statement(s)...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">NEXT</span> {<span style="font-style: italic;">var</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FOR EACH</span> <span style="font-style: italic;">var</span> <span style="font-weight: bold;">IN</span> <span style="font-style: italic;">string</span> {<span style="font-weight: bold;">DELIMITER</span> <span style="font-style: italic;">delim</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">WHILE</span> <span style="font-style: italic;">expr</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">UNTIL</span> <span style="font-style: italic;">expr</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;"> &nbsp; &nbsp; &nbsp;...statement(s)...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">NEXT</span> {<span style="font-style: italic;">var</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is the loop control variable.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">start.expr</span></td><td style="border:none;padding:0">evaluates to the value to be placed in <span style="font-style: italic;">var</span> for the first iteration of the loop.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">limit.expr</span></td><td style="border:none;padding:0">evaluates to the value beyond which <span style="font-style: italic;">var</span> must not pass.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">step.expr</span></td><td style="border:none;padding:0">evaluates to the value by which <span style="font-style: italic;">var</span> should be incremented between iterations of the loop. If omitted, <span style="font-style: italic;">step.expr</span> defaults to one.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">value1</span>,<span style="font-style: italic;">value2</span>...</td><td style="border:none;padding:0">are values to be assigned to <span style="font-style: italic;">var</span>.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is an expression that evaluates to a mark character delimited list of values to be assigned to <span style="font-style: italic;">var</span>.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">delim</span></td><td style="border:none;padding:0">is the delimiting character separating entries in the list. If omitted, any mark character is treated as the delimiter.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statement(s) to be executed within the loop.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first form of the <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> statement executes <span style="font-style: italic;">statement(s)</span> for values of <span style="font-style: italic;">var</span> from <span style="font-style: italic;">start.expr</span> to <span style="font-style: italic;">limit.expr</span> in increments of <span style="font-style: italic;">step.expr</span>. If <span style="font-style: italic;">step.expr</span> is positive, the loop continues while the value of <span style="font-style: italic;">var</span> is less than or equal to <span style="font-style: italic;">limit.expr.</span> &nbsp;If <span style="font-style: italic;">step.expr</span> is negative, the loop continues while the value of <span style="font-style: italic;">var</span> is greater than or equal to <span style="font-style: italic;">limit.expr</span>. The value of <span style="font-style: italic;">var</span> on leaving the loop is the last value for which the loop was executed or <span style="font-style: italic;">start.expr</span> if the initial value was already out of range.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The value of <span style="font-style: italic;">var</span> should not be changed within the loop as this may lead to unexpected results.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of non-integer values for <span style="font-style: italic;">start.expr</span>, <span style="font-style: italic;">limit.expr</span> and <span style="font-style: italic;">step.expr</span> is not recommended where rounding errors in incrementing <span style="font-style: italic;">var</span> and the loop termination comparison may lead to unexpected effects.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For best performance, <span style="font-style: italic;">limit.expr</span> and <span style="font-style: italic;">step.expr</span> should be constants or simple variable references as they are evaluated for every iteration of the loop. In the unlikely case that <span style="font-style: italic;">limit.expr</span> or <span style="font-style: italic;">step.expr</span> use the value of <span style="font-style: italic;">var</span>, note that these expressions are evaluated before the first cycle of the loop assigns the start value to <span style="font-style: italic;">var</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The second form of the <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> statement executes the loop for each of the supplied values of <span style="font-style: italic;">var</span> in turn. The value of <span style="font-style: italic;">var</span> on leaving the loop will be the final value for which the loop was executed. The values to be assigned to <span style="font-style: italic;">var</span> may be constants or expressions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The third form of the <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> statement executes the loop for each delimited value in <span style="font-style: italic;">string</span>. The optional <span style="font-weight: bold;">DELIMITER</span> clause specifies the character that separates items in the list. If omitted, any mark character will be treated as the delimiter. This form of <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> is broadly equivalent to using the <span style="font-weight: bold;"><a href="qmb_remove.htm" class="topiclink">REMOVE</a></span> or <span style="font-weight: bold;"><a href="qmb_removef.htm" class="topiclink">REMOVEF</a></span> statement to extract successive values from <span style="font-style: italic;">string</span>. The value of <span style="font-style: italic;">string</span> is copied to an internal variable at the start of the loop and hence changing it inside the loop will have no effect. The value of <span style="font-style: italic;">var</span> on leaving the loop will be the final value for which the loop was executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If  <span style="font-style: italic;">var</span> is present in the <span style="font-weight: bold;">NEXT</span> statement it must be the same <span style="font-style: italic;">var</span> as in the <span style="font-weight: bold;">FOR</span> statement at the head of the loop. Use of <span style="font-style: italic;">var</span> in the <span style="font-weight: bold;">NEXT</span> statement aids program readability and is checked by the compiler for correct matching of <span style="font-weight: bold;">FOR</span> and <span style="font-weight: bold;">NEXT</span> statements.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_while.htm" class="topiclink">WHILE</a></span>, <span style="font-weight: bold;"><a href="qmb_until.htm" class="topiclink">UNTIL</a></span> and <span style="font-weight: bold;"><a href="qmb_exit.htm" class="topiclink">EXIT</a></span> statements can be used with the <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> loop to provide another loop termination control. The <span style="font-weight: bold;"><a href="qmb_continue.htm" class="topiclink">CONTINUE</a></span> statement causes a jump to the start of the next iteration. Any number of these may be included in the loop.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> loops may be nested to any depth. Jumping to a label within a <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> loop from outside may have undefined effects.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> construct is semantically different in the various multivalue database environments. Some, including QM, test the end condition of the loop before storing the updated control variable such that a loop</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">FOR I = 1 TO 10</span></p>
+<p>would exit with I set to 10. Others store the value before testing the end condition such that this same loop would exit with I set to 11.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The FOR.STORE.BEFORE.TEST option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive can be used to modify the behaviour of <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> constructs to store the new value of the control variable before testing for the end condition. For ease of maintenance and portability, it is recommended that programs should not rely on the value of the control variable after the loop has terminated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FOR I = 1 TO 10 STEP 2</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY I</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEXT I</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment displays the values 1, 3, 5, 7 and 9. The final value of I on leaving the loop is 9.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FOR I = 1 TO 20</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">UNTIL A(I) &lt; 0</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY A(I)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEXT I</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment displays elements of matrix A. The loop terminates if an element is found with a negative value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FOR I = 1, 7, 22</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY I</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEXT I</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment displays the numbers 1, 7 and 22.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; FOR EACH X IN SALES.REC&lt;S.ITEM&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY X</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEXT X</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment walks though the values in SALES.REC&lt;S.ITEM&gt;, displaying each value. Note that the actual mark character separating the items in the list is not significant and cannot be determined from within the loop.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_continue.htm" class="topiclink">CONTINUE</a></span>, <span style="font-weight: bold;"><a href="qmb_exit.htm" class="topiclink">EXIT</a></span>, <span style="font-weight: bold;"><a href="qmb_loop.htm" class="topiclink">LOOP/REPEAT</a></span>, <span style="font-weight: bold;"><a href="qmb_while.htm" class="topiclink">WHILE</a></span>, <span style="font-weight: bold;"><a href="qmb_until.htm" class="topiclink">UNTIL</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

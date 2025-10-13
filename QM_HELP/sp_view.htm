@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SP.VIEW</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SP.VIEW" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sp_view.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SP.VIEW</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sp_open.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="spool.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SP.VIEW </span>command views and, optionally, prints records from $HOLD or other files.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SP.VIEW</span> {<span style="font-style: italic;">file</span>} {<span style="font-style: italic;">item | sort</span>} { <span style="font-weight: bold;">LPTR</span> <span style="font-style: italic;">n</span> }</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">file</span></td><td style="border:none;padding:0">is the file to be processed. If omitted, $HOLD is used.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">item</span></td><td style="border:none;padding:0">is the record id of the record to be processed. If omitted, a pick list of records is displayed.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">sort</span></td><td style="border:none;padding:0">controls the sort order of the displayed item list.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">LPTR</span> <span style="font-style: italic;">n</span></td><td style="border:none;padding:0">specifies the default print unit to be used. If omitted, print unit 0 is used.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If only one name is specified on the command line, it is assumed to be the <span style="font-style: italic;">file</span> name if a corresponding VOC F or Q-type record exists and there is no record of that name in $HOLD.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When the <span style="font-style: italic;">item</span> name is omitted, the default behaviour of SP.VIEW is to show an alphabetically sorted list of available items. The optional <span style="font-style: italic;">sort</span> clause allows this sort order to be modified. It has the same form as a query processor <span style="font-weight: bold;"><a href="by.htm" class="topiclink">BY</a></span> or <span style="font-weight: bold;"><a href="by_dsnd.htm" class="topiclink">BY.DSND</a></span> clause, including possible use of the <span style="font-weight: bold;">NO.CASE</span> qualifier, for example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">BY DTM</span></p>
+<p class="p_Normal">where DTM is a data item defined in the dictionary of the file being processed. Use of the <span style="font-style: italic;">sort</span> clause will destroy any existing default select list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SP.VIEW </span>command allows users to view and print records. If no <span style="font-style: italic;">item</span> is specified, a pick list of records in <span style="font-style: italic;">file</span> is displayed. The cursor keys, page up, page down, home and end keys can be used to move around within this list. Equivalent actions can be performed using the letter keys or the <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> style control keys.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:151px; padding:4px; border:none"><p>Cursor up</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>U</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>Ctrl-Z</p>
+</td>
+<td style="vertical-align:top; width:740px; padding:4px; border:none"><p>Move up one line</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:151px; padding:4px; border:none"><p>Cursor down</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>D</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>Ctrl-N</p>
+</td>
+<td style="vertical-align:top; width:740px; padding:4px; border:none"><p>Move down one line</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:151px; padding:4px; border:none"><p>Page up</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>P</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>Ctrl-V</p>
+</td>
+<td style="vertical-align:top; width:740px; padding:4px; border:none"><p>Move to previous page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:151px; padding:4px; border:none"><p>Page down</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>N</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>Esc-V</p>
+</td>
+<td style="vertical-align:top; width:740px; padding:4px; border:none"><p>Move to next page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:151px; padding:4px; border:none"><p>Home</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>T</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>Esc-&lt;</p>
+</td>
+<td style="vertical-align:top; width:740px; padding:4px; border:none"><p>Move to top of list</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:151px; padding:4px; border:none"><p>End</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>B</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><p>Esc-&gt;</p>
+</td>
+<td style="vertical-align:top; width:740px; padding:4px; border:none"><p>Move to bottom of list</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:151px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><p>Q</p>
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:740px; padding:4px; border:none"><p>Quit from program. Requires use of return key to confirm</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:151px; padding:4px; border:none"><p>Return</p>
+</td>
+<td style="vertical-align:top; width:57px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:87px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:740px; padding:4px; border:none"><p>Dive into selected item</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>After an item has been selected, either as described above or by specifying the <span style="font-style: italic;">item</span> name on the command line, the text of the given record is displayed. The cursor keys, page up, page down, home and end keys can be used to move around within the data. Equivalent actions can be performed using the letter keys or the <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> style control keys.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><p>Cursor up</p>
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>U</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>Esc-Z</p>
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Move to previous page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><p>Cursor down</p>
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>D</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>Ctrl-N</p>
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Move to next page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><p>Cursor right</p>
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>R</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>Ctrl-F</p>
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Pan right</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><p>Cursor left</p>
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>L</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>Ctrl-B</p>
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Pan left</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><p>Page up</p>
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>P</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>Ctrl-V</p>
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Move to previous page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><p>Page down, Return</p>
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>N</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>Esc-V</p>
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Move to next page</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><p>Home</p>
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>T</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>Esc-&lt;</p>
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Move to top of record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><p>End</p>
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>B</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><p>Esc-&gt;</p>
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Move to bottom of record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>Q</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Quit from record. Requires use of return key to confirm</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>S</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Spool item</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:149px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:59px; padding:4px; border:none"><p>X</p>
+</td>
+<td style="vertical-align:top; width:85px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:742px; padding:4px; border:none"><p>Delete item. Prompts for confirmation.</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The S option prompts for the print unit (defaulting to that in the <span style="font-weight: bold;">LPTR</span> option, if used), asks whether line numbering is to be used and then prints the item.</p>
+
+</td></tr></table>
+
+</body>
+</html>

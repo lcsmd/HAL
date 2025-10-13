@@ -1,0 +1,42 @@
+! Program: BUILD_TEMPLATE
+! Description: Allows user to create or edit templates.
+! Author: Lawrence C Sullivan MD
+! Date:11-18-2024 
+
+PROGRAM BUILD_TEMPLATE
+
+    * Get command-line arguments
+    TEMPLATE_NAME = TRIM(FIELD(@SENTENCE, " ", 2))
+
+    IF TEMPLATE_NAME = '' THEN
+        CRT 'Enter template name: '
+        INPUT TEMPLATE_NAME
+        TEMPLATE_NAME = TRIM(TEMPLATE_NAME)
+    END
+
+    * Add .PT extension if not included
+    IF INDEX(UPCASE(TEMPLATE_NAME), '.PT', 1) = 0 THEN
+        TEMPLATE_NAME := '.PT'
+    END
+
+    OPEN 'PROMPTS_TEMPLATE' TO TEMPLATE.FILE ELSE
+        CRT 'Cannot open PROMPTS_TEMPLATE directory file.'
+        STOP
+    END
+
+    * Delete existing template
+    DELETE TEMPLATE.FILE, TEMPLATE_NAME
+
+    CRT 'Enter template text (end with a single dot on a line):'
+    TEMPLATE_TEXT = ''
+    LOOP
+        INPUT LINE
+        IF LINE = '.' THEN EXIT
+        TEMPLATE_TEXT<-1> = LINE
+    REPEAT
+
+    WRITE TEMPLATE_TEXT ON TEMPLATE.FILE, TEMPLATE_NAME
+    CRT 'Template saved as ' : TEMPLATE_NAME
+
+END
+

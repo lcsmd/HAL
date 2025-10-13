@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Directory Files</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Directory files" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "directoryfiles.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Directory Files</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="creatinganddeletingfiles.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="dynamicfiles.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A <span style="font-weight: bold;">directory file</span> is represented by an operating system directory and the records within it by operating system files. The record id is the name of the operating system file holding the data for the record except where this would be an invalid name in which case QM performs automatic name mapping as described below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Directory files do not give the high performance of the hashed file system but are mainly used for data that is to be processed from outside of QM or for very large records (hundreds of kilobytes). Typical uses include storage of QMBasic programs, <span style="font-weight: bold;"><a href="como.htm" class="topiclink">COMO</a></span> (command output) files, and saved select lists.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Records in directory files may be read, written or deleted by applications in exactly the same way as records in hashed files. The QMBasic programming language provides some additional operations for directory file access. A record may be opened using the <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> statement and then processed as a <span style="font-weight: bold;">sequential file</span> on a line by line basis (<span style="font-weight: bold;"><a href="qmb_readseq.htm" class="topiclink">READSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span>, etc) or as a simple binary item (<span style="font-weight: bold;"><a href="qmb_readblk.htm" class="topiclink">READBLK</a></span>, <span style="font-weight: bold;"><a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a></span>, etc). In addition, programming statements are provided to simplify processing of comma separated variable format data (<span style="font-weight: bold;"><a href="qmb_readcsv.htm" class="topiclink">READCSV</a></span>, <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span>).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On all systems except Windows, the DIR.DTM mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command can be used to cause writes to directory files or closing a sequential file that has been written to update the date/time modified of the directory.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The F-type VOC entry for a directory file has the pathname of the directory that represents the file in field 2.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Applications frequently open the same file multiple times with different file variables in the same process. The number of simultaneous opens of the same directory file in a single process cannot exceed 255. Copying a file variable for an open file does not count as a separate open.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Record Ids</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where a record id contains characters that are not valid in operating system file names, QM automatically replaces them with an alternative representation. This is totally invisible from inside QM but other software that accesses directory file records must allow for these translations. Rather than have a different set of translations for each platform, QM adopts a single set based on the most restrictive platform (Windows) so that data may be moved between environments without modification of record names. The translations performed are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="width:400px; border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:122px; padding:0; border:none"><p style="margin: 0 0 0 25px;">*</p>
+</td>
+<td style="vertical-align:top; width:174px; padding:0; border:none"><p>%A</p>
+</td>
+<td style="vertical-align:top; width:148px; padding:0; border:none"><p style="margin: 0 0 0 25px;">%</p>
+</td>
+<td style="vertical-align:top; width:171px; padding:0; border:none"><p>%P</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:122px; padding:0; border:none"><p style="margin: 0 0 0 24px;">\</p>
+</td>
+<td style="vertical-align:top; width:174px; padding:0; border:none"><p>%B</p>
+</td>
+<td style="vertical-align:top; width:148px; padding:0; border:none"><p style="margin: 0 0 0 25px;">&quot;</p>
+</td>
+<td style="vertical-align:top; width:171px; padding:0; border:none"><p style="margin: 0 0 0 1px;">%Q</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:122px; padding:0; border:none"><p style="margin: 0 0 0 25px;">,</p>
+</td>
+<td style="vertical-align:top; width:174px; padding:0; border:none"><p>%C</p>
+</td>
+<td style="vertical-align:top; width:148px; padding:0; border:none"><p style="margin: 0 0 0 25px;">/</p>
+</td>
+<td style="vertical-align:top; width:171px; padding:0; border:none"><p style="margin: 0 0 0 1px;">%S</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:122px; padding:0; border:none"><p style="margin: 0 0 0 25px;">=</p>
+</td>
+<td style="vertical-align:top; width:174px; padding:0; border:none"><p>%E</p>
+</td>
+<td style="vertical-align:top; width:148px; padding:0; border:none"><p style="margin: 0 0 0 25px;">+</p>
+</td>
+<td style="vertical-align:top; width:171px; padding:0; border:none"><p style="margin: 0 0 0 1px;">%V</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:122px; padding:0; border:none"><p style="margin: 0 0 0 25px;">&gt;</p>
+</td>
+<td style="vertical-align:top; width:174px; padding:0; border:none"><p>%G</p>
+</td>
+<td style="vertical-align:top; width:148px; padding:0; border:none"><p style="margin: 0 0 0 25px;">:</p>
+</td>
+<td style="vertical-align:top; width:171px; padding:0; border:none"><p style="margin: 0 0 0 1px;">%X</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:122px; padding:0; border:none"><p style="margin: 0 0 0 25px;">|</p>
+</td>
+<td style="vertical-align:top; width:174px; padding:0; border:none"><p>%J</p>
+</td>
+<td style="vertical-align:top; width:148px; padding:0; border:none"><p style="margin: 0 0 0 25px;">;</p>
+</td>
+<td style="vertical-align:top; width:171px; padding:0; border:none"><p style="margin: 0 0 0 1px;">%Y</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:122px; padding:0; border:none"><p style="margin: 0 0 0 25px;">&lt;</p>
+</td>
+<td style="vertical-align:top; width:174px; padding:0; border:none"><p>%L</p>
+</td>
+<td style="vertical-align:top; width:148px; padding:0; border:none"><p style="margin: 0 0 0 25px;">?</p>
+</td>
+<td style="vertical-align:top; width:171px; padding:0; border:none"><p style="margin: 0 0 0 1px;">%Z</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In addition, use of a period or tilde character as the first character in the name will translate this character to %D or %T respectively. QM uses names with an untranslated leading percent character to represent the subfiles of a hashed file. External applications should avoid writing such items into directory files as they may cause confusion.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Character mapping in record ids can be suppressed by use of a flag in field 6 of the <a href="voc_f.htm" class="topiclink">F-type</a> VOC entry that defines the file or by use of the NO.MAP option to the QMBasic <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span>, <span style="font-weight: bold;"><a href="qmb_openpath.htm" class="topiclink">OPENPATH</a></span>, <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> and <span style="font-weight: bold;"><a href="qmb_deleteseq.htm" class="topiclink">DELETESEQ</a></span> statements.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The length of a record id after translation of invalid characters as above must not exceed 255 bytes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Note that the Windows file system does not allow file names that clash with Windows device names such as AUX, COM1-COM9, CON, LPT1-LPT9, NUL or PRN. Also, Windows ignores a trailing period in a file name. Thus files named &quot;ABC.&quot; and &quot;ABC&quot; are the same item. Use of any of these as a record id in a directory file will cause an illegal record id error.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Case Sensitivity</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p>Because records in directory files are stored as operating system text files, record ids will be case insensitive if the underlying file system is case sensitive. This means that, for example, QMBasic source code stored with record id &quot;MyProg&quot; might be accessible using id &quot;MYPROG&quot; or these might be considered as two different items. It is strongly recommended that applications should not deliberately store distinct records where the ids differ only in casing.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although there is nothing that can be done to make a case sensitive file system behave as being truly case insensitive, QM provides a forced casing mode for directory files that converts the record id in a file system operation such as READ, WRITE or DELETE to either uppercase or lowercase and works with this converted id internally.When creating a directory file, the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command can include either the TO.UPPERCASE or TO.LOWERCASE options to enable force casing. The actual name used for the operating system item will be this converted id. An existing file can be converted to use forced casing by use of the same options in the <span style="font-weight: bold;"><a href="configure_file.htm" class="topiclink">CONFIGURE.FILE</a></span> command. If the file already contains records of the &quot;wrong&quot; casing, these will be renamed by this command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Any items written from outside of QM to a directory file that uses forced casing must use the correct casing. Items with incorrect casing will be inaccessible from inside QM.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On a platform with an underlying case insensitive file system, use of forced casing makes no difference to file access in the application but does still create the operating system item with the selected casing which can be useful for consistency. This may be of importance if the content of a directory file is moved between environments with differing case sensitivity.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>AS a related feature, the <span style="font-weight: bold;"><a href="copy.htm" class="topiclink">COPY</a></span> command also has the TO.UPPERCASE and TO.LOWERCASE options that can be used when copying directory file data in text mode. This forces the requested casing for the target record(s) and is particularly useful when copying through a QMNet connection.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Mark Mapping</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When a record is written to a directory file, any field mark characters are converted to the operating system dependent representation of a newline (See &quot;line terminator selection&quot; below). Thus, each field becomes a line of text which allows the data to be processed by external software that does not understand the concept of field marks. Conversely, when data is read from a directory file, the newlines are translated to field marks. Where the data contains value marks or subvalue marks, these are not translated as it is assumed that whatever software will process this data must understand multivalued data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>One common use of directory files is to store scanned documents, digital photographs, etc. In this case, the data is not text divided into fields using the field mark character but is simple binary data that may contain any sequence of bytes. The data will nearly always contain bytes that appear to be field marks and other bytes that are the ASCII linefeed character. On writing the data to disk, the field marks will be converted to newlines. On reading the record back again, <span style="text-decoration: underline;">all</span> of the newlines get converted to field marks such that the record does not match the original data written. This is clearly unacceptable. Application developers using directory files to store binary data must suppress the translation of field marks by use of the QMBasic <span style="font-weight: bold;"><a href="qmb_mark_mapping.htm" class="topiclink">MARK.MAPPING</a></span> statement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Line Terminator Selection</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To allow a directory file opened with <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> or <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> to be processed on a different system type from where it was created, QM provides four alternative ways to handle the line terminator. The default mode is appropriate to the operating system in use but can be changed using the <span style="font-weight: bold;"><a href="qmb_fcontrol.htm" class="topiclink">FCONTROL()</a></span> function or by use of a mode flag in field 6 of the <a href="voc_f.htm" class="topiclink">F-type</a> VOC record that defines the file.</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">Mode 0 (LF)</span> &nbsp;When reading data, the line terminator is a line feed (LF) character. Carriage return (CR) characters are treated as part of the data. The <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement converts field marks to LF characters. The <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span> statement adds an LF after each line of text. This mode is the default on Linux/Unix systems. VOC mode flag L selects this mode.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Mode 1 (CRLF</span>) &nbsp; When reading data, the line terminator is a CR/LF pair. CR or LF characters that are not paired are treated as part of the data. The <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement converts field marks to a CR/LF pair. The <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span> statement adds a CR/LF pair after each line of text. VOC mode flag C selects this mode.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Mode 2 (BOTH</span>) &nbsp; When reading data, both a CR/LF pair and a lone LF are recognised as the line terminator. Lone CR characters that are not paired are treated as part of the data. The <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement converts field marks to the standard operating system representation of a new line (a CR/LF pair on Windows, LF on Linux/Unix). The <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span> statement adds the operating system line terminator after each line of text. This is the default for sequential files opened with <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> on Windows. VOC mode flag B selects this mode.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Mode 3 (NOCR</span>) &nbsp; As for mode 2, when reading data, both a CR/LF pair and a lone LF are recognised as the line terminator but lone CR characters are discarded. The <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement converts field marks to the standard operating system representation of a new line (a CR/LF pair on Windows, LF on Linux/Unix). The <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span> statement adds the operating system line terminator after each line of text. For compatibility with earlier releases, this is the default for directory files opened with <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> on Windows. VOC mode flag X selects this mode.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Tokens for the mode names are provided in the SYSCOM KEYS.H record as FC$CRLF.LF, FC$CRLF.CRLF, FC$CRLF.BOTH and FC$CRLF.NO.CR.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Character Encoding</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A character encoding can be applied to directory file data. This can be specified in three ways:</p>
+<p style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Field 7 of the <a href="voc_f.htm" class="topiclink">VOC F-type</a> entry sets the default encoding to be used.</p><p style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The QMBasic <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> or <span style="font-weight: bold;"><a href="qmb_openpath.htm" class="topiclink">OPENPATH</a></span> statement can specify an encoding that will override any encoding set in the VOC record.</p><p style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>QMBasic read and write operations can specify an encoding that will override any encoding set in the VOC record or on opening the file.</p><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that specifying the encoding as a null string in a file open operation or a read/write operation is equivalent to omitting the ENCODING clause and will, therefore, retain any default set earlier. If it is necessary to disable an encoding, the encoding name &quot;NULL&quot; should be used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On ECS mode systems, if no encoding is set, only the low order byte of each character will be written to the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">System Related Items in Directory Files</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The directory that represents a QM directory file may contain a file named %header%. If this is present, it contains control information used by QM and must not be modified or deleted. This item will not appear in the results of a select operation against the directory file and will not be deleted by <span style="font-weight: bold;"><a href="clear_file.htm" class="topiclink">CLEAR.FILE</a></span>. If a directory file is copied to an alternative location using operating system level commands (e.g. as a backup), it may be necessary to delete the %header% file in the copy if the copy might be updated from within QM. This is necessary as the %header% file controls replication and triggers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The %header% item is created automatically when needed, for example, adding a trigger to a directory file. It cannot be opened by QM programs and hence can only be edited using external tools such as Notepad on Windows or vi on Linux.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">Careful Update</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When writing a record to a directory file, QM normally opens the operating system file that will represent this record and writes to it, overwriting any existing data. There is a possibility of data loss when updating an existing record if the system fails during this write (e.g. a power outage) or if there is insufficient disk space. To prevent this, the <a href="configparams.htm#safedir" class="topiclink">SAFEDIR</a> configuration parameter can be set to adopt a &quot;safe update&quot; technique where the data is written to a temporary file, the original is deleted and the temporary item is renamed to replace the original. This removes nearly all possibility of losing the record but degrades performance of the write.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Directory File Dictionaries</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Just like any other QM file, a directory file can have a dictionary containing definitions that are specific to this file, however, directory files frequently contain simple text records that do not need field definitions. There is a generic directory file dictionary named DIR_DICT available from the QMSYS account. To use this, either create the directory file without a dictionary or use DELETE.FILE to delete the dictionary portion of an existing file. Then edit the VOC entry to set field 3 to be</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">@QMSYS\DIR_DICT</span></p>
+<p>using the directory separator appropriate to your platform.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This dictionary contains some useful items:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">DAYS</td><td style="border:none;padding:0">The number of days since this record was modified.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">DTM</td><td style="border:none;padding:0">The date and time of the last modification to the record.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">OWNER</td><td style="border:none;padding:0">The user name of the owner of the record (not Windows).</td></tr></table></div>
+</td></tr></table>
+
+</body>
+</html>

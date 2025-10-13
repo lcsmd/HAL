@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SET.SERVER, SET.PRIVATE.SERVER</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SET.PRIVATE.SERVER,SET.SERVER" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "set_server.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SET.SERVER, SET.PRIVATE.SERVER</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="set_queue.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="set_trigger.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SET.SERVER</span> command defines a <a href="qmnet.htm" class="topiclink">QMNet</a> server available to all users. The <span style="font-weight: bold;">SET.PRIVATE.SERVER</span> command defines a QMNet server visible only from the QM session in which the command is executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SET.SERVER</span> <span style="font-style: italic;">name ip.address</span>{<span style="font-weight: bold;">:</span><span style="font-style: italic;">port</span>} <span style="font-style: italic;">username password</span> {<span style="font-weight: bold;">NO.QUERY</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">SET.SERVER</span> <span style="font-style: italic;">name ip.address</span>{<span style="font-weight: bold;">:</span><span style="font-style: italic;">port</span>} <span style="font-weight: bold;">LIKE</span> <span style="font-style: italic;">server.name</span> {<span style="font-weight: bold;">NO.QUERY</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">SET.PRIVATE.SERVER</span> <span style="font-style: italic;">name ip.address</span>{<span style="font-weight: bold;">:</span><span style="font-style: italic;">port</span>} <span style="font-style: italic;">username password</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name to be used within QM to reference this server (maximum 15 characters). The name does not need to be related to the network name of the server.</td></tr></table></div><p style="text-indent: -119px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-style: italic;">ip.address</span></td><td style="border:none;padding:0">is the IP address or network name of the server.</td></tr></table></div><p style="text-indent: -119px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-style: italic;">port</span></td><td style="border:none;padding:0">is the tcp/ip port number on which connection to this server will be made. It must correspond to the port on which the server listens for incoming QMClient connections. If omitted, the default QMClient port (4243) is used.</td></tr></table></div><p style="text-indent: -119px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-style: italic;">username</span></td><td style="border:none;padding:0">is the user name that will be used to connect to the server. This must be defined at the operating system level on the server but does not need to be defined on the local system. For a domain style login use <span style="font-style: italic;">user</span>@<span style="font-style: italic;">domain</span> or the older <span style="font-style: italic;">domain</span>\<span style="font-style: italic;">user</span> format.</td></tr></table></div><p style="text-indent: -119px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-style: italic;">password</span></td><td style="border:none;padding:0">is the password for the supplied <span style="font-style: italic;">username</span>. It is stored internally in encrypted form for security.</td></tr></table></div><p style="text-indent: -119px; margin: 0 0 0 149px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-style: italic;">server.name</span></td><td style="border:none;padding:0">is the name of another server from which the security data is to be copied.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command will prompt for command line elements that are omitted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>To allow for IPV6 format addresses, the colon separator between the <span style="font-style: italic;">ip.address</span> and the <span style="font-style: italic;">port</span> may alternatively be entered as a semicolon. This applies either on the command line or in response to a prompt for the address.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMNet allows an application to access QM data files on other servers as though they were local file, with complete support for concurrency control via file and record locks. The remote server must have remote access enabled by setting the <a href="configparams.htm#netfiles" class="topiclink">NETFILES</a> configuration parameter to 2.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Public servers may be defined by any user with system administrator rights using the <span style="font-weight: bold;">SET.SERVER</span> command in the QMSYS account. The <span style="font-weight: bold;">NO.QUERY</span> keyword suppresses the confirmation prompt if the server name is already defined. A public server defined with this command can be accessed by all users. The <span style="font-weight: bold;"><a href="admin_server.htm" class="topiclink">ADMIN.SERVER</a></span> command can be used to create or modify server definitions to apply restrictions on which users can access the server. Alternatively, the <span style="font-weight: bold;">LIKE</span> keyword can be used to copy the security settings from another public server definition.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Private servers are defined using the <span style="font-weight: bold;">SET.PRIVATE.SERVER</span> command. As part of the QM security system (see <a href="application_level_security.htm" class="topiclink">Application Level Security</a>), the <span style="font-weight: bold;">SET.PRIVATE.SERVER</span> command is only available to users for which it is enabled in their user register entry. On a system running with security disabled, any user may define private servers. The default behaviour of QM is to allow a private server definition to have the same name as a public server, effectively redirecting connections to that server. The <a href="configparams.htm#security" class="topiclink">SECURITY</a> configuration parameter can be used to disallow creation of such definitions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SET.SERVER ADMIN 193.100.13.18:4000 root</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This example will create a server known within QM as ADMIN. The server IP address is 193.100.13.18 and connection will use port 4000. The user name (root) has been included in the command but, because the password has been omitted, the command will prompt for this.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="qmnet.htm" class="topiclink">QMNet</a>, <span style="font-weight: bold;"><a href="admin_server.htm" class="topiclink">ADMIN.SERVER</a></span>, <span style="font-weight: bold;"><a href="delete_server.htm" class="topiclink">DELETE.SERVER</a></span>, <span style="font-weight: bold;"><a href="list_servers.htm" class="topiclink">LIST.SERVERS</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

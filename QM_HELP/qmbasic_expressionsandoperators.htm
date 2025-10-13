@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMBasic - Expressions and operators</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Expressions (QMBasic),MATCH operator (QMBasic),MATCHES operator (QMBasic),Operators (QMBasic)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbasic_expressionsandoperators.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMBasic &nbsp;- &nbsp;Expressions and Operators </span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbasic_labels.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbasic_assignmentstatements.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A QMBasic expression consists of one or more data items (constants or variables) linked by operators.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">constant</td><td style="border:none;padding:0">Use constant value (string or numeric)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var</td><td style="border:none;padding:0">Use value of named variable</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var[<span style="font-style: italic;">s</span>,<span style="font-style: italic;">n</span>]</td><td style="border:none;padding:0">Extract <span style="font-style: italic;">n</span> character substring starting at character <span style="font-style: italic;">s</span> of <span style="font-style: italic;">var</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var[<span style="font-style: italic;">n</span>]</td><td style="border:none;padding:0">Extract last <span style="font-style: italic;">n</span> characters of string <span style="font-style: italic;">var</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var[<span style="font-style: italic;">d</span>,<span style="font-style: italic;">s</span>,<span style="font-style: italic;">n</span>]</td><td style="border:none;padding:0">Extract <span style="font-style: italic;">n</span> consecutive sections of string <span style="font-style: italic;">var</span> delimited by character <span style="font-style: italic;">d</span>, starting at section <span style="font-style: italic;">s</span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var[<span style="font-style: italic;">s</span>,*]</td><td style="border:none;padding:0">Extract from character <span style="font-style: italic;">n</span> onwards of string <span style="font-style: italic;">var</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var[<span style="font-style: italic;">d</span>,<span style="font-style: italic;">s</span>,*]</td><td style="border:none;padding:0">Extract all sections of string <span style="font-style: italic;">var</span> delimited by character <span style="font-style: italic;">d</span>, starting at section <span style="font-style: italic;">s</span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var&lt;<span style="font-style: italic;">f</span>&gt;</td><td style="border:none;padding:0">Extract field <span style="font-style: italic;">f</span> of dynamic array variable</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var&lt;<span style="font-style: italic;">f</span>,<span style="font-style: italic;">v</span>&gt;</td><td style="border:none;padding:0">Extract field <span style="font-style: italic;">f</span>, value <span style="font-style: italic;">v</span> of dynamic array variable</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var&lt;<span style="font-style: italic;">f</span>,<span style="font-style: italic;">v</span>,<span style="font-style: italic;">s</span>&gt;</td><td style="border:none;padding:0">Extract field <span style="font-style: italic;">f</span>, value <span style="font-style: italic;">v</span>, subvalue <span style="font-style: italic;">s</span> of dynamic array variable</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">var{<span style="font-style: italic;">path</span>}</td><td style="border:none;padding:0">Extract the data collection element with the given element <span style="font-style: italic;">path</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">func(<span style="font-style: italic;">args</span>)</td><td style="border:none;padding:0">Use the returned value from a function which may take arguments</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In all cases above, var may be a matrix reference, for example</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">var(<span style="font-style: italic;">r</span>,<span style="font-style: italic;">c</span>)[<span style="font-style: italic;">s</span>,<span style="font-style: italic;">n</span>]</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where <span style="font-style: italic;">r</span> and <span style="font-style: italic;">c</span> are expressions which evaluate to the desired matrix row and column index values.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There is also a special conditional item of the form</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">IF</span> <span style="font-style: italic;">conditional.expr</span> <span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">expr.1</span> <span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">expr.2</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where <span style="font-style: italic;">conditional.expr</span> is evaluated to determine whether the overall value is that of <span style="font-style: italic;">expr.1</span> or <span style="font-style: italic;">expr.2</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The Boolean (True/False) values used by QMBasic are stored internally as a Boolean data type, however, use of a Boolean value in an operation that requires a numeric value converts True to one and False to zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The Boolean constant values are available as @TRUE and @FALSE for use in programs and dictionary I-type expressions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The substring extraction operation x[<span style="font-style: italic;">s</span>,<span style="font-style: italic;">n</span>] extracts <span style="font-style: italic;">n</span> characters starting at character <span style="font-style: italic;">s</span> of the string x. Character positions are numbered from one. Thus</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = &quot;abcdefghijkl&quot;</span></p>
+<p style="margin: 0 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Z = A[5,3]</span></p>
+<p>sets Z to the string &quot;efg&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the bounds of the substring extend beyond the end of the string from which it is to be extracted, the result is truncated. Trailing spaces are not added to make up the shortfall. A start position of less than one is treated as one.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Specifying the number of characters, <span style="font-style: italic;">n</span>, as an asterisk extracts from character <span style="font-style: italic;">s</span> onwards, regardless of the length of the string.</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = &quot;abcdefghijkl&quot;</span></p>
+<p style="margin: 0 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Z = A[5,*]</span></p>
+<p>sets Z to the string &quot;efghijkl&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The trailing substring extraction operation x[<span style="font-style: italic;">n</span>] extracts the last <span style="font-style: italic;">n</span> characters of the string x. Thus</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = &quot;abcdefghijkl&quot;</span></p>
+<p style="margin: 0 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Z = A[3]</span></p>
+<p>sets Z to the string &quot;jkl&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the length of the substring to be extracted is greater than the length of the source string, the entire source string is returned. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The third form of substring extraction, known as group extraction, is of the form <span style="font-style: italic;">var</span>[<span style="font-style: italic;">d</span>,<span style="font-style: italic;">s</span>,<span style="font-style: italic;">n</span>]. It treats <span style="font-style: italic;">var</span> as being made up of a series of sections delimited by character <span style="font-style: italic;">d</span> and returns <span style="font-style: italic;">n</span> consecutive sections, starting at section <span style="font-style: italic;">s</span>. See the <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span> function for an alternative syntax.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The field extraction operator x&lt;<span style="font-style: italic;">f</span>,<span style="font-style: italic;">v</span>,<span style="font-style: italic;">s</span>&gt; extracts field <span style="font-style: italic;">f</span>, value <span style="font-style: italic;">v</span>, subvalue <span style="font-style: italic;">s</span> from the source string <span style="font-style: italic;">x</span>. If <span style="font-style: italic;">s</span> is omitted or zero, field <span style="font-style: italic;">f</span>, value <span style="font-style: italic;">v</span> is extracted. If <span style="font-style: italic;">v</span> is omitted or zero, field <span style="font-style: italic;">f</span> is extracted. Thus</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-family: 'Courier New',Courier,monospace;">x&lt;2&gt;</span></td><td style="border:none;padding:0">extracts field 2</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-family: 'Courier New',Courier,monospace;">x&lt;2,7&gt;</span></td><td style="border:none;padding:0">extracts field 2, value 7</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-family: 'Courier New',Courier,monospace;">x&lt;2,7,3&gt;</span></td><td style="border:none;padding:0">extracts field 2, value 7, subvalue 3</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The operators of QMBasic are set out in the table below. The numbers in the right hand column are the operator precedence, the lower valued operators taking precedence in execution. Operations of equal precedence are processed left to right. Round brackets may be used to alter the order of execution or to improve readability of complex expressions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">+</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Unary plus</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">0</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">-</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Unary minus</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">0</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">~</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Unary bitwise not</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">0</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">&lt; &gt;</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Dynamic array extraction</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">1</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">[ ]</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Substring extraction</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">1</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">{ }</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Collection element reference</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">1</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">** or ^</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Exponentiation (raising to power)</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">2</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">*</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Multiplication</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">3</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">/</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Division</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">3</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">//</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Integer division</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">3</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">+</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Addition</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">4</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">-</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Subtraction</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">4</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Implicit format (See <span style="font-weight: bold;"><a href="qmb_fmt.htm" class="topiclink">FMT()</a></span> function)</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">5</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">:</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Concatenation</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">6</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">&lt;</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Less than</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">&gt;</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Greater than</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">= </p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Equal to</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">==</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Case sensitive string equality</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">~=</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Case insensitive string equality</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">#</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Not equal to</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">&lt;=</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Less than or equal to</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">&gt;=</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Greater than or equal to</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">MATCHES</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Pattern match (see below)</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">7</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p style="page-break-inside: avoid;">AND</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p style="page-break-inside: avoid;">Logical AND</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p style="page-break-inside: avoid;">8</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p>OR</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p>Logical OR</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p>8</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p>.&amp;</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p>Bitwise logical AND</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p>8</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:110px; padding:4px; border:none"><p>.!</p>
+</td>
+<td style="vertical-align:top; width:330px; padding:4px; border:none"><p>Bitwise logical OR</p>
+</td>
+<td style="vertical-align:top; width:30px; padding:4px; border:none"><p>8</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following alternative logical and relational operator formats may be used</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p style="page-break-inside: avoid;">&lt;</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p style="page-break-inside: avoid;">LT</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p style="page-break-inside: avoid;">&gt;</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p style="page-break-inside: avoid;">GT</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p style="page-break-inside: avoid;">=</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p style="page-break-inside: avoid;">EQ</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p style="page-break-inside: avoid;">#</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p style="page-break-inside: avoid;">NE</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p style="page-break-inside: avoid;">&lt;&gt;</p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p style="page-break-inside: avoid;">&gt;&lt;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p style="page-break-inside: avoid;">&lt;=</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p style="page-break-inside: avoid;">LE</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p style="page-break-inside: avoid;">=&lt;</p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p style="page-break-inside: avoid;">&gt;=</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p style="page-break-inside: avoid;">GE</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p style="page-break-inside: avoid;">=&gt;</p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p style="page-break-inside: avoid;">MATCHES</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p style="page-break-inside: avoid;">MATCH</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p style="page-break-inside: avoid;">AND</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p style="page-break-inside: avoid;">&amp;</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:97px; padding:4px; border:none"><p>OR</p>
+</td>
+<td style="vertical-align:top; width:116px; padding:4px; border:none"><p>!</p>
+</td>
+<td style="vertical-align:top; width:115px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:107px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The relational operators are defined such that, if the two items to be compared can both be treated as numbers, a simple numeric comparison is performed. If one or both items cannot be treated as numbers, they are compared as left aligned character strings. The <span style="font-weight: bold;"><a href="qmb_compare.htm" class="topiclink">COMPARE()</a></span> function can be used to force a string comparison that returns a value indicating the collating sequence relationship of the two items being compared.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If a program is compiled using the $MODE NOCASE.STRINGS directive, string comparisons are case insensitive. The == operator can be used to force a case sensitive comparison. Conversely, in program compiled without this directive, the ~= operator can be used to force a case insensitive comparison.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note: &nbsp;The language syntax includes an ambiguity with the use of the &lt; and &gt; characters as both relational operators and in dynamic array references. For example, the statement</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = B&lt;C&gt; + 0</span></p>
+<p>could be extracting field C from dynamic array B and adding zero to it (to force it to be stored as a numeric value) or it could be testing whether B is less than C and the result of this comparison is greater than zero. In cases such as this, the compiler looks at the overall structure of the statement and takes the most appropriate view. Use of brackets when mixing relational operators with field references will always avoid possible misinterpretation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MATCHES</span> operator matches a string against a <a href="patterns.htm" class="topiclink">pattern</a> consisting of one or more concatenated items from the following list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">...</td><td style="border:none;padding:0">Zero or more characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0X</td><td style="border:none;padding:0">Zero or more characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>X</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>X</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0A</td><td style="border:none;padding:0">Zero or more alphabetic characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>A</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> alphabetic characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>A</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> alphabetic characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0N</td><td style="border:none;padding:0">Zero or more numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>N</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>N</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">&quot;<span style="font-style: italic;">string</span>&quot;</td><td style="border:none;padding:0">A literal string which must match exactly. Either single or double quotation marks may be used. Backslashes may not be used as string quotes in this context.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The values <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> are integers with any number of digits. <span style="font-style: italic;">m</span> must be greater than or equal to <span style="font-style: italic;">n</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0A, <span style="font-style: italic;">n</span>A, 0N, <span style="font-style: italic;">n</span>N and &quot;<span style="font-style: italic;">string</span>&quot; patterns may be preceded by a tilde (~) to invert the match condition. For example, ~4N matches four non-numeric characters such as ABCD (not a string which is not four numeric characters such as 12C4).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A null string matches patterns ..., 0A, 0X, 0N, their inverses (~0A, etc) and &quot;&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0X and <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>X patterns match against as few characters as necessary before control passes to the next pattern. For example, the string ABC123DEF matched against the pattern 0X2N0X matches the pattern components as ABC, 12 and 3DEF.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0N, <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>N, 0A, and <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>A patterns match against as many characters as possible. For example, the string ABC123DEF matched against the pattern 0X2-3N0X matches the pattern components as ABC, 123 and DEF.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The pattern string may contain alternative templates separated by value marks. The <span style="font-weight: bold;">MATCHES</span> operator tries each template in turn until one is a successful match against the string. If a match is found, the <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function can be used to retrieve the value position within the pattern that matched.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>As an example of the MATCHES operator, the statement</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF S MATCHES &quot;1N0N'-'1N0N&quot; THEN PRINT &quot;OK&quot;</span></p>
+<p>would print OK when S contains one or more digits followed by a hyphen and one or more digits. Note the use of 1N0N to ensure that at least one digit is present.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+The content of two dimensioned matrices may be compared using</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">MAT </span><span class="f_CodeSingleLine" style="font-style: italic;">matrix1</span><span class="f_CodeSingleLine"> = MAT </span><span class="f_CodeSingleLine" style="font-style: italic;">matrix2</span></p>
+<p>as a Boolean element in, for example, an <span style="font-weight: bold;">IF</span> statement. The only valid relational operators in this usage are equals and not equals.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Partial Expression Evaluation</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default behaviour of QM, in common with many other multivalue database products, is that a logical expression is always completely evaluated before taking any action conditioned by it. For example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">IF IDX MATCHES '1-2N' AND S&lt;IDX&gt; # 0 THEN ...</span></p>
+<p class="p_Normal">will test the value of S&lt;IDX&gt; regardless of whether the value in IDX is numeric or not. This would lead to a run time error if IDX is not numeric.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of the PARTIAL.EXPRESSIONS setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive causes logical expression evaluation to terminate as soon as the result can be determined. For a non-numeric value in IDX, the above example would skip the test of S&lt;IDX&gt;.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The difference between these two methods of evaluation is also important if the expression includes a reference to a function that has a side effect. For example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">IF X = 1 AND REMOVE(STR, CODE)</span></p>
+<p class="p_Normal">In the default mode of operation, the <span style="font-weight: bold;">REMOVE()</span> function is executed regardless of the content of X. With the PARTIAL.EXPRESSIONS mode, the <span style="font-weight: bold;">REMOVE()</span> function is only executed if X is 1.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="qmbasic_collections.htm" class="topiclink">Data collections</a>, <a href="patterns.htm" class="topiclink">Pattern Matching</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

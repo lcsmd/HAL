@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>The Sort Clause</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Sort clause" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sortclause.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">The Sort Clause</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="selectionclause.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="displayclause.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">sort clause</span> determines the order in which records are inserted into the select list (<span style="font-weight: bold;"><a href="select.htm" class="topiclink">SELECT</a></span>, <span style="font-weight: bold;"><a href="select.htm" class="topiclink">SSELECT</a></span>, <span style="font-weight: bold;"><a href="search.htm" class="topiclink">SEARCH</a></span>) or reported (<span style="font-weight: bold;"><a href="list.htm" class="topiclink">LIST</a></span>, <span style="font-weight: bold;"><a href="list.htm" class="topiclink">SORT</a></span>, <span style="font-weight: bold;"><a href="list_item.htm" class="topiclink">LIST.ITEM</a></span>, <span style="font-weight: bold;"><a href="list_item.htm" class="topiclink">SORT.ITEM</a></span>).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Sorting is performed <span style="text-decoration: underline;">before</span> conversion of data to its external format. Thus sorts of date fields, for example, will correctly sequence dates regardless of their conversion.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The justification mode of the field's format is used to determine whether a left of right aligned sort is performed. For dates, a right aligned sort is required to avoid problems with dates with internal values of differing numbers of digits.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are two sort clause operators for single valued fields, <span style="font-weight: bold;"><a href="by.htm" class="topiclink">BY</a></span> and <span style="font-weight: bold;"><a href="by_dsnd.htm" class="topiclink">BY.DSND</a></span>, which differ only in that <span style="font-weight: bold;"><a href="by.htm" class="topiclink">BY</a></span> sorts into ascending order and <span style="font-weight: bold;"><a href="by_dsnd.htm" class="topiclink">BY.DSND</a></span> sorts into descending order. Similarly, there are two <span style="font-weight: bold;">exploded sort</span> operators, <span style="font-weight: bold;"><a href="by_exp.htm" class="topiclink">BY.EXP</a></span> and <span style="font-weight: bold;"><a href="by_exp_dsnd.htm" class="topiclink">BY.EXP.DSND</a></span>, for use with multivalued fields. These explode the multivalued records to their single valued equivalents, allowing a query to process values in sequence.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where multiple sort items are specified, the query processor examines them in the order in which they appear in the command. The second and subsequent sort items are only examined where the previous sort was not sufficient to identify the record sequence.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="list.htm" class="topiclink">SORT</a></span>, <span style="font-weight: bold;"><a href="list_item.htm" class="topiclink">SORT.ITEM</a></span> and <span style="font-weight: bold;"><a href="select.htm" class="topiclink">SSELECT</a></span> verbs are equivalent to the <span style="font-weight: bold;"><a href="list.htm" class="topiclink">LIST</a></span>, <span style="font-weight: bold;"><a href="list_item.htm" class="topiclink">LIST.ITEM</a></span> and <span style="font-weight: bold;"><a href="select.htm" class="topiclink">SELECT</a></span> verbs with a <span style="font-weight: bold;"><a href="by.htm" class="topiclink">BY</a></span> @ID clause as the final sort.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">The Sort Algorithm</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The sorting process compares items to establish their correct position in sorted order.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When using a left aligned sort, items are compared character by character from the left hand end until a difference is encountered. The relative sort position of the two items is then determined by the collating sequence order of the characters that differ.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When using a right aligned sort, the comparison process is considerably more complex. Each item is considered to be formed from a series of elements that may be numeric or non-numeric. The numeric elements are compared as numeric values, including allowing for a leading sign character on the first element only. The non-numeric elements are compared character by character, left to right as for a left aligned sort. Where the first element of one item is numeric and the first element of the other is non-numeric, the numeric one is positioned earlier in the sorted result.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although right aligned sorts are most commonly used with data that is entirely numeric, the above process ensures that it operates correctly with mixed data types, producing a logical and consistent sorted result. The following example shows the correct sort order for the same data using both left and right aligned sort modes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px">Left:</td><td style="border:none;padding:0">+3, -6, 103, 10A, 1943, 1A1, 1B1, 7CX, A1A, A1C, AA, BD24, BD7, BF20, XX90</td></tr></table></div><p style="text-indent: -59px; margin: 0 0 0 59px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px">Right:</td><td style="border:none;padding:0">-6, 1A1, 1B1, +3, 7CX, 10A, 103, 1943, A1A, A1C, AA, BD7, BD24, BF20, XX90</td></tr></table></div>
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+      EQU CR TO CHAR(13)
+      EQU LF TO CHAR(10)
+      EQU CRLF TO CR:LF
+      EQU TAB TO CHAR(9)
+      EQU SPACE TO CHAR(20)
+
+      EQU TYPE TO DBUFF<1>
+      EQU LOC TO DBUFF<2>
+      EQU CONV TO DBUFF<3>
+      EQU DISPLAY TO DBUFF<4>
+      EQU FORMAT TO DBUFF<5>
+      EQU MS TO DBUFF<6>
+      EQU ASS TO DBUFF<7>
+
+      PROMPT ''
+      DBUFF = ""
+      dbg = 0
+
+
+      CMD.LINE = @SENTENCE
+      DEST.DICT = ""
+      LOC=0
+      Q = ""
+      JUST = ""
+      LENGTH = ""
+      DEST.DICT = TRIM(FIELD(CMD.LINE," ",2))
+      LCS.DICT = DEST.DICT
+      PREFIX = TRIM(FIELD(CMD.LINE," ",3))
+      IF PREFIX = "" THEN PREFIX = DEST.DICT[1,3]
+
+      PRINT "DEST.DICT = ":DEST.DICT:"   PREFIX = ":PREFIX
+
+
+      OPEN "LCS.DICT" TO F.LCS.DICT ELSE PRINT "LCS.DICT" ; STOP
+      OPEN 'DICT',DEST.DICT TO D.DEST.DICT ELSE PRINT 'DICT ':DEST.DICT ; STOP
+      OPEN 'LCS.CONTROL' TO LCS.CONTROL ELSE PRINT 'LCS.CONTROL' ; STOP
+      READ INCLUDE.B FROM LCS.CONTROL,"INCLUDE" ELSE INCLUDE.B = ""
+
+      PRINT "INCLUDE.B = ":INCLUDE.B
+
+      *READ TEMP.B FROM F.LCS.DICT,LCS.DICT THEN
+      *if dbg then debug
+      *CMD.STRING = "CLEAR.FILE DICT ":LCS.DICT
+      *EXECUTE CMD.STRING
+      *TEMP.B = CHANGE(TEMP.B,CRLF,@FM)
+      *TEMP.B = CHANGE(TEMP.B,TAB,@VM)
+      *TEMP.B.CT = DCOUNT(TEMP.B,@FM)
+      *
+      INCLUDE.B = CHANGE(INCLUDE.B,"{ABB}",PREFIX)
+      INCLUDE.B = CHANGE(INCLUDE.B,"{NAME}",DEST.DICT)
+            *if dbg then debug
+      WRITE INCLUDE.B ON D.DEST.DICT,"$INCLUDE"
+
+      READ TBUFF FROM F.LCS.DICT,DEST.DICT THEN
+         TCT = DCOUNT(TBUFF,@FM)
+         FOR TX = 1 TO TCT
+            LINE = TBUFF<TX>
+
+            READ DBUFF FROM D.DEST.DICT,DEST.DICT ELSE DBUFF = ""
+            GOSUB PROCESS.LINE:
+
+            WRITE DBUFF ON D.DEST.DICT,NAME
+            *PRINT "WRITING :":NAME:" IN DICT FOR FILE ":LCS.DICT
+            *PRINT DBUFF
+         NEXT TX
+      END
+ 
+      PRINT "FINISHED"
+      STOP
+
+PROCESS.LINE:
+      LINE = CHANGE(LINE," ",@VM)
+      LINE = CHANGE(LINE,TAB,@VM)
+      NAME = REMOVE(LINE,SYSX)
+      IF TRIM(NAME) > "" THEN LOC += 1
+      LOOP WHILE SYSX DO
+         OTHER = REMOVE(LINE,SYSX)
+
+         IF OTHER[1,2] = "MD" THEN
+            CONV = OTHER
+            LENGTH = '12'
+            JUST = "R"
+            OTHER = ""
+         END
+         IF OTHER = "D4-" THEN
+            CONV = 'D4-'
+            LENGTH = '10'
+            JUST = "R"
+            OTHER = ""
+         END
+         IF OTHER = "DT" THEN
+            CONV = 'D4-'
+            LENGTH = '10'
+            JUST = 'R'
+            OTHER = ""
+         END
+         IF (OTHER = 'L' OR OTHER = 'R') THEN
+            JUST = OTHER
+            OTHER = ""
+         END
+         IF NUM(OTHER) THEN
+            IF OTHER > 0 THEN LENGTH = OTHER
+            OTHER = ""
+         END
+         IF (OTHER = 'M' OR OTHER = 'S') THEN
+            MS = OTHER
+            OTHER = ""
+         END
+         IF OTHER THEN
+            ASS = OTHER
+         END
+      REPEAT
+      TYPE = 'D'
+      FORMAT = LENGTH:JUST
+      WRITE DBUFF ON D.DEST.DICT,NAME
+      PRINT "WRITING :":NAME:" IN DICT FOR FILE ":LCS.DICT
+      PRINT DBUFF
+
+      RETURN
+
+
+      END
+
+

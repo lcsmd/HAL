@@ -1,0 +1,286 @@
+* HAL.SYSTEM - Handle system-related commands
+* @param TEXT - The user's request text
+* @param RESPONSE - Response to be sent back
+
+SUBROUTINE HAL.SYSTEM(TEXT, RESPONSE)
+$INSERT COMMON
+$INSERT SYSCOM
+
+* Initialize response
+RESPONSE = ''
+
+* Check command type
+UPTEXT = UPCASE(TEXT)
+BEGIN CASE
+    CASE INDEX(UPTEXT, 'STATUS', 1)
+        GOSUB SYSTEM.STATUS
+        
+    CASE INDEX(UPTEXT, 'HEALTH', 1)
+        GOSUB SYSTEM.HEALTH
+        
+    CASE INDEX(UPTEXT, 'STATS', 1) OR INDEX(UPTEXT, 'STATISTICS', 1)
+        GOSUB SYSTEM.STATS
+        
+    CASE 1
+        * Unknown system command, let LLM handle it
+        RESPONSE = ''
+END CASE
+
+RETURN
+
+*************************************************************************
+SYSTEM.STATUS:
+* Get overall system status
+RESPONSE = "HAL System Status Report":CHAR(10)
+
+* Check file systems
+GOSUB CHECK.FILES
+RESPONSE := CHAR(10):"File Systems:":CHAR(10):FILE.STATUS
+
+* Check services
+GOSUB CHECK.SERVICES
+RESPONSE := CHAR(10):CHAR(10):"Services:":CHAR(10):SERVICE.STATUS
+
+* Add system uptime
+GOSUB GET.UPTIME
+RESPONSE := CHAR(10):CHAR(10):"System Uptime:":CHAR(10):UPTIME.STATUS
+
+RETURN
+
+*************************************************************************
+CHECK.FILES:
+* Check status of critical files
+FILE.STATUS = ''
+FILE.LIST = 'HAL.SCHEDULE':@AM:'HAL.TASKS':@AM:'HAL.CHAT.HISTORY'
+
+FOR I = 1 TO DCOUNT(FILE.LIST, @AM)
+    FILENAME = FILE.LIST<I>
+    OPEN FILENAME TO F.TEMP THEN
+        FILE.STATUS := "- ":FILENAME:" (OK)":CHAR(10)
+    END ELSE
+        FILE.STATUS := "- ":FILENAME:" (Not Found)":CHAR(10)
+    END
+NEXT I
+
+RETURN
+
+*************************************************************************
+CHECK.SERVICES:
+* Check status of required services
+SERVICE.STATUS = ''
+
+* Check OpenQM connection
+OPEN 'DICT', 'VOC' TO F.VOC THEN
+    SERVICE.STATUS := "- OpenQM Database (OK)":CHAR(10)
+END ELSE
+    SERVICE.STATUS := "- OpenQM Database (Error)":CHAR(10)
+END
+
+* Check AI server connection (via HTTP HEAD request)
+CALL HTTP.HEAD('http://ollama.lcs.ai:8765', RESPONSE.CODE)
+IF RESPONSE.CODE = 200 THEN
+    SERVICE.STATUS := "- AI Server (OK)":CHAR(10)
+END ELSE
+    SERVICE.STATUS := "- AI Server (Error: ":RESPONSE.CODE:")":CHAR(10)
+END
+
+RETURN
+
+*************************************************************************
+SYSTEM.HEALTH:
+* Get detailed system health metrics
+RESPONSE = "HAL System Health Check":CHAR(10)
+
+* Check database stats
+GOSUB CHECK.DB.STATS
+RESPONSE := CHAR(10):"Database Statistics:":CHAR(10):DB.STATS
+
+* Check memory usage
+GOSUB CHECK.MEMORY
+RESPONSE := CHAR(10):CHAR(10):"Memory Usage:":CHAR(10):MEMORY.STATS
+
+* Check disk space
+GOSUB CHECK.DISK
+RESPONSE := CHAR(10):CHAR(10):"Disk Space:":CHAR(10):DISK.STATS
+
+RETURN
+
+*************************************************************************
+CHECK.DB.STATS:
+* Get database statistics
+DB.STATS = ''
+
+* Count records in each file
+FILE.LIST = 'HAL.SCHEDULE':@AM:'HAL.TASKS':@AM:'HAL.CHAT.HISTORY'
+
+FOR I = 1 TO DCOUNT(FILE.LIST, @AM)
+    FILENAME = FILE.LIST<I>
+    OPEN FILENAME TO F.TEMP THEN
+        SELECT F.TEMP TO SEL.LIST
+        READLIST IDS FROM SEL.LIST ELSE IDS = ''
+        CNT = DCOUNT(IDS, @AM)
+        DB.STATS := "- ":FILENAME:": ":CNT:" records":CHAR(10)
+    END ELSE
+        DB.STATS := "- ":FILENAME:": Not accessible":CHAR(10)
+    END
+NEXT I
+
+RETURN
+
+*************************************************************************
+CHECK.MEMORY:
+* Get memory usage statistics
+MEMORY.STATS = ''
+
+* Get OpenQM memory stats
+EXECUTE 'MEMORY' CAPTURING MEM.OUT
+MEMORY.STATS = CHANGE(MEM.OUT, @AM, CHAR(10))
+
+RETURN
+
+*************************************************************************
+CHECK.DISK:
+* Get disk space information
+DISK.STATS = ''
+
+* Get disk space for QMSYS
+EXECUTE 'SPACE' CAPTURING SPACE.OUT
+DISK.STATS = CHANGE(SPACE.OUT, @AM, CHAR(10))
+
+RETURN
+
+*************************************************************************
+SYSTEM.STATS:
+* Get usage statistics
+RESPONSE = "HAL Usage Statistics":CHAR(10)
+
+* Get chat statistics
+GOSUB CHAT.STATS
+RESPONSE := CHAR(10):"Chat Statistics:":CHAR(10):CHAT.STATS
+
+* Get task statistics
+GOSUB TASK.STATS
+RESPONSE := CHAR(10):CHAR(10):"Task Statistics:":CHAR(10):TASK.STATS
+
+* Get schedule statistics
+GOSUB SCHEDULE.STATS
+RESPONSE := CHAR(10):CHAR(10):"Schedule Statistics:":CHAR(10):SCHEDULE.STATS
+
+RETURN
+
+*************************************************************************
+CHAT.STATS:
+* Calculate chat statistics
+CHAT.STATS = ''
+
+OPEN 'HAL.CHAT.HISTORY' TO F.HISTORY ELSE RETURN
+
+SELECT F.HISTORY TO SEL.LIST
+READLIST CHAT.IDS FROM SEL.LIST ELSE CHAT.IDS = ''
+
+TOTAL = DCOUNT(CHAT.IDS, @AM)
+TODAY = 0
+WEEK = 0
+MONTH = 0
+
+TODAY.DATE = DATE()
+WEEK.DATE = TODAY.DATE - 7
+MONTH.DATE = TODAY.DATE - 30
+
+LOOP
+    REMOVE CHAT.ID FROM CHAT.IDS SETTING MORE
+    UNTIL MORE = 0 DO
+        READ REC FROM F.HISTORY, CHAT.ID ELSE CONTINUE
+        
+        CHAT.DATE = REC<2>
+        
+        IF CHAT.DATE >= TODAY.DATE THEN
+            TODAY += 1
+        END
+        IF CHAT.DATE >= WEEK.DATE THEN
+            WEEK += 1
+        END
+        IF CHAT.DATE >= MONTH.DATE THEN
+            MONTH += 1
+        END
+    REPEAT
+END
+
+CHAT.STATS = "- Total conversations: ":TOTAL:CHAR(10)
+CHAT.STATS := "- Today: ":TODAY:CHAR(10)
+CHAT.STATS := "- This week: ":WEEK:CHAR(10)
+CHAT.STATS := "- This month: ":MONTH
+
+RETURN
+
+*************************************************************************
+TASK.STATS:
+* Calculate task statistics
+TASK.STATS = ''
+
+OPEN 'HAL.TASKS' TO F.TASKS ELSE RETURN
+
+SELECT F.TASKS TO SEL.LIST
+READLIST TASK.IDS FROM SEL.LIST ELSE TASK.IDS = ''
+
+TOTAL = DCOUNT(TASK.IDS, @AM)
+COMPLETED = 0
+PENDING = 0
+
+LOOP
+    REMOVE TASK.ID FROM TASK.IDS SETTING MORE
+    UNTIL MORE = 0 DO
+        READ REC FROM F.TASKS, TASK.ID ELSE CONTINUE
+        
+        IF REC<4> THEN
+            COMPLETED += 1
+        END ELSE
+            PENDING += 1
+        END
+    REPEAT
+END
+
+TASK.STATS = "- Total tasks: ":TOTAL:CHAR(10)
+TASK.STATS := "- Completed: ":COMPLETED:CHAR(10)
+TASK.STATS := "- Pending: ":PENDING
+
+RETURN
+
+*************************************************************************
+SCHEDULE.STATS:
+* Calculate schedule statistics
+SCHEDULE.STATS = ''
+
+OPEN 'HAL.SCHEDULE' TO F.SCHEDULE ELSE RETURN
+
+SELECT F.SCHEDULE TO SEL.LIST
+READLIST EVENT.IDS FROM SEL.LIST ELSE EVENT.IDS = ''
+
+TOTAL = DCOUNT(EVENT.IDS, @AM)
+UPCOMING = 0
+TODAY = 0
+
+TODAY.DATE = DATE()
+FUTURE.DATE = TODAY.DATE + 30
+
+LOOP
+    REMOVE EVENT.ID FROM EVENT.IDS SETTING MORE
+    UNTIL MORE = 0 DO
+        READ REC FROM F.SCHEDULE, EVENT.ID ELSE CONTINUE
+        
+        EVENT.DATE = REC<2>
+        
+        IF EVENT.DATE = TODAY.DATE THEN
+            TODAY += 1
+        END
+        IF EVENT.DATE > TODAY.DATE AND EVENT.DATE <= FUTURE.DATE THEN
+            UPCOMING += 1
+        END
+    REPEAT
+END
+
+SCHEDULE.STATS = "- Total events: ":TOTAL:CHAR(10)
+SCHEDULE.STATS := "- Today's events: ":TODAY:CHAR(10)
+SCHEDULE.STATS := "- Upcoming (30 days): ":UPCOMING
+
+RETURN

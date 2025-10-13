@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>OPTION()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="OPTION()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_option.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">OPTION()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_open_socket.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_ors.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">OPTION()</span> function returns or changes the setting of an option flag.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">OPTION(</span><span style="font-style: italic;">optno</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal" style="margin: 8px 0 0 30px;"><span style="font-weight: bold;">OPTION(</span><span style="font-style: italic;">optno</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">value</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-style: italic;">optno</span></td><td style="border:none;padding:0">is the option flag number to be tested.</td></tr></table></div><p class="p_Normal" style="text-indent: -59px; margin: 0 0 0 89px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-style: italic;">value</span></td><td style="border:none;padding:0">is the new state to be applied to the option.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">OPTION()</span> function returns the state of the option identified by <span style="font-style: italic;">optno</span>. If <span style="font-style: italic;">optno</span> is out of range, the function returns False.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The two argument form of the function sets the option state and returns the old state.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Option key values are defined in the SYSCOM KEYS.H record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A negative <span style="font-style: italic;">optno</span> value can be used to retrieve or set all options. Used in the single argument form of the <span style="font-weight: bold;">OPTION()</span> function, this returns a character string that represents the complete set of option values. Using this string in the two argument form of the function reverts all options to the saved state, returning the previous state. A null <span style="font-style: italic;">value</span> string turns off all options. Application programs must not make any assumptions about the structure of the returned option string and must not alter its value.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">old.state = option(OPT$DIR.SEL.OMIT.HIDDEN, 1)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">selectv fv to files</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">void option(OPT$DIR.SEL.OMIT.HIDDEN, old.state)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above code fragment sets the DIR.SEL.OMIT.HIDDEN option for the following SELECTV operation and then restores the previous state of the option.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">options = option(-1)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">void option(OPT$DIR.SEL.OMIT.HIDDEN, 1)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">selectv fv to files</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">void option(-1, options)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above code fragment is an alternative way to achieve the same result. In this form, the code between the two uses of the negative <span style="font-style: italic;">optno</span> could set or clear many options. The final line would restore the state as at the start of this example.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>External Functions</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="External functions" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "external_functions.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">External Functions</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="using_socket_connections.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbasic_compilerdirectives.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Sometimes applications need to be able to call external functions such as those in standard operating system libraries. QM provides an External Call Interface (ECI) by which this can be done from within the security of the managed application environment of QMBasic.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Function Prototypes</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Before an external function can be used by an application, it must be defined using the QMBasic <span style="font-weight: bold;"><a href="qmb_deffun.htm" class="topiclink">DEFFUN</a></span> statement with the <span style="font-weight: bold;">EXTERNAL</span> keyword</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">DEFFUN </span><span class="f_CodeSingleLine" style="font-style: italic;">name</span><span class="f_CodeSingleLine">(</span><span class="f_CodeSingleLine" style="font-style: italic;">arg1</span><span class="f_CodeSingleLine">, </span><span class="f_CodeSingleLine" style="font-style: italic;">arg2</span><span class="f_CodeSingleLine">, ...) EXTERNAL {CALLING &quot;</span><span class="f_CodeSingleLine" style="font-style: italic;">libname</span><span class="f_CodeSingleLine">&quot;}</span></p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of the function.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">arg1</span> etc</td><td style="border:none;padding:0">are placeholders for the function arguments.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">libname</span></td><td style="border:none;padding:0">is a quoted string defining the name of the executable program providing these library functions. If omitted, it defaults to qmextcall. The .exe suffix on Windows systems is added automtically. The name is case sensitive on Linux systems.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To preserve the managed application environment provided by QM, external function calls are handled by a child process that is created when the first external function is called from a QM session. Use of a child process ensures that errors in this program cannot corrupt memory within the parent QM process. This isolation is essential as corruptions to QM's shared memory area could cause problems in other processes that would be hard to diagnose and might damage files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Although the overheads of using a separate process are low, the external function call mechanism is intended for execution of user written code that performs a substantial task or is not used intensively by the application. Developers who have a need for intensive use of short library functions should contact QM support as it may be possible to integrate these into the standard product.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To use the external call interface, the application developer must download and modify the skeleton external call server program that is shown below. This sample program shows how to execute the C library stat() function, returning the size of a named file. This operation is available directly from QMBasic and the program is not intended as a realistic use of the external call interface but serves to show how to implement external function calls.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that the function names passed by the parent QM process are always in uppercase unless the CASE.SENSITIVE setting of the $MODE compiler directive is enabled. A real external call server program may need to support multiple functions and would do so using conditional coding similar to that in the skeleton program.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Up to 31 arguments can be passed into an external function. To optimise the interface between the child and parent processes, an argument placeholder name can be prefixed with IN: to indicate that the argument is passed into the function but no updated value is to be returned, or OUT: to indicate that the argument is used only to return data and the current content of the argument variable should not be passed to the child process. For example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">DEFFUN MYFUN(IN:A, IN:B, OUT:C) EXTERNAL</span></p>
+<p class="p_Normal">Any arguments for which neither qualifier is present are bidirectional though automatic optimisation is applied so as not to pass back arguments that have not changed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The server process is started when the parent process first calls an external function and will normally stay running until the user exits from QM or uses <span style="font-weight: bold;"><a href="logto.htm" class="topiclink">LOGTO</a></span> to move to a different account. The program can maintain internal state data, file variables, etc that persist from one call to the next.The ECI child process can be terminated by use of the <span style="font-weight: bold;"><a href="close_eci.htm" class="topiclink">CLOSE.ECI</a></span> command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Arguments passed into the function are numbered from one. The user written code that will replace the test code in the skeleton program can access the arguments passed from the QMBasic function call by use of <span style="font-weight: bold;">GetInteger()</span>, <span style="font-weight: bold;">GetFloat()</span> or <span style="font-weight: bold;">GetString()</span>, each of which takes the argument number to be retrieved as its only parameter. The number of arguments passed from the QMBasic program can be determined using the <span style="font-weight: bold;">GetNumArgs()</span> function and the data type for an argument can be retrieved using the <span style="font-weight: bold;">GetArgType()</span> function which returns a single character, I for integer, F for floating point and S for string. Data type conversion will be performed where the actual argument type does not match the form in which is requested, for example, using <span style="font-weight: bold;">GetInteger()</span> to retrieve and argument that was passed into the QMBasic function call as a string. Attempting to access an argument position that was not passed in the function call or an argument that was unassigned will return either numeric zero or a null string.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">GetString()</span> function returns a pointer to a null terminated 8 bit character string form of the argument. This string should not be overwritten. Although the string is null terminated, the interface between the parent QM process and the external call server process permits char(0) within strings. In this case, use of the C strlen() function will not return the correct string length. The <span style="font-weight: bold;">StringLength()</span> function can be used to determine the length of the actual argument string.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Using <span style="font-weight: bold;">GetString()</span> with an ECS mode version of QM will return only the low order 8 bits of each character and hence is likely to lead to incorrect results if the QMBasic data passed as the argument contains characters outside the 8-bit set. <span style="font-weight: bold;">The GetStringW()</span> function returns data as a null terminated wchar_t data type string and can be used regardless of whether the QM system is in ECS mode. Note that Windows systems define wchar_t as 16 bits whereas the gcc compiler used on most Linux systems defines wchar_t as 32 bits.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Arguments may be updated for return values using the <span style="font-weight: bold;">ReturnInteger()</span>, <span style="font-weight: bold;">ReturnFloat()</span> or <span style="font-weight: bold;">ReturnString()</span> functions. Each of these takes the argument number and new value as its parameters. The <span style="font-weight: bold;">ReturnString()</span>function has a third argument through which the caller should pass the string length. Passing a negative value for the string length indicates that the function should treat the data as a null terminated string and determine its length internally.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">ReturnStringW()</span> function returns a wchar_t form string for which the length should be specified in characters, not bytes. Use of <span style="font-weight: bold;">ReturnStringW()</span> on a non-ECS mode system to return data that includes characters outside the 8-bit set will return only the low order 8 bits of each character.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The return functions allow reference to argument number zero. This corresponds to the value that will be returned as the result of the QMBasic function call that triggered the child process action.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The new value set by any of the return functions will be ignored for arguments declared as input only in the QMBasic function definition.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">SetOSError()</span> function can be used to set a value for <span style="font-weight: bold;"><a href="qmb_os_error.htm" class="topiclink">OS.ERROR()</a></span> in the QMBasic program on return from the external function. <span style="font-weight: bold;">SetOSError()</span> takes a single int argument. If this function is not used, the value of <span style="font-weight: bold;">OS.ERROR()</span> is unchanged.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">CompleteCall()</span> function must be called as the final stage in processing a request and takes a single argument which is the value to be returned by the QMBasic <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function after the external function call has completed. This allows errors to be reported to the calling process. It is recommended that error code values should correspond to the standard QM error numbers as defined in the SYSCOM ERR.H include record. Passing a negative status value will cause the QMBasic program to abort, reporting the absolute status value in the error message. Any return argument values will not be updated in this situation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Compiling the Program</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Windows users should define the WINDOWS token either from the compiler or by including a line</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">#define WINDOWS</span></p>
+<p class="p_Normal"> before the #include directives.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"> The appropriate version of the qmextcall library from the bin subdirectory of the QMSYS account must be linked with this program. The versions supplied are:</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:170px; padding:3px; border:solid thin #000000;"><p class="p_Normal"><span style="font-weight: bold;">QM Version</span></p>
+</td>
+<td style="vertical-align:top; width:181px; padding:3px; border:solid thin #000000;"><p class="p_Normal"><span style="font-weight: bold;">Name</span></p>
+</td>
+<td style="vertical-align:top; width:273px; padding:3px; border:solid thin #000000;"><p class="p_Normal"><span style="font-weight: bold;">Usage</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:3px; border:solid thin #000000;"><p class="p_Normal">Windows 32 bit</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:3px; border:solid thin #000000;"><p class="p_Normal">qmextcallms.lib</p>
+</td>
+<td style="vertical-align:top; width:273px; padding:3px; border:solid thin #000000;"><p class="p_Normal">Microsoft C</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:170px; padding:3px; border:solid thin #000000;"><p class="p_Normal">Windows 64 bit</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:3px; border:solid thin #000000;"><p class="p_Normal">qmextcall64.lib</p>
+</td>
+<td style="vertical-align:top; width:273px; padding:3px; border:solid thin #000000;"><p class="p_Normal">Microsoft C</p>
+</td>
+</tr>
+<tr>
+<td rowspan="3"  style="vertical-align:top; padding:3px; border:solid thin #000000;"><p class="p_Normal">Linux / Mac / Unix</p>
+</td>
+<td style="vertical-align:top; width:181px; padding:3px; border:solid thin #000000;"><p class="p_Normal">libqmextcall.a</p>
+</td>
+<td style="vertical-align:top; width:273px; padding:3px; border:solid thin #000000;"><p class="p_Normal">Static library</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:181px; padding:3px; border:solid thin #000000;"><p class="p_Normal">qmextcall.so</p>
+</td>
+<td style="vertical-align:top; width:273px; padding:3px; border:solid thin #000000;"><p class="p_Normal">Shared object library (Linux)</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:181px; padding:3px; border:solid thin #000000;"><p class="p_Normal">qmextcall.dylib</p>
+</td>
+<td style="vertical-align:top; width:273px; padding:3px; border:solid thin #000000;"><p class="p_Normal">Dynamic library (Mac)</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"> The default name for the compiled program is qmextcall (qmextcall.exe on Windows). This program must be placed in the bin subdirectory of the QMSYS account. Alternative names can be used with the CALLING clause to the <span style="font-weight: bold;"><a href="qmb_deffun.htm" class="topiclink">DEFFUN</a></span> statement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Skeleton External Call Server</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">#include &lt;stdio.h&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">#include &lt;string.h&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">#include &lt;errno.h&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">#include &lt;sys/stat.h&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">#ifdef WINDOWS</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; #include &lt;windows.h&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">#else</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; #include &lt;wchar.h&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">#endif</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">#include &lt;qmextcall.h&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">int main(int argc, char * argv[])</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">{</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> char function_name[MAX_FUNCTION_NAME_LEN+1];</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> struct stat statbuf;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> int err;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> /* Process command line and initialise */</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> Initialise(argc, argv);</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> /* Process requests */</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> while(GetCallRequest(function_name))</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp;{</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; err = 0; &nbsp; &nbsp;/* Default returned status value */</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">//----- Insert code to handle your external functions here</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; if (!strcmp(function_name, &quot;STAT&quot;))</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp;{</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; if (!stat(GetString(1), &amp;statbuf))</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;{</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; ReturnInteger(0, statbuf.st_size);</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;}</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; else</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;{</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; ReturnInteger(0, -1);</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; err = errno;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;}</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp;}</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">//----- End of code to handle your external functions</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; else &nbsp; &nbsp; &nbsp;/* Function name not recognised */</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp;{</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; err = -ER_FUNCNAME;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp;}</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; CallCompleted(err); &nbsp; /* Send updated arguments and result */</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp;}</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> return 0;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">}</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

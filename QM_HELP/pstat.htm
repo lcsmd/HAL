@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>PSTAT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="PSTAT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "pstat.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">PSTAT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="profiler.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="pterm.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PSTAT</span> command displays the status of one or all QM processes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">PSTAT </span>{ {<span style="font-weight: bold;">USER</span>}<span style="font-style: italic;"> user</span> } &nbsp;{ <span style="font-weight: bold;">LEVEL</span><span style="font-style: italic;"> level</span> }</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">user</span></td><td style="border:none;padding:0">is the QM user number or user login name of the process to report. Multiple user numbers or user names may follow a single <span style="font-weight: bold;">USER</span> keyword or there may be multiple <span style="font-weight: bold;">USER</span> keywords in the command line. If the command starts with numeric data that is not preceded by <span style="font-weight: bold;">USER</span> or <span style="font-weight: bold;">LEVEL</span>, the data is assumed to be a user number.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">level</span></td><td style="border:none;padding:0">is the reporting level.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PSTAT </span>command displays diagnostic status information about the processes identified by the <span style="font-weight: bold;">USER</span> option or, if the <span style="font-weight: bold;">USER</span> option is omitted, all QM processes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For each process reported, <span style="font-weight: bold;">PSTAT</span> shows the account name, user name, the last command executed and the current execution point (program name, line number and execution address). Note that the command shown may have completed and returned to the program from which it was executed. If in a transaction, the transaction id, command processor level and start time are shown, repeating for parent transactions if appropriate.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">level</span> parameter specifies extended report features and is formed by adding together the following components:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">1</td><td style="border:none;padding:0">Shows each program and subroutine in the call stack. If not included, only the currently active program is shown.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">2</td><td style="border:none;padding:0">Shows internal subroutine calls within each reported program and subroutine. If not included, only external subroutine calls are shown.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">4</td><td style="border:none;padding:0">Shows details of QMNet connections to remote servers.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Adding Application Data</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A QM application can set the <a href="at_variables.htm#pstat" class="topiclink">@PSTAT</a> variable to contain text that will be shown by the <span style="font-weight: bold;">PSTAT</span> command. This provides an easy way to display diagnostic data or other application status information.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">PSTAT USER 2 LEVEL 3</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">User Detail</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; 2 Account: SALES, Username: Joe, Pid: 1383</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; Command: RUN INVOICES</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; !SCREEN 953 (14E6, KEYIN)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 750 (118E)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 450 (08F3)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 323 (061B)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; D:\LBS\QM\BP.OUT\INVOICES 105 (01BE)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; Command processor</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; D:\LBS\QM\BP.OUT\PROC 104 (05B8)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; Command processor</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In this example, the most recent command executed by user 2 was RUN INVOICES. It is currently executing the !SCREEN subroutine at line 953, address 14E6 which is a KEYIN operation. Because the LEVEL parameter includes level 2, internal subroutine calls are also shown. The !SCREEN subroutine was called from The INVOICES program at line 105 (address 01BE). This program was started from the command processor which was itself started from line 104 of program PROC which was itself started from the command processor.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The same process could be reported in less detail using other values of the LEVEL option as shown below:</p>
+<p style="text-indent: -60px; margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -60px; margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -60px; margin: 0 0 0 60px;">Level 2 (Internal subroutine stack within current program)</p>
+<p style="text-indent: -60px; margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">PSTAT USER 2 LEVEL 2</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">User Detail</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; 2 Account: SALES, Username: Joe, Pid: 1383</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; Command: RUN INVOICES</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; !SCREEN 953 (14E6, KEYIN)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 750 (118E)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 450 (08F3)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 323 (061B)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -60px; margin: 0 0 0 60px;">Level 1 (External subroutine stack but exclude internal calls)</p>
+<p style="text-indent: -60px; margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">PSTAT USER 2 LEVEL 1</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">User Detail</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; 2 Account: SALES, Username: Joe, Pid: 1383</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; Command: RUN INVOICES</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; !SCREEN 953 (14E6, KEYIN)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; D:\LBS\QM\BP.OUT\INVOICES 105 (01BE)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; Command processor</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; D:\LBS\QM\BP.OUT\PROC 104 (05B8)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; Command processor</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -60px; margin: 0 0 0 60px;">Level 0 (Current location only)</p>
+<p style="text-indent: -60px; margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">PSTAT USER 2</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">User Detail</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; 2 Account: SALES, Username: Joe, Pid: 1383</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; Command: RUN INVOICES</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; !SCREEN 953 (14E6, KEYIN)</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

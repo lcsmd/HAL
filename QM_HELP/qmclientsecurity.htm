@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Security Issues of the QMClient API</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMClient security" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmclientsecurity.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Security Issues of the QMClient API</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmclient_select.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmclient-example.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In most systems, a normal terminal user is taken directly into the application on logging in and the application itself controls what the user can do. The <a href="command_scripts.htm" class="topiclink">ON.ABORT</a> paragraph provides a mechanism to ensure that, even if the application fails, the user cannot fall back to a command prompt.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>With QMClient, the client session is effectively at a command prompt from which it can open, read and write files, execute commands, or call subroutines. It becomes the responsibility of the client software to control what the user can do. A knowledgeable user with a valid user name and password could, however, develop a client session that connects in the same way as the application and then goes on to do almost anything. Setting appropriate access rights on files may help but is unlikely to be a perfect solution to this potential security threat.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="configparams.htm#qmclient" class="topiclink">QMCLIENT</a></span> configuration parameter can be used to control the level of access that a QMClient session has. It starts with the value defined in the QM configuration parameters and can be modified to a higher level using the <span style="font-weight: bold;"><a href="config.htm" class="topiclink">CONFIG</a></span> command but cannot be taken to a lower level in this way. Because QMClient sessions execute the <a href="command_scripts.htm" class="topiclink">LOGIN</a> paragraph on connection, the  <span style="font-weight: bold;"><a href="config.htm" class="topiclink">CONFIG</a></span> command is easily executed from this paragraph.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>It may also be useful to validate the client network address (See <a href="at_variables.htm#ip.addr" class="topiclink">@IP.ADDR</a>) in the <a href="command_scripts.htm" class="topiclink">LOGIN</a> paragraph.</p>
+
+</td></tr></table>
+
+</body>
+</html>

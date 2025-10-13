@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMBasic - Type conversion</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Data types (QMBasic),Type conversion (QMBasic)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbasic_typeconversion.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMBasic &nbsp;- &nbsp;Type Conversion </span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbasic_assignmentstatements.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="multivalue_functions.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMBasic variables are of variant type, the stored type being determined by the context in which the value was set and conversion being carried out on a temporary basis wherever necessary to perform processing. For example, the following program fragment</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = 962</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = A[2,1]</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>would result in A containing the integer value 962 and S containing the digit 6 as a string. The type conversion from integer to string is implicit in the use of the substring extraction on the second line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where a variable is accessed a very large number of times, there may be performance benefits to be obtained from ensuring that it is stored in an appropriate type thus minimising implicit temporary conversions. The multivalue Basic language as implemented in other products does not have any specific type conversion functions as the automatic type variant nature of the language is adequate for most purposes. Where a variable is to be forced to be a number, this can be achieved by adding zero</p>
+<p style="margin: 5px 0 5px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = A + 0</span></p>
+<p>or, more typically, combined with some other operation such as</p>
+<p style="margin: 5px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NUM.INVOICES = CLI.REC&lt;C.INV.CT&gt; + 0</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Similarly, data can be forced to string format by appending a null string</p>
+<p style="margin: 5px 0 5px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = A : &quot;&quot;</span></p>
+<p>This is a much less common operation in real programs.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QMBasic provides a better way to do type conversion by use of the <span style="font-weight: bold;"><a href="qmb_int.htm" class="topiclink">INT()</a></span>, <span style="font-weight: bold;"><a href="qmb_numeric.htm" class="topiclink">NUMERIC()</a></span>, <span style="font-weight: bold;"><a href="qmb_str.htm" class="topiclink">STR()</a></span> and <span style="font-weight: bold;"><a href="qmb_bool.htm" class="topiclink">BOOL()</a></span> functions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Developers should avoid over-use of explicit type conversions. The implicit conversion of type variant variables is one of the strong points of the QMBasic language, removing the need for nearly all of the explicit conversions needed in other programming languages.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>When the national language support decimal separator character is set to something other than the period, both the selected character and the period are recognised as being a valid decimal separator when converting a numeric value in a string to its internal numeric form..</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The Boolean values True and False can be used interchangeably with numeric values 1 and 0. Any operation that is defined to return a Boolean value in numeric form will return 1 or 0. Any operation that uses a Boolean value will treat 0 and a null string as False, everything else as True.</p>
+
+</td></tr></table>
+
+</body>
+</html>

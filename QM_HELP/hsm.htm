@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>HSM</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Hot Spot Monitor,HSM" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "hsm.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">HSM</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="help.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="hush.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_ImageCaption"><span class="f_ImageCaption">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">HSM</span> command controls the Hot Spot Monitor performance monitoring tool.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">HSM</span> <span style="font-weight: bold;">ON </span>{<span style="font-weight: bold;">USER</span><span style="font-style: italic;"> n</span>}</td><td style="border:none;padding:0">Start monitoring, clearing the counters</td></tr></table></div><p style="text-indent: -306px; margin: 0 0 0 336px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">HSM OFF</span></td><td style="border:none;padding:0">Stop monitoring</td></tr></table></div><p style="text-indent: -306px; margin: 0 0 0 336px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">HSM </span>{<span style="font-weight: bold;">DISPLAY</span>}{<span style="font-weight: bold;">USER</span><span style="font-style: italic;"> n</span>} {<span style="font-weight: bold;">LPTR</span> {<span style="font-style: italic;">u</span>}}</td><td style="border:none;padding:0">Display performance data</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The Hot Spot Monitor records the number of times each program module is called, the processor time in seconds spent in that module and i/o counters for opens, reads, writes and deletes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">HSM ON</span> command clears any old data and starts monitoring.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">HSM OFF</span> command terminates monitoring.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">HSM DISPLAY</span> command displays the collected data. It may be used while monitoring is active or after it has been switched off. The <span style="font-weight: bold;">DISPLAY</span> keyword can be omitted. If the <span style="font-weight: bold;">LPTR</span> keyword is present, the report is sent to print unit <span style="font-style: italic;">u</span>, defaulting to printer 0 if the unit number is omitted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">USER</span> <span style="font-style: italic;">n</span> option causes the command to affect the specified user and is useful in monitoring processes that do not display a command prompt.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that although QM maintains processor timings internally to microsecond precision and reports the figures to millisecond precision, some platforms do not provide the raw data to this level. For example, some Linux systems only report processor usage in units of one hundredth of a second.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">HSM ON</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">... </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;"> ...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">HSM DISPLAY</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> Calls &nbsp; &nbsp;CP time &nbsp; Opens &nbsp; Reads &nbsp;Writes Deletes Program</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 0.000 &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;!SCREEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp;13 &nbsp; &nbsp; &nbsp; 0.060 &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; 7 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;$CPROC</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp;18 &nbsp; &nbsp; &nbsp; 0.000 &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp;49 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;!PARSER</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 0.000 &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp;61 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 1 &nbsp;PRINT.DEFERED</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 4 &nbsp; &nbsp; &nbsp; 0.010 &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;$SETPTR</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 0.000 &nbsp; &nbsp; 6 &nbsp; &nbsp; &nbsp; 8 &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; 0 &nbsp;CHARGE.TOTAL</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp;19 &nbsp; &nbsp; &nbsp; 0.034 &nbsp; &nbsp;38 &nbsp; &nbsp; &nbsp;58 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;CALC.INVOICE.VALUE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp;24 &nbsp; &nbsp; &nbsp; 0.000 &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;ADD.MONTH</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; 0.000 &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;REVERSE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 0.000 &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;C:\QM\BP.OUT\PROC</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 6 &nbsp; &nbsp; &nbsp;17.040 &nbsp; &nbsp;31 &nbsp; &nbsp; 141 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;C:\QM\BP.OUT\FINANCE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp;19 &nbsp; &nbsp; &nbsp;14.010 &nbsp; &nbsp;19 &nbsp; &nbsp; &nbsp;19 &nbsp; &nbsp; &nbsp;19 &nbsp; &nbsp; &nbsp; 0 &nbsp;C:\QM\BP.OUT\INVOICE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 0.800 &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;C:\QM\BP.OUT\CHECK_EX</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; 0.000 &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; 0 &nbsp;$HSM</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Program names beginning with a $ sign are internal components of QM. For example, $CPROC included in the report above is the command processor.</p>
+
+</td></tr></table>
+
+</body>
+</html>

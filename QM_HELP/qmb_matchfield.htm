@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MATCHFIELD(), MATCHFIELDS()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MATCHFIELD(),MATCHFIELDS()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_matchfield.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MATCHFIELD(), MATCHFIELDS()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_matchess.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_matparse.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MATCHFIELD()</span> function extracts a portion of a string that matches a pattern element. The <span style="font-weight: bold;">MATCHFIELDS()</span> function performs the same operation on each element of a dynamic array.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MATCHFIELD</span>(<span style="font-style: italic;">string</span>, <span style="font-style: italic;">pattern</span>, <span style="font-style: italic;">element</span>)</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">evaluates to the string in which the <a href="patterns.htm" class="topiclink">pattern</a> is to be located.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">pattern</span></td><td style="border:none;padding:0">evaluates to a template as described below.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">element</span></td><td style="border:none;padding:0">evaluates to an integer indicating which pattern element of <span style="font-style: italic;">string</span> is to be returned.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MATCHFIELD()</span> function matches <span style="font-style: italic;">string</span> against <span style="font-style: italic;">pattern</span> and returns the portion of <span style="font-style: italic;">string</span> that matches the <span style="font-style: italic;">element</span>'th component of <span style="font-style: italic;">pattern</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">pattern</span> string consists of one or more concatenated items from the following list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">...</td><td style="border:none;padding:0">Zero or more characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0X</td><td style="border:none;padding:0">Zero or more characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>X</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>X</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0A</td><td style="border:none;padding:0">Zero or more alphabetic characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>A</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> alphabetic characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>A</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> alphabetic characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0N</td><td style="border:none;padding:0">Zero or more numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>N</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>N</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">&quot;<span style="font-style: italic;">string</span>&quot;</td><td style="border:none;padding:0">A literal string which must match exactly. Either single or double quotation marks may be used. Unlike the <span style="font-weight: bold;">MATCHES</span> operator, <span style="font-style: italic;">string</span> must be enclosed in quotes otherwise each character is treated as a separate component.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The values <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> are integers with any number of digits. <span style="font-style: italic;">m</span> must be greater than or equal to <span style="font-style: italic;">n</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0A, <span style="font-style: italic;">n</span>A, 0N, <span style="font-style: italic;">n</span>N and &quot;<span style="font-style: italic;">string</span>&quot; patterns may be preceded by a tilde (~) to invert the match condition. For example, ~4N matches four non-numeric characters such as ABCD (not a string which is not four numeric characters such as 12C4).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A null string matches patterns ..., 0A, 0X, 0N, their inverses (~0A, etc) and &quot;&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0X and <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>X patterns match against as few characters as necessary before control passes to the next pattern. For example, the string ABC123DEF matched against the pattern 0X2N0X matches the pattern components as ABC, 12 and 3DEF.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0N, <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>N, 0A, and <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>A patterns match against as many characters as possible. For example, the string ABC123DEF matched against the pattern 0X2-3N0X matches the pattern components as ABC, 123 and DEF.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">pattern</span> string may contain alternative templates separated by value marks. The <span style="font-weight: bold;">MATCHFIELD()</span> function tries each template in turn until one is a successful match against <span style="font-style: italic;">string</span>.If a match is found, the <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function can be used to retrieve the value position within the pattern that matched.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">element</span> argument determines which component of <span style="font-style: italic;">string</span> is returned as the <span style="font-weight: bold;">MATCHFIELD()</span> function result. For example,</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">MATCHFIELD(&quot;ABC123DEF&quot;, &quot;0X2N0X&quot;, 2)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>returns the string &quot;12&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MATCHFIELD()</span> function returns a null string if no component of <span style="font-style: italic;">pattern</span> matches <span style="font-style: italic;">string</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">MATCHFIELDS()</span> function performs the same operation on each element of a dynamic array, returning a dynamic array of the same structure in which each element contains the data extracted from the corresponding element of the input <span style="font-style: italic;">string</span> array.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">TEL.NO = &quot;01604-709200&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOCAL.NO = MATCHFIELD(TEL.NO, &quot;0N'-'0N&quot;, 3)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment extracts the local part of a telephone number (709200 in this case). Note that the literal element counts as a component of the string when identifying each element.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the delimiter is multiple characters but not quoted, each character is counted as a separate element:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:452px"><span style="font-family: 'Courier New',Courier,monospace;">MATCHFIELD(&quot;123--456&quot;, &quot;0N'--'0N&quot;, 1)</span></td><td style="border:none;padding:0"><span style="font-family: 'Courier New',Courier,monospace;">returns  123 </span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:452px"><span style="font-family: 'Courier New',Courier,monospace;">MATCHFIELD(&quot;123--456&quot;, &quot;0N'--'0N&quot;, 2)</span></td><td style="border:none;padding:0"><span style="font-family: 'Courier New',Courier,monospace;">returns  -- </span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:452px"><span style="font-family: 'Courier New',Courier,monospace;">MATCHFIELD(&quot;123--456&quot;, &quot;0N'--'0N&quot;, 3)</span></td><td style="border:none;padding:0"><span style="font-family: 'Courier New',Courier,monospace;">returns  456</span></td></tr></table></div><p style="text-indent: -452px; margin: 0 0 0 482px;"><span style="font-family: 'Courier New',Courier,monospace;"> </span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:452px"><span style="font-family: 'Courier New',Courier,monospace;">MATCHFIELD(&quot;123--456&quot;, &quot;0N--0N&quot;, 1)</span></td><td style="border:none;padding:0"><span style="font-family: 'Courier New',Courier,monospace;">returns  123 </span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:452px"><span style="font-family: 'Courier New',Courier,monospace;">MATCHFIELD(&quot;123--456&quot;, &quot;0N--0N&quot;, 2)</span></td><td style="border:none;padding:0"><span style="font-family: 'Courier New',Courier,monospace;">returns  - </span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:452px"><span style="font-family: 'Courier New',Courier,monospace;">MATCHFIELD(&quot;123--456&quot;, &quot;0N--0N&quot;, 3)</span></td><td style="border:none;padding:0"><span style="font-family: 'Courier New',Courier,monospace;">returns  - </span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:452px"><span style="font-family: 'Courier New',Courier,monospace;">MATCHFIELD(&quot;123--456&quot;, &quot;0N--0N&quot;, 4)</span></td><td style="border:none;padding:0"><span style="font-family: 'Courier New',Courier,monospace;">returns  456</span></td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">S1 = 'AB12CD' : @VM : 'EF34GH'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">S2 = MATCHFIELDS(S1, '0A0N0A', 2)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment matches each element of dynamic array S1 against the '0A0N0A' pattern and returns S2 as</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">12</span><span style="font-size: 6pt;">VM</span><span class="f_CodeTopLine">34</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="patterns.htm" class="topiclink">Pattern Matching</a>, <span style="font-weight: bold;"><a href="qmb_parse.htm" class="topiclink">PARSE()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Using Socket Connections</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Sockets,Using socket connections" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "using_socket_connections.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Using Socket Connections</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="exception_handling.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="external_functions.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMBasic includes a set of functions that allow network connections to be established with other systems or other software on the same system. Where supported by the underlying operating system, both IPV4 and IPV6 protocol connections are available though IPV6 support must be enabled using the <a href="configparams.htm#ipv6" class="topiclink">IPV6</a> configuration parameter.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">What is a Socket?</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A socket is one end of a bidirectional link between two software components across a network or within the same system. A socket is established using a network address (typically written as four dot separated values such as 193.118.13.11 for IPV4 addresses or up to eight colon separated hexadecimal values for IPV6 addresses) and a port number. These can be considered as being much like a telephone number and extension. The network address identifies the device on the network to which a connection is to be established and the port number identifies a service within that device.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Just as we can look up a telephone number in a directory, so the internet has domain name servers that fulfil the same role, allowing users to reference a network destination by name instead of its number.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There is a central registry of standard port numbers (e.g. 23 for a telnet connection or 80 for a web server) but these are not rigidly enforced. By default, QM uses ports 4242 and 4243 for terminal and QMClient connections respectively. On Unix and Linux systems, only processes running as root can listen on port numbers less than 1024.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM also supports Unix domain sockets on Unix and Linux systems. These use a file system pathname for the connection in place of a network address.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>A socket may be established in two modes; stream and datagram. A stream connection represents a channel over which a succession of messages may be passed in each direction until connection is broken by one participant. A datagram connection consists of a single message and response pair after which the connection is broken.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are also two protocols used to manage the internal structure of a message; TCP (transmission control protocol) and UDP (user datagram protocol). These are usually paired up with the corresponding socket modes such that TCP is used over stream connections and UDP over datagram connections but the underlying network system allows variations.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Socket Programming for Stream Connections</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Creating a stream connection is very easy. Although one end of this connection is likely to be something other than a QMBasic program, the example below is based on two QMBasic programs communicating across a network.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The server process (the one that is waiting for an incoming connection) starts listening by using a sequence of the form:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SRVR.SKT = CREATE.SERVER.SOCKET(&quot;&quot;, 4000, SKT$STREAM + SKT$TCP)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF STATUS() THEN STOP 'Cannot initialise server socket'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF STATUS() THEN STOP 'Error accepting connection'</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_create_server_socket.htm" class="topiclink">CREATE.SERVER.SOCKET()</a></span> call listens for incoming TCP stream connections on port 4000. The first argument in this function has been specified as a null string to listen on all local addresses. A specific address can be specified if required. SRVR.SKT becomes a socket variable that is effectively monitoring for incoming connections. This is then used in a call to <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION()</a></span> which will wait for a connection to arrive. A timeout period can be specified. On return from this function, if no error has occurred, SKT will be the socket variable for the specific connection. The program could resume listening for further incoming connections using <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION()</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Once a connection has been established, data can be read or written using <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span> and <span style="font-weight: bold;"><a href="qmb_write_socket.htm" class="topiclink">WRITE.SOCKET()</a></span>.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DATA = READ.SOCKET(SKT, 100, SKT$BLOCKING, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = WRITE.SOCKET(SKT, DATA, 0, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This example simply echoes the data back to the other end of the connection. The SKT$BLOCKING flag specifies that <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span> should wait for incoming data rather than returning immediately if there is no data waiting. Note that this waits for any data, not the full 100 bytes specified as the limit. It may be necessary to perform several reads to assemble the data sent from the other end of the connection.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Finally, the connection can be terminated using <span style="font-weight: bold;"><a href="qmb_close_socket.htm" class="topiclink">CLOSE.SOCKET()</a></span>, remembering that the server socket also needs to be closed when no new connections are to be handled. Like all QMBasic variables, if a program terminates and a socket variable is discarded, the socket will be closed automatically.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLOSE.SOCKET SKT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLOSE.SOCKET SRVR.SKT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The client program that wants to connect to this server would be of the form</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SKT = OPEN.SOCKET(&quot;172.16.13.14&quot;, 4000, SKT$BLOCKING)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF STATUS() THEN STOP 'Cannot open socket'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = WRITE.SOCKET(SKT, DATA, 0, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REPLY = READ.SOCKET(SKT, 100, SKT$BLOCKING, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLOSE.SOCKET SKT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Datagram Connections</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A datagram connection is typically used to send a single message to a server which returns a single response and then closes the connection. The domain name servers mentioned above use this form of data exchange when looking up a name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The server program becomes simply:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SKT = CREATE.SERVER.SOCKET(&quot;&quot;, 4000, SKT$DGRM + SKT$UDP)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF STATUS() THEN STOP 'Cannot initialise socket'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DATA = READ.SOCKET(SKT, 100, SKT$BLOCKING, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = WRITE.SOCKET(SKT, DATA, 0, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLOSE.SOCKET SKT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The client program becomes:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SKT = OPEN.SOCKET(&quot;172.16.13.14&quot;, 4000, SKT$DGRM + SKT$UDP + SKT$BLOCKING)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF STATUS() THEN STOP 'Cannot open socket'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = WRITE.SOCKET(SKT, DATA, 0, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REPLY = READ.SOCKET(SKT, 100, SKT$BLOCKING, 0)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLOSE.SOCKET SKT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">Socket Tracing</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Socket tracing enables an application to create a diagnostic report of all data transmitted in either direction via a socket. Tracing is enabled by use of the SKT$INFO.TRACE mode of the <span style="font-weight: bold;"><a href="qmb_set_socket_mode.htm" class="topiclink">SET.SOCKET.MODE()</a></span> function, passing in the pathname of the log file to be created. Any existing data in this log file will be overwritten. Tracing remains active until the socket is closed or a further call to <span style="font-weight: bold;"><a href="qmb_set_socket_mode.htm" class="topiclink">SET.SOCKET.MODE()</a></span> sets the log file pathname to a null string.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The log consists of a simple text file in with entries tagged as SEND or RECV to indicate the direction of data transfer. Each entry shows the data in both hexadecimal and character form.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">Working with Multiple Simultaneous Socket Connections</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If an application needs to work with multiple simultaneous socket connections, handling input on each socket as it occurs, the <span style="font-weight: bold;"><a href="qmb_select_socket.htm" class="topiclink">SELECT.SOCKET()</a></span> function provides a way to wait for an event on any of a collection of sockets.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><a id="inheritance" class="hmanchor"></a><span style="font-weight: bold;">Socket Inheritance</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As an alternative to working with multiple simultaneous socket connections, it is sometimes useful for a network listener process to use <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION()</a></span> to wait for and accept an incoming connection and then to start a separate phantom process to handle that connection. This can be achieved using <span style="font-weight: bold;">socket inheritance</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">After accepting the incoming connection, the server should set the socket into inheritable mode using the SKT$INHERITABLE mode of the <span style="font-weight: bold;"><a href="qmb_set_socket_mode.htm" class="topiclink">SET.SOCKET.MODE()</a></span> function. Then, when the process starts a phantom, the inheritable socket is automatically passed to the new process via the <a href="at_variables.htm#socket" class="topiclink">@SOCKET</a> variable, closing it in the server process. Only a single socket can be put into inheritable mode at one time. Attempting to set inheritability on a second socket will cancel the inheritability of the previous socket. Also, note that server mode sockets opened with <span style="font-weight: bold;"><a href="qmb_create_server_socket.htm" class="topiclink">CREATE.SERVER.SOCKET()</a></span> cannot be made inheritable.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A phantom process that inherits a socket from its parent process consumes a licence as it is considered to be an interactive process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION</a></span>, <span style="font-weight: bold;"><a href="qmb_close_socket.htm" class="topiclink">CLOSE.SOCKET</a></span>, <span style="font-weight: bold;"><a href="qmb_create_server_socket.htm" class="topiclink">CREATE.SERVER.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_open_socket.htm" class="topiclink">OPEN.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_select_socket.htm" class="topiclink">SELECT.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_server_addr.htm" class="topiclink">SERVER.ADDR()</a></span>, <span style="font-weight: bold;"><a href="qmb_set_socket_mode.htm" class="topiclink">SET.SOCKET.MODE()</a></span>, <span style="font-weight: bold;"><a href="qmb_socket_info.htm" class="topiclink">SOCKET.INFO()</a></span>, <span style="font-weight: bold;"><a href="qmb_write_socket.htm" class="topiclink">WRITE.SOCKET()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

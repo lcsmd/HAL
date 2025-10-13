@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>BUILD.INDEX</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="BUILD.INDEX" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "build_index.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">BUILD.INDEX</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="break.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="catalogue.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">BUILD.INDEX</span> command populates an <a href="ak.htm" class="topiclink">alternate key index</a></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">BUILD.INDEX</span> <span style="font-style: italic;">filename</span>  <span style="font-style: italic;">field(s)</span> {<span style="font-weight: bold;">CONCURRENT</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">BUILD.INDEX</span> <span style="font-style: italic;">filename</span>  <span style="font-weight: bold;">ALL</span> {<span style="font-weight: bold;">CONCURRENT</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">filename</span></td><td style="border:none;padding:0">is the name of the file for which the index is to be built.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">field(s)</span></td><td style="border:none;padding:0">is one or more field names for which indices have been created.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">BUILD.INDEX</span> command deletes any existing index data for the named field(s) and populates the index by processing all records currently in the file. The <span style="font-weight: bold;">ALL</span> keyword can be used to build all indices that have been created for the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">BUILD.INDEX</span> is best performed immediately after using <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span> to construct the index. Once the index has been built, it will be maintained automatically whenever changes are made to the file and will be used automatically by the query processor. The <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span> command combines index creation and build into a single operation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Except when used with the <span style="font-weight: bold;">CONCURRENT</span> keyword, the <span style="font-weight: bold;">BUILD.INDEX</span> command requires exclusive access to the file and may take some time to complete for a very large file. It is therefore best executed at quiet times.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CONCURRENT</span> keyword allows an index to be built while the file is in use. There is a small performance overhead for this and the QMBasic <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span>,  <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT</a></span> and <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span> statements may stall waiting for the build to complete.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span>, <span style="font-weight: bold;"><a href="delete_index.htm" class="topiclink">DELETE.INDEX</a></span>, <span style="font-weight: bold;"><a href="disable_index.htm" class="topiclink">DISABLE.INDEX</a></span>, <span style="font-weight: bold;"><a href="list_index.htm" class="topiclink">LIST.INDEX</a></span>, <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span>, <span style="font-weight: bold;"><a href="rebuild_all_indices.htm" class="topiclink">REBUILD.ALL.INDICES</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

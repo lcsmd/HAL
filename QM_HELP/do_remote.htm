@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>DO.REMOTE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="DO.REMOTE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "do_remote.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">DO.REMOTE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="display.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="dump.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DO.REMOTE</span> command executes a command on a remote QM system.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">DO.REMOTE</span> <span style="font-style: italic;">server account command</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal" style="margin: 10px 0 0 30px;"><span style="font-style: italic;">server &nbsp; &nbsp; &nbsp; &nbsp;</span>is the remote server name.</p>
+<p class="p_Normal" style="margin: 10px 0 0 30px;"><span style="font-style: italic;">account &nbsp; &nbsp; &nbsp; &nbsp;</span>is the QM account on the remote server in which the command is to be executed.</p>
+<p class="p_Normal" style="margin: 10px 0 0 30px;"><span style="font-style: italic;">command &nbsp; &nbsp; &nbsp; &nbsp;</span>is the command to be executed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DO.REMOTE</span> command uses the QMClient API to execute a command on a remote server. Output from the command will be displayed on the local system. If the command interacts with the user, input data may be entered from the keyboard. Because QMClient command execution does not support use of the QMBasic KEYIN() and related functions, commands that interact at a character level such as the <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> editor cannot be executed with this command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Because QMClient buffers all output from a command until the command terminates or it requests input, execution of commands that produce large volumes of output data is likely to fail. The <span style="font-weight: bold;">DO.REMOTE</span> command is intended for simple commands only.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">server</span> name provided on the command line must correspond to a server previously defined using <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> or <span style="font-weight: bold;"><a href="set_queue.htm" class="topiclink">SET.PRIVATE.SERVER</a></span>. The <a href="configparams.htm#qmclient" class="topiclink">QMCLIENT</a> configuration parameter on the remote system but be set to zero to allow command execution.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> variable will be returned as set by the executed command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DO.REMOTE QMSERVER SALES PHANTOM RUN OVERNIGHT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above example starts a phantom in the SALES account on the server named QMSERVER to execute a program named OVERNIGHT.</p>
+
+</td></tr></table>
+
+</body>
+</html>

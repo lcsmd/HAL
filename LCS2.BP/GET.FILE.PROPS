@@ -1,0 +1,18 @@
+     FUNCTION GET.FILE.PROPS(INARGS)
+     *
+     * INARGS<1> FILE.PATH
+     * INARGS<2> FILE.NAME
+     * INARGS<3> LIST OF PROPERTIES TO RETURN
+     *
+     * Get-ItemProperty -Path C:\u2\uv\* | Format-list -Property name,lastwritetime,creationtime,LASTACCESSTIME,LENGTH
+     *
+     POWER.STRING = 'GET-ITEMPROPERTY -PATH ':INARGS<1>:' | FORMAT-LIST -PROPERTY ':INARGS<3>
+
+     COMMAND = 'powershell.exe -command &"':POWER.STRING:'"'
+     *COMMAND = 'PowerShell.exe -Command &':POWER.STRING
+     *COMMAND = 'powershell.EXE -command "&':POWER.STRING:'"'
+          PRINT COMMAND
+     EXECUTE 'DOS /C':COMMAND
+
+     EXECUTE "DOS /C ":POWER.STRING CAPTURING CAP
+     RETURN (CAP)

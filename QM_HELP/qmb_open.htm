@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>OPEN</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="OPEN" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_open.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">OPEN</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_on_goto.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_openpath.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">OPEN</span> statement opens a directory file or dynamic file, associating it with a file variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">OPEN</span> {<span style="font-style: italic;">dict.expr</span><span style="font-weight: bold;">,</span>} <span style="font-style: italic;">filename.expr</span> {<span style="font-style: italic;">options</span>} <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">file.var</span></p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">dict.expr</span></td><td style="border:none;padding:0">evaluates to DICT (case insensitive) to open the dictionary portion of the file or to a null string to open the data portion. If omitted or any other value, the data portion is opened. If given as a literal value, it must be enclosed in quotes. The <span style="font-style: italic;">dict.expr</span> is followed by a comma.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">filename.expr</span></td><td style="border:none;padding:0">evaluates to the VOC name of the file to be opened. If given as a literal value, it must be enclosed in quotes.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">control the manner in which the file is opened and may be any combination of:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 211px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:222px"><span style="font-weight: bold;">ENCODING </span><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">Specifies the default encoding mode for directory files. Ignored for other file types.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 211px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:222px"><span style="font-weight: bold;">NON.TRANSACTIONAL</span></td><td style="border:none;padding:0">Ignore transaction boundaries</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 211px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:222px"><span style="font-weight: bold;">NO.MAP</span></td><td style="border:none;padding:0">Suppress id character translations in directory files</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 211px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:222px"><span style="font-weight: bold;">READONLY</span></td><td style="border:none;padding:0">Disable file updates</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 211px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:222px"><span style="font-weight: bold;">SYNC</span></td><td style="border:none;padding:0">Force write all file updates</td></tr></table></div><p style="text-indent: -222px; margin: 0 0 0 433px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the name of the variable to hold the file reference for use in later operations on this file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statements to be executed depending on the outcome of the <span style="font-weight: bold;">OPEN</span> operation.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A file opened by the <span style="font-weight: bold;">OPEN</span> statement may be referenced using the file variable in subsequent statements that operate on the file. The file remains open so long as the file variable remains intact. Overwriting this variable or discard of the variable on return from a subroutine will implicitly close the file. QM has limited support for the concept of a <a href="default_file_variable.htm" class="topiclink">default file variable</a> as found in some other multivalue products.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ENCODING</span> option, applicable only to directory files, sets the default character encoding to be used and overrides any encoding set in the <a href="voc_f.htm" class="topiclink">VOC F-type</a> record. The <span style="font-style: italic;">name</span> may be a quoted literal string or an expression that evaluates to the encoding name. A null string as the encoding name is equivalent to not having the ENCODING clause at all, falling back on use of any encoding specified in the VOC. To disable an encoding set via the VOC record, the encoding name should be specified as &quot;NULL&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">NON.TRANSACTIONAL</span> clause indicates that updates to the file are not to be treated as part of any transaction within which they occur.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">NO.MAP</span> option is relevant only to directory files and suppresses the normal translation of restricted characters in record ids. See <a href="directoryfiles.htm" class="topiclink">directory files</a> for more information.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">READONLY</span> clause opens the file for read only access. Any attempt to write will fail.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SYNC</span> option causes updates to the file to be flushed to disk after every write. This will have a severe impact on performance if the file is updated frequently. See synchronous (forced write) mode in the section that discusses <a href="dynamicfiles.htm" class="topiclink">dynamic files</a> for more details.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the file is opened successfully, the <span style="font-weight: bold;">THEN</span> clause is executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the open fails the <span style="font-weight: bold;">ELSE</span> clause is executed and the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function may be used to determine the cause of the failure. The default action is to set the file variable as unassigned. Use of the OPEN.FAIL.ZERO.FVAR setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive changes this to set the file variable to zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ON ERROR</span> clause is taken only in the case of serious errors such as damage to the file's internal control structures. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will contain an error number. If no <span style="font-weight: bold;">ON ERROR</span> clause is present, a fatal error results in an abort.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM allows more files to be open than the underlying operating system limit. This is achieved by automatically closing files at the operating system level if the &nbsp;limit is reached, retaining information to reopen them automatically when the next access to the file occurs. This process allows greater freedom of application design but has a performance penalty if a large number of files are used frequently.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For dynamic files, the <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function used immediately after the <span style="font-weight: bold;">OPEN</span> returns the modulus of the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPEN &quot;STOCK.FILE&quot; TO STOCK ELSE ABORT &quot;Cannot open file&quot;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement opens a file with VOC name STOCK.FILE. If the open fails, the program aborts with an error message.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_openpath.htm" class="topiclink">OPENPATH</a></span>,<span style="font-weight: bold;"> <a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_opentemp.htm" class="topiclink">OPENTEMP</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

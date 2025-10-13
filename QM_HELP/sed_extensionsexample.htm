@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SED Extensions - An example of a complex extension</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sed_extensionsexample.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SED &nbsp;- &nbsp;An Example of a Complex Extension</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sed_extensionsargpassing.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sed_extensionslocalprocs.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following extension implements a “walk” function which is provided as a standard part of QM in the &amp;SED.EXTENSIONS&amp; file of the QMSYS account.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This function allows you to define a rectangular block of text and use the cursor keys to “walk” it left, right, up or down. As the text block “runs over” other text, this reappears on the opposite side of the block being moved. The walk function is very useful in rearranging tabular data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>To use this extension, first position the cursor at the top left of the block. Execute the extension and move the cursor to the bottom right of the block by using the up, down, left and right functions then press the return key. Further use of the up, down, left and right functions will move the defined block until the return key is pressed again.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">PROC</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">(</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (if %read.only</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(status.msg 'Read only buffer')</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(beep)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(wait.input)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(return)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> )</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> * Step 1 - Get block coordinates</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (set top %line)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (set left %col)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (status.msg 'Set block limits')</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(switch (get.key)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .up.line</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set ct %prefix.count)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (le %line top) (exit))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (retype (trimb %current.line)) &nbsp; &nbsp; * Remove trailing spaces</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (up.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (lt %line.len %col) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* Must extend line</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(retype (pad %current.line %col))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set ct (sub ct 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (eq ct 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .down.line</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set ct %prefix.count)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (gt %line %lines) (exit))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (down.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (lt %line.len %col) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* Must extend line</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(retype (pad %current.line %col))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set ct (sub ct 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (eq ct 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .fwd.char</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set x (add %col %prefix.count))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(if (gt x %line.len) (retype (pad %current.line x)))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(goto.col x)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .back.char</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set x (sub %col %prefix.count))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(if (le x left) (set x left))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(goto.col x)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .newline</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set height (add (sub %line top) 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set width (add (sub %col left) 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(exit)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .cancel</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(status.msg '')</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(stop)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; else</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(beep)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> )</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> * Step 2 - Move the block</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (goto.line top)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (goto.col left)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (status.msg 'Move block')</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(switch (get.key)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .up.line &nbsp;* Move block up</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set rpt %prefix.count)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set lw (sub left 1)) &nbsp; &nbsp; &nbsp; * Width of bit to left of block</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set right (add left width)) * Col of bit to right of block</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set rc (sub right 1)) &nbsp; &nbsp; &nbsp; * Righmost column of block</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (le %line 1) (exit))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (up.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (lt %line.len rc) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* Must extend line</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(retype (pad %current.line rc))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set wrapped.bit (substr %current.line left width))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set ct height)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(down.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set moving.bit (substr %current.line left width))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(up.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(retype (cat (substr %current.line 1 lw) moving.bit</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (substr %current.line right 999999)))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(down.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set ct (sub ct 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(if (eq ct 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (retype (trimb (cat (substr %current.line 1 lw) wrapped.bit</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (substr %current.line right 999999))))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set top (sub top 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (goto.line top)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (goto.col left)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set rpt (sub rpt 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (eq rpt 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .down.line &nbsp;* Move block down</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set rpt %prefix.count)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set lw (sub left 1)) &nbsp; &nbsp; &nbsp; * Width of bit to left of block</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set right (add left width)) * Col of bit to right of block</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set rc (sub right 1)) &nbsp; &nbsp; &nbsp; * Righmost column of block</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (gt (add %line height) %lines) (exit))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (down.line height)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (lt %line.len rc) &nbsp; &nbsp; &nbsp; &nbsp;* Must extend line</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(retype (pad %current.line rc))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set wrapped.bit (substr %current.line left width))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set ct height)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(up.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set moving.bit (substr %current.line left width))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(down.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(retype (cat (substr %current.line 1 lw) moving.bit</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (substr %current.line right 999999)))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(up.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set ct (sub ct 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(if (eq ct 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (retype (trimb (cat (substr %current.line 1 lw) wrapped.bit</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (substr %current.line right 999999))))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set top (add top 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (goto.line top)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (goto.col left)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set rpt (sub rpt 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (eq rpt 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .fwd.char &nbsp; * Move block to the right</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set rpt %prefix.count)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set lw (sub left 1)) &nbsp; &nbsp; &nbsp; * Width of bit to left of block</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set right (add left width)) * Col of bit to right of block</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set x (add right 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set ct height)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(if (lt %line.len right) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* Must extend line</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (retype (pad %current.line right))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set wrapped.bit (substr %current.line right 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set moving.bit (substr %current.line left width))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(retype (cat (substr %current.line 1 lw) wrapped.bit</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; moving.bit</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (substr %current.line x 999999)))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(down.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set ct (sub ct 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(if (eq ct 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set left (add left 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (goto.line top)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (goto.col left)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set rpt (sub rpt 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (eq rpt 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .back.char</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set rpt %prefix.count)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set lw (sub left 1)) &nbsp; &nbsp; &nbsp; * Width of bit to left of block</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set right (add left width)) * Col of bit to right of block</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set rc (sub right 1)) &nbsp; &nbsp; &nbsp; * Righmost column of block</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (le left 1) (exit))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set x (sub lw 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set ct height)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(if (lt %line.len rc) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* Must extend line</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (retype (pad %current.line rc))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set wrapped.bit (substr %current.line lw 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set moving.bit (substr %current.line left width))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(retype (cat (substr %current.line 1 x) moving.bit</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;wrapped.bit</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (substr %current.line right 999999)))</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(down.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(set ct (sub ct 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(if (eq ct 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set left (sub left 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (goto.line top)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (goto.col left)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (set rpt (sub rpt 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (if (eq rpt 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .newline</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(exit)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; case .cancel</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(status.msg '')</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(stop)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; else</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(beep)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> )</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> * Step 3 - Tidy up by trimming trailing spaces from lines in block</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (status.msg '')</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (set ct height)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (loop</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(retype (trimb %current.line))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(down.line 1)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(set ct (sub ct 1))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;(if (eq ct 0) (exit))</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> )</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (goto.line top)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> (goto.col left)</span></p>
+<p><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">)</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

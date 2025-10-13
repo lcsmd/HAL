@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Dates, Times and Epoch Values</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Dates,Epoch values,Times" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "dates_times_and_epoch_values.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Dates, Times and Epoch Values</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="printing.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="error_handling.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Dates</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Dates are usually stored as a number of days since 31 December 1967 (day zero). All dates after that point are represented by positive numbers. All dates before that point are represented by negative numbers. This form of date is used by all multivalue databases and means that there was no issue with the millennium (day 11689). The multivalue world had its own date crisis on 18 May 1995 (day 10000) when developers discovered that they had stored the date as four characters of a composite record id or were sorting dates as character strings rather than numbers such that 17 May 1985 (day 9999) came after 18 May 1995. This potential problem still applies to any application that handles historic dates but the advantages of working with a simple day number internally far outweigh any disadvantages.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A user can see the current date in its internal or external form by using the <span style="font-weight: bold;"><a href="date.htm" class="topiclink">DATE</a></span> command. &nbsp;This command can also translate an arbitrary internal or external form date to its counterpart.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A programmer can access the current date using the <span style="font-weight: bold;"><a href="qmb_date.htm" class="topiclink">DATE()</a></span> function or the <a href="at_variables.htm#date" class="topiclink">@DATE</a> variable. The difference between the two is that <span style="font-weight: bold;"><a href="qmb_date.htm" class="topiclink">DATE()</a></span> returns the internal form of the date when the function is executed whereas <a href="at_variables.htm#date" class="topiclink">@DATE</a> is the internal form of the date when the currently executing command began.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <a href="conv_d.htm" class="topiclink">D conversion code</a> can be used by applications to transform dates between their internal and external form. This conversion code can decode many elements from an internal date including day of the month, day of the week as a number (Monday = 1, Sunday &nbsp;= 7), day of the week as a word, Julian date (days into year), month as a word or a number, ISO week number, quarter of the year, and year. The day of the week as a number can also be calculated simply by taking the remainder from dividing the day number by seven.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Times</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Times are usually stored as a number of seconds since midnight (0 to 86399).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A user can see the current time in its internal or external form by using the <span style="font-weight: bold;"><a href="time.htm" class="topiclink">TIME</a></span> command. &nbsp;This command can also translate an arbitrary internal or external form time to its counterpart.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A programmer can access the current time using the <span style="font-weight: bold;"><a href="qmb_time.htm" class="topiclink">TIME()</a></span> function or the <a href="at_variables.htm#time" class="topiclink">@TIME</a> variable. As described above for dates, the difference between the two is that <span style="font-weight: bold;"><a href="qmb_time.htm" class="topiclink">TIME()</a></span> returns the internal form of the time when the function is executed whereas <a href="at_variables.htm#time" class="topiclink">@TIME</a> is the internal form of the time when the currently executing command began.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <a href="conv_mt.htm" class="topiclink">MT conversion code</a> can be used by applications to transform times between their internal and external form.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Composite Dates and Times</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Sometimes, an application developer may find it useful to have a composite item that represents both the date and time. One way to do this is to store it as the day number * 86400 plus the time, a value that equates to seconds since midnight between 30 and 31 December 1967. The <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key 1005 (SYS$TIMESTAMP) returns the current time in this form.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QMBasic <span style="font-weight: bold;"><a href="qmb_timedate.htm" class="topiclink">TIMEDATE()</a></span> function returns a combination of the current date and time in text format.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Epoch Values</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Today's business applications are frequently used by networked users who may span time zones. The date and time functions mentioned above all return data appropriate to the time zone of the QM process for the user running the application. This time zone is initially determined by the setting of the TZ environment variable at the operating system level on entry to QM but can be modified using the TIMEZONE private configuration parameter or the QMBasic <span style="font-weight: bold;"><a href="qmb_set_timezone.htm" class="topiclink">SET.TIMEZONE</a></span> statement. The time zone can differ from one user &nbsp;to another, thus, if two users in different time zones evaluate the <span style="font-weight: bold;"><a href="qmb_time.htm" class="topiclink">TIME()</a></span> function simultaneously, the returned value will be different. In some cases, storing a date or time that is appropriate only to the user who saved it may be meaningful but it is more likely that we need a way to store dates and times in a time zone independent manner that represents a moment in time. A value stored in this form can then be converted to the local time zone of the user later, giving a local representation of that moment in time such that a single stored time value may be represented differently on the screen for different users.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The underlying principle of this extension to the multivalue date and time handling is that we store the date/time as an <span style="font-weight: bold;">epoch value</span>. This is the number of seconds since the start of January 1970 UTC (closely related to GMT) and is a concept that is widely used in other computer systems. Because epoch values are independent of the user's time zone, the same data can be used unambiguously by all users of the system, regardless of where they are in the world.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In some 32-bit operating systems, epoch values are defined to be 32 bit signed integers. This leads to a limitation that they can only represent times between 13 December 1901 and 19 January 2038. This is a widely recognised issue, potentially more widespread than the &quot;millennium bug&quot;, that will require changes to operating systems and run time libraries.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>More seriously, Windows support for time zones at the application level is very poor. Although QM's epoch handling functions will operate to some extent, the time zone name must include the offset from GMT (which implies that it cannot automatically resolve daylight saving time for an arbitrary date) and Windows is incapable of processing dates before 1 January 1970 as epoch values.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMBasic provides several functions to work with epoch values:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:301px">epoch = <span style="font-weight: bold;"><a href="qmb_epoch.htm" class="topiclink">EPOCH()</a></span></td><td style="border:none;padding:0">Returns the current epoch value.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:301px">date = <span style="font-weight: bold;"><a href="qmb_mvdate.htm" class="topiclink">MVDATE(</a></span><span style="font-style: italic;"><a href="qmb_mvdate.htm" class="topiclink">epoch</a></span><span style="font-weight: bold;"><a href="qmb_mvdate.htm" class="topiclink">)</a></span></td><td style="border:none;padding:0">Returns the date part of an epoch value as a day number relative to 31 December 1967 in the user's time zone.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:301px">time = <span style="font-weight: bold;"><a href="qmb_mvtime.htm" class="topiclink">MVTIME(</a></span><span style="font-style: italic;"><a href="qmb_mvtime.htm" class="topiclink">epoch</a></span><span style="font-weight: bold;"><a href="qmb_mvtime.htm" class="topiclink">)</a></span></td><td style="border:none;padding:0">Returns the time part of an epoch value as a number of seconds since midnight in the user's time zone.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:301px">time.string = <span style="font-weight: bold;"><a href="qmb_mvdate_time.htm" class="topiclink">MVDATE.TIME(</a></span><span style="font-style: italic;"><a href="qmb_mvdate_time.htm" class="topiclink">epoch</a></span><span style="font-weight: bold;"><a href="qmb_mvdate_time.htm" class="topiclink">)</a></span></td><td style="border:none;padding:0">Returns the date and time values as a string with an underscore between the two elements.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:301px">epoch = <span style="font-weight: bold;"><a href="qmb_mvepoch.htm" class="topiclink">MVEPOCH(</a></span><span style="font-style: italic;"><a href="qmb_mvepoch.htm" class="topiclink">time.string</a></span><span style="font-weight: bold;"><a href="qmb_mvepoch.htm" class="topiclink">)</a></span></td><td style="border:none;padding:0">Returns the epoch value for the given time string in the form returned by <span style="font-weight: bold;">MVDATE.TIME()</span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:300px">epoch = <span style="font-weight: bold;"><a href="qmb_mvepoch.htm" class="topiclink">MVEPOCH(</a></span><span style="font-style: italic;"><a href="qmb_mvepoch.htm" class="topiclink">date</a></span><span style="font-weight: bold;"><a href="qmb_mvepoch.htm" class="topiclink">, </a></span><span style="font-style: italic;"><a href="qmb_mvepoch.htm" class="topiclink">time</a></span><span style="font-weight: bold;"><a href="qmb_mvepoch.htm" class="topiclink">)</a></span></td><td style="border:none;padding:0">Returns the epoch value for the given date and time values.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <a href="conv_e.htm" class="topiclink">E conversion code</a> provides the combined facilities of the D and MT conversion codes plus several features that only apply to epoch values.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Linux/Mac Time Zones</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In Linux and Mac systems, time zone names are taken from the Olson Database and are constructed from an area and location pair (e.g. America/New_York). In some cases, the location element is further divided (e.g. America/Indiana/Indianapolis). Names such as GMT, EST, CET, etc are also recognised.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For a detailed discussion of time zones, see <a href="http://en.wikipedia.org/wiki/Zoneinfo" target="_blank" class="weblink">http://en.wikipedia.org/wiki/Zoneinfo</a> and <a href="http://en.wikipedia.org/wiki/List_of_zoneinfo_time_zones" target="_blank" class="weblink">http://en.wikipedia.org/wiki/List_of_zoneinfo_time_zones</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The Olson Database is part of the operating system, not QM. Updating this database is automatic on some platforms (e.g. Mac) but may require actions by the system administrator on some other platforms.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">AIX Time Zones</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>AIX provides partial support for time zones. The default time zone is taken from the TZ environment variable. Any time zone set using the <span style="font-weight: bold;"><a href="config.htm" class="topiclink">CONFIG</a></span> command or the QMBasic <span style="font-weight: bold;"><a href="qmb_set_timezone.htm" class="topiclink">SET.TIMEZONE</a></span> statement must be in the format required by AIX (e.g. EST5 or EST5EDT). The Z element of the <a href="conv_e.htm" class="topiclink">E conversion code</a> (time zone name) will return a null string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Windows Time Zones</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Windows support for time zones is very limited. The time zone name is of the form</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-style: italic;">z</span>{+ | -}<span style="font-style: italic;">d</span>{<span style="font-style: italic;">s</span>}</p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-style: italic;">z</span></td><td style="border:none;padding:0">is a three character string representing the name of the current time zone. For example, the string “CET” could be used to represent Central European time but Windows make no use of the actual name.</td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-style: italic;">d</span></td><td style="border:none;padding:0">is an optionally signed item with one or two digits specifying the local time zone’s difference from GMT in hours. Positive numbers adjust westward from GMT and negative numbers adjust eastward from GMT. (e.g. EST5, PST+8, CET-1).</td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-style: italic;">s</span></td><td style="border:none;padding:0">is an optional three character field that represents a name for the local time zone when daylight saving time is in effect.</td></tr></table></div>
+</td></tr></table>
+
+</body>
+</html>

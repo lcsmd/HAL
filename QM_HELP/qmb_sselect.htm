@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SSELECT, SSELECTN, SSELECTV</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SSELECT,SSELECTN,SSELECTV" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_sselect.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SSELECT, SSELECTN, SSELECTV</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_squote.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_status.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SSELECT</span> statement creates a select list containing all record keys from a file sorted into order.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">SSELECT</span> <span style="font-style: italic;">file.var</span> {<span style="font-weight: bold;">TO</span> <span style="font-style: italic;">list.no</span>} {<span style="font-style: italic;">modes</span>} {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">SSELECTN</span> <span style="font-style: italic;">file.var</span> {<span style="font-weight: bold;">TO</span> <span style="font-style: italic;">list.no</span>} {<span style="font-style: italic;">modes</span>} {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">SSELECTV</span> <span style="font-style: italic;">file.var</span> {<span style="font-weight: bold;">TO</span> <span style="font-style: italic;">list.var</span>} {<span style="font-style: italic;">modes</span>} {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with an open file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">list.no</span></td><td style="border:none;padding:0">is the select list number of the list to be created. If omitted, select list zero is used.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">list.var</span></td><td style="border:none;padding:0">is the select list variable to receive the list. Select list variables can be processed by the <span style="font-weight: bold;"><a href="qmb_readnext.htm" class="topiclink">READNEXT</a></span> statement as an alternative to using numbered select lists. If the <span style="font-weight: bold;">TO</span> clause is omitted, a default select list variable is used.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">modes</span></td><td style="border:none;padding:0">is any combination of the following optional qualifiers:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 209px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:182px">DESCENDING</td><td style="border:none;padding:0">Sorts into descending order</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 209px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:182px">NO.CASE</td><td style="border:none;padding:0">Performs a case insensitive sort</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 209px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:182px">RIGHT.ALIGNED</td><td style="border:none;padding:0">Sorts data in right aligned mode</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statement(s) to be executed if a fatal error occurs.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SSELECT</span> and <span style="font-weight: bold;">SSELECTN</span> statements construct a list of record keys in the file open as <span style="font-style: italic;">file.var</span> and store it as an active select list <span style="font-style: italic;">list.no</span> replacing any previously active list. If there are no records in the file, an empty list is created. By default, keys will be stored in left justified ascending order. The optional <span style="font-weight: bold;">RIGHT.ALIGNED</span> qualifier causes the list to be sorted as right aligned data. The optional <span style="font-weight: bold;">DESCENDING</span> qualifier causes the list to be sorted into descending order. The optional <span style="font-weight: bold;">NO.CASE</span> qualifier performs a case insensitive sort.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>|The <span style="font-weight: bold;">SSELECTV</span> statement constructs the list in the same way but stores it in a select list variable which can be processed by a subsequent use of <span style="font-weight: bold;"><a href="qmb_readnext.htm" class="topiclink">READNEXT</a></span>. If the <span style="font-weight: bold;">TO</span> clause is omitted, the default select list (numbered list 0) is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <a href="at_variables.htm#selected" class="topiclink">@SELECTED</a> variable is set to the number of records selected.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with other database products, the action of the <span style="font-weight: bold;">SSELECT</span> statement can be changed to produce a select list variable in the same was as <span style="font-weight: bold;">SSELECTV</span>. This is achieved by setting the <span style="font-weight: bold;">SSELECTV</span> option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">ON ERROR</span> clause is executed in the event of a fatal error. This covers such situations as disk hardware errors and faults in the internal structure of the file. &nbsp;The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return a value relating to the cause of the error. If no <span style="font-weight: bold;">ON ERROR</span> clause is present, a fatal error will result in an abort.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Except where the <span style="font-weight: bold;">ON ERROR</span> clause is taken, the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Use of a Dynamic Array instead of a File Variable</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with Pick style environments, QM also supports a variation on <span style="font-weight: bold;">SSELECT</span> where the <span style="font-style: italic;">file.var</span> is replaced by a dynamic array in which each field becomes an entry in the target select list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SSELECT STAFF TO 7</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement creates a sorted list of the records on the file with file variable STAFF and saves it as active select list 7.</p>
+
+</td></tr></table>
+
+</body>
+</html>

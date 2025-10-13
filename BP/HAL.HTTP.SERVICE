@@ -1,0 +1,130 @@
+* HAL.HTTP.SERVICE - HTTP endpoints for HAL assistant
+* Handles incoming HTTP requests from the AI server
+
+SUBROUTINE HAL.HTTP.SERVICE(REQUEST, RESPONSE)
+$INSERT COMMON
+$INSERT SYSCOM
+$INSERT BP OPENQM.RESTFUL.SERVICE
+
+* Initialize response
+RESPONSE = ''
+
+* Parse request path and method
+PATH = REQUEST<HTTPREQ.PATH>
+METHOD = REQUEST<HTTPREQ.METHOD>
+
+BEGIN CASE
+    CASE PATH = '/hal/process' AND METHOD = 'POST'
+        GOSUB PROCESS.REQUEST
+        
+    CASE PATH = '/hal/store_response' AND METHOD = 'POST'
+        GOSUB STORE.RESPONSE
+        
+    CASE PATH = '/hal/health' AND METHOD = 'GET'
+        GOSUB HEALTH.CHECK
+        
+    CASE 1
+        RESPONSE = RAISE.ERROR('Invalid endpoint', 404)
+END CASE
+
+RETURN
+
+*************************************************************************
+PROCESS.REQUEST:
+* Handle incoming text processing request
+BODY = REQUEST<HTTPREQ.BODY>
+
+* Parse JSON request
+CALL JSON.DECODE(BODY, REQ.OBJ, JSTAT)
+IF JSTAT THEN
+    RESPONSE = RAISE.ERROR('Invalid JSON request', 400)
+    RETURN
+END
+
+* Extract text and timestamp
+TEXT = REQ.OBJ<'text'>
+TIMESTAMP = REQ.OBJ<'timestamp'>
+
+IF TEXT = '' THEN
+    RESPONSE = RAISE.ERROR('Missing text parameter', 400)
+    RETURN
+END
+
+* Process request through HAL
+CALL HAL.PROCESS(BODY, HAL.RESPONSE)
+
+* Set response headers
+RESPONSE<HTTPRES.HEADERS,1> = 'Content-Type: application/json'
+RESPONSE<HTTPRES.STATUS> = 200
+RESPONSE<HTTPRES.BODY> = HAL.RESPONSE
+
+RETURN
+
+*************************************************************************
+STORE.RESPONSE:
+* Store LLM response in chat history
+BODY = REQUEST<HTTPREQ.BODY>
+
+* Parse JSON request
+CALL JSON.DECODE(BODY, REQ.OBJ, JSTAT)
+IF JSTAT THEN
+    RESPONSE = RAISE.ERROR('Invalid JSON request', 400)
+    RETURN
+END
+
+* Extract response and timestamp
+LLM.RESPONSE = REQ.OBJ<'response'>
+TIMESTAMP = REQ.OBJ<'timestamp'>
+
+IF LLM.RESPONSE = '' THEN
+    RESPONSE = RAISE.ERROR('Missing response parameter', 400)
+    RETURN
+END
+
+* Open chat history
+OPEN 'HAL.CHAT.HISTORY' TO F.HISTORY ELSE
+    CREATE F.HISTORY ON ''
+END
+
+* Generate unique ID for chat entry
+NOW = OCONV(DATE(), 'D4/') : TIME()
+CHAT.ID = NOW : '-' : RND(99999)
+
+* Create record
+REC = ''
+REC<1> = LLM.RESPONSE   * Response text
+REC<2> = TIMESTAMP      * Unix timestamp
+REC<3> = 'HAL'          * Speaker
+
+* Write record
+WRITE REC TO F.HISTORY, CHAT.ID
+
+* Set response
+RESPONSE<HTTPRES.STATUS> = 200
+RESPONSE<HTTPRES.BODY> = '{"status":"success"}'
+
+RETURN
+
+*************************************************************************
+HEALTH.CHECK:
+* Simple health check endpoint
+RESPONSE<HTTPRES.STATUS> = 200
+RESPONSE<HTTPRES.BODY> = '{"status":"healthy"}'
+RETURN
+
+*************************************************************************
+RAISE.ERROR:
+* Create error response
+ERR.MSG = SENTENCE
+ERR.CODE = STATUS
+
+ERR.OBJ = ''
+ERR.OBJ<'error'> = ERR.MSG
+ERR.OBJ<'code'> = ERR.CODE
+
+CALL JSON.ENCODE(ERR.OBJ, ERR.JSON, JSTAT)
+
+RESPONSE<HTTPRES.STATUS> = ERR.CODE
+RESPONSE<HTTPRES.BODY> = ERR.JSON
+
+RETURN ERR.JSON

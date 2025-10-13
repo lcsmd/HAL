@@ -1,0 +1,10 @@
+      PROGRAM fix.invent
+      open 'invent' to invent else print 'invent';stop
+      select invent
+      loop while readnext aa do
+         read buff from invent,aa then
+            buff<10> = ICONV(BUFF<10>,'MD4')
+            BUFF<11> = ICONV(BUFF<11>,'MD2')
+            WRITE BUFF ON INVENT,AA
+         END
+      REPEAT

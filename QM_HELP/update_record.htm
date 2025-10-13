@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>UPDATE.RECORD</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="UPDATE.RECORD" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "update_record.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">UPDATE.RECORD</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="update_licence.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="ur_batch.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">UPDATE.RECORD</span> simplifies amendment of database files. In <span style="font-weight: bold;"><a href="ur_batch.htm" class="topiclink">batch mode</a></span>, it allows the same update to be made to multiple records in a file with just one command, possibly changing the content of more than one field. In <span style="font-weight: bold;"><a href="ur_visual.htm" class="topiclink">visual mode</a></span>, it displays a full screen image of fields from the data record in their external (converted) form, allowing modifications to be entered as the cursor is moved around the displayed data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">UPDATE.RECORD</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file</span> {<span style="font-weight: bold;">USING</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">dict</span>}</p>
+<p style="margin: 0 0 0 90px;"><span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">listno</span></p>
+<p style="margin: 0 0 0 90px;"><span style="font-weight: bold;">ALL</span></p>
+<p style="margin: 0 0 0 90px;"><span style="font-style: italic;">id</span> { <span style="font-style: italic;">id</span> ...}</p>
+<p style="margin: 0 0 0 90px;"><span style="font-weight: bold;">INQUIRING</span> {<span style="font-style: italic;">prompt</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Batch mode:</span></p>
+<p style="margin: 0 0 0 90px;"><span style="font-style: italic;">field</span>,<span style="font-style: italic;">value</span> {<span style="font-weight: bold;">CONV</span> &quot;<span style="font-style: italic;">spec</span>&quot;} { <span style="font-style: italic;">field</span>,<span style="font-style: italic;">value</span> ...}</p>
+<p style="margin: 0 0 0 90px;"><span style="font-weight: bold;">DELETING</span> <span style="font-style: italic;">field</span></p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">COUNT.SUP</span>}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">VERIFY.SUP</span>}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">EXCLUSIVE</span>}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">WAIT</span>} &nbsp;or &nbsp;{<span style="font-weight: bold;">NO.WAIT</span>}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">CREATING</span>}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">OVERWRITING</span>}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">REPORTING</span>}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">LPTR</span> {<span style="font-style: italic;">n</span>}}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">NO.PAGE</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Visual mode:</span></p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">ID.SUP</span>}</p>
+<p style="margin: 0 0 0 90px;">{<span style="font-weight: bold;">COL.SUP</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Identifying the file to be processed:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">{<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file</span></td><td style="border:none;padding:0">specifies the file to be updated. The optional <span style="font-weight: bold;">DICT</span> keyword indicates that the dictionary portion of the file is to be updated.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">USING</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">dict</span></td><td style="border:none;padding:0">specifies that <span style="font-style: italic;">dict</span> is to be used as the dictionary for <span style="font-style: italic;">file</span>. The optional <span style="font-weight: bold;">DICT</span> keyword uses the dictionary portion of <span style="font-style: italic;">dict</span>.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Selection of the records to be updated:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">listno</span></td><td style="border:none;padding:0">specifies that select list <span style="font-style: italic;">listno</span> (0 to 10) is to be used as the list of records to process.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">ALL</span></td><td style="border:none;padding:0">specifies that all records in <span style="font-style: italic;">file</span> are to be updated. <span style="font-weight: bold;">UPDATE.RECORD</span> will use select list 0 internally to generate the list of records to be processed.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-style: italic;">id</span> { <span style="font-style: italic;">id</span> ...}</td><td style="border:none;padding:0">is a list of specific record ids to process. Record ids should be enclosed in single or double quotes if they contain spaces or commas or match command keywords.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">INQUIRING</span> {<span style="font-style: italic;">prompt</span>}</td><td style="border:none;padding:0">causes <span style="font-weight: bold;">UPDATE.RECORD</span> to prompt for the id of each record to be processed. The <span style="font-style: italic;">prompt</span> string is optional and must be enclosed in single or double quotes if it contains spaces or commas. If omitted, a default of &quot;Record id&quot; is used. Inquiry mode is the default in visual mode if no record ids are specified and the <span style="font-weight: bold;">ALL</span> and <span style="font-weight: bold;">FROM</span> keywords are not used.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Only one of these selection styles can be used in a single command. If none of the above record selection criteria is given and the default select list is active, that list is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Specifying the updates to be made in batch mode:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-style: italic;">field</span></td><td style="border:none;padding:0">identifies the field to be updated. The value given may be a numeric field position or the name of an A, D or S-type item from the dictionary.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-style: italic;">value</span></td><td style="border:none;padding:0">identifies the new value to be placed in <span style="font-style: italic;">field</span>. This may be a number, a quoted string, the name of a field or I-type from the dictionary or the keyword <span style="font-weight: bold;">EVAL</span> followed by an I-type expression in either single or double quotes.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">CONV</span> &quot;<span style="font-style: italic;">spec</span>&quot;</td><td style="border:none;padding:0">Allows use of a non-default conversion code.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">DELETING</span> <span style="font-style: italic;">field</span></td><td style="border:none;padding:0">Deletes the specified <span style="font-style: italic;">field</span> from the data record, moving all subsequent fields back by one position.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Options controlling the action of <span style="font-weight: bold;">UPDATE.RECORD</span> in batch mode:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">COUNT.SUP</span></td><td style="border:none;padding:0">suppresses the normal report of the number of records processed.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">VERIFY.SUP</span></td><td style="border:none;padding:0">suppresses the confirmation prior to an update using a select list or the <span style="font-weight: bold;">ALL</span> keyword.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">EXCLUSIVE</span></td><td style="border:none;padding:0">causes <span style="font-weight: bold;">UPDATE.RECORD</span> to lock the entire file during the update to ensure exclusive access. If the file cannot be locked, <span style="font-weight: bold;">UPDATE.RECORD</span> will display a message and terminate unless the <span style="font-weight: bold;">WAIT</span> keyword is also given, in which case it will wait until it can obtain exclusive access.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">WAIT</span></td><td style="border:none;padding:0">can be used with the <span style="font-weight: bold;">EXCLUSIVE</span> keyword as described above. It can also be used alone to specify that <span style="font-weight: bold;">UPDATE.RECORD</span> should wait whenever it encounters a locked record.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">NO.WAIT</span></td><td style="border:none;padding:0">turns off <span style="font-weight: bold;">WAIT</span>. It is not normally required as this is the default. <span style="font-weight: bold;">UPDATE.RECORD</span> honours the last <span style="font-weight: bold;">WAIT</span> or <span style="font-weight: bold;">NO.WAIT</span> on the command line.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">CREATING</span></td><td style="border:none;padding:0">causes <span style="font-weight: bold;">UPDATE.RECORD</span> to create records that are not found in the file.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">OVERWRITING</span></td><td style="border:none;padding:0">allows overwriting of existing records when changing the record id.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">REPORTING</span></td><td style="border:none;padding:0">produces a detailed report of each update.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">LPTR</span> {<span style="font-style: italic;">n</span>}</td><td style="border:none;padding:0">directs the commentary from <span style="font-weight: bold;">UPDATE.RECORD</span> to the specified print unit. Print unit 0 is used if <span style="font-style: italic;">n</span> is omitted.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 232px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 22px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">NO.PAGE</span></td><td style="border:none;padding:0">suppresses pagination of output to the display.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The sequence of the command components must be file specification, record ids, fields and values, options.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Options controlling the action of <span style="font-weight: bold;">UPDATE.RECORD</span> in visual mode:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">ID.SUP</span></td><td style="border:none;padding:0">suppresses display of the field names.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px"><span style="font-weight: bold;">COL.SUP</span></td><td style="border:none;padding:0">suppresses display of the display names (column headings in a query report).</td></tr></table></div>
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Object Oriented Programming</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Object orientated programming" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbasic_objects.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Object Oriented Programming </span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="default_file_variable.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="exception_handling.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMBasic includes support for object orientated programming. Users familiar with other object oriented languages will find that QM offers many of the same concepts but, because they are integrated into an existing programming environment, there may be some significant differences in usage.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">What is an Object?</span></p>
+<p><span style="width:48px;display:inline-block">&nbsp;</span></p>
+<p>An object is a combination of data and program operations that can be applied to it. An object is defined by a <span style="font-weight: bold;">class module</span>, a QMBasic program that is introduced by the <span style="font-weight: bold;"><a href="qmb_class.htm" class="topiclink">CLASS</a></span> statement and contains the definitions of persistent data items and public subroutines and functions. An <span style="font-weight: bold;">object</span> is a run time instance of the class, <span style="font-weight: bold;">instantiated</span> by use of the <span style="font-weight: bold;"><a href="qmb_object.htm" class="topiclink">OBJECT()</a></span> function</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ = OBJECT(&quot;MYCLASS&quot;)</span></p>
+<p>where &quot;MYCLASS&quot; is the catalogue name of the class module. The OBJ variable becomes a reference to an <span style="font-weight: bold;">instance</span> of the class.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A second use of the <span style="font-weight: bold;"><a href="qmb_object.htm" class="topiclink">OBJECT()</a></span> function with the same catalogue name will create a second instance of the object. On the other hand, copying the object variable creates a second reference to the same instance. A clone of an existing object can be created by use of the <span style="font-weight: bold;">OBJECT()</span> function in which the argument is a reference to the object that is to be cloned.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span class="f_BoldSubheading">Class Module Variables</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p>There are six styles of data storage available in a class module.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Public variables</span> are declared using the <span style="font-weight: bold;"><a href="qmb_public.htm" class="topiclink">PUBLIC</a></span> statement, for example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">PUBLIC A, B(5)</span></p>
+<p class="p_Normal">at the start of the class module before any executable program statements. Each instance of a class has its own separate public variables but the values persist between entries to that object instance. Public variables are initially unassigned and may be accessed from within the class module or, subject to rules set out below, from outside.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Private variables</span> are declared using the <span style="font-weight: bold;"><a href="qmb_private.htm" class="topiclink">PRIVATE</a></span> statement, for example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">PRIVATE C, D, E</span></p>
+<p class="p_Normal">at the start of the class module before any executable program statements. Each instance of a class has its own separate private variables but the values persist between entries to the object instance. Private variables are initially unassigned and may be accessed only from within the class module.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Restricted variables</span> are declared using the <span style="font-weight: bold;"><a href="qmb_restricted.htm" class="topiclink">RESTRICTED</a></span> statement, for example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">RESTRICTED C, D, E</span></p>
+<p class="p_Normal">at the start of the class module before any executable program statements. They are identical to public variables except that they are only visible to objects that appear in the inheritance tree of the object referencing them.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Shared variables</span> are declared using the <span style="font-weight: bold;"><a href="qmb_shared.htm" class="topiclink">SHARED</a></span> statement, for example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">SHARED PUBLIC F, G(10), H</span></p>
+<p class="p_Normal">at the start of the class module before any executable program statements. Each instance of the same class shares the same variables. Values stored in shared variables persist until the last reference to the class is discarded. Shared variables are initially unassigned and may be defined as either private or public.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Common variables</span> are declared using the <span style="font-weight: bold;"><a href="qmb_common.htm" class="topiclink">COMMON</a></span> statement, for example,</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">COMMON I, J(8</span><span class="f_CodeSingleLine">)</span></p>
+<p class="p_Normal">or</p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">COMMON /NAME/ K, L</span></p>
+<p class="p_Normal">at the start of the class module before any executable program statements. As with use of common variables in other program module types, common variables are accessible to all programs, subroutines, functions and objects within the QM process. Common variables are initially set to zero unless the UNASSIGNED.COMMON setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive is enabled. Variables in an unnamed common are discarded on return to the command processor, those in named common persist until the QM session terminates or the common is explicitly deleted using the <span style="font-weight: bold;"><a href="delete_common.htm" class="topiclink">DELETE.COMMON</a></span> command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Local variables</span> are either not declared at all or are declared using a <span style="font-weight: bold;"><a href="qmb_dim.htm" class="topiclink">DIMENSION</a></span> (<span style="font-weight: bold;">DIM</span>) statement. As in other program types, they exist only while the object instance in which they appear is active and are discarded on leaving the program. Local variables are accessible only from within the object instance and are initially unassigned.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Private and public data items are frequently used to store what other object oriented programming environments would term <span style="font-weight: bold;">property</span> values. These data items are initially unassigned unless an initialisation value is present, for example</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">PRIVATE WIDTH = 80</span></p>
+<p>which will set WIDTH to 80 prior to execution of the <span style="font-weight: bold;">CREATE.OBJECT</span> subroutine described below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Public Functions and Subroutines</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Another important difference between class modules and other program types is that a class module usually has multiple entry points, each corresponding to a <span style="font-weight: bold;">public function</span> or <span style="font-weight: bold;">public subroutine</span>. Simply calling the class module by its catalogue name will generate a run time error.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Just as with conventional QMBasic functions and subroutines, a public function must return a value to its caller whereas a public subroutine does not (though it can do so by updating its arguments).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A public function is defined by a group of statements such as</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PUBLIC FUNCTION XX(A,B,C)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RETURN Z</span></p>
+<p style="margin: 0 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p>where XX is the function name, A, B and C are the arguments (optional), and Z is the value to be returned to the caller.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A public subroutine is defined by a group of statements such as</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PUBLIC SUBROUTINE XX(A,B,C)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RETURN</span></p>
+<p style="margin: 0 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p>where XX is the subroutine name and A, B and C are the arguments (optional). A whole matrix can be referenced as an argument by following it with the dimension values. For example,</p>
+<p style="margin: 6px 0 6px 29px;"><span style="font-family: 'Courier New',Courier,monospace;">PUBLIC SUBROUTINE CALC(CLIENT, CLI.REC(1), TOTVAL)</span></p>
+<p>In this example, the dimension value has been shown as 1 to emphasise that the actual value is irrelevant. The compiler uses this purely to determine that CLI.REC is a single dimensional matrix, possibly representing a database record read using <span style="font-weight: bold;"><a href="qmb_matread.htm" class="topiclink">MATREAD</a></span>. The alternative syntax used with <span style="font-weight: bold;"><a href="qmb_subroutine.htm" class="topiclink">SUBROUTINE</a></span> statements by prefixing the matrix name with <span style="font-weight: bold;"><a href="qmb_mat.htm" class="topiclink">MAT</a></span> and using a  <span style="font-weight: bold;"><a href="qmb_dim.htm" class="topiclink">DIMENSION</a></span> statement to set dimensionality is not available for public subroutines and functions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The number of arguments in a public function or subroutine is normally limited to 32 but this can be increased using the MAX.ARGS option of the <span style="font-weight: bold;"><a href="qmb_class.htm" class="topiclink">CLASS</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Both styles of public routine allow use of the VAR.ARGS qualifier after the argument list to indicate that it is of variable length. Argument variables for which the caller has provided no value will be unassigned. The <span style="font-weight: bold;"><a href="qmb_arg_count.htm" class="topiclink">ARG.COUNT()</a></span> function can be used to find the actual number of arguments passed. A special syntax of three periods (...) used as the final argument specifies that unnamed scalar arguments are to be added up to the limit on the number of arguments. These can be accessed using the <span style="font-weight: bold;"><a href="qmb_arg.htm" class="topiclink">ARG()</a></span> function and the <span style="font-weight: bold;"><a href="qmb_set_arg.htm" class="topiclink">SET.ARG</a></span> statement. See the  <span style="font-weight: bold;"><a href="qmb_public.htm" class="topiclink">PUBLIC</a></span> statement for more details of this feature.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>It is valid for a class module to contain combinations of a <span style="font-weight: bold;">PUBLIC</span> variable, <span style="font-weight: bold;">PUBLIC SUBROUTINE</span> and <span style="font-weight: bold;">PUBLIC FUNCTION</span> with the same name. &nbsp;If there is a public subroutine of the same name as a public variable, the subroutine will be executed when a program using the object attempts to set the value of the public item. If there is a public function of the same name as a public variable, the function will be executed when a program using the object attempts to retrieve the value of the public item. If both are present, the public property variable will never be directly visible to programs using the object.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Sometimes an application developer may wish a public variable to be visible to users of the class for reading but not for update. Although this could be achieved by use of a dummy <span style="font-weight: bold;">PUBLIC SUBROUTINE</span> that ignores updates or reports an error, public variables may be defined as read-only by including the <span style="font-weight: bold;">READONLY</span> keyword after the variable declaration:</p>
+<p style="margin: 6px 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">PUBLIC A READONLY</span></p>
+<p>or</p>
+<p style="margin: 6px 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">PUBLIC B(5) READONLY</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Restricted Functions and Subroutines</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">These are declared using the <span style="font-weight: bold;"><a href="qmb_restricted.htm" class="topiclink">RESTRICTED</a></span> statement and are identical to public items subject to the inheritance rule described above for restricted variables.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Referencing an Object</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>References to an object require two components, the object variable and the name of a property or method within that object. The syntax for such a reference is</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;PROPERTY</span></p>
+<p>or, if arguments are required,</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;PROPERTY(ARG1, ARG2, ...)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Any argument may reference a whole matrix by prefixing the matrix name with the keyword <span style="font-weight: bold;">MAT</span>, for example</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;CALC(CLIENT, MAT CLI.REC, TOTVAL)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The names of public variables, subroutines and functions in object references are case insensitive, even if the class module is compiled with the CASE.SENSITIVE setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>When used in a QMBasic expression, for example,</p>
+<p style="margin: 6px 0 6px 29px;"><span style="font-family: 'Courier New',Courier,monospace;">ITEMS += OBJ-&gt;LISTCOUNT</span></p>
+<p>the object reference returns the value of the named item, in this case LISTCOUNT. This may be a public variable or the value of a public function. If the same name is defined as both, the public function is executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When used on the left of an assignment, for example,</p>
+<p style="margin: 6px 0 6px 29px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;WIDTH = 70</span></p>
+<p>the object reference sets the value of the named item, in this case WIDTH. This may be a public variable or the value of a public subroutine that takes the value to be assigned as an argument. If the same name is defined as both, the public subroutine is executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This dual role of public variables and functions or subroutines makes it very easy to write a class module in which, for example, a property value may be retrieved without execution of any program statements inside the object but setting the value executes a subroutine to validate the new value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Using Dimensions and Arguments</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Public variables may be dimensioned arrays. Subscripts for index values are handled in the usual way:</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;MODE(3) = 7</span></p>
+<p>where MODE has been defined as a single dimensional array. If MODE has an associated public subroutine, the indices are passed via the arguments and the new value as the final argument. Thus, if MODE was defined as</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PUBLIC SUBROUTINE MODE(A,B)</span></p>
+<p>the above statement would pass in A as 3 and B as 7.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Execution of Object Methods</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Other object oriented languages usually provide <span style="font-weight: bold;">methods</span>, subroutines that can be executed from calling programs to do some task. QMBasic class modules do this by using public subroutines. The calling program uses a statement of the form:</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;RESET</span></p>
+<p>where RESET is the name of the public subroutine representing the method. Again, arguments are allowed:</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;RESET(5)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This leads to an apparent syntactic ambiguity between assigning values to public properties and execution of methods. Actually, there is no ambiguity but the following two statements are semantically identical:</p>
+<p style="margin: 6px 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;X(2,3)</span></p>
+<p style="margin: 0 0 6px 29px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;X(2) = 3</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Expressions as Property Names</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>All of the above examples have used literal (constant) property names. QMBasic allows expressions as property names in all contexts using a syntax</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ-&gt;(</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">expr</span><span style="font-family: 'Courier New',Courier,monospace;">)</span></p>
+<p>where <span style="font-style: italic;">expr</span> is an expression that evaluates to the property name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Object References in Subroutine Calls</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Any reference to an object element in a subroutine call, for example</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CALL SUBNAME(OBJ-&gt;VAR)</span></p>
+<p>is considered to be read access and is passed by value. If the subroutine updates the argument, this will not update the object property value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">The ME Token</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Sometimes an object needs to reference itself. The reserved data name ME can be used for this purpose:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">ME-&gt;RESET</span></p>
+<p class="p_Normal">Note that setting a private or public variable inside the object to the ME reference, for example</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">PUBLIC MYSELF</span></p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">MYSELF = ME</span></p>
+<p class="p_Normal">would create a situation where the object can never be discarded as there is always a reference to it.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">The CREATE.OBJECT Subroutine</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When an object is instantiated using the <span style="font-weight: bold;"><a href="qmb_object.htm" class="topiclink">OBJECT()</a></span> function, part of this process checks whether there is a public subroutine named CREATE.OBJECT and, if so, executes it. This can be used, for example, to preset default values in public and private variables. Up to 32 arguments may be passed into this subroutine by extending the <span style="font-weight: bold;"><a href="qmb_object.htm" class="topiclink">OBJECT()</a></span> call to include these after the catalogue name of the class module.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">The DESTROY.OBJECT Subroutine</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An object remains in existence until the last object variable referencing it is discarded or overwritten. At this point, the system checks for a public subroutine named DESTROY.OBJECT and, if it exists, it is executed. This subroutine is guaranteed to be executed, even if the object variable is discarded as part of a program failure that causes an abort. The only situation where an object can cease to exist without this subroutine running to completion is if the DESTROY.OBJECT subroutine itself aborts.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">The MAIN Subroutine</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If a class module includes a public subroutine named MAIN, an object instantiated from that class can be executed as a main program from the command processor using <span style="font-weight: bold;"><a href="run.htm" class="topiclink">RUN</a></span> or a catalogue reference in exactly the same way as a PROGRAM module but cannot be executed using <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span>. When used in this way, the CREATE.OBJECT subroutine, if present, will be executed followed by the MAIN subroutine.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">The UNDEFINED Name Handler</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional UNDEFINED public subroutine and/or public function can be used to trap references to the object that use property names that are not defined. This handler is executed if a program using the object references a name that is not defined as a public item. The first argument will be the undefined name. Any arguments supplied by the calling program will follow this. The <span style="font-weight: bold;"><a href="qmb_arg_count.htm" class="topiclink">ARG.COUNT()</a></span> and <span style="font-weight: bold;"><a href="qmb_arg.htm" class="topiclink">ARG()</a></span> functions can be used to help extract this data in a meaningful way.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If there is no UNDEFINED subroutine/function, object references with undefined names cause a run time error.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Inheritance</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Sometimes it is useful for one class module to incorporate the properties and methods of another. This is termed <span style="font-weight: bold;">inheritance</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <span style="font-weight: bold;">INHERITS</span> clause of the <span style="font-weight: bold;"><a href="qmb_class.htm" class="topiclink">CLASS</a></span> statement effectively inserts declaration of a private variable of the same name as the inherited class (removing any global catalogue prefix character) and adds</p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; name = OBJECT(inherited.class)</span></p>
+<p style="margin: 0 0 10px 0;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INHERIT name</span></p>
+<p>to the CREATE.OBJECT subroutine.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Alternatively, inheritance can be performed during execution of the object by direct use of the <span style="font-weight: bold;"><a href="qmb_inherit.htm" class="topiclink">INHERIT</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The name search process that occurs when an object is referenced scans the name table of the original object reference first. If the name is not found, it then goes on to scan the name tables of each inherited object in the order in which they were inherited. Where an inherited object has itself inherited further objects, the lower levels of inheritance are treated as part of the object into which they were inherited. If the name is not found, the same search process is used to look for the undefined name handler.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An inherited object can subsequently be disinherited using <span style="font-weight: bold;"><a href="qmb_disinherit.htm" class="topiclink">DISINHERIT</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Debugging an Object Instance</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The names of arguments to a public subroutine are not known to the debugger. Instead, a special positional reference of the form &quot;*Arg1&quot; is needed when displaying argument variables. The *Arg prefix is case insensitive and the argument number may include leading zeroes. For example, display of the second argument could use a debugger command such as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">/*arg2</span></p>
+<p class="p_Normal">All of the qualifiers to variable references such as array indices and dynamic array element positions may be used.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Syntax Summary</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">CLASS </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">name</span><span style="font-family: 'Courier New',Courier,monospace;"> {INHERITS class1, class2...}</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PUBLIC A {READONLY}, B(3), C</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PRIVATE P, Q, R</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; SHARED X, Y, Z</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PUBLIC SUBROUTINE SUB1(ARG1, ARG2) {VAR.ARGS}</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PUBLIC FUNCTION FUNC1(ARG1, ARG2) {VAR.ARGS}</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;RETURN RESULT</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">Other QMBasic subroutines</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There is a sample QMBasic class module named INDEX.CLS in the BP file of the QMSYS account, catalogued as !INDEX.CLS. This class allows an application to scan an index one record id at a time instead of one indexed value at a time. Full details of its use and internal operation can be found in the source code.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_class.htm" class="topiclink">CLASS</a></span>, <span style="font-weight: bold;"><a href="qmb_disinherit.htm" class="topiclink">DISINHERIT</a></span>, <span style="font-weight: bold;"><a href="qmb_inherit.htm" class="topiclink">INHERIT</a></span>, <span style="font-weight: bold;"><a href="qmb_object.htm" class="topiclink">OBJECT()</a></span>, <span style="font-weight: bold;"><a href="qmb_private.htm" class="topiclink">PRIVATE</a></span>, <span style="font-weight: bold;"><a href="qmb_public.htm" class="topiclink">PUBLIC</a></span>, <span style="font-weight: bold;"><a href="qmb_restricted.htm" class="topiclink">RESTRICTED</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

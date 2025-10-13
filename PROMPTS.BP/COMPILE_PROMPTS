@@ -1,0 +1,75 @@
+! Program: COMPILE_PROMPTS
+! Description: Compiles a template and parameter set into a prompt.
+! Author: Lawrence C Sullivan MD
+! Date:11-18-2024 
+
+PROGRAM COMPILE_PROMPTS
+
+    * Get command-line arguments
+    TEMPLATE_NAME = TRIM(FIELD(@SENTENCE, " ", 2))
+    PARAM_SET_NAME = TRIM(FIELD(@SENTENCE, " ", 3))
+
+    IF TEMPLATE_NAME = '' THEN
+        CRT 'Enter template name: '
+        INPUT TEMPLATE_NAME
+        TEMPLATE_NAME = TRIM(TEMPLATE_NAME)
+    END
+
+    * Add .PT extension if not included
+    IF INDEX(UPCASE(TEMPLATE_NAME), '.PT', 1) = 0 THEN
+        TEMPLATE_NAME := '.PT'
+    END
+
+    IF PARAM_SET_NAME = '' THEN
+        CRT 'Enter parameter set name: '
+        INPUT PARAM_SET_NAME
+        PARAM_SET_NAME = TRIM(PARAM_SET_NAME)
+    END
+
+    * Add .PPS extension if not included
+    IF INDEX(UPCASE(PARAM_SET_NAME), '.PPS', 1) = 0 THEN
+        PARAM_SET_NAME := '.PPS'
+    END
+
+    OPEN 'PROMPTS_TEMPLATE' TO TEMPLATE.FILE ELSE
+        CRT 'Cannot open PROMPTS_TEMPLATE directory file.'
+        STOP
+    END
+    READ TEMPLATE_TEXT FROM TEMPLATE.FILE, TEMPLATE_NAME ELSE
+        CRT 'Template not found.'
+        STOP
+    END
+
+    OPEN 'PROMPTS_PARAMETER_SET' TO PARAM_SET.FILE ELSE
+        CRT 'Cannot open PROMPTS_PARAMETER_SET directory file.'
+        STOP
+    END
+    READ PARAM_SET_DATA FROM PARAM_SET.FILE, PARAM_SET_NAME ELSE
+        CRT 'Parameter set not found.'
+        STOP
+    END
+
+    * Replace parameters in the template
+    FOR I = 1 TO DCOUNT(PARAM_SET_DATA<1>, @VM)
+        PARAM_KEY = PARAM_SET_DATA<1, I>
+        PARAM_VALUE = PARAM_SET_DATA<2, I>
+        PARAM_NAME = CONVERT('_', ' ', PARAM_KEY)
+        PLACEHOLDER = '[' : PARAM_NAME : ']'
+        TEMPLATE_TEXT = CHANGE(TEMPLATE_TEXT, PLACEHOLDER, PARAM_VALUE)
+    NEXT I
+
+    * Save the compiled prompt
+    OPEN 'PROMPTS' TO PROMPTS.FILE ELSE
+        CRT 'Cannot open PROMPTS directory file.'
+        STOP
+    END
+    PROMPT_NAME = TEMPLATE_NAME : '-' : PARAM_SET_NAME
+
+    * Delete existing prompt if it exists
+    DELETE PROMPTS.FILE, PROMPT_NAME
+
+    WRITE TEMPLATE_TEXT ON PROMPTS.FILE, PROMPT_NAME
+    CRT 'Compiled prompt saved as ' : PROMPT_NAME
+
+END
+

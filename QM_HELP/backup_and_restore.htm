@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Backup and Restore</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Backup and restore" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "backup_and_restore.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Backup and Restore</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="permissions.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="monitoring_the_system.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM does not provide any special backup and restore utilities but relies instead on use of standard operating system level backup tools. This section sets out some points to consider in planning a backup strategy. Hopefully, you have already thought of these...</p>
+<p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Determine what to backup. If your backup needs to be as quick as possible, remember that it is usually unnecessary to back up system files that can easily be recreated.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Do not forget that distributed applications sometimes have critical data stored on client PCs. These may need to be backed up at the same time as the server to preserve data integrity across the entire backup.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>How often will you back up? You need to make a sensible trade-off between the time it takes to backup and the difficulty of bringing the system up to date in the event of a restore.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Consider when to backup in relation to your business routine. It is unsafe to backup a database while it is being used except as described below. You will end up with data integrity problems and, possibly, structural integrity problems in files that were being modified while the backup progressed. The safest approach is to log all users off while the backup is performed. It is not necessary to shutdown QM.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Use a cycle of backup media rather than continuously overwriting the same media so that you are secure from failures during the backup and also have multiple points in time to which you can revert.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Ensure that your backup media is kept away from the system that it represents. A fireproof safe or an offsite store is best.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Think carefully about how long you will keep your backups. There are often legal requirements to be able to restore business data for several years. Remember that technology moves on at a rapid pace. You need to ensure that you still have the appropriate drives to read your old backups.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Test your backups. Check that you really can restore your data if the need arises.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Backup Tools</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QM file system uses operating system level file structures to represent all aspects of the database. An account is represented by an operating system directory. Files within the account are represented by a further layer of subdirectories though it is possible to relocate these, typically for load balancing across disk drives. For a hashed file, the subdirectories contain files that correspond to the primary, overflow and index portions of the QM file. For a directory file, the subdirectories contain an individual text file for each record. There may also be other subdirectories such as the private catalogue and the savedlists file. The QMSYS account in particular has many additional files and directories. For further information on the file system structure, see <a href="qmfiles.htm" class="topiclink">The QM File System</a>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because QM's file system is visible at the operating system level rather than being stored in raw partitions or similar structures, standard operating system backup tools can be used to archive data. This could be by a simple file to file copy to a separate disk drive or by merging files into a composite save using tools such as Linux's cpio or tar. More advanced tools are available.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM has versions of the Pick style tools such as <span style="font-weight: bold;"><a href="t_dump.htm" class="topiclink">T.DUMP</a></span>, <span style="font-weight: bold;"><a href="account_save.htm" class="topiclink">ACCOUNT.SAVE</a></span> and <span style="font-weight: bold;"><a href="file_save.htm" class="topiclink">FILE.SAVE</a></span>, however use of these for system backup is <span style="font-weight: bold;">strongly discouraged</span> because the media format (defined by Pick long ago) is not able to store some aspects of QM files such as information relating to hashed file configuration, triggers, alternate key indices, encryption, replication or Unicode data on an ECS mode system. There are also some limitations on saving certain character sequences that may validly appear in binary data such as compiled QMBasic programs or dictionary items. These tools were included in QM primarily as a way to take data back to a Pick style system during migration of an application.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Adopting a Safe Backup Procedure</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">It is essential that the backup procedure creates a valid representation of the state of the system. Unless tools that create a moment in time snapshot of the system are used, it is essential that no users are modifying the database while the backup is in progress otherwise data saved early in the process may be inconsistent with data saved later. For example, backup of a financial application at the point when money is being moved from one account to another could save the two records in a sequence where, if the data is restored, the money appears in both accounts or in neither account. More seriously, similar timing issues may result in structural inconsistencies in the saved file if internal pointers have changed during the backup.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The safest way to avoid this sort of timing issue is to get all users off the system for the duration of the backup but this may not be practical, particularly in a 24x7 application. Even with snapshot backup software, the backup could occur at a time when, for example, the financial application mentioned above has written one record but not yet written the other.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Other possible strategies include:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin-left: 0;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Backup everything twice. The chances of a structural inconsistency on both saves affecting the same record are very low but it may be much harder to work out which data needs to be restored to recover a consistent view of the system.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin-left: 0;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Suspend updates. QM includes the ability to suspend disk updates (qm -suspend). When this is used, any application attempting to write to a QM file will stall until updates are re-enabled (qm -resume). This approach guarantees structural integrity of the files but does not guarantee data integrity unless the application uses <a href="transactions.htm" class="topiclink">transactions</a>. The suspension needs to remain in place for the duration of the backup.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin-left: 0;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Break a mirror. If the database is stored on a system with mirrored disks, use of the suspend option followed by breaking the mirror creates a structurally safe static copy which can be backed up after resuming writes. As with simple suspension, this method does not guarantee data integrity unless transactions are used. The mirror can be reinstated when the backup is complete and will catch up with updates applied while the mirror was broken.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin-left: 0;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Suspend replication. Broadly similar to breaking a mirror, this applies if the system is replicated to a second server. Suspending updates &nbsp;long enough to complete application of any queued updates and then terminating the subscriber process leaves the subscriber system in a structurally consistent state and, if transactions are used, guarantees data integrity too.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above options have all highlighted the problem that the application needs to be in a consistent state at the point when the backup is performed. The best way to achieve this is to make full use of transactions but retrofitting this into an existing application is not easy because of the impact on locking strategy. There is no other way to guarantee data consistency without the application having some synchronisation mechanism to bring it to a tidy temporary halt.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Recovery</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The structure of a QM system is that each account is stored as a separate directory. There is a register of accounts, the QM.ACCOUNTS file, in the QMSYS account. This file is keyed by uppercase account name and has the account pathname in field 1. Optionally, it may have an account description in field 2 but this is not referenced by QM other than showing it if the file is listed. The QM.ACCOUNTS register should be the only place in the entire system that records the account pathname. If an account is moved to a new location, all that is needed is to update the pathname. The QMSYS account itself is found automatically based on it always being the parent directory of the location of the QM executable. Pathnames in the accounts register may commence with @QMSYS which will be substituted by the QMSYS pathname.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The items that make up QM itself are all within the QMSYS directory and its sub-structures.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The files in an account are located by pathnames stored in the F-type VOC entries. This should be the only place that file pathnames are recorded though it is possible for an application to open a file by pathname (discouraged as it can lead to maintenance problems). The default behaviour of QM’s CREATE.FILE command is to create a subdirectory within the account directory and to store a relative pathname in the VOC item. Moving the entire account to a new location would not require any change to this pathname. It is possible to place files at alternative locations (typically for load balancing across disks). If this is done, moving a file to a new location would require that the pathname in the VOC is updated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Alternate key indices are usually stored in the directory that represents the file but it is possible to locate them elsewhere. If this is done, the indices should be restored in their original locations or, if this is not possible, the qmidx tool can be used to modify the pointer stored within the file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Q-pointers should preferably have the target account name in field 2 which will be substituted by the pathname from the corresponding accounts register entry when opening the file. It is possible to reference the account pathname in the Q-pointer but this is discouraged. Ideally, a file should only be referenced by one F-type record and all other references should be via Q-pointers that link to the F-type record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Restoring the entire system</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the entire system is to be restored, simply restore everything over the top of the previous version. It will be necessary to shutdown QM first, if it is running, so that the executable programs in the bin subdirectory of the QMSYS account can be overwritten. The restore will bring back all saved accounts and, assuming that the QMSYS account was saved, will include restore of the accounts register and all components of QM. Because the VOC is just a standard file, no special actions are needed to restore it.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the system may have deleted files or records in directory files since the backup was taken, it may be best to delete the old data before starting the restore so that redundant items are not left in place.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the restore is to a different server or the operating system has been reinstalled, the system id code associated with the licence will have changed. On entry to QM from the operating system command prompt, the licensing screen will be displayed, including the new system id code. A seven day “emergency licence” can be generated by visiting <a href="backup_and_restore.htm" class="topiclink">www.openqm.com/emergency.htm</a> and entering the licence number and both the old and new system id codes. The information about the old system is on the licence document which should be stored safely in case it is needed. The emergency licence allows the user to get QM up and running immediately. A new permanent licence will be issued within the seven day period.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A change of system id code will also require the master key to be re-entered if the system uses encrypted data files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the version of QM is to be updated as part of the restore, the easiest way is to restore the data and then install the new version of QM over the top. This will ensure that system files are updated but user data such as any globally catalogued items is preserved.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above process can also be used to create a duplicate of a system but, in this case, a new licence is required instead of an update to the existing system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Restoring an entire account</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Simply restore the account over the top of the current version or, if that has been lost, into a newly created directory. In the latter case, if the account pathname differs from the pathname of the saved account, the associated record in the QM.ACCOUNTS file must be modified.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If an account references files stored at locations outside the account directory, these other items must also be restored. If the new pathnames differ from those in the saved data, the corresponding VOC pointers must be updated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Restoring a specific file</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Restoring a file to its original location requires no special steps. If the file used relocated indices, these must be restored too and, if necessary, the qmidx tool run as mentioned above.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Restoring a file to a different location requires that the pathname in the VOC F-pointer is updated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Restoring specific records</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Follow the procedure to restore the file but to a new location. Then create a temporary VOC F-type record pointing to the restored file. Copy the required records to the original file. As an alternative to use of a temporary F-type record, if the FILERULE configuration parameter has been set to allow it, use a PATH:xxx style filename in the COPY command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Restoring to a different system type</span></p>
+<p class="p_Normal">&nbsp;<br />
+The above procedures assume that the system onto which the data is being restored is of the same architecture as the system from which the data was saved. If this is not true, a little additional work is needed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the restore was from Linux to Windows or vice versa, the line terminator in directory file text records will need to be updated. The *FIXDIR catalogued program will do this.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the restore was to a system with different byte ordering from the one that was saved, the qmconv tool must be used to update all restored files.</p>
+
+</td></tr></table>
+
+</body>
+</html>

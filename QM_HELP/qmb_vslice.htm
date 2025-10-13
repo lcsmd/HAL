@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>VSLICE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="VSLICE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_vslice.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">VSLICE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="void.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_wait_file_event.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">VSLICE()</span> function returns a string formed by extracting a given value or subvalue position from a dynamic array.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">VSLICE(</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">vpos</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">VSLICE(</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">vpos</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">svpos</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is the string from which the data is to be extracted.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">vpos</span></td><td style="border:none;padding:0">evaluates to the value position to be extracted.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">svpos</span></td><td style="border:none;padding:0">evaluates to the subvalue position to be extracted.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first form of the <span style="font-weight: bold;">VSLICE()</span> function processes <span style="font-style: italic;">string</span> to build a new dynamic array containing only the specified value position from each field. Subvalues are returned as part of each value in the result string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The second form processes <span style="font-style: italic;">string</span> to build a new dynamic array containing only the specified subvalue position from each field. If <span style="font-style: italic;">vpos</span> is less than one, the subvalue is extracted from all value positions and value marks are included in the returned string to match the structure of the original data. If <span style="font-style: italic;">vpos</span> is one or greater, the subvalue is extracted only from the specified value position and no value marks are included in the result.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">vpos</span> and <span style="font-style: italic;">svpos</span> are both less than one, the <span style="font-weight: bold;">VSLICE()</span> function returns the source <span style="font-style: italic;">string</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following examples are all based on a <span style="font-style: italic;">string</span> that contains</p>
+<p> &nbsp; &nbsp; &nbsp;1<span style="font-size: 6pt;">FM</span>2<span style="font-size: 6pt;">VM</span>3<span style="font-size: 6pt;">SM</span>4<span style="font-size: 6pt;">VM</span>5<span style="font-size: 6pt;">FM</span>6<span style="font-size: 6pt;">VM</span>7<span style="font-size: 6pt;">SM</span>8<span style="font-size: 6pt;">VM</span>9</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 0)</td><td style="border:none;padding:0">1<span style="font-size: 6pt;">FM</span>2<span style="font-size: 6pt;">VM</span>3<span style="font-size: 6pt;">SM</span>4<span style="font-size: 6pt;">VM</span>5<span style="font-size: 6pt;">FM</span>6<span style="font-size: 6pt;">VM</span>7<span style="font-size: 6pt;">SM</span>8<span style="font-size: 6pt;">VM</span>9</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 1)</td><td style="border:none;padding:0">1<span style="font-size: 6pt;">FM</span>2<span style="font-size: 6pt;">FM</span>6</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 2)</td><td style="border:none;padding:0"><span style="font-size: 6pt;">FM</span>3<span style="font-size: 6pt;">SM</span>4<span style="font-size: 6pt;">FM</span>7<span style="font-size: 6pt;">SM</span>8</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 3)</td><td style="border:none;padding:0"><span style="font-size: 6pt;">FM</span>5<span style="font-size: 6pt;">FM</span>9</td></tr></table></div><p style="text-indent: -144px; margin: 0 0 0 144px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 0, 1)</td><td style="border:none;padding:0">1<span style="font-size: 6pt;">FM</span>2<span style="font-size: 6pt;">VM</span>3<span style="font-size: 6pt;">VM</span>5<span style="font-size: 6pt;">FM</span>6<span style="font-size: 6pt;">VM</span>7<span style="font-size: 6pt;">VM</span>9</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 0, 2)</td><td style="border:none;padding:0"><span style="font-size: 6pt;">FMVM</span>4<span style="font-size: 6pt;">FMVM</span>8</td></tr></table></div><p style="text-indent: -144px; margin: 0 0 0 144px;">VSLICE(S, 0, 3)</p>
+<p style="text-indent: -144px; margin: 0 0 0 144px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 1, 1)</td><td style="border:none;padding:0">1<span style="font-size: 6pt;">FM</span>2<span style="font-size: 6pt;">FM</span>6</td></tr></table></div><p style="text-indent: -144px; margin: 0 0 0 144px;">VSLICE(S, 1, 2)</p>
+<p style="text-indent: -144px; margin: 0 0 0 144px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 2, 1)</td><td style="border:none;padding:0"><span style="font-size: 6pt;">FM</span>3<span style="font-size: 6pt;">FM</span>7</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 2, 2)</td><td style="border:none;padding:0"><span style="font-size: 6pt;">FM</span>4<span style="font-size: 6pt;">FM</span>8</td></tr></table></div><p style="text-indent: -144px; margin: 0 0 0 144px;">VSLICE(S, 2, 3)</p>
+<p style="text-indent: -144px; margin: 0 0 0 144px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:144px">VSLICE(S, 3, 1)</td><td style="border:none;padding:0"><span style="font-size: 6pt;">FM</span>5<span style="font-size: 6pt;">FM</span>9</td></tr></table></div><p style="text-indent: -144px; margin: 0 0 0 144px;">VSLICE(S, 3, 2)</p>
+
+</td></tr></table>
+
+</body>
+</html>

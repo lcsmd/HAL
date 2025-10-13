@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMSelectPartial()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMSelectPartial" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmselectpartial.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMSelectPartial()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmselectleft.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmset.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMSelectPartial()</span> function generates a select list containing the ids of all records in a file using an optimised method for improved performance. It is analogous to use of the QMBasic <span style="font-weight: bold;"><a href="qmb_select.htm" class="topiclink">SELECT</a></span> statement.</p>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The function arguments are:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">FileNo</span></td><td style="border:none;padding:0">is the file number returned by a previous <span style="font-weight: bold;"><a href="qmopen.htm" class="topiclink">QMOpen()</a></span> call.</td></tr></table></div><p style="text-indent: -91px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">ListNo</span></td><td style="border:none;padding:0">is the select list number (0 to 10). </td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMSelectPartial()</span> function constructs a list of record ids in the file open as <span style="font-style: italic;">FileNo</span>. The first part of the select list is returned as a field mark delimited string. Further items can then be returned by use of the <span style="font-weight: bold;"><a href="qmnextpartial.htm" class="topiclink">QMNextPartial()</a></span> function until this returns a null string to indicate that there are no further record ids available.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>See <a href="qmclient_select.htm" class="topiclink">Select lists in QMClient sessions</a> for a description of the alternative ways to handle select list with QMClient.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Select list 0, the default select list, is used automatically by many QM components to control their action and should, therefore, be used with caution. An unwanted or partially processed select list can be cleared using the <span style="font-weight: bold;"><a href="qmclearselect.htm" class="topiclink">QMClearSelect()</a></span> function.</p>
+<p style="margin: 20px 0 0 0;">The <span style="font-weight: bold;">QMSelectPartial()</span> function does not provide any method to select only those records that meet specific conditions or to sort the list. These features can be accessed by executing query processor commands using the <span style="font-weight: bold;"><a href="qmexecute.htm" class="topiclink">QMExecute()</a></span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The example program fragments below build select list 1 and use it to process records from the file open as fClients. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">char * QMSelectPartial(int </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, int </span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">list = QMSelectPartial(fClients, 1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while(list != NULL)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;n = QMDcount(list, FM);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;for(i = 1; i &lt;= n; i++)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;id = QMExtract(list, i, 0, 0);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;QMFree(id);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; }</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;QMFree(list);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;list = QMNextPartial(1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> }</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>\Note that the returned pointer references a dynamically allocated memory area that must be released using <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span> when no longer needed as shown in this example.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMSelectPartial(ByVal </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;"> as Integer, ByVal </span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;"> as Integer) as String</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">List = QMSelectPartial(fClients, 1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">While List &lt;&gt; &quot;&quot;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; N = QMDcount(List, FM)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; For I = 1 To N</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;Id = QMExtract(List, I, 0, 0)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; Next I</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; List = QMNextPartial(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">End While</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A3_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A3','TOGGLE0186A3_ICON')">QMBasic</a> Class Module</span></td></tr></table></div><div id="TOGGLE0186A3" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">list = session-&gt;SelectPartial(fClients, 1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">loop</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while list # &quot;&quot;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; for each id in list</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; next id</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; list = session-&gt;NextPartial(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">repeat</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A4_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A4','TOGGLE0186A4_ICON')">Java</a></span></td></tr></table></div><div id="TOGGLE0186A4" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">String SelectPartial(int </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, int </span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">list = qm.SelectPartial(fClients, 1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while qm.ServerError == SV$OK)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;n = qm.Dcount(list, FM);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;for(i = 1; i &lt;= n; i++)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;id = qm.Extract(list, i, 0, 0);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; }</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;list = qm.NextPartial(1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> }</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A5_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A5','TOGGLE0186A5_ICON')">Python</a></span></td></tr></table></div><div id="TOGGLE0186A5" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">SelectPartial(</span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">list = qm.SelectPartial(fClients, 1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while qm.ServerError == SV_OK:</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;n = qm.Dcount(list, FM)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;for i in range(1, n+1):</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;id = qm.Extract(list, i, 0, 0)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; }</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;list = qm.NextPartial(1)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A3_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A3\',\'TOGGLE0186A3_ICON\')');
+HMInitToggle('TOGGLE0186A3','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A4_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A4\',\'TOGGLE0186A4_ICON\')');
+HMInitToggle('TOGGLE0186A4','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A5_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A5\',\'TOGGLE0186A5_ICON\')');
+HMInitToggle('TOGGLE0186A5','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

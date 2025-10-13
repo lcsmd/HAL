@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>The qmidx Utility</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="qmidx" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmidx.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">The qmidx Utility</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmfix.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmconv.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QM file system supports <a href="ak.htm" class="topiclink">alternate key indices</a> for retrieval of data based on the content of a non-key field. Normally, these indices reside in the directory that represents the data file. This helps to ensure that the entire file and its indices are handled as a single item when performing backup and restore operations</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Sometimes it may be useful to place the indices elsewhere. This could be to improve load balancing across multiple disk drives or to simplify exclusion of large indices from backups since they can always be recreated from the data file. This separation of the indices from the data can be achieved using the PATHNAME option of the <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span> or <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span> commands when the first index is created.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The qmidx program is an operating system level command that allows users to report or modify the location of the indices. It has four modes of operation:</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:270px">qmidx -d <span style="font-style: italic;">data.path</span></td><td style="border:none;padding:0">Deletes all indices for the named file.</td></tr></table></div><p style="text-indent: -270px; margin: 0 0 0 300px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:270px">qmidx -m <span style="font-style: italic;">data.path index.path</span></td><td style="border:none;padding:0">Moves the indices for the named file to the new location specified by <span style="font-style: italic;">index.path</span>. If the index path is omitted, the indices are returned to their default location in the directory identified by <span style="font-style: italic;">data.path</span>.</td></tr></table></div><p style="text-indent: -270px; margin: 0 0 0 300px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:270px">qmidx -p <span style="font-style: italic;">data.path index.path</span></td><td style="border:none;padding:0">Sets the index path for the given data file. This operation is required after use of an operating system level tool to copy or move a data file to a new location. <span style="font-weight: bold;">Failure to perform this step when duplicating a file may result in any changes to the copied file updating the indices of the original file.</span></td></tr></table></div><p style="text-indent: -270px; margin: 0 0 0 300px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:270px">qmidx -q <span style="font-style: italic;">data.path</span></td><td style="border:none;padding:0">Displays the location of the indices for the given data file.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">This program must only be used when the file is not in use. Failure to adhere to this rule may lead to data corruption or process failure.</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

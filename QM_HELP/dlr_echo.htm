@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>$ECHO</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="$ECHO" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "dlr_echo.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">$ECHO</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="comment.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="abort.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">$ECHO</span> directive inserted in a paragraph enables or disabled paragraph tracing.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">$ECHO </span>{<span style="font-weight: bold;">ON</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">$ECHO OFF</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">$ECHO</span> directive (optionally with a qualifier of <span style="font-weight: bold;">ON</span>) enables paragraph tracing. When this mode is active, the command processor displays the paragraph name, line number and sentence for each line executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">$ECHO OFF</span> directive disables paragraph tracing.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">$ECHO</span> is not a command, but a control directive for the paragraph interpreter. Consequently it cannot be entered at the command line and it cannot be executed from a QMBasic program. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">$ECHO</span> {<span style="font-weight: bold;">ON</span>} if not followed by <span style="font-weight: bold;">$ECHO OFF</span> in the same paragraph, turns on echo mode for all subsequent paragraphs, whether or not they also contain <span style="font-weight: bold;">$ECHO</span> directives. If placed in the LOGIN paragraph, it will turn on echo mode for all paragraphs throughout the account. This can be done selectively by, for example, testing the login name of the user. In this way, echo mode can be limited to developers who need it for debugging purposes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF @LOGNAME # 'TESTER' THEN GO FINISH</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">$ECHO ON</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FINISH:</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This fragment of paragraph logic turns echo on for user TESTER only. A developer who has a need to see paragraph commands echoed will log in with that user name. All other users will see paragraphs acting as usual.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following paragraph might be used to delete all items in the BP.OUT file for which there is no corresponding source record in the BP file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">VOC CLEAN.BP</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">1: PA</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">2: $ECHO</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">3: SELECT BP.OUT</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">4: NSELECT BP</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">5: IF @SELECTED = 0 THEN STOP</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">6: DELETE BP.OUT</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">7: DATA Y</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Running this with the $ECHO on line 2 shows are trace of each command prior to execution:</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">:CLEAN.BP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLEAN.BP 3: SELECT BP.OUT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">223 record(s) selected to list 0</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLEAN.BP 4: NSELECT BP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">17 record(s) selected to select list 0</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLEAN.BP 5: IF @SELECTED = 0 THEN STOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CLEAN.BP 6: DELETE BP.OUT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Use active select list (First item 'J7')? Y</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">17 record(s) deleted</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

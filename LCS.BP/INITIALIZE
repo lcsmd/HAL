@@ -1,0 +1,68 @@
+      PROGRAM INITIALIZE
+      INCLUDE INCLUDE COMMON.VAR
+
+      DEFFUN CONSIDER(TEXT)
+      DEFFUN THINK(TEXT)
+      DEFFUN ACT(TEXT)
+      DEFFUN VERIFY(TEXT)
+      DEFFUN CHECK(TEXT)
+      DEFFUN STATUS(TEXT)
+
+      GOSUB CLEAR_MIND
+
+      CALL OPEN_FILES
+
+      MET_ID = 0
+      READ MET_REC FROM F_META, MET_ID ELSE
+         PRINT "FAILED TO READ META ":MET_ID
+         STOP
+      END
+
+      WRITE MET_REC ON F_LIV, MET_ID
+      DELETE F_META, MET_ID
+      WRITE MET_REC ON F_LIV, MET_ID
+      DELETE FILES(1), MET_ID
+
+      MET_ID = 1
+      READ MET_REC FROM FILES(2), MET_ID ELSE
+         PRINT "FAILED TO READ META ":MET_ID
+         STOP
+      END
+
+      WRITE MET_REC ON F_LIV, MET_ID
+      DELETE F_META, MET_ID
+      WRITE MET_REC ON F_LIV, MET_ID
+      DELETE F_META, MET_ID
+
+      READLIST MET_IDS FROM F_META ELSE
+         PRINT "FAILED TO READ MET_IDS"
+         RETURN
+      END
+
+      MET_CT = DCOUNT(MET_IDS, @FM)
+      FOR MET_X = 1 TO MET_CT
+         READ MET_REC FROM F_META, MET_ID ELSE
+            MET_REC=""
+         END
+         CALL ProcessMetaFile(directory, textFileName, MET_REC) ; * Adjust these parameters as necessary
+      NEXT MET_X
+
+CLEAR_MIND:
+      FLAG = ""
+      DIM ACTIONS(100)
+      DIM FILES(100)
+      FILE_CT = 0
+      ACTION_CT = 0
+      STATUS = ""
+      ALERTS = ""
+      NOW = TIME()
+      TODAY = DATE()
+      OPEN 'CONTROL' TO F_CONTROL ELSE
+         CRT 'Unable to open file CONTROL'
+         STOP
+      END
+      READ DEFAULT_FILE FROM F_CONTROL, "default.file" ELSE
+         DEFAULT_FILE = ""
+      END
+      RETURN
+      END

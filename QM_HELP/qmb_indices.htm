@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>INDICES()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="INDICES()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_indices.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">INDICES()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_index.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_inherit.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">INDICES()</span> function returns information about <a href="ak.htm" class="topiclink">alternate key indices</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">INDICES(</span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">) &nbsp; &nbsp; &nbsp; &nbsp;</span>To retrieve a list of indices</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">INDICES(</span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">index.name</span><span style="font-weight: bold;">) &nbsp; &nbsp; &nbsp; &nbsp;</span>To retrieve information for a specific index</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with an open file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">index.name</span></td><td style="border:none;padding:0">is the name of the index to be examined.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first form of the <span style="font-weight: bold;">INDICES()</span> function returns a field mark delimited list of alternate key index names for the file referenced via <span style="font-style: italic;">file.var</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The second form of the <span style="font-weight: bold;">INDICES()</span> function returns a dynamic array resembling a dictionary record for the index named by the <span style="font-style: italic;">index.name</span> argument. This dynamic array is broadly similar to the original dictionary record used to create the index except that field 1 is extended to include additional flags as a multivalued list and field 5 of a C, D or I-type item contains only L or R as the justification mode.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 1</td><td style="border:none;padding:0">Index type (D, I, A, S or C)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 2</td><td style="border:none;padding:0">Set to 1 if the index needs to be built, otherwise null</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 3</td><td style="border:none;padding:0">Set to 1 if the index is null-suppressed by use of the NO.NULLS option to <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span>, otherwise null</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 4</td><td style="border:none;padding:0">Set to 1 if updates are enabled, otherwise null</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 5</td><td style="border:none;padding:0">Internal AK number</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 6</td><td style="border:none;padding:0">The key sort mode of record ids within each index entry (L or R), null for indices created prior to release 2.2-16 that were unsorted.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 7</td><td style="border:none;padding:0">Set to 1 if the index is encrypted</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 8</td><td style="border:none;padding:0">Set to 1 if the index is case insensitive, otherwise null</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 9</td><td style="border:none;padding:0">Set to 1 if index is being built, otherwise null</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: 1.80;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Value 10</td><td style="border:none;padding:0">A subvalue mark delimited list if index exclusion values</td></tr></table></div><p class="p_Normal">Interpretation of fields 2 onwards is dependent on the record type. For an A/S-type record that has no correlative in field 8 or for a D-type record, field 2 holds the field number on which the index is based. For a C/I type record, field 2 holds the indexed expression. For an A/S-type record with a correlative, the correlative expression is in field 8.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The sort order of indexed values in the index is determined by the justification code in the dictionary item as returned in field 5 for a C, D or I-type item and field 9 for an A or S-type item.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>See the <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span> statement for an example that describes how an index is sorted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">INDEX.NAMES = INDICES(FVAR)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NUM.INDICES = DCOUNT(INDEX.NAMES, @FM)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FOR I = 1 TO NUM.INDICES</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NAME = INDEX.NAMES&lt;I&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; CRT NAME : ' &nbsp; Type ' : INDICES(FVAR, NAME)[1,1]</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEXT I</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program displays a list of alternate key index names and their type.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>PHANTOM</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="PHANTOM (QMBasic)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_phantom.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">PHANTOM</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_pdump.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_pool_idle.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PHANTOM</span> statement starts a phantom process from a QMBasic program without the overheads of using <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">PHANTOM</span> <span style="font-style: italic;">command</span> {<span style="font-style: italic;">options</span>} {<span style="font-weight: bold;">THEN</span><span style="font-style: italic;"> statement(s)</span>} {<span style="font-weight: bold;">ELSE </span><span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">command</span></td><td style="border:none;padding:0">is the command to be executed by the phantom process.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -90px; margin: 0 0 0 120px;">options are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">GROUP</span></td><td style="border:none;padding:0">The phantom process is grouped with its parent such that it will terminate if the parent terminates</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">LOGFILE</span> <span style="font-style: italic;">name</span></td><td style="border:none;padding:0">Specifies an alternative log file</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">NO.LOG</span></td><td style="border:none;padding:0">Suppresses creation of a log file</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">NO.MSG</span></td><td style="border:none;padding:0">Suppresses start and termination messages relating to this phantom in the parent process.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">PASS.DATA</span></td><td style="border:none;padding:0">Transfers the data queue from the parent process to the phantom.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">POOL</span> <span style="font-style: italic;">name</span></td><td style="border:none;padding:0">Makes the phantom process a member of the specified <a href="connection_pooling.htm" class="topiclink">connection pool</a>.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"></td><td style="border:none;padding:0"></td></tr></table></div><p>The <span style="font-style: italic;">options</span> may be in any order. At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">PHANTOM</span> statement is can be used to start a phantom process that does not need options supported only by the <span style="font-weight: bold;"><a href="phantom.htm" class="topiclink">PHANTOM</a></span> command. Removal of the need to use <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> provides a small performance improvement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the <span style="font-weight: bold;">LOGFILE</span> option is used, <span style="font-style: italic;">name</span> specifies the name of the record to be created in the $COMO file to save output from the phantom process. If this name contains a space, the portion before the space is used as the file name and the portion after the space is used as the record id within that file. Only a directory file can be used.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">GROUP</span> keyword should be used with care. Termination of the parent process will cause all programs, paragraphs, etc running in the phantom process to be aborted. Unless the application uses transactions, this could result in only part of a linked sequence of updates being applied to data files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using the <span style="font-weight: bold;">POOL</span> option, the system will first look for an idle process in that pool that can be awakened. If no such process is found, a new phantom is started. The pool name may be followed by the keyword <span style="font-weight: bold;">NEW.PROCESS</span> to force creation of a new process even if an idle process exists. This allows an application to start a number of phantom processes that perform initialisation and then go into the idle pool waiting for work to do.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Any <a href="create_key.htm" class="topiclink">secure encryption keys</a> enabled in the parent process are inherited by the phantom process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">THEN</span> clause is taken if the phantom process is started successfully. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return the QM user number of the phantom process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">ELSE</span> clause is taken if the phantom fails to start. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return the associated error code.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">PHANTOM 'RUN SALES.REPORT' LOGFILE 'SALES.LOG' NO.MSG</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_child.htm" class="topiclink">CHILD()</a></span>, <span style="font-weight: bold;"><a href="list_phantoms.htm" class="topiclink">LIST.PHANTOMS</a></span>, <span style="font-weight: bold;"><a href="qmbs_phlog.htm" class="topiclink">!PHLOG()</a></span>, <span style="font-weight: bold;"><a href="phantom.htm" class="topiclink">PHANTOM</a></span>, <span style="font-weight: bold;"><a href="qmb_pool_idle.htm" class="topiclink">POOL.IDLE</a></span>, <span style="font-weight: bold;"><a href="status.htm" class="topiclink">STATUS</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

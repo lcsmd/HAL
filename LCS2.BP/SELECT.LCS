@@ -1,0 +1,139 @@
+     SUBROUTINE SELECT.LCS(X.KEY,MFILE,MFILE.XREF,FILE.KEY,SPMISC,WEB)
+     * ADD DOT COMMANDS TO SEARCHES
+     * IF SEARCH BEGINS WITH A . THEN LOOK AT THE NEXT CHARACTER TO DETERMINE THE COMMAND
+     * .A SHOW ALL (ACTIVE AND INACTIVE)
+     * .I SHOW INACTIVE
+     * DEFAULT IS TO SHOW ACTIVE ONLY
+     * .L SEARCH LIBRARY
+     * DEFAULT IS TO SEARCH REGULAR FILE (PROEDUCT_
+     * .O SEARCH OLD PRODUCT.ARC ITEMS
+     * .C SEARCH FOR PRODUCTS THIS CUSTOMER HAS BOUGHT BEFORE
+     * .S SEARCH FOR PRODUCTS THIS SALESPERSON HAS SOLD
+     * .V SEARCH FOR PRODUCTS THIS VENDOR HAS SOLD TO US
+     OPEN "PROD.KEYWORDS.USED" TO PKU ELSE PRINT "PKU"
+     IF X.KEY[1,2] = "X " THEN X.KEY = X.KEY[3,99]
+     IF X.KEY[1,2] = "Z " THEN X.KEY = X.KEY[3,99]
+     IF LEN(X.KEY) < 3 AND MFILE = "PRODUCT" THEN X.KEY = ""
+    CODE.SELECT=""
+
+      IF X.KEY = "" THEN GOTO 99
+      IF MFILE = 'PRODUCT' THEN
+          IF X.KEY[1,1] = "." THEN
+               CMD = X.KEY[2,1]
+               X.KEY = X.KEY[3,99]
+               CODE.SELECT = ' WITH CODE # "I"'
+               IF CMD = "A" THEN CODE.SELECT = ""
+               IF CMD = "I" THEN CODE.SELECT = ' WITH CODE = "I"'
+               IF CMD = "L" THEN MFILE = 'I2.PRODUCT'
+               IF CMD = "O" THEN MFILE= 'PRODUCT.ARC'
+          END
+          DEBUG
+          IF X.KEY[1,1] = "*" THEN
+               X.KEY = X.KEY[2,99]
+               SELECT = ""
+          END
+     END
+     SPMISC = ''
+      FILE.NAME = MFILE
+     OPEN MFILE TO MFILE ELSE PRINT 'CANT OPEN ':MFILE ; STOP
+     RIGHTBRACKET = "]"
+     BEGIN CASE
+          CASE FILE.NAME = "I2.PRODUCT"
+               LAST.PRICE.ATT = 44
+               RIGHTBRACKET = ""
+               SELECTSTRING = "SSELECT I2.PRODUCT BY PFMS_DESCRIPTION WITH I2.PRODUCT.INDEX"
+               INDEX.NAME = "I2.PRODUCT.INDEX"
+               LIST.HEADER = "PRODUCT LIBRARY FINDER - LCS"
+               LIST.DESC = "Prod #" "L#9 ":"Description" "L#35 ":"S" "L#1 ":"Last Pr Dt" "L#8"
+          CASE FILE.NAME = "PRODUCT.ARC"
+               LAST.PRICE.ATT = 125
+               RIGHTBRACKET = ""
+               SELECTSTRING = "SSELECT PRODUCT.ARC BY DESC WITH PRODUCT.INDEX"
+               INDEX.NAME = "PRODUCT.INDEX"
+               LIST.HEADER = "PRODUCT ARCHIVE FINDER - LCS"
+               LIST.DESC = "Prod #" "L#9 ":"Description" "L#35 ":"S" "L#1 ":"Last Pr Dt" "L#8"
+          CASE FILE.NAME = "PRODUCT"
+               STATUS.ATT = 41
+               LAST.PRICE.ATT = 125
+               RIGHTBRACKET = ""
+               SELECTSTRING = "SSELECT PRODUCT BY DESC WITH PRODUCT.INDEX"
+               INDEX.NAME = "PRODUCT.INDEX"
+               LIST.HEADER = "PRODUCT FINDER - LCS"
+               LIST.DESC = "Prod #" "L#9 ":"Description" "L#35 ":"S" "L#1 ":"Last Pr Dt" "L#8"
+          CASE FILE.NAME = "CUSTOMER"
+               SELECTSTRING = "SSELECT CUSTOMER BY CNAME WITH CUSTOMER.INDEX"
+               INDEX.NAME = "CUSTOMER.INDEX"
+               LIST.DESC = "Name" "L#30 ":"Keyword" "L#10 ":"City " "L#15 ":"Status" "L#6 "
+               LIST.HEADER = "CUSTOMER FINDER - LCS"
+          CASE FILE.NAME = "VM"
+               SELECTSTRING = "SSELECT VM BY NAME WITH VM.INDEX"
+               INDEX.NAME = "VM.INDEX"
+               LIST.DESC = "Name" "L#30 ":"Address"
+               LIST.HEADER = "VENDOR FINDER - LCS"
+     END CASE
+     SEARCH = X.KEY
+     SEARCH = TRIM(SEARCH)
+     FOR X = 1 TO 5 UNTIL FIELD(SEARCH," ",X) = ""
+          IF X = 1 THEN
+               SELECTSTRING = SELECTSTRING:' = "':FIELD(SEARCH," ",X):RIGHTBRACKET:'"'
+          END ELSE
+               SELECTSTRING = SELECTSTRING:' AND ':INDEX.NAME:' = "':FIELD(SEARCH," ",X):RIGHTBRACKET:'"'
+          END
+     NEXT X
+     CONVERT "]]" TO "]" IN SELECTSTRING
+     EXECUTE SELECTSTRING:CODE.SELECT CAPTURING CAPTURE
+     READLIST FREC ELSE FREC = ""
+     IF WEB THEN
+          FILE.KEY = FREC
+          CONVERT '!' TO '' IN FILE.KEY
+          GOTO 99
+     END
+     CTR = 0 ; DATA.B = '' ; FILE.KEY = ''
+     LOOP
+          CTR = CTR + 1
+          KEY = FREC<CTR>
+     WHILE KEY DO
+          READ BUFF FROM MFILE,KEY THEN
+               BEGIN CASE
+                    CASE FILE.NAME = "I2.PRODUCT"
+                         PROD.DESC = BUFF<1>:BUFF<71>
+                         DATA.B<1,-1>=KEY[2,10] 'L#9':' ':PROD.DESC 'L#35 ':BUFF<STATUS.ATT> "L#1 ":OCONV(BUFF<LAST.PRICE.ATT>,"D2/")
+                    CASE FILE.NAME = "PRODUCT.ARC"
+                         PROD.DESC = BUFF<1>:BUFF<71>
+                         DATA.B<1,-1>=KEY[2,10] 'L#9':' ':PROD.DESC 'L#35 ':BUFF<STATUS.ATT> "L#1 ":OCONV(BUFF<LAST.PRICE.ATT>,"D2/")
+                    CASE FILE.NAME = "PRODUCT"
+                         PROD.DESC = BUFF<1>:BUFF<71>
+                         DATA.B<1,-1>=KEY[2,10] 'L#9':' ':PROD.DESC 'L#35 ':BUFF<STATUS.ATT> "L#1 ":OCONV(BUFF<LAST.PRICE.ATT>,"D2/")
+                    CASE FILE.NAME = "CUSTOMER"
+                         DATA.B<1,-1> = BUFF<1> "L#30 ":BUFF<33> "L#10 ":BUFF<4> "L#15 ":BUFF<52> "L#6 "
+                    CASE FILE.NAME = "VM"
+                         DATA.B<1,-1>=BUFF<2> "L#30 ":BUFF<4>
+               END CASE
+               DATA.B<2,-1> = KEY
+10:       END
+     REPEAT
+     CTR = CTR - 1
+30:  IDCT = DCOUNT(DATA.B<1>,CHAR(253))
+     IF IDCT = 1 THEN
+          FILE.KEY = DATA.B<2>
+          GOSUB 50
+          RETURN
+     END
+     IF NOT(IDCT) THEN RETURN
+     PRINT CHAR(7)                      ; ** NOTIFY ON MULTIPLE KEYWORDS
+     SPMISC=1
+     XMISC = LIST.HEADER
+     XMISC<5> = LIST.DESC
+     XMISC<7>=5
+     CALL SELECTOR (DATA.B, XMISC)
+     IF XMISC<2> # '' THEN
+          FILE.KEY = DATA.B<2,XMISC<2>>
+          GOSUB 50
+     END
+99:  RETURN
+50:  IF FILE.NAME = 'PRODUCT' THEN
+          READ PKUBUFF FROM PKU,FILE.KEY ELSE PKUBUFF = ''
+          PKUBUFF<1,-1> = SEARCH
+          WRITE PKUBUFF ON PKU,FILE.KEY
+     END
+     RETURN

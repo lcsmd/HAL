@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Integer Conversion (IS, IL)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Integer conversion (IS, IL)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_is.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Integer Conversion (IS, IL)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_hu.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_l.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The integer conversion codes convert integer values between numeric form and hardware specific integer representation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-weight: bold;">IS</span></td><td style="border:none;padding:0">Short integer (16 bit value).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-weight: bold;">IL</span></td><td style="border:none;padding:0">Long integer (32 bit value).</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Used with the <span style="font-weight: bold;"><a href="qmb_iconv.htm" class="topiclink">ICONV()</a></span> function, the conversion code translates a QMBasic integer numeric value to the equivalent hardware specific representation of that integer. Used with the <span style="font-weight: bold;"><a href="qmb_oconv.htm" class="topiclink">OCONV()</a></span> function, the conversion code translates a hardware specific representation of an integer value to its equivalent QMBasic numeric form.</p>
+<p>By default, these conversions adopt the byte ordering of the machine on which the program is being executed. Adding an optional <span style="font-weight: bold;">L</span> to the end of the conversion code (<span style="font-weight: bold;">ISL</span>, <span style="font-weight: bold;">ILL</span>) causes conversion to assume a low byte first format for the hardware representation of the value. Similarly, adding an optional H to the end of the conversion code (<span style="font-weight: bold;">ISH</span>, <span style="font-weight: bold;">ILH</span>) causes conversion to assume a high byte first format for the hardware representation of the value.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The IS conversion code used in an output conversion supports a further option, <span style="font-weight: bold;">U</span>, to specify that the value should be treated as an unsigned short integer. For example '<span style="font-weight: bold;">ISU</span>'.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>These codes should not be used to encode numeric values to be stored in database files as the hardware specific representation may include bytes that will be interpreted as mark characters. These conversions are intended for use in, for example, applications that need to generate hardware specific data for transmission over communications networks.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that when used in this way, the input and output conversions may appear to be reversed from the expected use. An application would use <span style="font-weight: bold;"><a href="qmb_iconv.htm" class="topiclink">ICONV()</a></span> to transform a numeric value to the byte sequence for transmission over the network and <span style="font-weight: bold;"><a href="qmb_oconv.htm" class="topiclink">OCONV()</a></span> to transform received data from a byte sequence to a number. These codes were originally defined in another multivalue product and their definition has been maintained.</p>
+
+</td></tr></table>
+
+</body>
+</html>

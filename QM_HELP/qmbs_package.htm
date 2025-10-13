@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>!PACKAGE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="!PACKAGE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbs_package.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">!PACKAGE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbs_oscopy.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbs_parser.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!PACKAGE()</span> subroutine allows an application installer to add or remove a package licence.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CALL !PACKAGE(</span><span style="font-style: italic;">result</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">name</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">auth.string</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">result</span></td><td style="border:none;padding:0">is the variable to receive status information.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">identifies the package.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 360px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">auth.string</span></td><td style="border:none;padding:0">is the licence authorisation code.</td></tr></table></div><p style="margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!PACKAGE()</span> subroutine maintains the registered package licence data.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The subroutine returns <span style="font-style: italic;">result</span> as zero if successful or an error code if it fails.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The subroutine can also be declared as a function:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">DEFFUN PACKAGE(NAME, AUTH.STRING) CALLING &quot;!PACKAGE&quot;</span></p>
+<p class="p_Normal">and then used as</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">ERR = PACKAGE(NAME, AUTH.STRING)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CALL !PACKAGE(ERR, &quot;MYPKG&quot;, &quot;WHDY-BJGD-LNDD-PPQH&quot;)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF ERR THEN DISPLAY 'Error ' : ERR : ' licensing package'</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">See also:</p>
+<p><a href="package_licensing.htm" class="topiclink">Package licensing</a>, <span style="font-weight: bold;"><a href="qmb_enter_package.htm" class="topiclink">ENTER.PACKAGE()</a>,</span>  <span style="font-weight: bold;"><a href="qmb_exit_package.htm" class="topiclink">EXIT.PACKAGE()</a></span>, <span style="font-weight: bold;"><a href="package_licence.htm" class="topiclink">PACKAGE.LICENCE</a></span><span style="font-weight: bold;"><a href="package_licence.htm" class="topiclink">,</a></span> <span style="font-weight: bold;"><a href="qmbs_package.htm" class="topiclink">!PACKAGE()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

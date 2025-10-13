@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Simple Web Services</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MVConnect,Simple Web Services" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "simple_web_services.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Simple Web Services</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sorting.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="mvconnect.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The Simple Web Services components of QM allow easy creation of web services applications.<br />
+&nbsp;<br />
+At this release, there are two components:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:149px"><span style="font-weight: bold;"><a href="websvc.htm" class="topiclink">WEBSVC</a></span></td><td style="border:none;padding:0">Processes incoming web service requests</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:149px"><span style="font-weight: bold;"><a href="qmbs_callhttp.htm" class="topiclink">!CALLHTTP</a></span></td><td style="border:none;padding:0">Sends a request to a web server and returns the result</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">WEBSVC</span> command listens for an incoming web service request and, when detected, starts a phantom process to receive the request, parsing it into the separate header and body elements, and then calls a user supplied subroutine to perform the action required to service the request. The response data is then sent to the web client. Use of a separate phantom process for each incoming request allows multiple web services requests to be handled simultaneously.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">By combining the <span style="font-weight: bold;">WEBSVC</span> command with the connection pooling capabilities of QM, high performance can be achieved by minimising the initialisation tasks that must be performed for each received request.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">!CALLHTTP</span> class module allows an application to open a connection to a web server, send an HTTP style request, and receive the response. It supports the standard GET, POST, HEAD, PUT and DELETE request types.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Secure Web Services</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM does not currently have SSL support internally. Where HTTPS style secure web services are required, an external third party tunnel program such as <span style="font-weight: bold;">stunnel</span> must be used.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">MVConnect</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <a href="mvconnect.htm" class="topiclink">MVConnect</a> API implements a layer of additional functionality to aid processing of web services applications.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="cgi.htm" class="topiclink">Building a CGI Web Server Application</a>, <span style="font-weight: bold;"><a href="mvconnect.htm" class="topiclink">MVConnect</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

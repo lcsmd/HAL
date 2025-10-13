@@ -1,0 +1,33 @@
+      execute "select yt BY SEQ"
+      OPEN 'YT' TO F.YT ELSE PRINT 'YT';STOP
+      OPEN 'YT2' TO F.YT2 ELSE PRINT 'YT2';STOP
+      OPEN "YT.FILES" to f.ytf else print 'ytf';stop
+      open "YT.FILES2" to f.ytf2 else print 'ytf2';stop
+      ID = 1000001
+      readlist vids then
+         for vx = 1 to dcount(vids,@fm)
+            NID = "V":ID
+            ID+=1
+            vid = vids<vx>
+            vid2 = upcase(vid)
+            READ YT.BUFF FROM F.YT,VID ELSE YT.BUFF = ""
+            print vid:" ":vid2
+            cmd = "select yt.files like ":vid2[1,5]:"..."
+            print cmd
+            execute cmd
+            loop
+               readnext yt.id then
+                  yt.id2 = change(yt.id,vid2,NID)
+                  print yt.id:" ":yt.id2
+                  read yt.b from f.ytf,yt.id then
+                     PRINT YT.ID:"--->":yt.id2
+                     write yt.b on f.ytf2,yt.id2
+                  end
+               end else exit
+            repeat
+            YT.BUFF = CHANGE(YT.BUFF,vid,nid)
+            YT.BUFF<3> = VID
+            write yt.buff on f.yt2,nid
+         next vx
+      end
+      end

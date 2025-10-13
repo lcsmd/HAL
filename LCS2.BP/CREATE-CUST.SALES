@@ -1,0 +1,49 @@
+     OPEN 'INVOICE' TO INVOICE ELSE PRINT 'INVOICE';STOP
+     OPEN 'SALES.MATRIX' TO SALES.MATRIX ELSE PRINT 'SALES.MATRIX';STOP
+     OPEN 'CUSTOMER' TO CUSTOMER ELSE PRINT 'CUSTOMER';STOP
+     SELECT.STR = "SELECT INVOICE WITH INV.DATE > 12/31/14 AND WITH INV.DATE < 1/1/2016 BY CUST# BY INV.DATE"
+     PRINT SELECT.STR
+     EXECUTE SELECT.STR CAPTURING CAP
+     PRINT CAP
+     CT = 0
+     CUR.CUST = ""
+     CUR.MONTH = ""
+     TOT.AMT = 0
+     TOT.MONTHS = ""
+     CUST.MONTH = 0
+     CLEAR.CUST.YEAR.TOTS = ""
+     FOR MONTH.X = 1 TO 12
+          CLEAR.CUST.YEAR.TOTS<MONTH.X> = "0"
+     NEXT MONTH.X
+     CUST.YEAR.TOTS = CLEAR.CUST.YEAR.TOTS
+     LOOP
+          CT += 1
+     WHILE READNEXT AA DO
+          READ BUFF FROM INVOICE,AA THEN
+               CUST = BUFF<9>
+               IDATE = BUFF<11>
+               INV.AMT = BUFF<25>
+               MONTH = OCONV(IDATE,'DM')
+               YEAR = OCONV(IDATE,'DY2')
+               PERIOD = YEAR:MONTH
+               PRINT CUST:" ":PERIOD:" ":
+               IF CUR.CUST <> CUST THEN
+                    PRINT CUR.CUST
+                    IF CUR.CUST THEN WRITE CUST.YEAR.TOTS ON SALES.MATRIX,CUR.CUST
+                    CUR.CUST = CUST
+                    CUST.YEAR.TOTS = CLEAR.CUST.YEAR.TOTS
+                    PRINT.FLAG = 1
+               END
+               IF CUR.MONTH <> MONTH THEN PRINT.FLAG = 1
+               IF PRINT.FLAG THEN
+                    READV CNAME FROM CUSTOMER,CUST,1 ELSE CNAME = ""
+                    PRINT CUST:"  ":CNAME:"  ":OCONV(MONTH,"DMA"):"  ":
+                    CUST.YEAR.TOTS<MONTH> += INV.AMT
+                    TOT.MONTHS<MONTH> += INV.AMT
+               END
+          END
+     REPEAT
+     WRITE CUST.YEAR.TOTS ON SALES.MATRIX,CUR.CUST
+     WRITE TOT.MONTHS ON SALES.MATRIX,"***TOTALS"
+
+

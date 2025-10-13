@@ -1,0 +1,267 @@
+      $debug
+      deffun formcsv(array,delim)
+      print "starting cx"
+
+      equ tab to char(9), cr to char(13), lf to char(10)
+      equ crlf to cr:lf
+      equ space to " "
+      equ comma to ","
+
+      equ pdf.filename.val to 3, period.val to 2, date.val to 4, type.val to 5, desc.val to 6
+      equ amt.val to 7, bal.val to 8, source.line.val to 10, account.val to 1, state.id.val to 9
+
+      equ primary.acccount.val to 1, state.date.val to 2, state.start.date to 3, state.end.date to 4
+
+      equ start.trans.mark to "TRANSACTION DETAIL"
+      equ start.trans.mark2 to "(continued)TRANSACTION DETAIL"
+      equ begin.bal.mark to "Beginning Balance"
+      equ end.bal.mark to "Ending Balance"
+      equ primary.account.mark to "Primary Account:"
+      equ account.number.mark to "Account Number:"
+
+      csv.mode 3,comma
+
+      lm =1
+      s=""
+      r=""
+
+      buff = ""
+      account.number.p = ""
+      state.date.p = ""
+      period.p = ""
+      last.state.period.p = ""
+      st.period = ""
+      state.desc = ""
+      acct.buff = ""
+      st.buff = ""
+      trans = ""
+      header = ""
+      last.account.name = ""
+      account.long.name = ""
+      state.id = ""
+      state.id.old = ""
+      trans.status = 0;if lm then print "trans.status=0"
+      file.item.name = field(@sentence, " ", 2)
+      if lm then print "file.item.name:":file.item.name
+      if index(file.item.name, ",", 1) then
+         txt.file.name = field(file.item.name, ",", 1)
+         item.name = field(file.item.name, ",", 2)
+      end else
+         txt.file.name = "LCS.TXT"
+         item.name = file.item.name
+      end
+      if txt.file.name = "" then txt.file.name = "LCS.TXT"
+      csv.file.name = field(txt.file.name,'.',1):'.CSV'
+      print "txt.file.name:":txt.file.name
+      print "item.name:":item.name
+      item = field(item.name, ".", 1)
+      ext = field(item.name, ".", 2)
+      account.name = field(item,"_",1):"_":field(item,"_",2)
+      period.name = field(item,"_",3)
+      if lm then
+         print "account.name:":account.name
+         print "period.name:":period.name
+      end
+      open 'CONTROL' to f.control else print 'control';stop
+      open 'TRANS' to f.trans else print 'trans';stop
+      open 'STATEMENT' to f.statement else print 'f.statement';stop
+
+      open 'ACCOUNT' to f.account else print 'account';stop
+      open txt.file.name to f.txt.file else print "cannot open ":txt.file.name;stop
+      open csv.file.name to f.csv.file else print "cannot open ":csv.file.name;stop
+      year = field(item.name, "_", 3)[1, 4]
+      yeara = "/":year
+      first.beg.bal = @false
+      buff3 = ""
+      row=0
+      read trans.id from f.control, 'TRANS.ID' else trans.id = '1000000'
+      if lm then print "trans.id:":trans.id
+      read buff2 from f.txt.file,item.name then
+         buff2 = change(buff2,cr,@fm)
+         buff2.ct = dcount(buff2,@fm)
+         for buff.x = 1 to buff2.ct
+            trans = ""
+            buff = buff2<buff.x>
+            source.line=buff
+            begin case
+               case account.long.name = "" and trim(buff) > ""
+                  account.long.name = trim(buff)
+               case index(buff,account.number.mark,1) or index(buff,primary.account.mark,1)
+                  if trim(field(buff,":",2)) > "" then
+                     primary.account.e = trim(field(buff,":",2))
+                  end
+               case (buff[1,len(start.trans.mark)] = start.trans.mark or buff[1,len(start.trans.mark2)] = start.trans.mark2)
+                  trans.status = 1;if lm then print "trans.status=1"
+                  print "**** entering data zone ****"
+               case (trans.status > 0 and buff[1,len(begin.bal.mark)] = begin.bal.mark)
+                  trans.status = 2;if lm then print "trans.status=2"
+                  st.open.bal = trim(field(buff,"$",2))
+                  if lm then print "************Begin bal:":st.open.bal
+                  trans.status = 2
+                  gosub open.statement:
+               case buff[1,len(end.bal.mark)] = end.bal.mark
+                  st.end.bal = trim(field(buff,space,2))
+                  trans.status=0;if lm then print "trans.status=0"
+                  gosub write.statement:
+               case 1
+                  if buff[3,1] = "/" then gosub parse.line:
+            end case
+         next buff.x
+      end
+
+      write upcase(buff3) to f.csv.file,item:".CSV"
+
+      close f.txt.file
+      close f.csv.file
+      close f.trans
+      write upcase(trans.id) on f.control,"trans.id"
+      close f.control
+
+      stop
+
+
+parse.line:
+      if not(header) then
+         if lm then print "**** creating header"
+         gosub create.header:
+      end else
+         if lm then print "*****  PARSING LINE"
+         trans<state.date.val> = state.end.date
+         trans<account.val> = account.name
+         trans<period.val> = st.period
+         trans<pdf.filename.val> = change(item.name,'.TXT','.PDF')
+         if account.name <> last.account.name then
+            read acct.buff from f.account,account.name else
+               acct.buff = ""
+               acct.buff<1> = account.number.p
+               acct.buff<2> = account.name
+               acct.buff<3> = account.long.name
+               locate state.id in acct.buff<4> by 'AL' setting pos else
+                  ins state.id before acct.buff<4,pos>
+                  if st.buff then write upcase(st.buff) on f.statement,state.id
+               end
+               write upcase(acct.buff) on f.account,account.name
+               last.account.name = account.name
+            end
+         end
+         if state.id <> state.id.old then
+            read st.buff from f.statement,state.id else
+               st.buff = ""
+               st.buff<1> = account.name
+               st.buff<2> = state.start.date
+               st.buff<3> = state.end.date
+               st.buff<4> = state.desc
+               st.buff<5> = st.period
+               state.id.old = state.id
+            end
+         end
+
+         *trans<source.line> = buff
+         *buff = change(buff,tab,@vm)
+         *buff=change(buff,lf,space)
+         buff = trim(buff)
+         buff=change(buff,space,@FM)
+         print buff
+         buff.count = dcount(buff,@FM)
+         stdt = buff<1>:yeara
+         trans<date.val> = stdt
+         styr = field(stdt,"/",3)
+         stmo = field(stdt,"/",1)
+         state.period =  stmo:"-":styr
+         if state.period <> last.state.period then gosub new.month:
+         *DEBUG
+         if trans<amt.val> = "" then trans<amt.val> = buff<buff.count-1>
+         trans<bal.val> = buff<buff.count>
+         trans<type.val> = buff<2>
+         if not(trans<desc.val>) then
+            for desc.x = 2 to buff.count-2
+               trans<desc.val>=trans<desc.val>:space:buff<desc.x>
+            next desc.x
+            if (buff2<buff.x+1>[3,1] <> "/" and buff2<buff.x+1>[1,len(end.bal.mark)]<>end.bal.mark) then
+               trans<desc.val>=trans<desc.val>:space:buff2<buff.x+1>
+               buff.x = buff.x + 1
+            end
+            trans<desc.val> = trim(trans<desc.val>)
+         end
+         if lm then print " ****"
+      end
+      gosub add.row:
+      return
+
+add.row:
+      IF LM THEN PRINT "**** ADDING LINE"
+      row =  row +1
+      trans.csv = formcsv(trans,'comma')
+      buff3<row> = trans.csv
+      if lm then print row:trans.csv
+      if row > 1 then
+         trans.id = trans.id + 1
+         trans.id.key = ("0000000":trans.id) "r#7"
+         trans<state.id.val> = state.id
+         trans<source.line.val> = source.line
+         write upcase(trans) on f.trans, trans.id.key
+         print "trans: ":trans
+         print "writing trans: ":trans.csv
+      end
+
+      return
+
+create.header:
+      row=0
+      buff3 = ""
+      trans<account.val> = "Account Name"
+      trans<period.val> = "Period"
+      trans<pdf.filename.val> = "PDF file name"
+      trans<type.val> = "Type"
+      trans<date.val> = "Trans Date"
+      trans<desc.val> ="Description"
+      trans<amt.val> ="Amount"
+      trans<bal.val> = "Balance"
+      header = trans
+      return
+
+
+new.month:
+      state.date =  trim(buff2<buff.x-1>)
+      if state.date = "" then state.date =  trim(buff2<buff.x-2>)
+      state.desc = state.date
+      state.date = change(state.date," through ",@FM)
+      state.date.start = stmo:"-01-":styr
+      i.state.date.start = iconv(state.date.start,"D4")
+      nxmo = stmo + 1
+      if nxmo = '13' then
+         nxmo = '01'
+         nxyr = styr + 1
+      end
+      state.date.end = oconv(iconv(nxmo:"-01-":nxyr,"D4")-1,"D4-")
+      i.state.date.end = iconv(state.date.end,"D4")
+
+      state.date.end = oconv(iconv(state.date.start,"D4-")+32,"D4-")[1,2]
+      i.state.date.end = iconv(state.date.end,"D4")
+      st.date = oconv(i.state.date.end,"D4-")
+      st.period.year = field(st.date,"-",3)
+      st.period.month = field(st.date,"-",1)
+      st.period = st.period.year:"-":st.period.month
+      state.id = account.name:":":st.period
+      if lm then
+         print "primary acct:":account.number.p
+         print "statement.date:":st.date
+         print "statement.date.period:":st.period
+         print "statement.date.period.year:":st.period.year
+         print "statement.date.period.month:":st.period.month
+      end
+      return
+
+open.statement:
+
+      return
+
+write.statement:
+      write st.buff on f.statement, state.id
+      locate state.id in acc.state.id<1> by 'al' setting pos else
+         ins state.id before acc.state.id<1,pos>
+      end
+      return
+
+      end
+

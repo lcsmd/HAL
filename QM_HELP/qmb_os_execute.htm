@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>OS.EXECUTE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="OS.EXECUTE,Silent command execution" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_os_execute.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">OS.EXECUTE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_os_error.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_osdelete.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">OS.EXECUTE</span> statement executes an operating system command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">OS.EXECUTE</span> <span style="font-style: italic;">expr</span> {<span style="font-weight: bold;">CAPTURING</span><span style="font-style: italic;"> var</span>} {<span style="font-weight: bold;">SILENT</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">evaluates to the command to be executed.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is a variable to receive captured output.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">OS.EXECUTE</span> statement allows a QMBasic program to execute an operating system command. The program does not continue execution until the command terminates. QM attempts to redirect any output from the command back to the user's terminal but this is not always possible. Some commands may cause output to appear on the server system.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CAPTURING</span> clause captures output that would otherwise have gone to the terminal or phantom log file, saving it in the named variable with field marks in place of newlines. Alternatively, all command output can be suppressed by use of the <span style="font-weight: bold;">SILENT</span> clause.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">OS.EXECUTE</span> statement returns two error codes. The  <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function returns a non-zero value if QM detected an error and was unable to execute the command. For a zero <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value, the <span style="font-weight: bold;"><a href="qmb_os_error.htm" class="topiclink">OS.ERROR()</a></span> function returns the termination status of the executed command. The interpretation of this value will depend on the command being executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">If the command to be executed on a Windows ECS mode system contains characters outside the 8-bit set, it is necessary to create a .bat file that starts with</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">chcp 65001</span></p>
+<p class="p_Normal">to select Unicode mode followed by the commands to be executed. The <span style="font-weight: bold;">OS.EXECUTE</span> statement should then reference this .bat file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OS.EXECUTE &quot;MKDIR TEMPDIR&quot;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement uses the operating system MKDIR command to create a directory named TEMPDIR.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Quoting on Windows systems</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There is a well documented problem in Windows where command lines that need multiple sets of double quotes are not handled reliably. A command that references the Windows Program Files directory must include quotes around the pathname because it contains a space. Thus a command to be executed by <span style="font-weight: bold;">OS.EXECUTE</span> might be something like</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">“C:\Program Files\XXX\YYY.EXE” AAA BBB</span></p>
+<p class="p_Normal">where the pathname of the executable needs quotes.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Conversely, a command might need to quote arguments that contain quotes</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">MYPROG.EXE &nbsp;“AAA BBB”</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The problem occurs when there is a need to do both together</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">“C:\Program Files\XXX\YYY.EXE” “AAA BBB”</span></p>
+<p class="p_Normal">which looks as though it should work but actually fails with an error indicating that C:\Program is not a valid executable name.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The only reliable solution appears to be to write the command out to a batch (.bat) file and then use <span style="font-weight: bold;">OS.EXECUTE</span> to run that. The steps to do this might be something like</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">OPEN '$ACC' TO ACC.F THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; SCRIPT.NAME = 'MYSCRIPT' : @USERNO : '.BAT'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; SCRIPT = '&quot;C:\Program Files\XXX\YYY.EXE” “AAA BBB”’</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; WRITE SCRIPT TO ACC.F, SCRIPT.NAME</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; OS.EXECUTE SCRIPT.NAME</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DELETE ACC.F, SCRIPT.NAME</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; CLOSE ACC.F</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note the use of @USERNO to ensure that the script name is unique across multiple QM sessions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

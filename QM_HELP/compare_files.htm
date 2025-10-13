@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>COMPARE.FILES</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="COMPARE.FILES" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "compare_files.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">COMPARE.FILES</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="como.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="compile_constraints.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COMPARE.FILES</span> command compares the content of two files.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -361px; margin: 0 0 0 391px;"><span style="font-weight: bold;">COMPARE.FILES</span> {{<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file1</span> {{<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file2</span>}} {<span style="font-weight: bold;">DETAIL</span>}</p>
+<p style="text-indent: -361px; margin: 0 0 0 391px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">file1, file2</span></td><td style="border:none;padding:0">are the names of the files to be compared. If omitted, the command prompts for the file names. Either or both file names may have the <span style="font-weight: bold;">DICT</span> prefix to reference the file's dictionary.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COMPARE.FILES</span> command compares the records in <span style="font-style: italic;">file1</span> with those in <span style="font-style: italic;">file2</span>. If no differences are found, the value of <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> on completion will be zero. If there are records with differences or records that appear in only one of the files, <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> will be set to the number of failing records.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>With the <span style="font-weight: bold;">DETAIL</span> option, the command will show details of the differences found.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">COMPARE.FILES CUSTOMERS CUSTOMERS.OLD DETAIL</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody" style="font-style: italic;">Data mismatch in 10007</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; Field 2 differs</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody" style="font-style: italic;">Records in file 1 but not in file 2:</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; 19403</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; 19766</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody" style="font-style: italic;">Records in file 2 but not in file 1:</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; 04655</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody" style="font-style: italic;">Differences in 4 records</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMClearSelect()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMClearSelect" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmclearselect.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMClearSelect()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmclearfile.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmclose.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMClearSelect()</span> function clears a select list. It is analogous to the QMBasic <span style="font-weight: bold;"><a href="qmb_clearselect.htm" class="topiclink">CLEARSELECT</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The function takes a single argument, <span style="font-style: italic;">ListNo</span>, which is the select list number to be cleared. This must be in the range 0 to 10. No error occurs if the list was not active.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Applications that could leave unprocessed items in the list should always clear when it is no longer required. This is particularly important with the default select list (list 0) as items left in this list may affect commands executed on the server later in the session.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The program fragment in the examples below builds select list 1 and uses it to process records from the file open as fClients. It exits from the loop when it finds the first record where field 1 is empty. Because this could leave a partially processed select list, <span style="font-weight: bold;">QMClearSelect()</span> is used to clear the list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">void QMClearSelect(int </span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMSelect(fClients, 1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">do {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Id = QMReadNext(1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if (Id == NULL) break;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Rec = QMRead(fClients, Id, Err);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;QMFree(Id);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Fld = QMExtract(Rec, 1, 0, 0);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;QMFree(Rec);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if (Fld[0] == '\0') break;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;QMFree(Fld);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; } while(1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMClearSelect(1);</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that this example leaves variables Fld pointing to a dynamically allocated memory area on exit from the loop. This must be released using <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span> when no longer needed.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMClearSelect ByVal </span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;"> as Integer</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMSelect fClients, 1</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Do</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; Id = QMReadNext(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; If ID is Nothing Then Exit Do</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; Rec = QMRead(fClients, Id, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; If QMExtract(Rec, 1, 0, 0) = &quot;&quot; Then Exit Do</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Loop</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMClearSelect 1</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A3_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A3','TOGGLE0186A3_ICON')">QMBasic</a> Class Module</span></td></tr></table></div><div id="TOGGLE0186A3" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">ClearSelect(</span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">session-&gt;Select(fClients, 1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">loop</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; Id = session-&gt;ReadNext(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">until Id = &quot;&quot;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; Rec = session-&gt;Read(fClients, Id, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">until Rec&lt;1&gt; = &quot;&quot;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">repeat</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">session-&gt;ClearSelect(1)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A4_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A4','TOGGLE0186A4_ICON')">Java</a></span></td></tr></table></div><div id="TOGGLE0186A4" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">ClearSelect(int </span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">qm.Select(fClients, 1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">do {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Id = qm.ReadNext(1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if (qm.ServerError != SV$OK) break;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Rec = qm.Read(fClients, Id);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Fld = qm.Extract(Rec, 1, 0, 0);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; } while(Fld.length() != 0);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">qm.ClearSelect(1);</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A5_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A5','TOGGLE0186A5_ICON')">Python</a></span></td></tr></table></div><div id="TOGGLE0186A5" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">ClearSelect(</span><span style="font-style: italic;">ListNo</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMSelect(fClients, 1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while True:</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Id = qm.ReadNext(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if Id = &quot;&quot;: break</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Rec, Err = QMRead(fClients, Id)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;If Err != SV_OK: break</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Fld = QMExtract(Rec, 1, 0, 0)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if Fld == &quot;&quot;: break</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">qm.ClearSelect(1)</span></p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A3_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A3\',\'TOGGLE0186A3_ICON\')');
+HMInitToggle('TOGGLE0186A3','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A4_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A4\',\'TOGGLE0186A4_ICON\')');
+HMInitToggle('TOGGLE0186A4','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A5_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A5\',\'TOGGLE0186A5_ICON\')');
+HMInitToggle('TOGGLE0186A5','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

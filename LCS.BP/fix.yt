@@ -1,0 +1,56 @@
+      PROGRAM YT.SAVE
+
+      OPEN "LCS.TXT" TO LCS ELSE PRINT 'LCS';STOP
+      OPEN "YT.Q" TO YT.Q ELSE PRINT "YT.Q";STOP
+      YT.LIST = ""
+      YTURL="https://youtu.be/"
+      *execute "clear.file DATA YT.Q"
+      SELECT LCS
+      LOOP
+         READNEXT LID THEN
+            PRINT "READING ":LID
+            IF LID[1,1]="Y" THEN GOSUB FIX:
+         END ELSE EXIT
+      REPEAT
+      SELECT YT.Q
+      READLIST YT.BUFF THEN
+         WRITE YT.BUFF ON LCS,"YT.Q"
+      END
+      STOP
+
+FIX:
+      PRINT "    PROCESSING ":LID
+      READ BUFF FROM LCS,LID THEN
+         CT=DCOUNT(BUFF,@FM)
+         FOR X = 1 TO CT
+            print
+            VID = CHANGE(BUFF<X>,YTURL,"")
+            PRINT "            ":BUFF<X>:"  ":
+            IF VID > "" THEN
+               IF VID <> UPCASE(VID) THEN
+                  IF LEN(VID)=11 THEN
+                     READ QBUFF FROM YT.Q,VID ELSE
+                        WRITE "" ON YT.Q,VID
+                        print "***  ":VID:
+                     END
+                  END
+               END
+            END
+         NEXT X
+      END
+      RETURN
+
+      END
+
+
+
+
+
+
+
+
+
+
+
+
+

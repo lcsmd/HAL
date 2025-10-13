@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>RECORDLOCKED()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="RECORDLOCKED()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_recordlocked.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">RECORDLOCKED()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_readvl.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_recordlockl.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RECORDLOCKED()</span> function indicates whether a given record is locked.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">RECORDLOCKED</span>(<span style="font-style: italic;">file.var</span>, <span style="font-style: italic;">record.id</span>)</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with the file.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">record.id</span></td><td style="border:none;padding:0">evaluates to the key of the record to be tested.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RECORDLOCKED()</span> function returns a value indicating the state of any locks on record <span style="font-style: italic;">record.id</span> of the file open as <span style="font-style: italic;">file.var</span>. The tokens shown in the table below are defined in the KEYS.H record of the SYSCOM file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="width:30px;display:inline-block">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:83px; padding:4px; border:none"><p><span style="font-weight: bold;">Value</span></p>
+</td>
+<td style="vertical-align:top; width:281px; padding:4px; border:none"><p><span style="font-weight: bold;">Token</span></p>
+</td>
+<td style="vertical-align:top; width:474px; padding:4px; border:none"><p><span style="font-weight: bold;">Lock state</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:83px; padding:4px; border:none"><p>-3</p>
+</td>
+<td style="vertical-align:top; width:281px; padding:4px; border:none"><p>LOCK$OTHER.FILELOCK</p>
+</td>
+<td style="vertical-align:top; width:474px; padding:4px; border:none"><p>Another user holds a file lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:83px; padding:4px; border:none"><p>-2</p>
+</td>
+<td style="vertical-align:top; width:281px; padding:4px; border:none"><p>LOCK$OTHER.READU</p>
+</td>
+<td style="vertical-align:top; width:474px; padding:4px; border:none"><p>Another user holds an update lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:83px; padding:4px; border:none"><p>-1</p>
+</td>
+<td style="vertical-align:top; width:281px; padding:4px; border:none"><p>LOCK$OTHER.READL</p>
+</td>
+<td style="vertical-align:top; width:474px; padding:4px; border:none"><p>Another user holds a read lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:83px; padding:4px; border:none"><p>0</p>
+</td>
+<td style="vertical-align:top; width:281px; padding:4px; border:none"><p>LOCK$NO.LOCK</p>
+</td>
+<td style="vertical-align:top; width:474px; padding:4px; border:none"><p>The record is not locked</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:83px; padding:4px; border:none"><p>1</p>
+</td>
+<td style="vertical-align:top; width:281px; padding:4px; border:none"><p>LOCK$MY.READL</p>
+</td>
+<td style="vertical-align:top; width:474px; padding:4px; border:none"><p>This user holds a read lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:83px; padding:4px; border:none"><p>2</p>
+</td>
+<td style="vertical-align:top; width:281px; padding:4px; border:none"><p>LOCK$MY.READU</p>
+</td>
+<td style="vertical-align:top; width:474px; padding:4px; border:none"><p>This user holds an update lock</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:83px; padding:4px; border:none"><p>3</p>
+</td>
+<td style="vertical-align:top; width:281px; padding:4px; border:none"><p>LOCK$MY.FILELOCK</p>
+</td>
+<td style="vertical-align:top; width:474px; padding:4px; border:none"><p>This user holds a file lock</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A record may be multiply locked in which case the <span style="font-weight: bold;">RECORDLOCKED()</span> function reports only one of the current locks. File locks take precedence over read or update locks. If no file lock is set, read or update locks held by the process in which the <span style="font-weight: bold;">RECORDLOCKED()</span> function is performed take precedence over locks held by other processes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Executing the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function after a <span style="font-weight: bold;">RECORDLOCKED()</span> function indicates that a lock is active will return the user number of the user holding the lock.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF RECORDLOCKED(STOCK, &quot;ORDER.LIST&quot;) THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY &quot;Record is locked by user &quot; : STATUS()</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment checks if record ORDER.LIST is locked and, if so, reports the user number of the process that holds the lock.</p>
+
+</td></tr></table>
+
+</body>
+</html>

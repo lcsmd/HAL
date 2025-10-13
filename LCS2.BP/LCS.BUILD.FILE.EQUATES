@@ -1,0 +1,40 @@
+     INCLUDE UTLSBP ASSIGN.VAR
+     OPEN 'LCS.CONTROL' TO F.LCS.CONTROL ELSE STOP
+     OPEN 'LCS.BPQ' TO F.LCS.BPQ ELSE STOP
+     READ FILES FROM F.LCS.CONTROL, 'LCS.FILES' ELSE STOP
+     PGM.B = ''; FCOUNT = 0; FILE.NAME.CHANGES = ''; CCOUNT = 0; FILE.NAME.CHANGES.F = ''; ALLFILES = ''
+     FOR I = 1 TO DCOUNT(FILES,IAMC)
+          FILENAME = FILES<I>
+          IF FILENAME[1,1] = '*' THEN FILENAME = FILENAME[2,99]
+          IF FILENAME[1,1] = '$' THEN
+               FILENAME = FIELD(FILENAME,',',2)
+          END
+          IF FILENAME[1,1] # '&' THEN
+               FCOUNT = FCOUNT + 1
+               CONVCHAR = '-'
+               IF INDEX(FILENAME,'-',1) THEN
+                    CCOUNT = CCOUNT + 1
+                    FILE.NAME.CHANGES<1,CCOUNT> = FILENAME
+                    FILE.NAME.CHANGES.F<1,CCOUNT> = CHANGE(FILENAME,'-','.')
+               END
+               IF INDEX(FILENAME,' ',1) THEN
+                    CCOUNT = CCOUNT + 1
+                    FILE.NAME.CHANGES<1,CCOUNT> = FILENAME
+                    FILE.NAME.CHANGES.F<1,CCOUNT> = CHANGE(FILENAME,' ','.')
+                    CONVCHAR = ' '
+               END
+               PGM.B<-1> = 'OPEN "':FILENAME:'" TO F.FILES(':FCOUNT:') ELSE PRINT "':FILENAME:'" ;STOP'
+               PGM.B<-1> = 'EQUATE F.':CHANGE(FILENAME,CONVCHAR,'.') 'L#30':' TO F.FILES(':FCOUNT:')'
+               ALLFILES = ALLFILES:IVM:FILENAME
+          END
+     NEXT I
+     INS 'EQUATE NBR.OF.FILES' 'L#39':' TO ':FCOUNT BEFORE PGM.B<1>
+     INS 'COM F.FILES(50)' BEFORE PGM.B<1>
+     FCOUNT = FCOUNT + 3
+     DEL ALLFILES<1,1>
+     PGM.B<FCOUNT> = 'ALLFILES = "':ALLFILES:'"'
+     *L*FCOUNT = FCOUNT + 1
+     *L*PGM.B<FCOUNT> = 'FILE.NAME.CHANGES = "':FILE.NAME.CHANGES:'"'
+     *L*FCOUNT = FCOUNT + 1
+     *L*PGM.B<FCOUNT> = 'FILE.NAME.CHANGES.F = "':FILE.NAME.CHANGES.F:'"'
+     WRITE PGM.B ON F.LCS.BPQ, 'LCS.SET.FILES'

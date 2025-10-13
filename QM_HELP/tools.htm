@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Tools</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="*FIXDIR,*FIXPATH,*FIXPFX,*IMPGCAT,Tools" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "tools.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Tools</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmconv.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="migrating-to-openqm.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM includes several tools to assist system administrators. These are provided as globally catalogued programs that can be executed by typing their name, including the leading asterisk, at the QM command prompt.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">*FIXDIR</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The FIXDIR tool updates records in a directory file to use the line terminator appropriate to the operating system. This is a CR/LF pair on Windows and LF on other platforms. It is useful when moving accounts from Windows to Linux or vice versa.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The command is</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">*fixdir </span><span class="f_CodeSingleLine" style="font-style: italic;">filename</span><span class="f_CodeSingleLine"> {OMIT.HIDDEN} {</span><span class="f_CodeSingleLine" style="font-style: italic;">id...</span><span class="f_CodeSingleLine">}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-style: italic;">filename</span> may be the VOC entry name for an F or Q-type item referencing a directory file. Alternatively, it may be the pathname of the directory.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If no record ids are given on the command line, the default select list is used. If this list is not active, all records in the file are processed and the OMIT.HIDDEN option will cause hidden files to be omitted.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="margin: 6px 0 0 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal"><span style="font-weight: bold;">*FIXPATH</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The FIXPATH tool updates pathnames in F, Q and V-type VOC items to use the correct operating system directory delimiter character. It is useful when moving accounts from Windows to Linux or vice versa.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The command is</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">*fixpath</span></p>
+<p>to update the current account or</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">*fixpath </span><span class="f_CodeSingleLine" style="font-style: italic;">acc.name</span></p>
+<p>to update another account. The <span style="font-style: italic;">acc.name</span> may be the account name or its pathname.</p>
+<p style="margin: 6px 0 0 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 6px 0 0 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 6px 0 0 0;"><span style="font-weight: bold;">*FIXPFX</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The FIXPFX tool changes the prefix character on the subfiles within the directory that represents a hashed file from ~ to %. Early releases of QM used the ~ prefix but it was discovered that some PC clean-up tools assumed that anything beginning with a ~ character was a temporary item that could be deleted. QM release 2.7-1 (July 2008) changed the prefix character to % to avoid this problem and automatically renamed the subfiles when opening a file for which write permission was available. This renaming mechanism was removed in release 3.3-0 (April 2014) as there was a small performance impact on all file open operations. Instead, the installer offered an automatic scan to update the subfile prefix in all accounts.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There remains the possibility that a user might need to import an account from a release that used the ~ prefix. The FIXPFX tool will update a named account or all accounts to use the new subfile prefix. The command line is</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">*fixpfx</span></p>
+<p>to update all accounts or</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">*fixpfx </span><span class="f_CodeSingleLine" style="font-style: italic;">acc.name</span></p>
+<p>to update a named account (which may be given as a pathname).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">*IMPGCAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The IMPGCAT tool imports items from the global catalogue of another QM system. It is of use when moving an account or an entire QM system to a new computer.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Simply copying the gcat subdirectory of the QMSYS account does not work unless the two systems are running the same version of QM as the global catalogue includes many items that are part of the QM release and are not compatible across different versions. This tool selectively copies items, transferring user written items and omitting those that are standard components of QM.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The command line is</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">*impgcat {pathname} {</span><span class="f_CodeSingleLine" style="font-style: italic;">options</span><span class="f_CodeSingleLine">}</span></p>
+<p>where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-style: italic;">pathname</span></td><td style="border:none;padding:0">is the pathname of the global catalogue from which items are to be copied.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">are chosen from</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">DISPLAY</td><td style="border:none;padding:0">Show the names of items but do not copy.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">NO.QUERY</td><td style="border:none;padding:0">Suppress confirmation prompt before copying.</td></tr></table></div>
+</td></tr></table>
+
+</body>
+</html>

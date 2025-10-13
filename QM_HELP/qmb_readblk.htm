@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>READBLK</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="READBLK" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_readblk.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">READBLK</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_read_socket.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_readcsv.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">READBLK</span> statement reads a given number of bytes from the current file position in a record previously opened using <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">READBLK</span> <span style="font-style: italic;">var</span> {<span style="font-weight: bold;">ENCODING</span> <span style="font-style: italic;">name</span>} <span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">file.var</span><span style="font-style: italic; font-weight: bold;">,</span> <span style="font-style: italic;">bytes</span></p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is the name of a variable to receive the data read from the file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with the file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">bytes</span></td><td style="border:none;padding:0">evaluates to the number of bytes to be read.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statements to be executed depending on the outcome of the <span style="font-weight: bold;">READBLK</span> operation.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present unless the OPTIONAL.THEN.ELSE setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive is enabled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">READBLK</span> statement reads up to <span style="font-style: italic;">bytes</span> bytes from the file. If at least one byte is available, the data is returned in <span style="font-style: italic;">var</span> and the <span style="font-weight: bold;">THEN</span> clause is executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ELSE</span> clause is executed if the <span style="font-weight: bold;">READBLK</span> fails. The  <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will indicate the cause of the error. For example, attempting to read when at the end of the file will return ER$EOF.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ON ERROR</span> clause is executed for serious fault conditions such as errors in a file's internal control structures. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return an error number. If no <span style="font-weight: bold;">ON ERROR</span> clause is present, an abort would occur.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The optional <span style="font-weight: bold;">ENCODING</span> clause sets the character encoding to be used, overriding any encoding set in the <a href="voc_f.htm" class="topiclink">VOC F-type</a> record or when the file was opened. A null string as the encoding name is equivalent to not having the <span style="font-weight: bold;">ENCODING</span> clause at all. To disable the default encoding, the encoding name should be specified as &quot;NULL&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that <span style="font-weight: bold;">READBLK</span> is a byte level operation and returns a string in which each character will represent one byte from the file and hence is always in the range char(0) to char(255). When used with the <span style="font-weight: bold;">ENCODING</span> clause, the <span style="font-style: italic;">bytes</span> value is the number of bytes to be read, not the character count in the decoded data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">file.var</span> refers to a serial port opened using <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span>, the <span style="font-weight: bold;">READBLK</span> statement reads up to <span style="font-style: italic;">bytes</span> bytes of data from the port but does not wait if there is less than the requested number of bytes available. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">READBLK VAR FROM SEQ.F, 100 THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ...</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">processing statements</span><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END ELSE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY &quot;Data block not read&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment reads 100 bytes from the a file previously opened to file variable SEQ.F into variable VAR.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_closeseq.htm" class="topiclink">CLOSESEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_create.htm" class="topiclink">CREATE</a></span>, <span style="font-weight: bold;"><a href="qmb_nobuf.htm" class="topiclink">NOBUF</a></span>, <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_readcsv.htm" class="topiclink">READCSV</a></span>, <span style="font-weight: bold;"><a href="qmb_readseq.htm" class="topiclink">READSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_seek.htm" class="topiclink">SEEK</a></span>, <span style="font-weight: bold;"><a href="qmb_timeout.htm" class="topiclink">TIMEOUT</a></span>, <span style="font-weight: bold;"><a href="qmb_weofseq.htm" class="topiclink">WEOFSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a></span>, <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span>, <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQF</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

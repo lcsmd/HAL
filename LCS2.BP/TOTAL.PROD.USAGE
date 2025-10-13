@@ -1,0 +1,18 @@
+*---> Recovered document: TOTAL.PROD.USAGE
+     OPEN 'PROD.USAGE' TO PROD.USAGE ELSE PRINT 'PROD.USAGE';STOP
+     SELECT PROD.USAGE
+     CT=0
+     LOOP WHILE READNEXT AA DO
+          READV Q FROM PROD.USAGE,AA,2 THEN
+               X = DCOUNT(Q,@VM)
+               TOT = 0
+               FOR XX = 1 TO X
+                    TOT=TOT+Q<1,XX>
+               NEXT XX
+               WRITEV TOT ON PROD.USAGE,AA,5
+          END
+          IF NOT(MOD(CT,100)) THEN PRINT CT
+     REPEAT
+     PRINT 'FINISHED'
+     STOP
+

@@ -1,0 +1,293 @@
+      SUBROUTINE ProcessMetaFile(directory, textFileName)
+      *INCLUDE QMDEFS
+      comma=","
+      tab=char(9)
+      space = " "
+      dlm=tab
+
+
+      ! Open the text file for reading
+      OpenPath = directory : "/" : textFileName
+      OPEN OpenPath TO fileHandle ELSE
+         CRT "Cannot open file ":OpenPath
+         RETURN
+      END
+
+
+      ! Read the first line to get the labels
+      READ labelsLine FROM fileHandle, 1 ELSE
+         CRT "Cannot read the labels line of file ":OpenPath
+         RETURN
+      END
+
+      ! Read the second line to get the file-related data values
+      READ fileDataLine FROM fileHandle, 2 ELSE
+         CRT "Cannot read the file data line of file ":OpenPath
+         RETURN
+      END
+
+READ.FILE.DATA:
+      LOCATE FILE.NAME IN FILE.LIST<1> BY "AL" SETTING POS THEN
+         READ EQU.REC FROM FILES(EQU.NM),MET.ID ELSE EQU.REC = ""
+         READ SCH.REC FROM FILES(SCH.NM),MET.ID ELSE SCH.REC = ""
+         *MET PREFIX.CODE
+         *MET ID SEED
+         *NEXT.ID
+      END ELSE
+         GOSUB INSERT.NEW.FILE:
+      END
+      LX = 1
+      FILE.NAME = FIELD(MET.REC<1>," ",1)
+      Abbr = FIELD(MET.REC<1>," ",2)
+      FILE.NUMBER = FIELD(MET.REC<1>," ",3)
+
+      * Build the include file content
+      inc.rec = ""
+      inc.rec<-1> = "EQU ":Abbreviation:".fn TO ":FileNumber
+      inc.rec<-1> = "EQU f.":Abbreviation:" TO FILE(":FileNumber:")"
+      inc.rec<-1> = "EQU d.":Abbreviation:" TO DICT.FILE(":FileNumber:")"
+
+
+      ! Extract file-related data values
+      fileData = TRIM(fileDataLine)
+      fileName = FIELD(fileData, dlm, 1)
+      fileAbb = FIELD(fileData, dlm, 2)
+      fileId = FIELD(fileData, dlm, 3)
+      fileIdPrefix = FIELD(fileData,dlm,4)
+      fileIdSeed = FIELD(fileData,dlm,5)
+      fileIdLevel = FIELD(fileData,dlm,6)
+      fileIdType = FIELD(fileData,dlm,7)
+      fileAssociations = FIELD(fileData, dlm, 4)
+      fileViews = FIELD(fileData, dlm, 5)
+      fileDelim = FIELD(fileData, dlm, 6)
+      fileType = FIELD(fileData, dlm, 7)
+      if fileType="" then fileType="DYNAMIC"
+      if fileType="COLLECTION" then DictType="E" else DictType="D"
+      fileLoad = Field(fileData, dlm, 8)
+
+      ! Create the database file
+      cmd = trim("CREATE.FILE ":fileName:" ":fileType)
+      execute cmd capturing cap
+      print cap
+
+READ.FIELD.DATA:
+      * Set default values
+      Type = "D"
+      Description = ""
+      Conversion = ""
+      Format = "20L"
+      S_M_Indicator = "S"
+      Association = ""
+      IndexInfo = ""
+      LOOP
+         LX+=1
+         METARECORD = MET.REC<LX>
+         IF FieldName = "@ID" THEN
+            AttrNumber = 0
+         END ELSE
+            AttrNumber += 1
+         END
+
+         IF INDEX(FieldName, ".dt", 1) THEN
+            Conversion = "D4-"
+            Format = "10R"
+            IndexInfo = "X"
+         END
+
+         IF INDEX(FieldName, ".id", 1) THEN
+            IndexInfo = "X"
+         END
+
+         * Parse meta data overrides
+         IF INDEX(MetaRecord, "type:", 1) THEN
+            Type = FIELD(FIELD(MetaRecord, "type:", 2), " ", 1)
+         END
+
+         IF INDEX(MetaRecord, "desc:", 1) THEN
+            Description = FIELD(FIELD(MetaRecord, "desc:", 2), " conv:", 1)
+         END
+
+         IF INDEX(MetaRecord, "conv:", 1) THEN
+            Conversion = FIELD(FIELD(MetaRecord, "conv:", 2), " format:", 1)
+         END
+
+         IF INDEX(MetaRecord, "format:", 1) THEN
+            Format = FIELD(FIELD(MetaRecord, "format:", 2), " assoc:", 1)
+         END
+
+         IF INDEX(MetaRecord, "assoc:", 1) THEN
+            Association = FIELD(FIELD(MetaRecord, "assoc:", 2), " label:", 1)
+         END
+
+         IF INDEX(MetaRecord, "an:", 1) THEN
+            AttrNumber = FIELD(FIELD(MetaRecord, "an:", 2), " ", 1)
+         END
+
+         IF INDEX(MetaRecord, "index:", 1) THEN
+            IndexInfo = FIELD(FIELD(MetaRecord, "index:", 2), " ", 1)
+         END
+
+         open "DICT",FILENAME TO D.FILE ELSE PRINT "DICT,":FILENAME;STOP
+
+      ! Initialize field creation variables
+         fieldNames = ""
+         fieldCount = 0
+         fieldPos = 0
+
+      ! Skip the blank line and the attribute labels line
+         lineNo = 4
+
+      ! Process each line for fields
+         LOOP
+            READ nextLine FROM fileHandle, lineNo ELSE EXIT
+            lineNo += 1SHXB
+            IF TRIM(nextLine) = "" THEN CONTINUE
+            IF TRIM(nextLine) = "[END]" THEN EXIT
+
+            fieldCount += 1
+            fieldData = TRIM(nextLine)
+            fieldName = FIELD(fieldData, dlm, 1)
+            if fieldName[1,3] = "PH " THEN
+               fieldName = fieldName[4,25]
+               fieldAn = field(fieldData, dlm, 2)
+               ass.ct = dcount(fieldAn," ")
+               for ass.x = 1 to ass.ct
+                  writev fieldName on D.file,fieldAn<ass.x>,6
+                  writev "M" on D.file,fieldAn<ass.x>,7
+               next ass.x
+               DictRecord = "PH":@fm:fieldAn
+            END ELSE
+               fieldAn = FIELD(fieldData, dlm, 2)
+               fieldConv = FIELD(fieldData, dlm, 3)
+               fieldDesc = FIELD(fieldData, dlm, 4)
+               fieldForm = FIELD(fieldData, dlm, 5)
+               fieldAssoc = FIELD(fieldData, dlm, 6)
+               fieldMs = FIELD(fieldData, dlm, 7)
+               fieldIndex = FIELD(fieldData, dlm, 8)
+
+      ! Default values
+               FieldName=downcase(FieldName)
+               IF fieldAn = "" THEN fieldAn = fieldCount - 1
+               if DictType= "E" then fieldAn = FieldName
+               IF fieldConv = "" THEN fieldConv = ""
+               IF fieldDesc = "" THEN fieldDesc = ""
+               IF fieldForm = "" THEN fieldForm = "L25"
+               IF fieldAssoc = "" THEN fieldAssoc = ""
+               IF fieldMs = "" THEN fieldMs = "S"
+               IF fieldIndex = "" THEN fieldIndex = ""
+
+      ! Special handling for date fields
+               IF fieldName = "...date" OR fieldName = "....dt" OR fieldName = "..._dt" THEN
+                  IF fieldConv = "" THEN fieldConv = "D4-"
+                  IF fieldForm = "" THEN fieldForm = "R10"
+               END
+
+      ! Append to field list
+               IF fieldNames # "" THEN fieldNames := @VM
+               fieldNames := fieldName
+            END
+            RETURN
+
+CREATE.DICT:
+            * Write dictionary entry
+            DictRec = Type:" ":Description:VM:AttrNumber:VM:Conversion:VM:Format:VM:S_M_Indicator:VM:Association:VM:IndexInfo
+            WRITE DictRec ON DICT_FILES(FileNumber), FieldName
+            CALL CREATE.INDEXES
+
+      ! Create the dictionary item
+            dictRecord = DictType:" ":fieldDesc:@fm:fieldAn:@fm:fieldConv:@fm:fieldForm:@fm:fieldAssoc:@fm:fieldMs:@fm:fieldIndex
+            WRITE dictRecord ON D.file,fieldName
+         REPEAT
+
+      ! Create @ dictionary item
+         EXECUTE "CREATE DICT ":fileName:" @ PH ":fieldNames
+         RETURN
+
+INSERT.FILE:
+         INS FILE.NAME BEFORE FILE.LIST<1,POS>
+         INS FILE.ABB BEFORE FILE.ABBS<1,POS>
+         INS FILE.NUM BEFORE FLE.NUMS<1,POS>
+         FILE.NEW = FILE.NAME
+         EQU.REC = ""
+         SCH.REC=""
+         MET.REC = ""
+         *MET PREFIX.CODE
+         *MET ID SEED
+         *NEXT.ID
+         RETURN
+
+CREATE.INCLUDE.FILE:
+      ! Create the INCLUDE file
+         IncludePath = directory : "/" : fileName : ".INC"
+         OPENSEQ IncludePath TO includeHandle ELSE CREATE INCLUDEHANDLE ELSE
+            CRT "Cannot open include file ":IncludePath
+            RETURN
+         END
+
+         WRITESEQ "****** This file describes the ":fileName:" file and its fields and was created: ":DATE():" ":TIME() TO includeHandle ELSE PRINT INCLUDEPATH;STOP
+         WRITESEQ "" TO includeHandle ELSE PRINT INCLUDEPATH;STOP
+         FOR i = 1 TO fieldCount
+            fieldName = FIELD(fieldNames, @VM, i)
+            fieldPos = i - 1
+            line = "EQU ":fileAbb:"." : fieldName : " TO " : fileAbb : ".b" : fieldPos : ", " : fileAbb : "." : fieldName : ".h TO " : fieldPos
+            WRITESEQ line TO includeHandle ELSE PRINT
+         NEXT i
+
+         fileData = TRIM(fileDataLine)
+         fileName = FIELD(fileData, dlm, 1)
+         fileAbb = FIELD(fileData, dlm, 2)
+         fileId = FIELD(fileData, dlm, 3)
+         fileAssociations = FIELD(fileData, dlm, 4)
+         fileViews = FIELD(fileData, dlm, 5)
+         fileDelim = FIELD(fileData, dlm, 6)
+         fileType = FIELD(fileData, dlm, 7)
+         if fileType="" then fileType="DYNAMIC"
+         if fileType="COLLECTION" then DictType="E" else DictType="D"
+         fileLoad = Field(fileData, dlm, 8)
+
+
+         OPEN "FILES" TO F.FILES ELSE PRINT "FILES";STOP
+         READ FILE.REC FROM F.FILES,filename else file.rec = ""
+         FILE.REC<1> = FILEABB
+         FILE.REC<2> = FILEid
+         file.rec<3> = fileassociations
+         file.rec<4> = fileviews
+         file.rec<5> = filedelim
+         FILE.REC<6> = FILETYPE
+         if fileLoad then FILE.REC<7> = fileLOAD
+         if fileprefix ="" then fileprefix=fileabb
+         file.rec<8> = fileprefix
+         FILE.REC<9> = 100000
+         WRITE FILE.REC ON F.FILES,FILENAME
+
+         CLOSESEQ includeHandle
+         RETURN
+
+
+CREATE.EQU:
+         inc.rec<-1> = "EQU ":Abbreviation:".":FieldName:".a TO ":AttrNumber
+         inc.rec<-1> = "EQU ":Abbreviation:".":FieldName:" TO ":Abbreviation:".rec<":AttrNumber:">"
+      REPEAT
+
+UPDATE.SCHEMA:
+      ! Update SCHEMA file
+      OPEN "SCHEMA" TO schemaFile ELSE
+         CRT "Cannot open SCHEMA file"
+         RETURN
+      END
+
+      schemaId = fileName
+      schemaFieldCt = fieldCount
+      schemaFieldNames = fieldNames
+
+      schemaRecord = ""
+      schemaRecord<1> = schemaFieldCt
+      schemaRecord<2> = fileAbb
+      schemaRecord<3> = schemaFieldNames
+
+      WRITE schemaRecord ON schemaFile, schemaId
+
+      CRT "File creation process completed successfully."
+
+      END
+      RETURN

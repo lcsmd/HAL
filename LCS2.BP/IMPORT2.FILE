@@ -1,0 +1,65 @@
+      *---> Recovered document: IMPORT.FILE
+      TAB = CHAR(9)
+      BUFF = ""
+      PARMS1 = TRIM(FIELD(@SENTENCE," ",2))
+      PARMS2 = TRIM(FIELD(@SENTENCE," ",3))
+      FILE.NAME = PARMS1
+      IF NOT(FILE.NAME) THEN
+         PRINT "ENTER FILE NAME IN DIRECRTORY LCS.CSV"
+         INPUT FILE.NAME
+      END
+      FILE2.NAME = PARMS2
+      IF NOT(FILE2.NAME) THEN
+         PRINT "ENTER DEST FILE NAME"
+         INPUT FILE2.NAME
+      END
+
+      PRINT "IMPORTING FROM LCS.CSV ":FILE.NAME:" INTO ":FILE2.NAME
+      PRINT
+      OPEN FILE2.NAME TO INFILE ELSE PRINT FILE2.NAME;STOP
+      OPEN "DICT",FILE2.NAME TO D.FILE2.NAME ELSE PRINT 'DICT ':FILE2.NAME;STOP
+      OPENSEQ "LCS.CSV",FILE.NAME TO SFILE ELSE PRINT "SFILE";STOP
+      *PRINT INFILE
+      CT=0
+      LOOP
+         CT+=1
+         PRINT CT
+         READSEQ LINE FROM SFILE ELSE EXIT
+         PRINT CT:"  ":LINE
+         BUFF = CHANGE(LINE,TAB,@FM)
+         PRINT BUFF
+         IF CT =1 THEN
+            DICT.NAMES = CHANGE(LINE,TAB," ")
+            GOSUB CREATE.DICT:
+         END ELSE
+            ID = BUFF<1>
+            DEL BUFF<1>
+            PRINT ID:"::":BUFF
+            WRITE BUFF ON INFILE,ID
+         END
+      REPEAT
+      PRINT "DONE"
+      STOP
+
+
+CREATE.DICT:
+      DNUM = DCOUNT(BUFF,@FM)
+      FOR DX = 0 TO DNUM
+         IF BUFF<DX+1> THEN
+            DBUFF = ""
+            DBUFF<1> = "D"
+            DBUFF<2> = DX
+            WRITE DBUFF ON D.FILE2.NAME, BUFF<DX+1>
+            PRINT "WRITING ":BUFF<DX>:" TO DICT"
+         END
+      NEXT DX
+      DBUFF = ""
+      DBUFF<1> = "PH"
+      DBUFF<2> = DICT.NAMES
+      DBUFF<5> = "10L"
+      DBUFF<6> = "M"
+      WRITE DBUFF ON D.FILE2.NAME,"@ALL"
+      WRITE DBUFF ON D.FILE2.NAME,"@"
+      RETURN
+      END
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>JPARSE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="JPARSE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_jparse.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">JPARSE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_jbuild.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_keep_select.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">JPARSE()</span> function parses a JSON string into a data collection.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 8px 30px;"><span style="font-weight: bold;">JPARSE(</span><span style="font-style: italic;">var</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">JPARSE(</span><span style="font-style: italic;">var</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">mode</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:61px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is a JSON string.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:61px"><span style="font-style: italic;">mode</span></td><td style="border:none;padding:0">is an optional additive value specifying the manner in which the JSON string is formed. The <span style="font-style: italic;">mode</span> values are:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 121px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:190px">JP$NULL</td><td style="border:none;padding:0">Parse SQL style null value as an empty string.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 121px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:190px">JP$UNQUOTED.NAME</td><td style="border:none;padding:0">Element names may be unquoted.</td></tr></table></div><p class="p_Normal" style="text-indent: -190px; margin: 0 0 0 311px;">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">JPARSE()</span> function transforms a JSON (JavaScript Object Notation) string into a data collection variable. If successful, the return value of the function is a data collection and the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function returns zero.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">JPARSE()</span> treats spaces, tabs, carriage returns, linefeed and all five mark characters as whitespace, ignoring them between JSON elements.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>If the <span style="font-weight: bold;">JPARSE()</span> function fails, a null string is returned and the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function returns a non-zero error code. The <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function will return the character position in the JSON string at which the error was detected.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">VAR = JPARSE(JSON.STRING)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">VAR{'client/name'} = NEW.CLIENT.NAME</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">JSON.STRING = JBUILD(VAR)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above program fragment parses a JSON string into a data collection variable, modifies the client name element and rebuilds the JSON representation of the modified data.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="qmbasic_collections.htm" class="topiclink">Data collections</a>, <span style="font-weight: bold;"><a href="qmb_jbuild.htm" class="topiclink">JBUILD()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

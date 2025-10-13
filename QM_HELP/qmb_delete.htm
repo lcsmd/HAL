@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>DELETE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="DELETE,DELETEU" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_delete.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">DELETE, DELETEU</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_del.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_deletelist.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DELETE</span> statement deletes a record from an open file. The <span style="font-weight: bold;">DELETEU</span> statement is similar but it preserves locks.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">DELETE </span><span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">record.id</span> {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">DELETEU</span> <span style="font-style: italic;">file.var</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">record.id</span> {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is a file variable for an open file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">record.id</span></td><td style="border:none;padding:0">evaluates to the id of the record to be deleted.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statements to be executed if the delete fails.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The specified record is deleted from the file. No error occurs if the record does not exist.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the process performing the <span style="font-weight: bold;">DELETE</span> had a read or update lock on the record, the lock is released. The <span style="font-weight: bold;">DELETEU</span> statement preserves any lock. Within a transaction, the lock is retained until the transaction terminates and then released regardless of which statement is used. Attempting to delete a record in a transaction will fail if the process does not hold an update lock on the record or the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ON ERROR</span> clause is executed for serious fault conditions such as errors in a file's internal control structures. It is also executed if the delete operation is disallowed by a pre-delete <a href="triggers.htm" class="topiclink">trigger function</a> associated with the file. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return an error number. If no <span style="font-weight: bold;">ON ERROR</span> clause is present, an abort would occur.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Use of a THEN/ELSE Clause</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For compatibility with the way in which triggers operate in some other multivalue products, the <span style="font-weight: bold;">DELETE</span> statement has an optional <span style="font-weight: bold;">THEN/ELSE</span> clause. Because this would otherwise lead to a syntactic ambiguity, compilation of programs that use this clause requires the WRITE.DELETE.THEN.ELSE option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive to be enabled. Once this is done, the optional <span style="font-weight: bold;">THEN/ELSE</span> clauses can be included in their usual position, after the <span style="font-weight: bold;">ON ERROR</span> clause.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When a <span style="font-weight: bold;">DELETE</span> statement has a <span style="font-weight: bold;">THEN/ELSE</span> clause, a failure returned from a trigger function, typically as a result of a pre-delete data validation error, will cause the <span style="font-weight: bold;">ELSE</span> clause to be executed instead of the <span style="font-weight: bold;">ON ERROR</span> clause.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DELETE STOCK, ITEM.ID</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement deletes the record whose id is in <span style="font-weight: bold;">ITEM.ID</span> from the file associated with file variable <span style="font-weight: bold;">STOCK</span>.</p>
+
+</td></tr></table>
+
+</body>
+</html>

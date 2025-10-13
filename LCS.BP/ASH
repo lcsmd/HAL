@@ -1,0 +1,2664 @@
+      subroutine ASH_TCL
+      * Copyright Ashley E J Chapman 1981 to 2021
+      * $OPTIONS CASE    ;* To keep UV happy sometimes.
+      progVersion = '21.0419' ;* UV focused version
+      * Over the years there have been several custom versions of this program for various systems.
+      * Contact me directly to get the most current generic one whihc is the basis of platform/site specific cuts.
+      * Version 1 was for Information 6 running on Primos 19, so lots of changes since then!
+      * ash.chapman@gmail.com
+
+      ***********************************************Config values here****************************************
+      * Leave blank for automatic discovery or fill in to FORCE particular bahavious appropriate for the environment
+      OS          = \WINDOWS\       ;* String - Operating system. AIX, HPUX, LINUX, PRIMOS, UNIX, VMS, WINDOWS
+      ;* (AIX, HPUX and LINUX are auto-detected from the UNIX value)
+      OSLevel     = \2022\       ;* Float - OS version from OSLEVEL. MUST be numeric with only one decimal point.  Sub releases are ignored.
+      platformType  = \QM\   ;* String - Valid Values are INFORMATION, JBASE, QM, D3,
+      ;* CACHE, MVBASE, MVON, PIOPEN, REALITY, REVELATION, UV, UD (Partial auto-detect)
+      platformLevel = \4.09\     ;* Float - MUST be numeric with no more than one decimal point.
+      ;* Format is NN.SSBB.  Eg 11.3.2 converts to 11.0302
+      termClass = \ACCUTERM\         ;* String - One of these specific values:- XTERM, ACCUTERM, SBCLIENT, PLATFORM, UNKNOWN
+      ***********************************Some values are autodetected from these seed values*******************
+
+      * This program is in 7-bit ASCII.  Not UTF-8 or any ANSI codepage.
+      * Aimed at putty/xterm users.  VTxxx function keys, or preferably the SCO ones
+      * NB, this only works with ANSI X3.64 (AKA ISO 6429) terminals.  No attempt to make it work with ancient stuff
+      * Hereon, I'll refer to those standards as "Ansi" as that's kinda pronouncable and means something to most developers.
+      * This routine is intended to be configuration free without external dependencies.
+      * This program assumes that the Platform terminal settings may be wrong and that the user might not have permissions to fix them.
+      * Assumes that color is available.  I haven't been able to buy a mono monitor for over two decades so this is a reasonable assumption.  Monochrome is history.  Well apart from SBclient!  Time to review this.
+      * http://www.climagic.org/mirrors/VT100_Escape_Codes.html
+      * http://bjh21.me.uk/all-escapes/all-escapes.txt
+      * https://www.smarthomebeginner.com/best-ssh-clients-windows-putty-alternatives/
+      * https://superuser.com/questions/193344/how-to-insert-unicode-characters-in-xterm
+      * http://www.bitsavers.org/pdf/dec/terminal/
+      * waterfox browser has firessh for a browser based xterm
+      * test it with utf-8 and unifont - https://savannah.gnu.org/projects/unifont
+      * or Inconsolata-g - https://www.slant.co/topics/7711/viewpoints/7/~monospaced-unicode-fonts~inconsolata-g
+      * https://www.slant.co/topics/7711/~monospaced-unicode-fonts
+      * Putty transalation font = ISO-8859-1:1998 (Latin-1, West Europe)
+      * Find a good monospaced font for English and Unicode usage, plus box-drawing.
+      * https://vt100.net/docs/vt220-rm/chapter4.html
+      * UTF-8 and line drawing at the same time?  Use Kitty
+      * Data entry is ASCII 7-bit.
+      * https://superuser.com/questions/278286/making-256-color-and-line-drawing-characters-both-work-in-putty
+      * https://vt100.net/docs/vt220-rm/introduction.html - Definitive VT220 ref guide
+      * The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)
+      * https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/
+      * SET.ACCUTERM.SESSION in BP - cALLS
+      *  INSERTS TERMINAL.INS - has details of xterm & accuterm mouse escape codes...
+      * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Mouse-Tracking
+      *   echo -e "\e[?1000;1006;1015h" # Enable mouse tracking
+
+      * Escape key timeout - https://unix.stackexchange.com/questions/608142/whats-the-effect-of-escape-time-in-tmux
+      * Note the character number for CSI 8-bit is col:9 Row:11 = (9*16) + 11 = 155
+      * https://vt100.net/docs/vt510-rm/chapter4.html
+      * Table 4-3
+
+      * Python Terminal to go with this... py-terminator - https://gnometerminator.blogspot.com/p/introduction.html - https://pypi.org/project/pyte/
+      * https://sourceforge.net/projects/termemulator/ - http://hg.logilab.org/master/pyqonsole/ - https://code.google.com/archive/p/webtty/ - https://github.com/samfoo/vt102
+      * https://gnometerminator.blogspot.com/p/introduction.html
+      * https://vt100.net/emu/dec_ansi_parser - DEC ANSI parser
+
+      * https://showterm.io/ - Screen presentations for Terminals
+      * This is quite different from the Revelation F/G versions which were limited to 34K characters
+
+      * Currently, I have deliberately opted to NOT detect the Esc key when it's used on it's own.
+      * It's an ASCII rather than ANSI key, and to detect it on it's own
+      * requires the input to be read in polled mode and to attach significance to the timing of the characters read.
+      * This is not ideal, so I find it better to ignore the ESC key.  Ensures that network delays don't accidentally trigger the ESC key detection.
+      * However, I do detect the Esc key being pressed three times in succession.  also some terminal emulators allow this key to be redefined
+      * to send an ANSI style sequence. TODO - this is under review, as can use the CURSES libary technique.
+
+      *This routine has zero external dependencies - No CALLs; No Common memory; No Inserts.  Just one program, compile and run.
+      *No need to even catalog it.
+      *Minimal use of constants (EQU and EQUATE) as these are not visible to the debugger or program dump.
+
+      * Accuterm Config settings (Tools, Settings)
+      * ------------------------
+      * Terminal, Terminal Emulation, VT420
+      * Terminal, un-check "Send 8 bit controls" (all options un-checked on this page)
+      * Terminal, Screen, History rows=10000
+      * Terminal, Screen, Status & message lines, 1 - shared message & status line
+
+      * Putty Config settings
+      * ----------------------
+      * Hostname is uvdev
+      * Fav font is 11point Bold inconsolata
+      * TCP/IP SSL keepalive packets every 30 seconds
+      * Window, Translation, tick "Enable VT100 line drawing even in UTF-8 mode"
+
+      * All terminal/console settings
+      * Set the TCP/IP keepalives to be sent every 30 second
+      * For accuterm, this is Tools, Settings, Connection, Secure Shell, Show Advanced Options, Enable Send Keepalives, every 30 seconds
+
+      * I refer to the "Pick files" as tables to differentiate them from OS files.
+      * Tables is a les ambiguous term to use when discussing files with non-multivalue users (99.99% of the population).
+
+      *FISH - currently implementing the statusline as a writable area in Accuterm using VT400 style host-writable status line.
+      *FISH - setSize - For Accuterm and Windows use the 999,999 method instead of "stty size" method
+
+      *FISH - see if system(12) without options.milliseconds returns an integer or a float
+
+      * Know issues.
+      **************
+      * TYPE - PRIORITY - DESCRIPTION.  (TYPE is FIXME for a bugfix; NEW for a feature request
+
+      * FIXME - 4 - Find out what keycodes work with accuterm and move the most important hotkeys there.
+      * FIXME - 15 - Catch the putty SCO mode ALT-INSERT (etc) keycodes which position cursor wrong and add esc sequence to line.
+
+      * FIXME - 36 - at start of input of a line, reset cursor to visible in case something has disabled it.
+      * FIXME - 5 - With Putty ALT-letter sends an unhandled excape sequence (ESC letter).  Capture it.
+      *(Partially fixed)
+      * FIXME - 6 - Putty sends ESC-O if ALT held down.  Conflicts with SCO introducer.
+      *             Fix by reloading the button codes when teh keyboard changes so as to only include what's valid.
+      *             Will have to test that keyboard detection still works afterwards
+      * FIXME - 10 - Cannot detect accuterm size with "stty size"  use the 999,999 then get cursor pos?
+      *              Not appropriate for mid command querys though.  Hmmm
+      *              VFD/Uniforms also needs to be run in vt220 (lowercase) mode throughout.
+      * FIXME - 1 - Disble keyboard manual input during the terminal detect phase.
+      * IT$DMI - https://vt100.net/docs/vt220-rm/chapter4.html (Section 4.6.3) CSI2h and CSI2l to reenable
+
+      * FIXME - Blank commands are put into the history stack, and cannot be cursored past.  Fix 2nd first.
+
+
+
+
+      * Feature requests
+      ******************
+      * NEW - 24 - Store keyboard timeout for ESCAPE key and enable 8bit controls.  Check that this does not conflict with UTF-8 being pasted into keyboard buffer.
+      * NEW - 1 - Add optional CLEAR.COMMON after each command.  Setting to be held in history/config file
+      * NEW - 12 - Increase time accuracy to 4dp of a second by using system(12) with no options.  Boolen to indicate which of the two methods are in use.
+      * FIXME - 4 - Reported bug - Can't replicate! - Save/restore prior commands with braces "{ text here }" Preferable in a different color
+      * NEW - 50 - Store the keyboard type in the config record and use that at startup
+      * NEW - 7 - Split the history file from the config file.
+      * NEW - 4 - Pound symbol (shift-3 on a UK keyboard) confuses caret position increasing it by one and printing over 2 spaces
+      *           Putty is sending a unicode char?  Yes, it is C2 A3.  Euro is ALTGR-4 and generates E2 82 AC
+      *           NB. TCL ignores these keys completely
+      *           Same thing for other unicode characters such as AltGr-A.  ? is E9 A2 9D
+      *           Perhaps fully implement Unicode and filter those out of the input?
+      *           Track the width of each char(0, 1 or 2) and create splitting routines.
+      *           Tricky, as UTF-8 has value on user I/O, but not to be sent to TCL.  It's stuck in 7bit.
+      *           Probably best to implement a filter that takes them out.
+      *           Would be useful in an editor though.  Perhaps have an option for BRECS encoding.
+      * NEW - 1 - Replace all of the OS functions that don't work in Windows with internal BASIC ones (For Dawn)
+      * NEW - 41 - Determine method for activating F1 to F4 in accuterm.
+      * NEW  - 2 - There is a daily snapshot of the config record. Perhaps delete history over 1 month old?
+      * NEW - 5 - Add the completion time to the data record
+      * NEW  - 9 - Add Dictionary F-key expander which shows data cols from the dict of whatever is on word 2 of the line
+      * NEW - 10 - command history to log the number of items selected at end of the command as well as start/end times and CPU usage
+      * NEW - 11 - Button/commands to change themes.  Cycle through them? (ctrl-p)
+      * NEW - 16 - When an unrecognixed key is received, print the hex debug line as a friendly separate line, then carry on editing.
+      * NEW  - 18 - Before each command, go to top left,  after each command, send a soft terminal reset (CSI!p) to put it back in working mode after user has potentially listed some binary chars.
+      * NEW  - 11 - Find out how to program all the keys in accuterm
+      * NEW  - 12 - Send sequence to perform a generic reset in case of terminal configuration corruption.  Bind this to an Fkey
+      * NEW  - 6 - Add Fkey to remove duplicates in the history
+      * NEW  - 17 - Add facility to make selected "queries"/commands sticky so they are retained forever.
+      * NEW  - 19 - Support xterm bracketed paste mode with no screen updates during paste operation. 200~ 201~
+      *Enable bracketed paste when entering command line: printf "\e[?2004h"
+      *Wait for paste to start: you'll see \e[200~ on STDIN.
+      *Wait for paste to stop: you'll see \e[201~ on STDIN.
+      *Disable bracketed paste when running the command in case people want to CnP into a form: printf "\e[?2004l"
+      *Clear it upon exit.  IE, just before command is executed
+      * NEW - 20 - With accuterm, place the status line on bottom/top line of screen if height is 25 or more.  Or at top of screen?
+      * NEW - 21 - Add global logging of who did what, with which dataset where and when
+      * NEW - 22 - Re-implement the enquiry/super user modes and pseudo-blocking of writes.  Can we use @TRANSACTION.LEVEL under UV to restrict actions?  Does ON.ERROR get triggered?
+      * NEW - 23 - Gather disk/cpu usage from each command - https://docs.rocketsoftware.com/nxt/gateway.dll/RKBnew20/universe/v12.1.1/universe_admin_v1211.pdf
+      * NEW - 33 - Add fileinfo() and other stuff to find out everything about a file including inode so the lock screen can actually tell you what file is locked.
+      * NEW - 34 - Try out 8-bit and 24bit color support in putty for themes - https://en.wikipedia.org/wiki/ANSI_escape_code
+      * NEW - 37 - Use LIST.READU INTERNAL (undocumented feature) to get a list of locks.  Combine it with I-node and fileinfo on all opened files to get the table name
+      * NEW  - 39 - Log all commands to a central file with the OPENSEQ and SEND statements.  For logging/audit purpouses.
+      * NEW - 42 - Allow cursor flashing to be a user choice
+      * NEW - 42 - Remove extra commands when history over 1000 in realtime, not just at startup
+      * NEW - 43 - Collate the system() calls for UV, UD and QM
+      * NEW - 44 - Add key that shows status of the 11 cursors
+      * NEW - 45 - Add facility to show count of all selectlists.  In UV, we can use:-
+      *EQUATE IK$SLACTIVE   TO 1
+      *EQUATE IK$SLCOUNT    TO 3
+      *DONE = @FALSE
+      *IF NOT(SELECTLIST.NBR >= 0 AND SELECTLIST.NBR <= 10) THEN SELECTLIST.NBR = 0
+      *FOR SELECTLIST.IDX = SELECTLIST.NBR TO 10
+      *   IF NOT(SELECTINFO(SELECTLIST.IDX,IK$SLACTIVE)) THEN DONE = @TRUE
+      *NEXT
+      * NEW - 46 - Add common block, and include the ESC_timeout value similar to Curses
+      *            Add ESC detection either by timeout, or by "ESC ESC ESC"
+      * TIDY - 8 - Is it necessary to do "PTERM INPUTCTL TCL.RESET" anymore?
+      * NEW - 20 - Add column list for the table currently entered on the command line.  Use INDICES() to determine whihc cols are indexed
+      * NEW - 30 - Get the prompt string from system(26) and put that at begginning of line.  Allow programming of custom value.
+
+
+      * Universe specific line - comment out for other platforms.  As this is a compiler directive, it's not possible to put it within a condition.
+      *$OPTIONS TIME.MILLISECOND
+      precision 14 ;* Yes there is an assumption of a maths co-processor, so we can always use 14.
+
+      * Dataset date point.  possibly the timestamp of the directory /devdata/data2/logfiles/.. which is
+      *                      currently "4096 Jan 03 06:57"
+
+
+      *Variable definitions & defaults
+      *===============================
+      alternateScreenActive = @FALSE ;* Boolean - True when the ANSI alternate screen is enabled
+      bottomGap = 2                  ;* Int - Lines to keep free at the pottom of screen when setting TERM command
+      capsMode = @TRUE               ;* Boolean - TRUE when input is to be converted to uppercase (Forced uppercase)
+      caret = 1                      ;* Integer - Position of the insertion point in the current text line.  Not the screen position.
+      charsAvailable = 0             ;* Integer - number of chars that are unused between prompt and the right edge
+      chunkSize = 10*1024*1024       ;* Integer - number of bytes to read with readblk.
+      dataSet = ''                   ;* String - name of the active dataset
+      directorySeparator  = '/'      ;* Byte - set to / for all OS apart from windows.
+      exitLine = @TRUE               ;* Boolean - Set when line editing is to finish and exit the current line editing.
+      historyList = \\               ;* Dynamic array of strings - In memory edit array.  Oldest has biggest field number. <1> is the new line that we're editing
+      historySize = 2000             ;* Integer - number of history lines to be kept on file
+      inputTimeout = 1.799           ;* Float - Time to allow terminal to respond to queries. (2 for two seconds)
+      insertMode = @TRUE             ;* Boolean - True if we are in insert mode at the cursor.  False for overwrite input mode
+      junk = \\                      ;* String - throwaway item, just used because of syntactical necessity
+      keyboard = \DEC\                  ;* Keyboard type - Can be either "SCO" or "DEC" or "VT100" ;* Three major keyboard mappings. DEC for the VT220 etc.  SCO for the PC console type. VT100 also which became superceeded
+      keyName = \BUT\                   ;* String - Human readable name for the button/key
+      promptWidth = 0                ;* Integer - Screen width of the line prompt
+      showDataset = @FALSE           ;* Boolean - True when the dataset name is to be displayed after every command.  Handy with Accuterm
+      siteName = \HOME\                  ;* String - Codename for the site.  Some things are only applicable to certain sites. E.g. dataSetName, retired filename
+      storeFolderName = \HISTORY\           ;* String - Path to where command history is stored
+      termStatusWriteable = @FALSE   ;* Boolean - True if the last line of the display can be used as a host-writable status line
+      *FISH - implement above logic
+      termTitleWriteable = @FALSE    ;* Boolean - True when we can write status info to the window title (Kitty, PuTTY, Xterm)
+      tableList = \YT-VIDEOS\                 ;* 2D dynamic array - F1 is an arrayy of tableNames; F2 is an array of decriptions; F3 is an array of inodes
+      timeStamp = \\                 ;* Float - The most current timestamp in internal format.  This is defined as date():".":(time()/86400).
+      ;* NB. Can be accurate to a millisecond depending upon platform and OS
+      encoding = "ASCII"             ;* encoding that can be "ASCII", "UTF-8" or "Ansi cp850 whatever blah"
+      gosub main
+      return
+
+
+
+
+disablePaging:
+      * Disable the automatic "Press any key to continue" paging
+      * ASSIGN 0 TO SYSTEM(1005) will disable pagination. Don't bother looking for documentation on this statement in the BASIC manual; it's one of those super-dee-duper secret ones. Alternately in basic: DUMMY = @(0,0) or for old timers from PI environments... CALL !BPIOCP
+      * junk = @(-1): ;* Resets UV paging (well...) Perhaps needs to actually output it rather than just call the @ function?
+      * Disable paging... @(-1), or @(99) or ASSIGN 0 TO SYSTEM(1005), or BPIOCNP or !hushit or dummy=@(0,0) or ....
+      begin case
+         case platformType = 'UV' or  platformType = 'QM'
+            junk = @(0,0)
+         case 1
+            * Needs filling in for QM
+            junk = @(0,0)
+      end case
+      return
+
+
+enablePaging:
+      * Enable the automatic "Press any key to continue" paging
+      * ASSIGN 1 TO SYSTEM(1016) ;* What does this do?
+      * EXECUTE "PTERM INPUTCTL ON"
+      begin case
+         case platformType = 'UV' or  platformType = 'UV' or  platformType = 'QM'
+            printer reset ;* This seems to work on most platforms!
+         case @TRUE
+            *ASSIGN 1 TO SYSTEM(1005) ;* Somewhere?
+      end case
+      return
+
+
+
+disablePageQuit:
+      *Allegedly for UV, but does not seem to work.
+      *assign 1 to system(999) ;*   disable "Q" at "Press..." prompt
+      *assign 0 to system(999) ;*   re-enable "Q" at "Press..." prompt
+      return
+
+
+getSiteName:
+      * Site codename.  Choose some sort of obscure filename, and an obscure word to identify the site/client
+      begin case
+         case xlate('VOC', 'CMDNC0', 2, 'X')
+            siteName = \RIVER\
+         case xlate('VOC', 'VAXTRANSFER', 2, 'X')
+            siteName = \THAMES\
+         case xlate('VOC', 'DATAPIPEGVP', 2, 'X')
+            siteName = \HERRING\
+         case xlate('VOC', 'AVG_MONTH_EXCLUSION', 2, 'X')
+            siteName = \JERRY\
+         case xlate('VOC', 'SIPP_HOLDINGS', 2, 'X')
+            siteName = \CHURCH\
+         case xlate('VOC', 'ZIFF_PIC', 2, 'X')
+            siteName = \MANHATTAN\
+         case @TRUE
+            siteName = \UNKNOWN\
+      end case
+      return
+
+
+getComoName:
+      * TODO - test this routine and add it to the list of potential watched variables on the status line
+      * Sets variable comoName to the path of the current como file if any.  This is normall a relative path to
+      * the account, but do check.  E.g. "&COMO&/ASH434"
+      * I think this only works with UV, but extend when information is available
+      begin case
+         case platformType = 'UV'
+            cmd = \SH -C 'analyze.shm -p | grep como_name'\
+            execute cmd capturing comoName
+            comoName = comoName[13,999]
+            comoName = comoName[1, len(comoName)-1]
+         case @TRUE
+            comoName = \\
+      end case
+      return
+
+
+getStoreFileName:
+      * fills in the name of the config and history file.
+      storeFolderName = @path ;* The place where uv was entered at unix command line. Should  already includes the @account
+      storeFileName = @logname : \_ash_tcl\
+      storeFileExt = \dat\
+      return
+
+
+getTermClass:
+      * Intended as a course-grained indication of the terminal type.
+      * NOT some sort of way to support the miriad of old skool terminals and the emulators.
+      * valid values are deliberately only XTERM, ACCUTERM and  SBCLIENT
+      * Accuterm allows client-side scripts
+      * Xterm adheres to defined standards rather than emulation of a (buggy) manufacture's implementation
+      * SBClient is a bit unknown, but does not understand colour codes
+      * Platform is a lowest common denominator of class and does things based upon the @() functions and the defined termninal type.
+
+
+      * Use auto-detect of the terminal (xterm/accuterm) from the primary/secondary "Send Device Attributes" (\E[>c)
+      * You may request terminal "version" with ESC [ > c reports ESC > 0 ; 136 ; 0 c. But of course, this 136 is not a guarantee of ConEmu.
+      * ESC ]  9 ; 9 ; C:\path\to\dir BEL
+      * ESC ] 50 ; CurrentDir=/path/to/dir BEL
+      * TODO - probe terminal with Ctrl-E or ESC [ > c or ESC Z OR use some sort of accuterm script thing to detect
+      * https://stackoverflow.com/questions/54747768/how-to-identify-the-terminal-emulator-being-used
+      * primary DA - https://vt100.net/docs/vt220-rm/chapter4.html#S4.17
+      * Or possibly mouse tracking sequences as Accuterm do them different from xterm, I think?
+      * Possibly, send some DEC sequence to get firmware version or "capabilites"
+      * Request the current cursor location
+      * Request terminal version with ESC [ > c
+      * Request something with ^E (Control-E?) and we might get back "PuTTY"
+      * Accurerm allows remote programming of this - ESC c ; message EM
+      * Accuterm manul suggests this - ESC c  in Wyse mode. < - Sends the answerback message to the host, followed by ACK
+      * Find what the correct enquiry string os for Accuterm running in VT mode.
+      * PLATFORM means that the control sequences provided by the @vars will be used.
+
+      * VT100
+      * ident DA              Identify what terminal type            ^[[c
+      * ident DA              Identify what terminal type (another)  ^[[0c
+      * gettype DA               Response: terminal type code n      ^[[?1;<n>0c
+      * reset RIS             Reset terminal to initial state        ^[c
+      * savecursor DECSC      Save cursor position and attributes    ^[7
+      * restorecursor DECSC   Restore cursor position and attributes ^[8
+
+      * TODO - Important - Disble keyboard manual input during the terminal detect phase.
+      * IT$DMI - https://vt100.net/docs/vt220-rm/chapter4.html CSI2h and CSI2l to reenable
+
+      if len(termClass) then
+         begin case
+            case termClass = 'ACCUTERM'
+            case termClass = 'PLATFORM'
+            case termClass = 'SBCLIENT'
+            case termClass = 'XTERM'
+            case @TRUE
+               crt \termClass incorrectly set to :\:termClass
+         end case
+      end else
+         *Send ^E to term to get an answerback.  Using polled mode with timeout, as we have no guarantee of anything happening.
+         *If length evaluates to less than 0 (for example, -1), the input buffer is tested for the presence of characters. If characters are present, variable is set to 1, otherwise it is set to 0. No input is performed.
+         * Detecting consoleType with ^E
+         * Alternative method is the DEC "What are you?"
+         * https://vt100.net/docs/vt100-ug/chapter3.html  - Search for "What are you"
+         * ESC [ c
+
+
+         * crt "Querying console - please do not press any keys":
+
+         gosub disableKeyboard
+         crt char(5):                     ;* ctrl-E
+         nap 500 ;* Half second
+         responseString = ''
+         charsWaiting = @FALSE
+         loop
+            input charsWaiting, -1
+         while charsWaiting
+            responseString := keyin()
+         repeat
+         * crt ".  Done.  ":
+         gosub enableKeyboard
+
+         *crt 'Response from console is ':responseString ;* Debug line
+         begin case
+            case index(upcase(responseString), upcase(\Accuterm\), 1)
+               termClass = 'ACCUTERM'
+            case index(upcase(responseString), upcase(\PuTTY\), 1)
+               termClass = 'XTERM'
+            case index(upcase(responseString), upcase(\SBClient\), 1)
+               termClass = 'SBCLIENT'
+            case @TRUE
+               termClass = 'PLATFORM'
+         end case
+         *crt \Terminal class has been detected as \:termClass:
+         *crt \.  Platform thinks it is \:@term.type
+      end
+
+      return
+
+
+
+disableKeyboard:
+      * Disble keyboard manual input
+      * IT$DMI - https://vt100.net/docs/vt220-rm/chapter4.html CSI2h and CSI2l to reenable
+      crt CSI:"2h":
+      return
+
+
+
+enableKeyboard:
+      * enable keyboard input
+      * IT$DMI - https://vt100.net/docs/vt220-rm/chapter4.html CSI2h and CSI2l to reenable
+      crt CSI:"2l":
+      return
+
+
+getplatformType:
+      * sets the variable platformType to D3 or UV or UD or QM or JBASE or CACHE or MVON (uppercase)
+      * Inspiration from https://www.pickwiki.com/index.php/FLAVA
+      * Default value is a null, and this only gets set when there is a POSITIVE verification of it being some sort of other system
+      * Intended as a course-grained indication of the system type
+      * Valid Values are UV, UD, JBASE, QM, D3, CACHE, IN2, MVBASE, MVON, PI, PICK, REALITY, REVELATION (Partial auto-detect)
+      * Revelation type only really works with CTO and it's the embedded accuterm.  Ash_tcl is not really needed as we have AREV!
+      begin case
+         case index(system(1021)<4>,'jBASE',1)
+            platformType = 'JBASE'
+         case system(9010)[1,2] = 'UD'
+            platformType = 'UD'
+         case system(9010)[1,2] = 'UV'
+            platformType = 'UV'
+         case index(system(100),'D3',1)
+            platformType = 'D3'
+         case index(system(100),'CACHE',1)
+            platformType = 'CACHE'
+         case system(1012) # "" and system(1012) # "0 " ;* Do this last
+            platformType = 'QM'
+         case 1
+            platformType = 'MVON'
+      end case
+      return
+
+
+getSessionCount:
+      * Sets variable sessionCount to the current number of terminal sessions the user has
+      sessionCount = 1
+      if OS = \UNIX\ or OS = \AIX\ or OS = \LINUX\ then
+         *execute \SH -c 'who -u | grep -cw \ : @logname: \'\ capturing sessionCount ;* FISH
+         execute \SH -c 'who -X | grep -cw \ : @logname: \'\ capturing sessionCount
+         sessionCount = sessionCount<1>
+      end
+      return
+
+
+getplatformLevel:
+      * Sets variable platformLevel to a floating point value.  This is for some site-specific actions that might not be in this version.
+      * It's VITAL that this does not have more than one decimal point so that numeric comparisons can be made.
+      * So for this reason, the second part and the third part are formatted as 2 digits with a leading zero if necessary.  These then go after the dot.
+      * For example, Universe 11.3.2 will be converted to 11.0302.  Unidata 8.2.1 will become 8.0201
+      * Note, this
+      * https://blog.rocketsoftware.com/multivalue/2019/11/new-datetime-variable-coming-soon-to-universe-11-3-2/
+      * For Universe version 11.2.5 puts 11.0205 into the platformLevel variable
+      * Unidata 8.2.1 - Puts 8.0201 into platformLevel
+      * QM 3.4-19 - Puts 3.0419 into platformLevel
+      begin case
+         case platformType = 'UV'
+            platformLevel = XLATE('VOC', 'RELLEVEL', 2, 'X') ;* Well, it's the account version which will have to do.
+         case platformType = 'UD'
+            execute \VERSION\ capturing response
+            * response<1> = "Unidata RDBMS......................3.3.2     Yes"
+            platformLevel = response<1>[36,6]
+         case 1
+            platformLevel = \1.0\
+      end case
+      * Format it up in a flavour independent manner (no OCONV or FMT).  IE. xxx.yyzz
+      platformLevel1 = field(platformLevel, \.\, 1, 1)
+      platformLevel2 = \00\ : field(platformLevel, \.\, 2, 1)
+      platformLevel3 = \00\ : field(platformLevel, \.\, 3, 1)
+      *if len(platformLevel2) = 1 then platformLevel2 = \0\:platformLevel2
+      *if len(platformLevel3) = 1 then platformLevel3 = \0\:platformLevel3
+      *platformLevel = field(platformLevel, \.\, 1, 1):\.0\:field(platformLevel, \.\, 2, 1):\0\:field(platformLevel, \.\, 3, 1)
+      platformLevel2 = platformLevel2[len(platformLevel2)-1, 2]
+      platformLevel3 = platformLevel3[len(platformLevel3)-1, 2]
+      platformLevel = platformLevel1:\.\:platformLevel2:platformLevel3
+      if num(platformLevel) else
+         platformLevel = "1.0"
+      end
+      return
+
+
+getOS:
+      * sets the variable OS for use by other various functions.  AIX is quite limited in some respects and impacts our use of some facilities
+      * Have used some sort of auto-detect, but it's fraught with difficulties.
+      if len(OS) else
+         if platformType = 'UV' then
+            if system(91) then
+               OS = 'WINDOWS'
+               directorySeparator = "\"
+            end else
+               if OS = \UNIX\ or OS = \\ or OS = \WINDOWS\ then
+                  directorySeparator = "/"
+                  execute \SH -c 'uname'\ capturing OS
+                  begin case
+                     case OS<1> = \'uname' is not recognized as an internal or external command,\
+                        OS = \WINDOWS\
+                        directorySeparator = "\"
+                     case OS<1>[1,3] = 'AIX'
+                        OS = \AIX\
+                     case OS<1> = 'HP-UX'
+                        OS = \HPUX\
+                     case OS<1> = 'LINUX'
+                        OS = \LINUX\
+                     case 1
+                        OS = \UNIX\
+                  end case
+               end
+            end
+         end
+      end
+      return
+
+
+main:
+      if @userno > 0 then
+         gosub setup
+         gosub getplatformType
+         gosub getplatformLevel
+         gosub getOSLevel
+         gosub getHostname
+         gosub getTermClass
+         gosub setTermCapabilities
+         gosub loadTheme
+         gosub getSessionCount
+         gosub getDatasetName
+         gosub getTableList
+         gosub setSizeQuery  ;* Only do it at startup to please Accuterm
+         *gosub drawbox
+         *gosub displayUTF8
+         gosub tcl
+      end else
+         crt "ASH_TCL - non-interactive session detected.  Terminating"
+      end
+      return
+
+
+getDatasetName:
+      * place here code to define the variable named "dataSet" if you can.  Otherwise it's ignored
+      begin case
+         case siteName = \JERRY\
+            path = xlate('VOC', 'CUST', 2, 'X') ;* TODO - put this filename into the config record.
+            dataSet = field(path, '/', 2)
+         case @TRUE
+            dataSet = @path
+      end case
+      if termTitleWriteable or termStatusWriteable else
+         showDataset = @TRUE
+      end
+      if dataSet and showDataset then
+         crt styleLine : \Dataset=\ : dataSet : styleDefault
+      end
+      return
+
+
+setTermCapabilities:
+      * Sets various capability flags based upon the terminal Class.
+      * Currently sets termTitleWriteable and termCursorShape only.
+      * TODO - define what we want to understand about the terminal capabilities
+      termCursorShape = @FALSE
+      termTitleWriteable = @FALSE
+      begin case
+         case termClass = 'ACCUTERM'
+            termCursorShape = @TRUE
+            termStatusWriteable = @TRUE
+         case termClass = 'PLATFORM'
+            null ;* this term cannot do much
+         case termClass = 'SBCLIENT'
+            null ;* nore this one
+         case termClass = 'XTERM'
+            termTitleWriteable = @TRUE
+      end case
+      return
+
+
+setTitle:
+      * Put this on the window bar or status line if possible
+      * TODO - check each variable length and screen widt to ensure it's not too long for the statusline.
+      * That's different from the Window Title that has more space.
+
+      statusLine = ''  ;* Define our statusLine
+      statusLine := hostname:space;* first item
+      statusLine := \Stardate=\ : date() : space
+      if dataSet then statusLine := \Dataset=\ : dataSet : space
+      statusLine := \Termsize=\ : @crtwide:\x\:@crthigh:space
+      *statusLine := \offset=\:offset:space
+      statusLine := \caret=\:caret:space
+      *statusLine := \promptWidth=\:promptWidth:space
+      statusLine := \keyboard=\:keyboard:space
+      statusLine := \termNo=\:@userno:space
+      statusLine := \termTitleWriteable=\:termTitleWriteable:space
+
+      *statusLine := \storeFileName=\:storeFileName:space
+      *statusLine := \OS=\:OS:space
+      *statusLine := \OSlevel=\:OSlevel:space
+      statusLine := \platformType=\:platformType:space
+      statusLine := \platformLevel=\:platformLevel:space
+      *statusLine := \platformLevel1=\:platformLevel1:space
+      *statusLine := \platformLevel2=\:platformLevel2:space
+      *statusLine := \platformLevel3=\:platformLevel3:space
+      statusLine := \sessionCount=\:sessionCount:space
+
+      if statusLine # lastStatusLine then ;*Only update status line if it's changed
+         if termTitleWriteable then
+            * ESC]0;stringBEL - icon name and window title. change 0 to 1 for icon only; 2 for window title only
+            * ALL titlebars for all putty windows are updated.  So perhaps it should not do the icon as well?
+            * For xterm it's ESC]0;stringBEL to set the window title and icon title.  Should work everywhere (apart from acuterm).
+            *            Cleanup with a "Clear to end of line" afterwards.
+            crt ESC : \]2;\ : statusLine : BEL : CR : CSI \0K\ : ;* Move the cleartoendofline to displayLine?
+         end
+
+         if termStatusWriteable then
+            *Put something on the accuterm statusline
+            * https://decdoc.itsx.net/dec94mds/vt420rm2.pdf Page 220.
+            * https://static.zumasys.com/zumasys/atfiles/manuals/at7/AccuTerm-7-User-Manual.pdf Page 251
+            crt char(27):\[?9l\:  ;*  *Statusline on
+            crt char(27): \[2$~\:  ;* display host writables statusline
+            *Put something on the VT4000 statusline
+            * Active in VT level 4 mode only (VT400?)
+            * CSI 1 $ }
+            crt char(27):\[1$}\:   ;*  *Select active Status (DECSASD)
+            crt statusLine[1,@crtwide-2]:
+            crt CSI \0K\ :     ;*CEOL
+            crt char(27):\[0$}\:   ;* back to main screen
+         end
+         lastStatusLine = statusLine
+      end
+
+      return
+
+
+
+
+
+disableLineWrap:
+      * Send escape sequence to disable the automatic end of line wrap
+      crt CSI: \?7l\:
+      return
+
+
+
+displayUTF8:
+      * Work in progress, so this routine is not called anywhere at the moment
+      crt 'Euro symbol: =' : iconv(\E282AC\,"MX0C")
+      * https://superuser.com/questions/576431/notepad-inserting-special-unicode-characters-in-utf-8
+      * https://www.fileformat.info/info/unicode/char/00df/index.htm
+      crt \LATIN SMALL LETTER SHARP S =\ : iconv(\C39F\,"MX0C")
+      crt \BEAMED EIGHTH NOTES =\ : iconv(\E299AB\,"MX0C") ;* http://www.fileformat.info/info/unicode/char/266b/index.htm - TODO - fix
+      *https://onlineutf8tools.com/convert-utf8-to-hexadecimal
+      crt 'Chinese symbol for moon : =' : iconv(\E69C88\,"MX0C")
+      crt 'Euro symbol : =' : iconv(\E282AC\,"MX0C")
+      crt 'Chinese symbol for something unknown is : =' : iconv(\E69288\,"MX0C")
+      return
+
+
+enableLineWrap:
+      * Send escape sequence to enable the automatic end of line wrap
+      crt CSI: \?7h\:
+      return
+
+getHostname:
+      begin case
+            * TODO - can we always use the "HOSTNAME" tcl COMMAND?
+         case platformType = 'UV'
+            execute 'HOSTNAME' capturing hostname
+            hostname = hostname<1,1>
+         case OS = 'AIX' or OS = 'LINUX' or OS = 'UNIX'
+            execute \SH -c 'hostname'\ capturing hostname
+            hostname = hostname<1>
+         case OS = "WINDOWS"
+            execute 'HOSTNAME' capturing hostname
+            hostname = hostname<1,1>
+         case 1
+            hostname = "unknown"
+      end case
+      return
+
+
+getOSLevel:
+      * Determin the host (not client) operating system.
+      begin case
+         case OS = \WINDOWS\
+            OSLevel = \10.0\ ; *TODO - Locate how to find the Windows Version
+         case OS = \VMS\
+            execute \SH -c 'SHOW SYSTEM/NOPROCESS'\ capturing response
+            OSLevel = response<1>
+         case OS = 'AIX' or OS = 'LINUX' or OS = 'UNIX'
+            execute \SH -c 'uname -v'\ capturing response
+            OSLevel = response<1>
+            execute \SH -c 'uname -r'\ capturing response
+            OSLevel := \.\ : response<1>
+         case OS = \PRIMOS\
+            * check for SAD (19+) as well as CMDNC0 (17+)
+            OSLevel = \24.0\ ;* Sod it.  Hard coded at the last release.
+         case 1
+            OSLevel = \1.0\
+      end case
+      return
+
+
+setSize:
+      * Determine the display size and inform the host system what it is.
+      * FISH - work in progress.
+      * TODO - Important - Disble keyboard manual input during the terminal detect phase.
+      * IT$DMI - https://vt100.net/docs/vt220-rm/chapter4.html CSI2h and CSI2l to reenable
+      if OS = \WINDOWS\ or termClass = 'ACCUTERM' then
+         *TODO - Put cursor at 9999,9999, then read back it's position with ANSI sequences
+         *TODO - Seems "stty size" does not work with Accuterm
+         *TODO - This method might work with Windows, so take out of the Windows else clause.
+      end else
+         execute \sh "stty size"\ capturing ttySize
+         newHigh = field(ttySize, space, 1) - bottomGap  ;* TODO place this value of 2 into a bottomGap variable (and other instance)
+         newWide = field(ttySize, space, 2)
+         newWide = newWide[1,len(newWide)-1]         ;* FIXME - strange code.  Is it right?
+         if newWide > 0 and newHigh > 0 then         ;* This happens with mvTest
+            if (newHigh = @crthigh) and (newWide = @crtwide) else
+               execute \TERM \ : newWide : \,\ : newHigh
+            end
+         end
+      end
+      return
+
+
+setSizeQuery:
+      * Use the ANSI sequence method to find the screen boundries instead of "stty size"
+      * FIXME - User might have already hit "R".  Perhaps clear the input buffer?
+      * https://vt100.net/docs/vt100-ug/chapter3.html
+      gosub disableKeyboard
+      * save cursor position - DECSC  Save Cursor (DEC Private) - Not supported by accuterm?   * ESC 7
+      crt ESC : "7" :                    ;* TODO - put this into a nice named function
+      crt ESC : "[9999;9999H" :          ;* Position to 9999,9999 - CUP   line;col
+      crt CSI : "6n" :       ;* get cursor position CPR -  Invoked by ESC [ 6 n. Get back ESC [ line ; col R
+      responseString = ''   ; charsWaiting = @FALSE
+      inputstarttime = system(12)
+      inputstartdate = date()
+      *inputTimeout = 1.75  ;* - Seconds - Moved to top of code
+      loop
+         responseString := keyin()
+      until responseString[len(responseString), 1] = \R\  ;* Stop when we see the R
+      until system(12) > inputstarttime + inputTimeout  ;* SAFE
+      until (date() # inputstartdate) and (time() > inputTimeout)  ;* Prevent issue if this is run on the stroke of midnight
+      repeat
+      crt ESC : "8" :  ;* restore cursor position - DECRC  Restore Cursor (DEC Private) -  * ESC 8
+      gosub enableKeyboard
+      if responseString[len(responseString), 1] = \R\ then
+         responseString[len(responseString), 1] = \\   ;* Strip off trailing R
+      end
+      if responseString[1,2] = ESC:'[' then
+         responseString = responseString[3,55]          ;* Strip off leading CSI
+         *crt \Screensize is \ : responseString : '   ':
+         * take apart 66;203 to get cols and rows
+         newHigh = field(responseString, ";", 1) - bottomGap
+         newWide = field(responseString, ";", 2)
+         newWide = newWide[1,len(newWide)-1]
+         crt \Detected console siz is Wide=\:newWide:\ High=\:newHigh
+         if newWide > 0 and newHigh > 0 then         ;* Does this happens with mvTest?
+            if (newHigh = @crthigh) and (newWide = @crtwide) else
+               execute \TERM \ : newWide : \,\ : newHigh
+            end
+         end
+      end
+      return
+
+
+showTheme:
+      gosub disablePaging
+      crt \Theme named Default\ : styleDefault : \ \ :
+      *crt styleBox : \Box \ : styleBox[3,len(styleBox)-3] :  styleDefault :\ \ :
+      *crt styleTitle : \Title \ : styleTitle[3,len(styleTitle)-3] :  styleDefault :\ \ :
+      crt stylePrompt : \Prompt \ : stylePrompt[3, len(stylePrompt)-3] :  styleDefault :\ \ :
+      crt styleTableList : \TableList \ : styleTableList[3, len(styleTableList)-3] :  styleDefault :\ \ :
+      crt styleLineOverwrite : \LineOverwrite \ : styleLineOverwrite[3, len(styleLineOverwrite)-3] :  styleDefault :\ \ :
+      crt styleLineInsert : \LineInsert \ : styleLineInsert[3,len(styleLineInsert)-3] :  styleDefault :\ \ :
+      crt styleCommand : \Command \ : styleCommand[3, len(styleCommand)-3] :  styleDefault :\ \ :
+      crt styleDefault : \Reset \ : styleDefault[3, len(styleDefault)-3] :
+      crt
+      *CRT \Experimental use of reverse video to signal insert mode\
+      *crt stylePrompt : \normal INSERT\ : CSI:\7m\ : \overwrite mode\ : CSI:\27m\ : \back to insert\
+      crt \Colour combinations available are.....\
+
+      for fg = 30 to 37
+         for bg = 40 to 47
+            crt CSI : fg : \;\ : bg : \m\ : fg : \;\ : bg :space:space: styleDefault :space :
+         next
+         for bg = 100 to 107
+            crt CSI : fg : \;\ : bg : \m\ : fg : \;\ : bg :space:space: styleDefault: space :
+         next
+         crt
+      next
+      for fg = 30 to 37
+         for bg = 40 to 47
+            crt CSI : fg : \;1;\ : bg : \m\ : fg : \;1;\ : bg :styleDefault: space :
+         next
+         for bg = 100 to 107
+            crt CSI : fg : \;1;\ : bg : \m\ : fg : \;1;\ : bg : styleDefault: space :
+         next
+         crt
+      next
+      return
+
+
+loadTheme:
+      * Definition of Theme is a collection of styles.  A style is a forground/background text style
+      * The following styles are used:-
+      styleCommand = \\ ;* Once the line has been entered, swithch to this style to run it.
+      styleDefault = \\ ;* Clear all display attributes to terminal defaults -  i.e. use the screen background as defined by the user.
+      styleInsert = \\
+      styleLine = \\ ;* The command being edited
+      styleLineInsert = \\ ;* The command being edited when in Insert mode
+      styleLineOverwrite = \\ ;* The command being edited when in Overwrite mode
+      stylePrompt = \\ ;* The prompt at start of line and also the } at end of line if any
+      styleTableList = \\ ;* for the F5 popup
+
+      * The following styles are reserved for future use
+      styleBox = \\ ;* Box drawing done in this style
+      styleTitle = \\ ;* Heading titles
+
+      * TODO - This section is in a state of flux as we transition from "styles" to "themes" in the color definitions.
+      * Define theme - colors in https://bluesock.org/~willkg/dev/ansi.html
+
+      * For ANSI All styles are CSI ... m
+      * http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+      *https://en.wikipedia.org/wiki/ANSI_escape_code - Can we use 8bit/256color mode?
+      *0   normal display
+      *1   bold (foreground?)
+      *2 Dim
+      *3 Italic
+      *4   underline (mono only)
+      *5   blink on
+      *7   reverse video on
+      *8   nondisplayed (invisible)
+      *9 Strikethrough
+      * TODO - Is there an Italic one
+
+
+      *TODO - define background for all styles.  Also send RESET at end of usage.
+      * Accuterm doesen't support all combinations
+
+      begin case
+         case termClass = 'PLATFORM'
+            * Don't use blink apart from cursor unless you like being annoyed.
+
+            *styleDefault = @(-6):@(-12):@(-14):@(-16)      ;* End blink; End half-intensity; End Reverse; End underline
+            styleDefault = @(-14):@(-16)      ;* End Reverse and underline
+            stylePrompt = @(-13) ;*REverse Video
+            styleCommand = styleDefault
+            styleInsert = styleDefault
+            styleLine = @(-15)
+            styleLineInsert = styleDefault
+            styleLineOverwrite = styleDefault
+            * From SYSCOM ATFUNCTIONS.INS.IBAS
+            *     IT$CS                    TO -1      ;* clear screen (ANSI)
+            *     IT$CAH                   TO -2      ;* cursor absolute home (ANSI)
+            *     IT$CLEOS                 TO -3      ;* clear to end of screen
+            *     IT$CLEOL                 TO -4      ;* clear to end of line
+            *     IT$SBLINK                TO -5      ;* start blinking field
+            *     IT$EBLINK                TO -6      ;* end blinking field
+            *     IT$SPA                   TO -7      ;* start protected area (ANSI)
+            *     IT$EPA                   TO -8      ;* end protected area (ANSI)
+            *     IT$CUB                   TO -9      ;* cursor backward (ANSI)
+            *     IT$CUU                   TO -10     ;* cursor up (ANSI)
+            *     IT$SHALF                 TO -11     ;* start half-intensity field
+            *     IT$EHALF                 TO -12     ;* end half-intensity field
+            *     IT$SREV                  TO -13     ;* start reverse video field
+            *     IT$EREV                  TO -14     ;* end reverse video field
+            *     IT$SUL                   TO -15     ;* start underlined field
+            *     IT$EUL                   TO -16     ;* end underlined field
+            *     IT$IL                    TO -17     ;* insert line
+            *     IT$DL                    TO -18     ;* delete line
+            *     IT$ICH                   TO -19     ;* insert character (ANSI)
+            *     IT$SIRM                  TO -20     ;* set insert/replace mode (ANSI)
+            *     IT$RIRM                  TO -21     ;* reset insert/replace mode (ANSI)
+            *     IT$DCH                   TO -22     ;* delete character (ANSI)
+            *     IT$AUXON                 TO -23     ;* auxiliary port on
+            *     IT$AUXOFF                TO -24     ;* auxiliary port off
+            *     IT$TRON                  TO -25     ;* transparent auxiliary port on
+            *     IT$TROFF                 TO -26     ;* transparent auxiliary port off
+            *     IT$AUXDLY                TO -27     ;* auxiliary delay time
+            *     IT$PRSCRN                TO -28     ;* print screen
+            *     IT$E80                   TO -29     ;* enter 80 column mode
+            *     IT$E132                  TO -30     ;* enter 132 column mode
+            *     IT$RIC                   TO -31     ;* reset inhibit cursor (ANSI)
+            *     IT$SIC                   TO -32     ;* set inhibit cursor (ANSI)
+            *     IT$CUD                   TO -33     ;* cursor down (ANSI)
+
+            * Also http://www.zeobase.com/docs - They have their own list.  Too many standard for this to be of any use.
+
+         case @TRUE
+            *Accuterm/putty theme
+            styleDefault = CSI : \1;36;0;44m\    ;* Default background style.  I like the AREV Cyan on Blue
+            stylePrompt = CSI : \32;1;45m\ ;* Color of the propmpt and trail } if any
+            stylePrompt = CSI : \32;1;45m\ ;*FISH experimental
+            styleLineInsert = CSI : \1;41;1;40m\   ;* Red on black
+            styleLineOverwrite = CSI : \40;1;35m\    ;* Magenta
+            styleCommand = CSI : \44;1;36m\     ;* background blue, foreground cyan, non-bold
+            styleLine = styleLineInsert ;* Start in insert mode.  TODO - Move this line into the insert/overwrite if/then
+            styleLine = CSI : \33;1;45m\    ;* Magenta YELLOW
+            styleLineOverwrite = styleLine
+            styleLineInsert = styleLine
+            styleTableList = CSI : \35;1;40m\   ;* Light magenta on black
+      end case
+
+      return
+
+
+setup:
+
+      ESC = char(27)
+      CSI = ESC:\[\ ;* Control Sequence Introducer - part of ANSI spec.  7bit to avoid UTF-8 conflict.  Thanksfully, nobody seems to ever have used 8-bit ESC sequences.
+      CR = char(13)
+      LF = char(10)
+      BEL = char(7)
+      space = char(32) ;* For readbility
+      lowerCase = \abcdefghijklmnopqrstuvwxyz\
+      upperCase = \ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+      controlChars = \\ ;* For filtering out the incoming foreign history lines
+      duplicate = @FALSE  ;* Boolean for if the line under review is a duplicate of an existing one in the history list
+      for x = 0 to 31
+         controlChars := char(x)
+      next
+      offset = 0 ;* The number of characters at the start of the line not displayed due to horizontal scrolling.
+      buttonDecode = @FALSE ;* Set to TRUE then each byte is output as hex/printable until we get another CTRL-Y (or whatever it is)
+      lastStatusLine = '' ;* What the statusline was last time we considered updating it.  Only send the update to the terminal if something has changed
+
+      gosub getplatformType
+      gosub getOS
+      gosub getplatformLevel
+      gosub loadTheme
+      gosub getSiteName
+      gosub getStoreFileName
+      *auditFile = \/var/spool/audit_ash_tcl.txt\  ;* TODO - find a better place for the system-wide audit file
+      auditLine = \\ ;* start with this
+
+
+      *CSI sequence for vt220 PuTTY
+      * build hash for CSI sequences to Function keys#
+      * <1> is the names
+      * <2> is the Escape sequences
+      * common ones used by most ANSI emulators
+      buttons = \\
+      buttons<1,-1> = \UP\;         buttons<2,-1> = CSI:\A\
+      buttons<1,-1> = \DOWN\;       buttons<2,-1> = CSI:\B\
+      buttons<1,-1> = \RIGHT\;      buttons<2,-1> = CSI:\C\
+      buttons<1,-1> = \LEFT\;       buttons<2,-1> = CSI:\D\
+      buttons<1,-1> = \CTRL-UP\;    buttons<2,-1> = ESC:\OA\
+      buttons<1,-1> = \CTRL-DOWN\;  buttons<2,-1> = ESC:\OB\
+      buttons<1,-1> = \CTRL-RIGHT\; buttons<2,-1> = ESC:\OC\
+      buttons<1,-1> = \CTRL-LEFT\;  buttons<2,-1> = ESC:\OD\
+      buttons<1,-1> = \SHIFT-TAB\;  buttons<2,-1> = CSI:\Z\  ;* Also sent by SHIFT-F2.
+
+      * Much as I love digital as a company, the VT terminal range was a bit random in it's function key number assignments (eg. F1-4 are local)
+      buttons<1,-1> = \HOME\;          buttons<2,-1> = CSI:\1~\
+      buttons<1,-1> = \INSERT\ ;       buttons<2,-1> = CSI:\2~\
+      buttons<1,-1> = \DELETE\ ;       buttons<2,-1> = CSI:\3~\
+      buttons<1,-1> = \END\ ;          buttons<2,-1> = CSI:\4~\
+      buttons<1,-1> = \PAGEUP\ ;       buttons<2,-1> = CSI:\5~\
+      buttons<1,-1> = \PAGEDOWN\ ;     buttons<2,-1> = CSI:\6~\
+      buttons<1,-1> = \F1\;           buttons<2,-1> = CSI:\11~\
+      buttons<1,-1> = \F2\;           buttons<2,-1> = CSI:\12~\
+      buttons<1,-1> = \F3\;           buttons<2,-1> = CSI:\13~\
+      buttons<1,-1> = \F4\;           buttons<2,-1> = CSI:\14~\
+      buttons<1,-1> = \F5\;           buttons<2,-1> = CSI:\15~\
+      buttons<1,-1> = \F6\;           buttons<2,-1> = CSI:\17~\ ;* There is no 16 (number gaps correspond to physical keyboard gaps)
+      buttons<1,-1> = \F7\;           buttons<2,-1> = CSI:\18~\
+      buttons<1,-1> = \F8\;           buttons<2,-1> = CSI:\19~\
+      buttons<1,-1> = \F9\;           buttons<2,-1> = CSI:\20~\
+      buttons<1,-1> = \F10\ ;         buttons<2,-1> = CSI:\21~\
+      buttons<1,-1> = \F11\;          buttons<2,-1> = CSI:\23~\ ;* Same as SHIFT-F1!
+      buttons<1,-1> = \F12\ ;         buttons<2,-1> = CSI:\24~\
+      buttons<1,-1> = \SHIFT-F3\ ;         buttons<2,-1> = CSI:\25~\
+      buttons<1,-1> = \SHIFT-F4\ ;         buttons<2,-1> = CSI:\26~\
+      buttons<1,-1> = \SHIFT-F5\ ;         buttons<2,-1> = CSI:\28~\
+      buttons<1,-1> = \SHIFT-F6\ ;         buttons<2,-1> = CSI:\29~\
+      buttons<1,-1> = \SHIFT-F7\ ;         buttons<2,-1> = CSI:\31~\
+      buttons<1,-1> = \SHIFT-F8\ ;         buttons<2,-1> = CSI:\32~\
+      buttons<1,-1> = \SHIFT-F9\ ;         buttons<2,-1> = CSI:\33~\
+      buttons<1,-1> = \SHIFT-F10\ ;        buttons<2,-1> = CSI:\34~\
+
+      * VT100 differences - Yep they completely changed between VT52, VT100 and VT200
+      buttons<1,-1> = \F1\;           buttons<2,-1> = ESC:\OP\
+      buttons<1,-1> = \F2\;           buttons<2,-1> = ESC:\OQ\
+      buttons<1,-1> = \F3\;           buttons<2,-1> = ESC:\OR\
+      buttons<1,-1> = \F4\;           buttons<2,-1> = ESC:\OS\
+      buttons<1,-1> = \F5\;           buttons<2,-1> = ESC:\OT\
+      buttons<1,-1> = \F6\;           buttons<2,-1> = ESC:\OU\
+      buttons<1,-1> = \F7\;           buttons<2,-1> = ESC:\OV\
+      buttons<1,-1> = \F8\;           buttons<2,-1> = ESC:\OW\
+      buttons<1,-1> = \F9\;           buttons<2,-1> = ESC:\OX\
+      buttons<1,-1> = \F10\ ;         buttons<2,-1> = ESC:\OY\
+      buttons<1,-1> = \F11\;          buttons<2,-1> = ESC:\OZ\
+      buttons<1,-1> = \F12\ ;         buttons<2,-1> = ESC:\O[\
+
+      * Accuterm VT4xx differences - Yep more DEC random changes  Arghhh!
+      * Don't enable until the keyboard detect routine has been updated to match
+      * In fact, best to not to enable at all.
+      *buttons<1,-1> = \HOME\;          buttons<2,-1> = CSI:\H\  ;* (Already in the SCO section)
+      *buttons<1,-1> = \END\ ;          buttons<2,-1> = CSI:\1~\ ;* Same as HOME for a VT100. Arrrrgh!
+
+      *Kitty seems to have a long escape sequence from ctrl-cursor keys.  Weird.
+      buttons<1,-1> = \CTRL-UP\;    buttons<2,-1> = CSI:\1;5A\
+      buttons<1,-1> = \CTRL-DOWN\;  buttons<2,-1> = CSI:\1;5B\
+      buttons<1,-1> = \CTRL-RIGHT\; buttons<2,-1> = CSI:\1;5C\
+      buttons<1,-1> = \CTRL-LEFT\;  buttons<2,-1> = CSI:\1;5D\
+
+      *application keypad mode - try and disable it if you can, as it's more use to the user to have the numbers working.
+      * Last time I saw applications using the "gold" key and the application keypad overlay was in the '80s on VMS.  I think it's obsolete.
+      * However, there might just be somebody here using DEC FMS (Joel?)
+      buttons<1,-1> = \KEYPAD-ENTER\;buttons<2,-1> = ESC:\Om\  ;* could be either lowercase M or uppercase, depending upon how docs are read...
+      buttons<1,-1> = \KEYPAD-ENTER\;buttons<2,-1> = ESC:\OM\  ;* So, I've done both.
+      buttons<1,-1> = \KEYPAD-PLUS\; buttons<2,-1> = ESC:\Ol\
+      buttons<1,-1> = \KEYPAD-INS\;  buttons<2,-1> = ESC:\Op\
+      buttons<1,-1> = \KEYPAD-DEL\;  buttons<2,-1> = ESC:\On\
+      buttons<1,-1> = \KEYPAD-0\;    buttons<2,-1> = ESC:\Op\
+      buttons<1,-1> = \KEYPAD-1\;    buttons<2,-1> = ESC:\Oq\
+      buttons<1,-1> = \KEYPAD-2\;    buttons<2,-1> = ESC:\Or\
+      buttons<1,-1> = \KEYPAD-3\;    buttons<2,-1> = ESC:\Os\
+      buttons<1,-1> = \KEYPAD-4\;    buttons<2,-1> = ESC:\Ot\
+      buttons<1,-1> = \KEYPAD-5\;    buttons<2,-1> = ESC:\Ou\
+      buttons<1,-1> = \KEYPAD-6\;    buttons<2,-1> = ESC:\Ov\
+      buttons<1,-1> = \KEYPAD-7\;    buttons<2,-1> = ESC:\Ow\
+      buttons<1,-1> = \KEYPAD-8\;    buttons<2,-1> = ESC:\Ox\
+      buttons<1,-1> = \KEYPAD-9\;    buttons<2,-1> = ESC:\Oy\
+
+
+      *Putty ALT-letter combinations - * chars 32 to 126 .  Putty sends ALT-char as ESC-char.
+      for asciibutton = 32 to 126
+         begin case
+            case asciibutton = 91 ;* same as CSI
+            case asciibutton = 93 ;* ESC]
+            case @true
+               buttons<1,-1> = \ALT-\:char(asciibutton);    buttons<2,-1> = ESC:char(asciibutton)
+         end case
+      next
+      * replaces lots of hard-coded lines:-
+      *buttons<1,-1> = \ALT-a\;    buttons<2,-1> = ESC:\a\
+
+
+
+
+      *SCO emulation buttons - Putty is the one for this as it provides shift, control and control-shift modifiers for function keys.  Just like the SCO console did.
+      * the Accuterm SCO emulation is somewhat counter-intuitive in that it maps the function keys to the VT220 names which are not the same as what is on the physical PC keycaps
+
+      * SCO console has an effective keyboard mapping with shift and control modifiers
+      *TODO - put in codes for ALT-Fn
+      buttons<1,-1> = \HOME\;        buttons<2,-1> = CSI:\H\
+      buttons<1,-1> = \INSERT\ ;     buttons<2,-1> = CSI:\L\
+      buttons<1,-1> = \END\ ;        buttons<2,-1> = CSI:\F\
+      buttons<1,-1> = \PAGEUP\ ;     buttons<2,-1> = CSI:\I\
+      buttons<1,-1> = \PAGEDOWN\ ;   buttons<2,-1> = CSI:\G\
+      buttons<1,-1> = \F1\;           buttons<2,-1> = CSI:\M\
+      buttons<1,-1> = \F2\;           buttons<2,-1> = CSI:\N\
+      buttons<1,-1> = \F3\;           buttons<2,-1> = CSI:\O\
+      buttons<1,-1> = \F4\;           buttons<2,-1> = CSI:\P\
+      buttons<1,-1> = \F5\;           buttons<2,-1> = CSI:\Q\
+      buttons<1,-1> = \F6\;           buttons<2,-1> = CSI:\R\
+      buttons<1,-1> = \F7\;           buttons<2,-1> = CSI:\S\
+      buttons<1,-1> = \F8\;           buttons<2,-1> = CSI:\T\
+      buttons<1,-1> = \F9\;           buttons<2,-1> = CSI:\U\
+      buttons<1,-1> = \F10\;          buttons<2,-1> = CSI:\V\
+      buttons<1,-1> = \F11\;          buttons<2,-1> = CSI:\W\
+      buttons<1,-1> = \F12\;          buttons<2,-1> = CSI:\X\
+      buttons<1,-1> = \F15\;          buttons<2,-1> = CSI:\M\
+
+      buttons<1,-1> = \ALT-F6\;       buttons<2,-1> = ESC:CSI:\R\
+
+      buttons<1,-1> = \CTRL-F1\ ;      buttons<2,-1> = CSI:\k\
+      buttons<1,-1> = \CTRL-F2\ ;      buttons<2,-1> = CSI:\l\
+      buttons<1,-1> = \CTRL-F3\ ;      buttons<2,-1> = CSI:\m\
+      buttons<1,-1> = \CTRL-F4\ ;      buttons<2,-1> = CSI:\n\
+      buttons<1,-1> = \CTRL-F5\ ;      buttons<2,-1> = CSI:\o\
+      buttons<1,-1> = \CTRL-F6\ ;      buttons<2,-1> = CSI:\p\
+      buttons<1,-1> = \CTRL-F7\ ;      buttons<2,-1> = CSI:\q\
+      buttons<1,-1> = \CTRL-F8\ ;      buttons<2,-1> = CSI:\r\
+      buttons<1,-1> = \CTRL-F9\ ;      buttons<2,-1> = CSI:\s\
+      buttons<1,-1> = \CTRL-F10\ ;     buttons<2,-1> = CSI:\t\
+      buttons<1,-1> = \CTRL-F11\ ;     buttons<2,-1> = CSI:\u\
+      buttons<1,-1> = \CTRL-F12\ ;     buttons<2,-1> = CSI:\v\
+      buttons<1,-1> = \SHIFT-F1\;       buttons<2,-1> = CSI:\Y\
+      buttons<1,-1> = \SHIFT-F2\;       buttons<2,-1> = CSI:\Z\
+      buttons<1,-1> = \SHIFT-F3\;       buttons<2,-1> = CSI:\a\
+      buttons<1,-1> = \SHIFT-F4\;       buttons<2,-1> = CSI:\b\
+      buttons<1,-1> = \SHIFT-F5\;       buttons<2,-1> = CSI:\c\
+      buttons<1,-1> = \SHIFT-F6\;       buttons<2,-1> = CSI:\d\
+      buttons<1,-1> = \SHIFT-F7\;       buttons<2,-1> = CSI:\e\
+      buttons<1,-1> = \SHIFT-F8\;       buttons<2,-1> = CSI:\f\
+      buttons<1,-1> = \SHIFT-F9\;       buttons<2,-1> = CSI:\g\
+      buttons<1,-1> = \SHIFT-F10\;      buttons<2,-1> = CSI:\h\
+      buttons<1,-1> = \SHIFT-F11\;      buttons<2,-1> = CSI:\i\
+      buttons<1,-1> = \SHIFT-F12\;      buttons<2,-1> = CSI:\j\
+      buttons<1,-1> = \CTRL-SHIFT-F1\;    buttons<2,-1> = CSI:\w\
+      buttons<1,-1> = \CTRL-SHIFT-F2\;    buttons<2,-1> = CSI:\x\
+      buttons<1,-1> = \CTRL-SHIFT-F3\;    buttons<2,-1> = CSI:\y\
+      buttons<1,-1> = \CTRL-SHIFT-F4\;    buttons<2,-1> = CSI:\z\
+      buttons<1,-1> = \CTRL-SHIFT-F5\;    buttons<2,-1> = CSI:\@\
+      buttons<1,-1> = \CTRL-SHIFT-F6\;    buttons<2,-1> = CSI:\[\
+      buttons<1,-1> = \CTRL-SHIFT-F7\;    buttons<2,-1> = CSI:"\"
+      buttons<1,-1> = \CTRL-SHIFT-F8\;    buttons<2,-1> = CSI:\]\
+      buttons<1,-1> = \CTRL-SHIFT-F9\;    buttons<2,-1> = CSI:\^\
+      buttons<1,-1> = \CTRL-SHIFT-F10\;   buttons<2,-1> = CSI:\_\
+      buttons<1,-1> = \CTRL-SHIFT-F11\;   buttons<2,-1> = CSI:\`\
+      buttons<1,-1> = \CTRL-SHIFT-F12\;   buttons<2,-1> = CSI:\{\
+
+      * Putty IN SCO mode.  Adds an extra ESC before the plain key sequence.
+      buttons<1,-1> = \ALT-HOME\;          buttons<2,-1> = ESC:CSI:\H\
+      buttons<1,-1> = \ALT-INSERT\ ;       buttons<2,-1> = ESC:CSI:\L\
+      buttons<1,-1> = \ALT-DELETE\ ;       buttons<2,-1> = ESC:char(127)
+      buttons<1,-1> = \ALT-END\ ;          buttons<2,-1> = ESC:CSI:\F\
+      buttons<1,-1> = \ALT-PAGEUP\ ;       buttons<2,-1> = ESC:CSI:\I\
+      buttons<1,-1> = \ALT-PAGEDOWN\ ;     buttons<2,-1> = ESC:CSI:\G\
+
+      * Putty IN ESC[n~ mode.  Adds an extra ESC before the plain key sequence.
+      buttons<1,-1> = \ALT-HOME\;          buttons<2,-1> = ESC:CSI:\1~\
+      buttons<1,-1> = \ALT-INSERT\ ;       buttons<2,-1> = ESC:CSI:\2~\
+      buttons<1,-1> = \ALT-DELETE\ ;       buttons<2,-1> = ESC:CSI:\3~\
+      buttons<1,-1> = \ALT-END\ ;          buttons<2,-1> = ESC:CSI:\4~\
+      buttons<1,-1> = \ALT-PAGEUP\ ;       buttons<2,-1> = ESC:CSI:\5~\
+      buttons<1,-1> = \ALT-PAGEDOWN\ ;     buttons<2,-1> = ESC:CSI:\6~\
+
+      *Control Keys - single characters
+      * TODO - Emacs/vi control codes - Perhaps assign them the name of the command rather than CTRL-?  Yes, will make coding simpler!
+      * https://superuser.com/questions/94436/how-to-configure-putty-so-that-home-end-pgup-pgdn-work-properly-in-bash
+      buttons<1,-1> = \CTRL-@\;     buttons<2,-1> = char(0)
+      buttons<1,-1> = \CTRL-A\;     buttons<2,-1> = char(1)
+      buttons<1,-1> = \CTRL-B\;     buttons<2,-1> = char(2)
+      buttons<1,-1> = \CTRL-C\;     buttons<2,-1> = char(3) ;* Lookout, as might send BREAK
+      buttons<1,-1> = \CTRL-D\;     buttons<2,-1> = char(4) ;* Lookout, as might send EOF
+      buttons<1,-1> = \CTRL-E\;     buttons<2,-1> = char(5)
+      buttons<1,-1> = \CTRL-F\;     buttons<2,-1> = char(6)
+      buttons<1,-1> = \CTRL-G\;     buttons<2,-1> = char(7)
+      buttons<1,-1> = \BACKSPACE\;         buttons<2,-1> = char(8)
+      buttons<1,-1> = \TAB\;        buttons<2,-1> = char(9)
+      buttons<1,-1> = \CTRL-J\;     buttons<2,-1> = char(10)
+      buttons<1,-1> = \CTRL-K\;     buttons<2,-1> = char(11)
+      buttons<1,-1> = \CTRL-L\;     buttons<2,-1> = char(12)
+      buttons<1,-1> = \CR\;         buttons<2,-1> = char(13)
+      buttons<1,-1> = \CTRL-N\;     buttons<2,-1> = char(14)
+      buttons<1,-1> = \CTRL-O\;     buttons<2,-1> = char(15)
+      buttons<1,-1> = \CTRL-P\;     buttons<2,-1> = char(16)
+      buttons<1,-1> = \CTRL-Q\;     buttons<2,-1> = char(17) ;* Caution, it's XON
+      buttons<1,-1> = \CTRL-R\;     buttons<2,-1> = char(18)
+      buttons<1,-1> = \CTRL-S\;     buttons<2,-1> = char(19) ;* Caution, it's XOFF
+      buttons<1,-1> = \CTRL-T\;     buttons<2,-1> = char(20)
+      buttons<1,-1> = \CTRL-U\;     buttons<2,-1> = char(21)
+      buttons<1,-1> = \CTRL-V\;     buttons<2,-1> = char(22)
+      buttons<1,-1> = \CTRL-W\;     buttons<2,-1> = char(23)
+      buttons<1,-1> = \CTRL-X\;     buttons<2,-1> = char(24)
+      *buttons<1,-1> = \CTRL-Y\;     buttons<2,-1> = char(25)
+      buttons<1,-1> = \BUTTONDECODE\;     buttons<2,-1> = char(25)
+      buttons<1,-1> = \CTRL-Z\;     buttons<2,-1> = char(26) ;* Lookout, as might send EOF
+      buttons<1,-1> = \CTRL-/\;     buttons<2,-1> = char(28) ;* skip 27 as that's ESC and used as start of ANSI sequences
+      buttons<1,-1> = \CTRL-]\;     buttons<2,-1> = char(29)
+      buttons<1,-1> = \CTRL-^\;     buttons<2,-1> = char(30)
+      buttons<1,-1> = \CTRL-_\;     buttons<2,-1> = char(31)
+
+      buttons<1,-1> = \DELETE\ ;    buttons<2,-1> = char(127)
+
+      * Very special handling of the slippery Esc key
+      * Quick lecture...
+      * Assuming that ESC followed by a human typing delay before the next character is inadequate.  There might be network delays that cause it.
+      * Also, the timing loop involved has to work over the midnight time() reset.  Unless you WANT your apps to go wrong every midnight.
+      * Thirdly, it makes automated testing involving this key virtually impossible.  Can be done, but it makes life hard and hugely slows down the test script.
+      * Hence, the Always available option of three ESC presses.
+      * The timout process will cause a signigicant process load that is completely absent with the blocking I/O
+      * All of these problems can be avoided if we assign no meaning to the ESC key.  There are plenty of other buttons
+      * TODO - Reprogram Emulator to send a specific ESC sequence
+      * TODO - Properly code a timout loop for the ESC key with a LONG timeout value.  Even though I hate that.  It can go in the config record.
+      * TODO - Boolean switch for this polled mode in the config record.  Default to false.
+      buttons<1,-1> = \ESCAPE\ ;    buttons<2,-1> = ESC:ESC:ESC
+
+
+      maxSequenceLength = 6 ;* SCO is 3, DEC is 5 (ESC[34~), Kitty is 6 (ESC[1;5A). To allow dynamic keyboard change, we assume the biggest
+      keyboard = \SCO\
+      newKeyboard = keyboard ;* detected keyboard mode incase of keyboard switch
+
+      * vars for current line
+      line = \\ ;* The current command
+      caret = 1 ;* edit cursor position within line.
+      styleLine = styleLineInsert
+
+      * vars for cursor shape and Reverse video
+      * https://stackoverflow.com/questions/4416909/anyway-change-the-cursor-vertical-line-instead-of-a-box
+      *
+      * Not many terminal emulators seem to support DECSCUSR.  Well, not Putty anyway.  Accuterm seems to...
+      * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Functions-using-CSI-_-ordered-by-the-final-character_s_
+      *CSI Ps SP q
+      *  Set cursor style (DECSCUSR), VT520.
+      *  Ps = 0  -> blinking block.
+      *  Ps = 1  -> blinking block (default).
+      *  Ps = 2  -> steady block.
+      *  Ps = 3  -> blinking underline.
+      *  Ps = 4  -> steady underline.
+      *  Ps = 5  -> blinking bar (xterm).
+      *  Ps = 6  -> steady bar (xterm).
+      * Not sure that we can't change the cursor shape, so invert the styleLine as well!
+      *begin case
+      *   case insertMode
+      *      * Insert mode, so cursor is block
+      *      crt CSI:\1\:space:\q\:
+      *      styleLine = styleLineInsert
+      *   case 1
+      *      * Overwrite mode, so cursor is underline
+      *      crt CSI:\3\:space:\q\:
+      *      if termClass = \ACCUTERM\ then
+      *      end else
+      *         styleLine = styleLineOverwrite
+      *      end
+      *end case
+
+
+      cursorInsert    = CSI:\1\:space:\q\ ;* blinking Block (chosen over a blinking bar as it's more visible at small character sizes)
+      cursorOverwrite = CSI:\3\:space:\q\ ;* blinking Underline
+      * Not many terminal emulators seem to support DECSCUSR.  Well, not Putty anyway.  Accuterm seems to...
+      * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Functions-using-CSI-_-ordered-by-the-final-character_s_
+      * CSI Ps SP q
+      *  Set cursor style (DECSCUSR), VT520.
+      *  Ps = 0  -> blinking block.
+      *  Ps = 1  -> blinking block (default).
+      *  Ps = 2  -> steady block.
+      *  Ps = 3  -> blinking underline.
+      *  Ps = 4  -> steady underline.
+      *  Ps = 5  -> blinking bar (xterm).
+      *  Ps = 6  -> steady bar (xterm).
+
+      * Not every terminal emulator can change the cursor shape, so change the styleLine as well.
+      reverseVideo = CSI:\7m\ ;* used when in Overwrite mode
+      normalVideo =  CSI:\27m\ ;* Back to Insert mode
+      crt cursorInsert: ;* Default startup value.  Probably should be at the start of loop or in the displayLine
+
+
+      * Configure terminal and AMCL line
+      *EXECUTE "PTERM INPUTCTL ON"
+      *heading 'N'
+      *http://www.rsusers.com/cms/pages/wiki.wsp?page=112
+
+      *dataKey = 'ASH_TCL_DATA_':UPPERCASE(@WHO)
+      dataKey = 'ASH_TCL_DATA_' : oconv(@WHO, "MCU")
+
+      open 'VOC' to f_voc then
+         read dataRec from f_voc, dataKey else
+            gosub initDataRec
+         end
+      end
+      return
+
+
+setCursor:
+      * Sets the cursor shape depending upon the value of insertMode and termCursorShape
+      * vars for cursor shape and Reverse video
+      * https://stackoverflow.com/questions/4416909/anyway-change-the-cursor-vertical-line-instead-of-a-box
+      *
+      cursorInsert    = CSI:\1\:space:\q\ ;* blinking Block (chosen over a blinking bar as it's more visible at small character sizes)
+      cursorOverwrite = CSI:\3\:space:\q\ ;* blinking Underline
+
+      * Not many terminal emulators seem to support DECSCUSR.  Well, not Putty anyway.  Accuterm seems to...
+      * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Functions-using-CSI-_-ordered-by-the-final-character_s_
+      *CSI Ps SP q
+      *  Set cursor style (DECSCUSR), VT520.
+      *  Ps = 0  -> blinking block.
+      *  Ps = 1  -> blinking block (default).
+      *  Ps = 2  -> steady block.
+      *  Ps = 3  -> blinking underline.
+      *  Ps = 4  -> steady underline.
+      *  Ps = 5  -> blinking bar (xterm).
+      *  Ps = 6  -> steady bar (xterm).
+      * Not sure that we can't change the cursor shape, so invert the styleLine as well!
+      *begin case
+      *   case insertMode
+      *      * Insert mode, so cursor is block
+      *      crt CSI:\1\:space:\q\:
+      *      styleLine = styleLineInsert
+      *   case 1
+      *      * Overwrite mode, so cursor is underline
+      *      crt CSI:\3\:space:\q\:
+      *      if termClass = \ACCUTERM\ then
+      *      end else
+      *         styleLine = styleLineOverwrite
+      *      end
+      *end case
+
+      * Not every terminal emulator can change the cursor shape, so change the styleLine as well.
+      reverseVideo = CSI:\7m\ ;* used when in Overwrite mode
+      normalVideo =  CSI:\27m\ ;* Back to Insert mode
+      crt cursorInsert: ;* Default startup value.  Probably should be at the start of loop or in the displayLine
+
+      if termCursorShape then
+         if cursorInsert then
+            crt CSI:\1\:space:\q\:
+         end else
+            crt CSI:\3\:space:\q\:
+         end
+      end
+
+
+initDataRec:
+      space = \ \
+      dataRec = ''
+      dataRec<1> = 'X Data record for ASH_TCL'
+      dataRec<2> = \\ ;* Place history stack here
+      dataRec<3> = \\ ;* Start Times
+      dataRec<4> = \\ ;* Finish Times
+      dataRec<-1> = space
+      dataRec<-1> = space
+      dataRec<-1> = \Configuration & data record for ASH_TCL for user \:@WHO
+      dataRec<-1> = \F1=Array of most recent executed commands, newest first\
+      dataRec<-1> = \F2=F2 Associated Array of start times of command.  In timestamp format\
+      dataRec<-1> = \F3=F2 Associated Array of finish times of command. In timestamp format\
+
+      * Get command stack from all other items for this user
+      dataRec<1> = ''
+      *for counterX = dcount(@command.stack, @fm) to 1 step -1
+      *   dataRec<2,-1> = @command.stack<counterX>
+      *next
+      select '&SAVEDLISTS&'
+      done = @FALSE
+      loop
+         readnext key else done = @TRUE
+      until done
+         if key match \"&&S.\:@who:\."0N\ then
+            rec = xlate('&SAVEDLISTS&', key, -1, 'X')
+            for counterX = 1 to dcount(rec, @fm)
+               testLine = rec<counterX>
+               *TODO - remove duplicates
+               duplicate = @FALSE
+               for counterY = 1 to dcount(dataRec<2>, @vm)
+                  if testLine = dataRec<2, counterY> then duplicate = @TRUE
+               next
+               if not(duplicate) then dataRec<2,-1> = rec<counterX>
+            next
+         end
+      repeat
+
+      return
+
+
+shutdown:
+      *Place any needed items to return terminal/line to same state as it was when ASH_TCL started.
+      crt ESC : \[?2004l\:   ;* Disable bracketed paste mode just to be sure - https://cirw.in/blog/bracketed-paste
+      crt CSI : '0m':   ;* turn off all styling
+      crt \Goodbye from ASH_TCL.  Welcome back to The Eighties...\
+
+      return
+
+
+drawBox:
+      *FIXME - does not work across all terminal classes
+      box_start = ESC : \(0\
+      box_finish = ESC : \(B\
+
+      crt styleBox : box_start: \jklmnqtuvwx\: box_finish
+      crt \jklmnqtuvwx\
+
+      box_bottomright = \j\
+      box_topright    = \k\
+      box_topleft     = \l\
+      box_bottomleft  = \m\
+      box_cross       = \n\
+      box_horizontal  = \q\
+      box_lefttee     = \t\
+      box_righttee    = \u\
+      box_bottomtee   = \v\
+      box_toptee      = \w\
+      box_vertical    = \x\
+      crt
+      crt box_start :
+      crt box_topleft    : box_toptee     : box_horizontal : box_topright
+      crt box_vertical   : box_vertical   : \ \            : box_vertical
+      crt box_vertical   : box_vertical   : \\             : box_vertical
+      crt box_bottomleft : box_bottomtee  : box_horizontal : box_bottomright
+      crt box_finish
+      return
+
+
+showHelp:
+      gosub enablePaging
+      gosub enableAlternateScreen
+      crt @(-1):styleTableList:
+      *crt @(-1) : \ASH.TCL by Ashley Chapman - The developer's friend!\
+      crt \ASH.TCL by Ashley Chapman - The developer's friend!\
+      crt \* Detects and automatically resizes TCL screen when used with Putty or xterm\
+      crt \* Allows for full cursor-key control on the command line\
+      crt \* Converts input to UPPERCASE when C is shown at start of line (F2 to turn off)\
+      crt \* Stores the command history which can be accessed by up/down arrow keys\
+      crt \* Automatically saves this command history even if session crashes\
+      crt \* Makes full use of scrollback.  Scrollback can be accessed with Ctrl or Shift PageUp/PageDown\
+      crt \* Interprets all of keys on keyboard (Except Esc) including function keys\
+      crt \* works with the buggy Universe HELP command by temporarily switching to 80 column mode\
+      crt \* Clears a partially-used select list that has been Quit from\
+      crt \* Shows active select list size in the prompt\
+      crt \F1 FOR HELP, Ctrl-G/F10 to quit\
+      crt \Shift-F1 for display of Theme and Colours\
+      crt \F2 to toggle caps mode - this forces ALL input to be uppercase\
+      crt \F3 to CLEARSELECT the active select list\
+      crt \F4 to list Command Stats\
+      crt \F5 (Ctrl-B) Table (File) List (showTableList)\
+      crt \F6 to list history (like .L)\
+      crt \F7 to invert case\
+      crt \F8 for display of @vars\
+      crt \F9 for uv log\
+      crt \F11 for STATUS\
+
+      CRT \Shift-F1 to show theme\
+      crt \Shift-F6 for PORT.STATUS\
+      crt \Shift-F7 to uppercase\
+      crt \Ctrl-F7 to lowercase\
+
+      crt \Ctrl-P for Platform based theme based on @ function\
+      crt \Ctrl-Y  for keyboard decode mode\
+      crt \Keyboard type is \ : keyboard
+      crt
+      *gosub showTheme
+      crt \Putty config - set backspace to send ^H\
+
+      crt \Press Enter when finished\
+      input junk
+      gosub disableAlternateScreen
+      return
+
+
+dataColumns:
+      * FISH
+      * Adds all of the D dictionary items ordered by ordinal position, then all of the I types.  As a pseudo popup which can be selected from.
+      * TODO - use the ANSI save/restore screen.  Does it only have one buffer?
+      * TODO - grab the code from version 12.0 of this prog.  Should be OK with UV.
+      * TODO - seperate the display of Dtypes from Itypes
+
+      * NB. We use the word table for the DB files and column for the fields - in line with the rest of the world!
+      upcaseLine = line
+      convert lowerCase to upperCase in upcaseLine
+      if upcaseLine[1,5] = \LIST \ then
+         tableName = field(upcaseLine, \ \, 2)
+      end
+      return
+
+
+chooseColumns:
+      *TODO - build a list of columns for a SELECT/LIST statement
+      return
+
+
+getFreeTableCursorNumber:
+      * finds and sets freeTableCursorNumber to the smallest numbered inactive select/cursor.
+
+      * Determine the status of the 11 cursors
+      * This can be done by looking at selectinfo()
+      * $INCLUDE UNIVERSE.INCLUDE INFO_KEYS.INS.IBAS
+      * EQUATE IK$SLACTIVE   TO 1
+      * EQUATE IK$SLCOUNT    TO 3
+      * islistactive = SELECTINFO(SELECTLIST.IDX, IK$SLACTIVE)
+      * cursorcount = SELECTINFO(SELECTLIST.IDX, IK$SLCOUNT)
+
+      freeTableCursorNumber = 0 ;* Start at 0
+      loop
+      until freeTableCursorNumber > 10
+      until not(selectinfo(freeTableCursorNumber, 1))
+         freeTableCursorNumber += 1
+      repeat
+      if freeTableCursorNumber > 10 then
+         crt \There are no Free select cursors.  This is bad, so we are going to exit\
+         stop
+      end
+
+      return
+
+
+getTableList:
+      * Builds a sorted list of tables/files
+      * Only call this at startup or when a new dataSet has been attached
+
+      freeTableCursorNumber = 0
+      selectlistNumber = 0
+      gosub getFreeTableCursorNumber
+      selectlistNumber = freeTableCursorNumber
+      crt \        Building list of tables using selectlist \:selectlistNumber:CR:
+
+      * tableList is a 2D array. F1 is a list of tableNames
+      * F2 is a list of decriptions
+      * F3 is a list of inodes (TODO)
+      tableList = 'YT-VIDEOS'
+
+      * ALL tables with a description
+      cmd = \SSELECT VOC (WITH F1 LIKE F... OR WITH LIKE Q...) AND WITH EVAL "LEN(TRIM(@RECORD<1>))" GT 1\
+
+      * ALL tables
+      cmd = \SSELECT VOC (WITH F1 LIKE F... OR WITH LIKE Q...)\
+
+      * site specific exclusion for retired tables
+      if siteName = \JERRY\ then
+         cmd := \ AND WITHOUT F2 LIKE .../RETIRED.FIL\
+      end
+
+      * Send to the first available tableCursor
+      cmd := \ TO \ : selectlistNumber
+
+      * Example of using () and AND OR
+      * SELECT SYS.TABLES WITH tableAK = 'COUNTRY.ADDRESS.FORMAT' AND @ID # 'COUNTRY.ADDRESS.FORMAT*0DICT' AND ((@ID = 'COUNTRY.ADDRESS.FORMAT*CN' AND (EVAL "'ME'" = 'ME' '' OR EVAL "TRANS(SYS.TABLES,'COUNTRY.ADDRESS.FORMAT*CN-ME',0,'X')" = '')) OR (EVAL "'ME'" #
+      *
+
+      *Example use of cats() and reuse() and MULTI.VALUE
+      *  LIST SYS.TABLES LIKE CURR.CTRY*... ID.SUP EVAL "TRANS('SYS.TABLES','COUNTRY*':FIELD(@ID,'*',3),D2,'X')" FMT "20L" EVAL "FIELD(@ID,'*',2)"  EVAL "@RECORD<1>"  EVAL "TRANS('TABLES',CATS(REUSE('TRM*'),D1),1,'X')" FMT "40L" MULTI.VALUE
+
+
+      execute cmd capturing junk
+      *if @selected then                ;* FISH - use alternative as this only works with cursor 0
+      *active = selectinfo(selectlistNumber, 1)
+      if selectinfo(selectlistNumber, 1) then
+         selectFlag = @TRUE
+         pos = 0
+         loop
+            *readnext vocKey else selectFlag = @FALSE
+            readnext vocKey from selectlistNumber else selectFlag = @FALSE
+         while selectFlag
+
+            pos += 1
+            if rem(pos, 1000) = 0 then crt pos:CR:
+            vocItem = xlate('VOC', vocKey, -1, 'X')
+            tableList<1, pos> = vocKey
+            tableList<2, pos> = vocItem<1,1>[3,99]
+            tableList<3, pos> = vocItem<1,2> ;*TODO - get the inode instead of the path if possible
+         repeat
+      end
+      crt \\
+
+      return
+
+
+showTableList:
+      *assign 1 to system(999) ;*   disable "Q" at "Press..." prompt
+      *assign 0 to system(999) ;*   re-enable "Q" at "Press..." prompt
+
+      gosub enablePaging
+      * TODO - save any selectlist
+      crt styleTableList:
+      gosub enableAlternateScreen
+      crt @(-1):styleTableList:
+      crt \Tablelist\
+      tableCounter = 0
+      *assign 1 to system(999)
+      loop
+         tableCounter += 1
+      while tableList<1, tableCounter>
+         *TODO - calculate these column widths
+         tableNameWidth = 40
+         tableFileWidth = 60
+         tableDescWidth = @crtwide - tableNameWidth - tableFileWidth - 5
+         *crt fmt(tableList<1, tableCounter>, '40L'):
+         crt fmt(tableList<1, tableCounter>, tableNameWidth:'L'):
+         crt \|\:
+         *crt fmt(tableList<2, tableCounter>, '80L'):
+         crt fmt(tableList<2, tableCounter>, tableDescWidth:'L'):
+         crt \|\:
+         *crt fmt(tableList<3, tableCounter>, '80L'):
+         crt fmt(tableList<3, tableCounter>, tableFileWidth:'L'):
+         crt
+      repeat
+      print 'Press Enter to continue...': ;  input junk
+      *assign 0 to system(999)
+      *TODO restore select list
+      crt styleDefault:
+      gosub disableAlternateScreen
+      * crt CSI : \?47l\: ;* # alternate screen - last char is lowercase letter L
+      gosub disablePaging
+      return
+
+
+enableAlternateScreen:
+      * This is ANSI only, but seems to be very widely implemented.  Used by all termClass
+      * echo -e '\033[?47h' # alternate screen
+      *$ echo -e '\033[?47l' # normal screen
+      crt CSI : \?47h\: ;* # alternate screen
+      alternateScreenActive = @TRUE
+      return
+
+
+disableAlternateScreen:
+      crt CSI : \?47l\: ;* # Non-alternate screen.  I.e. Ordinary screen which goes to the scrollback
+      *NB, the Escape sequence above ends in a lowercase letter L
+      alternateScreenActive = @FALSE
+      return
+
+
+getHistory:
+      openseq storeFolderName : directorySeparator : storeFileName : \.\ : storeFileExt to f_storeFile  on error
+      stop "324 openseq error"
+      end then
+         *get the whole file in to storeFile
+         storeFilePointer = 0
+         dataRec = \\
+         EOF = @FALSE
+         timeout f_storeFile, 10 ;* 10 secs should be enough on even the slowest system
+         loop
+            readblk dataBlock from f_storeFile, chunkSize then
+               dataRec := dataBlock
+            end else
+               EOF = @TRUE ;*End of file
+            end
+         until EOF
+         repeat
+         closeseq f_storeFile
+         convert LF to @fm in dataRec
+         historyList = dataRec<1>
+         historyList = @fm : raise(historyList)
+      end else
+         * TODO store file does not exist, so we'll build a skeleton in memory so it gets written out to heal this issue
+         historyList = \\ : @fm : @command.stack
+         * TODO - write a common sub for this and also call it from the writeCommandToHistory: subroutine
+      end
+
+      return
+
+
+buttonDecode:
+      * TODO - switch from the blocking keyIn() to a non-blocking function.  Perhaps testing with Input x,-1?
+      *        Then we can show a button on a line, with auto CR after timeout period.  Nice?!
+      * TODO - system(12) is now using a 4dp float of seconds
+      buttonDate = date() ;* Start date of this button
+      buttonTime = system(12) ;* Start time (milliseconds) of this button
+      buttonTimeout = 1000 ;* Milliseconds to wait until button has finished sending code
+      buttonSequence = \\ ;* What we have so far for this button
+      buttonDecode = 1
+      if buttonDecode then
+         * Loop around outputting debug info
+         crt
+         crt "Button decode mode - press CTRL-Y to exit"
+         loop
+            byteIn = keyIn()
+            if buttonSequence = \\ then
+               buttonDate = date() ;* Start date of this button
+               buttonTime = system(12)*1000 ;* Start time (milliseconds) of this button
+               buttonSequence = byteIn
+            end else
+               buttonSequence := byteIn
+            end
+         until byteIn = char(25)
+            crt \[\ : oconv(byteIn, "MX0C") : \] \:
+            if byteIn = char(13) then crt
+            if (buttonDate ne date()) or (system(12) > (buttonTime + buttonTimeout)) then
+               * End of button so do a CR.  NB, date also checked to avoid wraparound issue at midnight
+               crt ;* TODO button summary
+               buttonSequence = \\
+            end
+         repeat
+         buttonDecode = @FALSE
+      end
+      return
+
+
+showLog:
+      if OS = \WINDOWS\ else
+         begin case ;* Different commands for different platforms
+            case platformType = \UV\
+               execute \SH -c 'cat /usr/opt/uv/errlog | grep \ : @logname : \'\ capturing response
+         end case
+         if len(response) then
+            gosub disablePaging
+            crt
+            loop
+               remove showLogLine from response setting showLogMore
+            while showLogMore
+               *TODO - extract date bit by bit OR find a suitable iconv for "Wed Jul  8 "
+               *showLogdate = showLogLine[1,10]
+               *showLogLine = showLogLine[9,999]
+               *showLogdate = iconv(showLogdate, 'D')
+               *showLogdate = oconv(showLogdate, 'DYMD-')
+               *crt showLogdate : ' ' : showLogLine
+               crt showLogLine
+            repeat
+         end else
+            crt 'no entries for user ':@logname:' in the logfile'
+         end
+      end
+      return
+
+
+tcl:
+      gosub disablePaging
+      crt "ASH_TCL Version ":progVersion : " F1 for help, F10 or Ctrl-G to exit. It's Showtime!"
+      historyLine = 1 ;* 1 for the newline at front of list, 2 for the most recent history item, 99 for an old style one
+      exitTCL = @FALSE ;* Boolean flag for exiting ASH_TCL.
+      gosub getHistory
+      loop
+         insertMode = @TRUE ;* Turn off overwrite before each command
+         * gosub setCursor ;* FISH
+         gosub disableAlternateScreen  ;*Just in case it's accidentally been left enabled by something else
+         styleLine = styleLineInsert
+         exitLine = @TRUE
+         caret = 1 ;* Caret is set to 1 meaning insert next character BEFORE the first one on the line
+         line = \\ ;* Line being edited
+         loop
+            exitLine = @FALSE
+            if OS = \WINDOWS\ or termClass = 'ACCUTERM' else
+               gosub setSize     ;* Resize after each keypress.  Only for xterm type terms
+            end
+            gosub displayLine ;* redisplay whole line after each keypress.
+            gosub getKey
+            begin case
+               case keyName = \CLEARSELECT\
+                  clearselect 0
+               case keyName = \BUTTONDECODE\
+                  gosub buttonDecode
+               case keyName = \CR\
+                  if OS = \WINDOWS\ or termClass = 'ACCUTERM' else
+                     gosub setSize     ;* Resize after each keypress.  Only for xterm type terms
+                  end
+                  exitLine = 1
+               case keyName = \HELP\
+                  gosub showHelp
+               case keyName = \SHOWTHEME\
+                  gosub showTheme
+               case keyName = \SHOWTABLELIST\
+                  gosub showTableList
+               case keyName = \SHOWLOG\
+                  gosub showLog
+               case keyName = \SHOWATVARS\
+                  gosub showAtVars
+               case keyName = \PORTSTATUS\
+                  gosub showPortStatus
+               case keyName = \STATUS\
+                  gosub disablePaging
+                  EXECUTE \STATUS\
+               case keyName = \TERMINALCLASSPLATFORM\
+                  *Cycle through the terClass values
+                  begin case
+                     case termClass = 'ACCUTERM'
+                        termClass = 'PLATFORM'
+                     case termClass = 'PLATFORM'
+                        termClass = 'SBCLIENT'
+                     case termClass = 'SBCLIENT'
+                        termClass = 'XTERM'
+                     case termClass = 'XTERM'
+                        termClass = 'ACCUTERM'
+                  end case
+                  crt \Switching to termClass of \: termClass
+                  gosub loadTheme
+               case keyName = \LISTHISTORY\
+                  gosub listHistory
+               case keyName = \LISTCOMMANDSTATS\
+                  gosub listCommandStats
+               case keyName = "BACKSPACE"
+                  gosub deleteLeft
+               case keyName = \UP\
+                  historyList<historyLine> = line ;* save current edits at current line
+                  historyLine += 1
+                  line = historyList<historyLine>
+                  *Detect the end of the history array
+                  if historyList<historyLine> = \\ and historyList<historyLine+1> = \\ then
+                     historyLine -= 1
+                     line = historyList<historyLine>
+                  end
+                  caret = len(line) + 1
+                  offset = 0
+               case keyName = \PAGEUP\
+                  historyList<historyLine> = line ;* save current edits at current line
+                  historyLine += 10
+                  line = historyList<historyLine>
+                  loop
+                  while line = \\
+                  while historyLine > 0
+                     historyLine -= 1
+                     line = historyList<historyLine>
+                  repeat
+                  caret = len(line) + 1
+                  offset = 0
+               case keyName = \PAGEDOWN\
+                  historyList<historyLine> = line
+                  historyLine -= 10
+                  if historyLine < 1 then historyLine = 1
+                  line = historyList<historyLine>
+                  caret = len(line) + 1
+                  offset = 0
+               case keyName = \DOWN\
+                  historyList<historyLine> = line
+                  historyLine -= 1
+                  if historyLine < 1 then historyLine = 1
+                  line = historyList<historyLine>
+                  caret = len(line) + 1
+                  offset = 0
+               case keyName = \LEFT\
+                  caret -= 1
+               case keyName = \RIGHT\
+                  caret += 1
+               case keyName = \CTRL-RIGHT\
+                  loop
+                     caret += 1
+                  until caret > len(line)+ 1
+                  until line[caret-1,1] = space and line[caret,1] # space
+                  repeat
+               case keyName = \CTRL-LEFT\
+                  loop
+                     caret -= 1
+                  until caret < 1
+                  until line[caret-1,1] = space and line[caret,1] # space
+                  repeat
+               case keyName = "END"
+                  caret = len(line) + 1
+                  offset = len(line) - charsAvailable
+               case keyName = "HOME"
+                  caret = 1
+                  offset = 0
+               case keyName = \DELETE\
+                  gosub deleteRight
+               case keyName = \CTRL-G\
+                  exitLine = @TRUE
+                  exitTCL = @TRUE
+               case keyName = "EXIT"
+                  exitLine = @TRUE
+                  exitTCL = @TRUE
+               case keyName = "CAPSMODE"
+                  capsMode = not(capsMode)
+               case keyName = "INSERT"
+                  insertMode = not(insertMode)
+
+                  * Not many terminal emulators seem to support DECSCUSR.  Well, not Putty anyway.  However, accuterm seems to...
+                  * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Functions-using-CSI-_-ordered-by-the-final-character_s_
+                  *CSI Ps SP q
+                  *  Set cursor style (DECSCUSR), VT520.
+                  *  Ps = 0  -> blinking block.
+                  *  Ps = 1  -> blinking block (default).
+                  *  Ps = 2  -> steady block.
+                  *  Ps = 3  -> blinking underline.
+                  *  Ps = 4  -> steady underline.
+                  *  Ps = 5  -> blinking bar (xterm).
+                  *  Ps = 6  -> steady bar (xterm).
+                  * Not sure that we can't change the cursor shape, so invert the styleLine as well
+                  begin case
+                     case insertMode
+                        * Insert mode, so cursor is block
+                        crt CSI:\1\:space:\q\:
+                        styleLine = styleLineInsert
+                     case 1
+                        * Overwrite mode, so cursor is underline
+                        crt CSI:\3\:space:\q\:
+                        if termClass = \ACCUTERM\ then
+                        end else
+                           styleLine = styleLineOverwrite
+                        end
+                  end case
+               case keyName = \INVERTCASE\
+                  convert upperCase:lowerCase to lowerCase:upperCase in line
+                  gosub displayLine
+               case keyName = \LOWERCASE\
+                  convert upperCase to lowerCase in line
+                  gosub displayLine
+               case keyName = \UPPERCASE\
+                  convert lowerCase to upperCase in line
+                  gosub displayLine
+               case keyName = \\ and len(keyCode) ;* Text character, so insert at caret
+                  if insertMode else
+                     gosub deleteRight ;* if overwrite mode then delete the char to right first
+                  end
+                  if capsMode then
+                     convert lowerCase to upperCase in keyCode
+                  end
+                  * Now to insert char into line
+                  line = line[1, caret-1] : keyCode : line[caret, len(line)]
+                  caret += 1
+            end case
+            gosub caretBounds
+            gosub offsetBounds
+            * TODO - gosub historyLine bounds (similar to caretBounds)
+         until exitLine
+         repeat
+
+      until exitTCL
+         crt
+         begin case
+            case upcase(line) = \.L\
+               gosub listHistory
+            case @TRUE ;* Run the command
+               gosub runTheCommand
+         end case
+      repeat
+      crt
+      gosub shutdown
+      return
+
+
+runTheCommand:
+      * Execute whatever is held in the line variable
+      historyList<1> = line ;* Put it in the history
+      if historyList<1> # \\ then
+         historyList = \\ : @FM : historyList
+      end
+
+      crt styleCommand :
+      * Universe HELP command is buggy and needs a term width of 80.
+      if upcase(line[1,4]) = upcase('help') then
+         gosub enableLineWrap
+         execute \TERM 80,\:@crthigh
+         gosub enableLineWrap
+      end
+
+      firstWord = field(trimf(line), \ \, 1)
+      convert lowerCase to upperCase in firstWord
+      gosub writeCommandToHistory
+      if xlate('VOC', firstWord, 1, 'X') then ;* Check VOC entry exists before we attempt to run it
+         gosub enablePaging
+         @date = date(); @time = time() ;* Reset them in the same way that the default TCL does
+         gosub enableLineWrap
+         perform line
+         gosub enableLineWrap
+         if @system.return.code = -1 then
+            perform \CLEARSELECT\ ;* Cleanup the partially used select list if user did a Quit part way through
+            * FISH - Only cleanup if we've created the active list.
+            * More FISH - Don't cleanup select cursors.
+         end
+         gosub disablePaging
+      end
+
+      gosub writeFinishTimestamp
+      gosub getDatasetName
+      gosub getHistory ;* FISH - Reload history record here?
+      historyLine = 1
+      line = \\
+      caret = 0
+      offset = 0
+      return
+
+
+writeCommandToHistory:
+      * TODO - update the history rec in the VOC or elsewhere.  Use a combination of startTime and command gain uniqueness to the line
+      * TODO - write a system-wide log of all commands entered.
+      * TODO - Make this work under Windows
+      * Along with the date, time, command.
+      * DAte/time as a single datetime data type?
+      * UTC for date/time?  Nope, not really matter that much unless it's super simple.
+      * https://en.wikipedia.org/wiki/Universally_unique_identifier
+      * F1 is list of command executed. Newest first
+      * F2 is assosicated with F1, a list of START timestamps
+      * F3 is associated with F1, a list of END timestamps
+      * F4 is associated with F1, a list of the SELECT count after the command runs
+      * F5 is associated with F1, boolean flag for delete protect of history items
+      * F6 - F10 reserved associations with F1
+      * F11 - Boolean - recapture commands from other stacks after each command.  Make this a keyboard option
+      * F12 - VM delimited array of styles - TODO document which style is which number
+      * F13 - Boolean - Clear screen before each command (default=True)
+      * F14 - Integer - number of history lines to keep (default=1000)
+
+      *readin the whole file as a memory block/ dynamic array
+      *close file
+      *delete the whole file on disk - or rename it *.1
+      *update fields
+      *open anew the file
+      *write the whole thing back
+      *close the file
+      *no locking!  Race condition
+      * Solve by locking it in some way.  Don't init it unless we're sure were in a new scenario.
+
+      chunkSize = 1024 * 1024 ;* TODO - make this big enough to readin the whole file in one go without writing a loop, whilst not running out of memory
+      *Rules - check the file exists, and create it if not.
+      cmd = \\
+      storefileNameOld = '/universe/workaccts/' : @account : '/ash_tcl.dat'
+      gosub getTimeStamp
+
+      openseq storeFolderName : \/\ : storeFileName : \.\ : storeFileExt to f_storeFile  on error
+      stop "324 openseq error"
+      end then
+         *get the whole file in to storeFile
+         storeFilePointer = 0
+         dataRec = \\
+         chunkSize = 1024
+         EOF = @FALSE
+         timeout f_storeFile, 10 ;* 10 secs should be enough on even the slowest system
+         loop
+            readblk dataBlock from f_storeFile, chunkSize then
+               dataRec := dataBlock
+            end else
+               EOF = @TRUE ;*End of file
+            end
+         until EOF
+         repeat
+         closeseq f_storeFile
+      end else
+         * store file does not exist, so we'll build a skeleton in memory so it gets written out to heal this issue
+         crt "file is locked or non-existent"
+         crt 'error opening storeFilePath - creating new one'
+         *TODO - fill in the defaults and help text here
+         dataRec = ''
+         dataRec<20> = \F1 is list of command executed. Newest first\
+         dataRec<21> = \F2 is assosicated with F1, a list of START timestamps\
+         dataRec<22> = \F3 is associated with F1, a list of END timestamps\
+         dataRec<23> = \F4 is associated with F1, a list of the SELECT count after the command runs\
+         dataRec<24> = \F5 is associated with F1, boolean flag for delete protect of history items\
+         dataRec<25> = \F6 - F10 reserved associations with F1\
+         dataRec<26> = \F11 - Boolean - recapture commands from other stacks after each command\
+         dataRec<27> = \F12 - VM delimited array of styles - TODO document which style is which number\
+         dataRec<28> = \F13 - Boolean - Clear screen before each command (default=True)\
+         dataRec<29> = \F14 - Integer - number of history lines to keep (default=1000)\
+      end
+
+      *TODO - rewrite to use BASIC read/write instead of shelling the unix mv command.
+      *We have read in/created the dataRec, so time to move the old version of ash_tcl.dat to ash_tcl_date.bak (if it exists)
+      *cmd = \SH -c 'test -e \ : storeFolderName : \/\ : storeFileName : \.\ : storeFileExt : \'\
+      cmd = \SH -c 'test -e \ : storeFolderName : directorySeparator : storeFileName : \.\ : storeFileExt : \'\
+      execute cmd
+      if @system.return.code = 0 then ;* Yes, datafile currently exists, so create a backup
+         today = oconv(date(),'DYMD-')
+         * TODO - use internal BASIC functions instead of OS provided so that it works under Windows
+         *cmd = \SH -c 'mv \ : storeFolderName : \/\ : storeFileName : \.\ : storeFileExt : \ \ : storeFolderName : \/\ : storeFileName :\_\ : today : \.bak'\
+         cmd = \SH -c 'mv \ : storeFolderName : directorySeparator : storeFileName : \.\ : storeFileExt : \ \ : storeFolderName : directorySeparator : storeFileName :\_\ : today : \.bak'\
+         execute cmd
+      end
+
+      *Modify the dataRec
+      convert LF to @fm in dataRec ;* convert to dynamic array from LF delimited
+      dataRec<1> = line : @vm : dataRec<1> ;* Add the new command in start of line
+      gosub getTimeStamp
+      dataRec<2> = timeStamp : @vm : dataRec<2>
+      *Trim off excess from end - Currently only first 5 fields
+      dataRec<1> = field(dataRec<1>, @vm, 1, historySize)
+      dataRec<2> = field(dataRec<2>, @vm, 1, historySize)
+      dataRec<3> = field(dataRec<3>, @vm, 1, historySize)
+      dataRec<4> = field(dataRec<4>, @vm, 1, historySize)
+      dataRec<5> = field(dataRec<5>, @vm, 1, historySize)
+
+      *Help text in config record
+      dataRec<20> = \F1 is list of command executed. Newest first\
+      dataRec<21> = \F2 is assosicated with F1, a list of START timestamps\
+      dataRec<22> = \F3 is associated with F1, a list of END timestamps\
+      dataRec<23> = \F4 is associated with F1, a list of the SELECT count after the command runs\
+      dataRec<24> = \F5 is associated with F1, boolean flag for delete protect of history items\
+      dataRec<25> = \F6 - F10 reserved associations with F1\
+      dataRec<26> = \F11 - Boolean - recapture commands from other stacks after each command\
+      dataRec<27> = \F12 - VM delimited array of styles - TODO document which style is which number\
+      dataRec<28> = \F13 - Boolean - Clear screen before each command (default=True)\
+      dataRec<29> = \F14 - Integer - number of history lines to keep (default=1000)\
+
+      convert @fm to LF in dataRec; * Convert dataRec back to OS file
+
+      * Write dataRec back to a new file
+      openseq storeFolderName : \/\ : storeFileName : \.\ : storeFileExt to f_storeFile  on error
+      stop "324 openseq error"
+      end then
+         * As file should not exist at this point thus clause should never fire
+         crt \185 super eror!!\
+         closeseq f_storeFile
+      end else
+         *crt \writing dataRec\ : dataRec
+         writeblk dataRec on f_storeFile else null
+         closeseq f_storeFile
+      end
+
+      if @FALSE then ;* old code
+         wEOFseq f_storeFile on error
+         crt "wEOFseq error": status()
+      end
+      end
+
+      return
+
+
+getTimeStamp:
+      * sets timestamp variable to current time with as much precision as possible.  Format is Revelation? datetime format IE. number of days with a decimal portion to indicate the seconds.  EG. 18978.7500000001 is 2019-12-16 18:00:00.0001
+      * Might add the terminal number on the end as a way of increasing uniqueness, but at lower significance to the available time resolution.  Not sure it's needed.
+      * Warning - boundary condition just before midnight, as it does not round up and add 1 day.
+      precision 14
+      * TODO - switch to UTC from local time
+      * Can get this from the AIX command (date -u '+%Y-%m-%d %H:%M:%S'), then add on the milliseconds?  That's going to be rough.
+      begin case
+
+         case platformType = \UV\ and platformLevel > 11
+            * Local time millisecond resolution
+            * https://blog.rocketsoftware.com/multivalue/2019/11/new-datetime-variable-coming-soon-to-universe-11-3-2/
+            *FISH - swap over from system(12) to time() on UV as this gets tenths of milliseconds
+            *timeStamp = date() + (system(12)/(86400000))
+            *timeStamp = date() + (time()/(86400))
+            timeStamp = date() + (system(12)/(86400))
+         case 1
+            timeStamp = date() + (time()/(86400))
+            * Local time
+      end case
+      return
+
+
+writeFinishTimestamp:
+      * TODO Read in data rec, find the command, check it's timestamp and stamp it with the finish timestamp before writing back
+      gosub getTimeStamp
+      return
+
+
+showPortStatus:
+      * Displays the current status of all users
+      gosub disablePaging
+      execute \PORT.STATUS\
+      gosub enablePaging
+      return
+
+
+listHistory:
+      * Displays the command history
+      historyCount = dcount(historyList, @fm)
+      gosub disablePaging
+      for historyListItterator = historyCount to 2 step -1
+         crt historyListItterator : \ \ : historyList<historyListItterator>
+      next
+      return
+
+
+listCommandStats:
+      * In UV, the dict of this file is often /usr/opt/uv/D_UFD, so we can't add our own user EVAL fields
+      * FIXME - 1 - Universe 11.3.2 changed the VOC &UFD& pointer to /devdata., so can't use that for current directory
+      * Might be the site, not Rocket, but it would be better to not rely upon &UFD&
+      * Perhaps just write a . to F2 to fix it, or find some other better way to list this info
+      * F1 should be "File - Used by uniVerse to access the current directory."
+      * as the current system could have been set strangly by the sysadmin, it's better to do something that is robust...
+
+      cmd = \LIST &UFD& '\ : storeFileName : \.\ : storeFileExt : \' ID-SUPP F1 FMT 50L F2 FMT 20L \
+      execute cmd
+      return
+
+
+caretBounds:
+      * ensure caret is within bounds of the line length
+      begin case
+         case caret < 1
+            caret = 1
+         case caret > (len(line) + 1)
+            caret = len(line) + 1
+      end case
+      return
+
+
+offsetBounds:
+      * ensure offset is within allowed values.  IE, between 0 and (linelength-charsAvailable)
+      * TODO - check that caret has not moved outside of visible region.  If so then change offset
+
+      if offset < 0 then offset = 0
+
+      *check for caret being off to the left of visible section
+      loop
+      until offset < caret
+         offset -= 1
+      repeat
+
+      * check for caret being to right of visible section?
+      loop
+      until caret <= (offset + charsAvailable)
+         offset += 1
+      repeat
+
+      * check for caret being 5, where offset=5, so everything is hidden to the left
+      * Check for offset being un-nececessaraily  large.
+
+
+      return
+
+
+displayLine:
+      * Displays the current line being edited
+      crt CR : ;* go to start of line
+      gosub setTitle ; * Update status/title - Moved to first item so as to allow Accuterm to overwrite it.
+      crt CR:
+      crt ESC : \>\ : ;* 4.6.18 Keypad Mode (DECKPAM/DECKPNM) - switch to plain mode.  Nobody ever used the app mode apart from VMS's EDT or TPU.
+      crt styleDefault: ;* Switch to background
+      crt CSI : \K\:  ;* Clear EOL VT100
+      crt CR : ;* go to start yet again, just to be sure.  In theory we should still be at col1, but some term emulators are non-conformant
+      gosub disableLineWrap
+
+      prompt = \\
+      * Show the character for Caps mode. C=uppercase everything, blank for no caps changing
+      if capsMode then
+         prompt :=  \C\
+      end
+
+      * This section determines the  size/state of an active select.
+      * Every platform has it's own idosyncracies.
+      * we can use system(11) or @selected.  Both seem flawed...
+      * Perhaps use UV SELECTINFO(list, key) to see if we have an active list. - look in $INCLUDE UNIVERSE.INCLUDE INFO_KEYS.INS.IBAS
+      * EQUATE IK$SLACTIVE   TO 1
+      * EQUATE IK$SLCOUNT    TO 3
+      if system(11) then        ;* Either one
+         * if @selected > 0 then   ;* Either one
+         prompt := historyLine : \~\ : @selected : \:\
+      end else
+         prompt := historyLine : \:\
+      end
+      promptWidth = len(prompt) + 1  ;* Use this instead of calculating it with len as it might contain Styles and UTF-8.  add one for the {/space
+      charsAvailable = @crtwide - promptWidth -1 ;* One char to avoid the last cell on a line which might auto-wrap
+      charsAvailable = @crtwide - promptWidth ;* FISH - Testing to see if disableLineWrap line wrap works
+
+      crt stylePrompt : prompt : styleDefault : ;* Move styles to the prompt subroutine
+      if offset > 0 then
+         crt stylePrompt : \{\: styleDefault :
+      end else
+         crt stylePrompt : space : styleDefault :
+      end
+
+      crt styleLine :
+      if insertMode then
+         crt cursorInsert :
+      end else
+         crt cursorOverwrite : reverseVideo : ;* Swap FG/BG colours when in overwrite mode
+      end
+
+      crt line[offset+1, charsAvailable] :
+      if len(line)  > (charsAvailable + offset) then
+         crt stylePrompt : \}\ : styleDefault : ;* We need to show the trailing brace (}) character
+      end
+
+      crt normalVideo :
+      * cursor style setting repeated for Accuterm that seems to ignore it sometimes.  Might be an Accuterm render bug, as I sometimes get my startup screen in purple.
+      if insertMode then
+         crt cursorInsert :
+      end else
+         crt cursorOverwrite : normalVideo: ;* Swap FG/BG colours back to normal when in overwrite mode
+      end
+
+      crt styleDefault  : ;* display line
+      crt CR :
+      crt CSI : (promptWidth + caret - offset) : \G\: ;* Position cursor within line
+      return
+
+
+deleteRight:
+      * Delete's the single character to right of caret in current line, leaving caret where it is
+      * IE. delete character currently under cursor
+      line = line[1, caret-1] : line[caret+1, len(line)]
+      gosub caretBounds
+      gosub displayLine
+      return
+
+
+deleteLeft:
+      * Delete's the character to left of caret in current line
+      line = line[1, caret-2] : line[caret, len(line)]
+      caret -= 1
+      gosub caretBounds
+      gosub displayLine
+      return
+
+
+getKey:
+      * Get's a single key, and sets both the keyname and the character - ASCII byte or UTF-8 codepoint or Escape sequence
+      * If it's a function key/cursor key, then returns a NAME for it such as PAGEDOWN, UP, SHIFT-F4, ENTER etc.
+
+      * Get a single character.  If that happens to be ESC then continue looking for a any valid escape sequence.
+
+      * Rules based aproach to sequence matching.  If first char is an ESC, then look for a [ or an O
+      * keep reading until get a non-numeric char, or terminate if up to 6 (maxSequenceLength) characters.
+      * Then match the sequence in the button array for position.
+
+      * Fist match CURRENT incoming string to see if it's a complete match.  If so then done.
+      * Otherwise check for left string match (partial match), and if so then get next character.  How do we know if it's a left string match?
+      * If we ever get a no match (IE, string too long), then look in other button strings for a match, and switch term type if a FULL (NOT PARTIAL) match is found
+
+      keyName = \\
+      keyCode = \\ ;* String of input characters got from keyin()
+      seqComplete = @FALSE ;* Set true when the sequence is complete (or we're giving up)
+      loop
+         *FISH - TODO - capture ALT-punctuation mark as well as letter!
+         * Readin a byte and add it to keyCode
+         loop
+            byteIn = keyin() ;* Keyin is blocking, and low-loading of system.  Swap to something else if it causes high CPU usage.
+            begin case
+               case len(byteIn) = 0
+                  byteIn = char(13) ;* CR is signaled by a null string
+               case (seq(byteIn) > 127) and (encoding = "ASCII")
+                  byteIn = \\ ;* Discard anything NOT 7bit ASCII unless we are in utf-8 mode.
+            end case
+         until len(byteIn)
+         repeat
+         * if len(byteIn) = 0 then byteIn = char(13) ;* CR is signaled by a null string
+         keyCode := byteIn
+         * Determine if we're at the end...
+         *crt \current keyCode=\:OCONV(keyCode,"MX0C")
+         begin case
+            case keyCode = ESC:ESC:ESC
+               *Special three Escapes to avoid keyboard polling/timeout malarky
+               seqComplete = @TRUE
+            case keyCode[1,1] # ESC   ;* NOT an escape sequence - so MUST be just a single char.  Bail out.
+               seqComplete = @TRUE
+               * crt \single char - NOT Escape sequence\
+            case keyCode = ESC        ;* carry on reading as this is looking like an ESC sequence
+            case keyCode = ESC:\[\    ;* carry on reading as we've got a CSI
+            case len(keyCode) > maxSequenceLength
+               * Overlong string - Something has gone wrong
+               crt \Error - Report this to Ash.chapman@gmail.com\
+               crt \Overlong Escape sequence - keyCode=\:OCONV(keyCode,"MX0C")
+               input junk
+               seqComplete = @TRUE
+            case keyCode = ESC:\O\
+               * beginning of the SCO ctrl-left/right/up/down or VT keypad mode, so we need to carry on
+            case num(keyCode[len(keyCode),1])
+               * last char is a number, so carry on reading DEC (or kitty) sequence
+            case keyCode[1,2] = CSI and keyCode[len(keyCode),1] = \~\ ; * last char is a tilde, so we're at the end of the DEC string
+               seqComplete = @TRUE
+            case keyCode[len(keyCode),1] = \;\  ;* better pattern as it's only checking one char
+               * current last char is a semicolon, so carry on reading a long Kitty sequence
+            case (keyCode[1,5] = CSI:\1;5\ ) and (alpha(keyCode[6,1]))
+               * 6 byte kitty sequence for CRTL-arrow
+               seqComplete = @TRUE
+            case keyCode = ESC:CSI:\H\   ;* putty ALT-HOME
+               seqComplete = @TRUE
+            case keyCode = ESC:CSI:\L\   ;* putty ALT-INSERT
+               seqComplete = @TRUE
+            case keyCode = ESC:char(127) ;* putty ALT-DELETE
+               seqComplete = @TRUE
+            case keyCode = ESC:CSI:\F\   ;* putty ALT-END
+               seqComplete = @TRUE
+            case keyCode = ESC:CSI:\I\   ;* putty ALT-PAGEUP
+               seqComplete = @TRUE
+            case keyCode = ESC:CSI:\G\   ;* putty ALT-PAGEDOWN
+               seqComplete = @TRUE
+
+               *case keyCode = ESC:CSI:\2~\; *putty ALT-INSERT (vt MODE?)
+               *ESC:CSI:\H\
+            case keyCode[1,3] = ESC:CSI and keyCode[5,1] = \~\; *putty ALT-INSERT, HOME, DEL, etc...
+               seqComplete = @TRUE
+            case len(keyCode) = 3
+               * Last byte is not a number and length=3. Looks like we've hit the end.
+               seqComplete = @TRUE
+               *crt \SCO/3char Sequence complete\
+               *case keyCode[1,1] = ESC and ( (seq(keycode[2,1])>31 and seq(keycode[2,1])<127) )
+               *Putty Alt-letter combinations. TODO - puntuation as well - chars 32 to 126 .  Putty sends ALT-char as ESC-char.
+               *Disabled as it conflicts with other keys (VT and SCO)
+               *seqComplete = @TRUE
+         end case
+      until seqComplete
+      repeat
+      *crt \len of keyCode=\:len(keyCode):\  keyCode=\:OCONV(keyCode,"MX0C") : \ ESC sequence=\:keyCode[2,99]:  ;* Keep this debugging line
+
+      * Now to look up it's name
+      keyName = \\
+      locate keyCode in buttons<2,1> setting pos then
+         keyName = buttons<1,pos>
+      end else
+         * Just a printing character, unless the keyCode is more than one byte (or unicode)
+         *crt \ Undefined Escape sequence =\ : keyCode[2,99] : space : OCONV(keyCode,"MX0C")
+      end
+
+      gosub keyboardDetect
+      gosub keyBindings
+      return
+
+
+keyboardDetect:
+      * If it's possible, look for a keyboard change.
+      begin case
+         case keyName and keyCode[len(keyCode),1] = \~\
+            newKeyboard = \DEC\
+         case keyName[1,1] = \F\ or keyName[1,6] = \CTRL-F\ or keyName[1,12] = \CTRL-SHIFT-F\ or keyName[1,7] = \SHIFT-F\ or index(\$HOME,$INSERT,$END,$PAGEUP,$PAGEDOWN\, \$\:keyName,1)
+            begin case
+               case keyCode[1,2] = ESC:\O\
+                  newKeyboard = \VT100\
+               case len(keyCode) = 3
+                  newKeyboard = \SCO\
+            end case
+      end case
+      if keyboard = newKeyboard else
+         *crt \switching from \:keyboard: \ to \:newKeyboard:\ keyboard mode\ ;* Leave this debug line
+         keyboard = newKeyboard
+      end
+      return
+
+
+keyBindings:
+      * Stub which will be extended when I implement more per-user keybindings
+      * Converts the physical keyname to a meaningful name
+      begin case
+         case keyName = \CTRL-B\ ; keyName = \SHOWTABLELIST\
+         case keyName = \CTRL-G\ ; keyName = \EXIT\
+         case keyName = \CTRL-P\ ; keyName = \TERMINALCLASSPLATFORM\     ;* Toggle between PLATFORM and auto-detect
+         case keyName = \F1\ ; keyName = \HELP\
+         case keyName = \F2\ ; keyName = \CAPSMODE\
+         case keyName = \F3\ ; keyName = \CLEARSELECT\
+         case keyName = \F4\ ; keyName = \LISTCOMMANDSTATS\
+         case keyName = \F5\ ; keyName = \SHOWTABLELIST\
+         case keyName = \F6\ ; keyName = \LISTHISTORY\
+         case keyName = \F7\ ; keyName = \INVERTCASE\
+         case keyName = \F8\ ; keyName = \SHOWATVARS\
+         case keyName = \F9\ ; keyName = \SHOWLOG\
+         case keyName = \F10\ ; keyName = \EXIT\
+         case keyName = \F11\ ; keyName = \STATUS\
+         case keyName = \SHIFT-F1\ ; keyName = \SHOWTHEME\
+         case keyName = \SHIFT-F6\ ; keyName = \PORTSTATUS\
+         case keyName = \SHIFT-F7\ ; keyName = \UPPERCASE\
+         case keyName = \CTRL-F7\ ; keyName = \LOWERCASE\ ;* same as UPPERCASE followed by INVERTCASE
+         case keyName = \CTRL-Y\ keyName = \BUTTONDECODE\
+      end case
+
+      * keyMaps - Assoc array of keyName to keyCommand and keyDescription.
+      * F1 keyNames - F1, F6 etc
+      * F2 keyCommands - HELP, LISTHISTORY
+      * F3 keyDescription - "General Help on ASH_TCL", "Listing of commands executed"
+      keyMaps = \\
+      keyMaps<1,-1> = \F1\ ; keyMaps<2,-1> = \HELP\ ; keyMaps<3,-1> = "General Help on ASH_TCL"
+      keyMaps<1,-1> = \F6\ ; keyMaps<2,-1> = \LISTHISTORY\ ; keyMaps<3,-1> = "Listing of commands executed"
+
+      * FISH
+      * Keybindings array.  F1 - array of button names; F2 - array of keynames;
+      * Keydescriptions array.  F1 - array of keynames (not button names); F2 - array of key descriptions for the help text
+      * Have a seperate array to map the keyName to the keyDescription.
+      return
+
+
+showAtVars:
+      crt \@abort.code=\: @abort.code
+      crt \@account=\: @account
+      crt \@am=char(254)\
+      crt \@ans=\:@ans
+      *crt \@authorization=\:@authorization
+      crt \@command=\:@command
+      crt \@command.stack=\:@command.stack
+      crt \@conv=\:@conv
+      crt \@crthigh=\:@crthigh
+      crt \@crtwide=\:@crtwide
+      crt \@data.pending=\:@data.pending
+      crt \@date=\:@date
+      crt \@day=\:@day
+      *crt \@dict=\:@dict
+      crt \@false=\:@false
+      crt \@filename=\:@filename
+      crt \@fm=char(254)\
+      *crt \@format=\:@format
+      crt \@hdbc="Improper data type to display"\  ;* Produces an Improper data type error
+      *crt \@header=\:@header
+      *crt \@henv=\:@henv
+      *crt \@hstmt=\:@hstmt
+      crt \@id=\:@id
+      crt \@im=char(255)\
+      *crt \@isolation=\:@isolation
+      crt \@level=\:@level
+      crt \@logname=\:@logname
+      crt \@lptrhigh=\:@lptrhigh
+      crt \@lptrwide=\:@lptrwide
+      crt \@month=\:@month
+      *crt \@mv=\:@mv
+      crt \@nb=\:@nb
+      crt \@nd=\:@nd
+      crt \@ni=\:@ni
+      crt \@null=\:@null
+      crt \@null.str=char(128)\
+      crt \@nv=\:@nv
+      crt \@option=\:@option
+      crt \@parasentence=\:@parasentence
+      crt \@path=\:@path
+      *crt \@reccount=\:@reccount
+      *crt \@record=\:@record
+      *crt \@recur0=\:@recur0
+      *crt \@recur1=\:@recur1
+      *crt \@recur2=\:@recur2
+      *crt \@recur3=\:@recur3
+      *crt \@recur4=\:@recur4
+      *crt \@schema=\:@schema
+      *crt \@selected=\:@selected
+      *crt \@sentence=\:@sentence
+      *crt \@sm=char(252)\
+      *crt \@sql.code=\:@sql.code
+      *crt \@sql.date=\:@sql.date
+      *crt \@sql.error=\:@sql.error
+      *crt \@sql.state=\:@sql.state
+      *crt \@sql.time\:@sql.time
+      *crt \@sql.warning=\:@sql.warning
+      *crt \@sqlproc.name=\:@sqlproc.name
+      *crt \@sqlproc.tx.level=\:@sqlproc.tx.level
+      crt \@stdfil=\:@stdfil
+      crt \@svm=char(252)\
+      crt \@sys.bell=char(7)\
+      crt \@system.return.code=\:@system.return.code
+      crt \@system.set=\:@system.set
+      crt \@term.type=\:@term.type
+      crt \@time=\:@time
+      crt \@tm=char(251)\
+      *crt \@transaction=\:@transaction
+      crt \@transaction.id=\:@transaction.id
+      crt \@transaction.level=\:@transaction.level
+      crt \@true=\:@TRUE
+      crt \@tty=\:@tty
+      *crt \@tz=\:@tz        ;* New in UV 11.03.02
+      crt \@user0=\:@user0
+      crt \@user1=\:@user1
+      crt \@user2=\:@user2
+      crt \@user3=\:@user3
+      crt \@user4=\:@user4
+      crt \@userno=\:@userno
+      crt \@user.return.code=\:@user.return.code
+      crt \@vm=char(253)\
+      crt \@who=\:@who
+      crt \@year=\:@year
+      crt \@year4=\:@year4
+      crt
+
+      gosub showSystem
+      return
+
+
+showSystem:
+      * show system()
+      * TODO - document/display use of these calls, along with the ASSIGN.
+      * TODO separate the description array from the presentation.
+      * http://www.rsusers.com/cms/pages/wiki.wsp?page=112
+      * https://docs.rocketsoftware.com/nxt/gateway.dll/RKBnew20/universe/v12.1.1/universe_basic_commands_ref_guide_v1211.pdf - Page 402
+      crt \System() calls are semi-documented at http://www.rsusers.com/cms/pages/wiki.wsp?page=112\
+      crt \Beware that they can change without warning.  Use @vars or subroutine calls wherever possible instead of these\
+      for f=1 to 15000
+         crt styleDefault:
+         begin case
+            case f = 1016 ;* Don't call this one for some reason.  Can't recall why
+            case f = 1
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True if PRINTER ON has been executed\
+            case f = 2
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Same as @CRTWIDE\
+            case f = 3
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Same as @CRTHIGH\ : styleDefault
+            case f = 4
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Number of lines remaining on the current page\ : styleDefault
+            case f = 5
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Current page number\ : styleDefault
+            case f = 6
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Current line number\ : styleDefault
+            case f = 7
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Terminal Type that the system has been told you are using\ : styleDefault
+            case f = 8
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Tape block size.  -1 if no tape unit attached\ : styleDefault
+            case f = 9
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \CPU millisecond count\ : styleDefault
+            case f = 10
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - SATA stack is active\ : styleDefault
+
+            case f = 11
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True if select list 0 is active\ : styleDefault
+            case f = 12
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \number of seconds since midnight.  If $OPTIONS TIME.MILLISECOND in the code, then it's milliseconds\ : styleDefault
+            case f = 18
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Same as @USERNO\ : styleDefault
+            case f = 19
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Same as @LOGNAME\ : styleDefault
+            case f = 23
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True if Break key is enabled\ : styleDefault
+            case f = 24
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True if character encoding enabled\ : styleDefault
+            case f = 25
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True if running as a phantom\ : styleDefault
+            case f = 26
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Prompt character\ : styleDefault
+            case f = 27
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Unix user ID\ : styleDefault
+            case f = 28
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Windows effective user ID\ : styleDefault
+            case f = 29
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Unix group ID\ : styleDefault
+            case f = 30
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Windows effective group ID\ : styleDefault
+            case f = 31
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Universe serial number\ : styleDefault
+            case f = 32
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \UV account directory\ : styleDefault
+            case f = 35
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \the number of users currently in UniVerse\ : styleDefault
+            case f = 38
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \the pathname of the temporary directory\ : styleDefault
+            case f = 50
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \the field number of the last READNEXT statement when reading an exploded select list\ : styleDefault
+            case f = 62
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - MODFPTRS value in uvconfig. True if file pointers in the VOC file can be modified by the COPY, DELETE, and EDIT commands\ : styleDefault
+            case f = 63
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \BLKMAX value in uvconfig. The maximum block size for UVBACKUP and UVRESTORE. It must be greater than, and a multiple of, 512\ : styleDefault
+            case f = 64
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Maximum Key Length - same as uvconfig tunable MAXKEYSIZE\ : styleDefault
+            case f = 91
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True if running on Windows\ : styleDefault
+            case f = 99 ;* seconds.since.gmt.1970-01-01 UTC/GMT
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \number of seconds since 1970-01-01T00:00:00Z (pick day 0 is 1967-12-31; 732 days different) See https://stackoverflow.com/questions/30737173/is-there-a-native-way-to-convert-to-utc-time-in-universe-11-2-4\ : styleDefault
+               *https://stackoverflow.com/questions/30737173/is-there-a-native-way-to-convert-to-utc-time-in-universe-11-2-4
+               *crt \system(\:f:\)=\: system(f) : \    number of seconds since 1970-01-01T00:00:00Z (pick day 0 is 1967-12-31; 732 days different)\
+            case f = 105
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \report status of NLS from the uvconfig file\ : styleDefault
+            case f = 999
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True will disable "Q" at "Press..." prompt\ : styleDefault
+            case f = 1001
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Returns the UniVerse flavor: 1 for IDEAL, 2 for PICK, 4 for INFORMATION, 8 for REALITY, 16 for IN2, and 64 for PIOPEN\ : styleDefault
+            case f = 1012
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \page header (set with HEADING)\ : styleDefault
+            case f = 1017
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Unix Group Identifier - same as system(29)\ : styleDefault
+            case f = 1020
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \SYSTEM(1020,var) REUSE(var) is in effect\ : styleDefault
+            case f = 1021
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \GCI error number\ : styleDefault
+            case f = 1030
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \command line arguments parsed into dynamic array retaining quoted literals intact.\ : styleDefault
+            case f = 1050
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Internal keyboard trap table contents (Basic command ref 12.1.1 page 233)\ : styleDefault
+            case f = 1210
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \SYSTEM(1210,column) convert from IEEE floating point representation\ : styleDefault
+            case f = 1301
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Current User Id\ : styleDefault
+            case f = 1512
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \(Windows only) IPv6 address\ : styleDefault
+            case f = 1999
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \ From BASIC you can ASSIGN a value to SYSTEM(1999) denoting the number of seconds to wait on a READU eg. "ASSIGN 7200 TO SYSTEM(1999)"\ : styleDefault
+            case f = 4000
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \xxxx\ : styleDefault
+            case f = 4001
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \ASSIGN 1 TO SYSTEM(4001) will activate an alternative prompt set when assigning the values to system(4002).  Possibly? http://u2-universe-unidata.1073795.n5.nabble.com/Changing-TCL-prompt-td13454.html\ : styleDefault
+
+
+            case f = 4002
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \(HP only?) TCL prompt characters, V1:main prompt; V2:select active prompt; V3:continuation prompt\ : styleDefault
+            case f = 9000
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \R+R timestamp set up features\ : styleDefault
+            case f = 9001
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Dynamic Array - call stack.  One field consisting of three multivalues is returned for each call level. The values include the call level, basic object code location, and hex address offset of the object code\ : styleDefault
+            case f = 9006
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True will direct UniVerse to ignore a login paragraph if one exists\ : styleDefault
+            case f = 9012
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \Boolean - True if the client access is from InterCall, UniObjects, or other client tools\ : styleDefault
+            case f = 9013
+               crt \system(\ : f : ')=' : system(f) : space(10) : stylePrompt : \hostname - Universe 11.3.2 upwards\ : styleDefault
+            case system(f) = ""
+            case system(f) = 0
+            case @TRUE
+               crt \system(\:f:\)=\: system(f)
+         end case
+         CRT styleDefault:
+      next
+      *crt styleBox : \Box (\ : styleBox[3,len(styleBox)-3] : \)  \ : styleDefault :\ \ :
+      *crt stylePrompt : \Prompt (\ : stylePrompt[3,99] : \)  \ : styleDefault :\ \ :
+      return
+
+
+
+writeAudit:
+      *TODO fix this for MUV
+      * write AuditLine to AuditFile as a tab-delimited file
+      auditLine = \\
+      return
+
+
+
+zzzmisc:
+      * Define mouse constants.  There are a couple sets; the XTerm set
+      * (also used by Putty & CRT) and the AccuTerm set.  This program
+      * aims to respond to either set.
+
+      *EQU XTERM.MOUSE.EVENT       TO ESC:"[M"
+      *EQU XTERM.LEFT.BTN.PRESS    TO CHAR(32)
+      *EQU XTERM.MIDDLE.BTN.PRESS  TO CHAR(33)
+      *EQU XTERM.RIGHT.BTN.PRESS   TO CHAR(34)
+
+      *EQU ACCUTERM.MOUSE.CLICK    TO ESC:"[10"
+      *EQU ACCUTERM.MOUSE.DOUBLE   TO ESC:"[11"
+      *EQU ACCUTERM.LEFT.BTN       TO "1~":ESC:"["
+      *EQU ACCUTERM.MIDDLE.BTN     TO "3~":ESC:"["
+      *EQU ACCUTERM.RIGHT.BTN      TO "2~":ESC:"["
+
+      * First part for XTerm, second for AccuTerm
+
+      *EQU MOUSE.ACTIVATION.SEQ    TO ESC:"[?1000h":ESC:CHAR(2):"1":CHAR(8)
+      *EQU MOUSE.DEACTIVATION.SEQ  TO ESC:"[?1000l":ESC:CHAR(2):"0":CHAR(8)
+
+      *crt oconv(responseString, "MX0C")                       ;* Debug
+      return
+
+
+      end ;* Final end. Supresses warning message

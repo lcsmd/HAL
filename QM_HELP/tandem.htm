@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>TANDEM</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="TANDEM" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "tandem.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">TANDEM</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="t_xxx.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="term.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">TANDEM </span>command allows an administrative user to monitor or control another QM session.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">TANDEM</span>  <span style="font-style: italic;">userno</span></p>
+<p>where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">userno</span></td><td style="border:none;padding:0">is the QM user number of the interactive session to be monitored.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">TANDEM </span>command is primarily intended to allow users with administrator rights to monitor a QM session where the user needs assistance. All terminal output sent to the monitored user's screen is also sent to the monitoring user's screen. The session to be monitored must be an interactive (console or direct network connection) process. <span style="font-weight: bold;">TANDEM</span> cannot be used to monitor a phantom or QMClient process as these have no terminal.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Because use of <span style="font-weight: bold;">TANDEM</span> potentially weakens system security, it must be enabled using the <a href="configparams.htm#feature" class="topiclink">FEATURE</a> configuration parameter. The VOC entry for <span style="font-weight: bold;">TANDEM</span> is initially only present in the QMSYS VOC but it may be copied elsewhere.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Execution of the <span style="font-weight: bold;">TANDEM</span> command sends a request to the process to be monitored, asking if it is willing to accept the connection. A prompt box is displayed on the user's screen, showing the user number and user name of the session attempting to make a connection. The user must respond Y or N within 30 seconds. Either response clears the prompt box from the screen, restoring the overwritten text if the terminal type in use supports screen save/restore. Use of the SILENT.TANDEM mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command suppresses this confirmation prompt.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the connection is accepted, the monitoring session enters &quot;view mode&quot; where all output sent to the monitored user's screen is duplicated on the monitoring user's screen. For this to work correctly, both sessions must be using the same terminal type and settings.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The monitoring user can switch to &quot;feed mode&quot; by entering Esc-Esc-F. When in this mode, all keyboard input typed in the monitoring session is passed to the monitored session and handled as though that user had typed it. This mode allows the monitoring user, for example, to demonstrate correct use of the application. Function keys that send multi-byte escape sequences should work correctly when in feed mode. If a lone escape is needed, this can be sent with Esc-Esc-E. The link can be returned to view mode by entering Esc-Esc-V.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When in either mode, the tandem connection can be terminated by entering Esc-Esc-X.</p>
+
+</td></tr></table>
+
+</body>
+</html>

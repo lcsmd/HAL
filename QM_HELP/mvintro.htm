@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>&nbsp;What is a Multivalue Database?</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Mutli-valued database" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "mvintro.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">What is a Multivalue Database?</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="intro.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="installation.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are many different databases available but they all fall into a small number of basic types. One of these is the <span style="font-weight: bold;">relational database</span> such as Oracle or Access. A relational database holds data in the form of <span style="font-weight: bold;">tables</span> in just the same way that we could store information as tables written on paper.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Consider an order processing system. We need to hold information about the orders that each customer has placed. Keeping things very simple, at a minimum we might need a table such as that shown below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">Order no</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">Date</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">Customer</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">Product</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">Quantity</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1001</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1728</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">107</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">4</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1002</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">3194</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1003</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">7532</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">220</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1004</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1263</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">2</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In this simple table, each row represents an order and each column holds data associated with that order.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Relational databases are built following a set of rules known as the <span style="font-weight: bold;">Laws of Normalisation</span> [E. Codd : &quot;<span style="font-style: italic;">A Relational Model of Data for Large Shared Data Banks</span>&quot;, Communications of the ACM, June 1970]. The process of transforming data to fit the rules of a relational database is called <span style="font-weight: bold;">normalisation</span> and the steps in this process are referred to as first normal form, second normal form, and so on.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The First Law of Normalisation states that we may not have repeating data. In practical terms this means that we cannot add extra columns to the right of the table to allow a customer to order more than one item at the same time.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Order no</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Date</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Customer</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Product</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Quantity</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Product</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Quantity</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1001</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1728</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">107</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">4</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1002</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3194</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">2</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">452</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1003</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">7532</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">220</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1004</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1263</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">2</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:97px; padding:4px; border:solid thin #000000;"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Clearly this restriction is not acceptable in the real world.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are many reasons why the Laws of Normalisation do not allow this, mostly based on the way in which the data might be stored by the computer system. If we are to observe the First Law of Normalisation, we must reconstruct our data in some way that removes the additional columns. One way would be to split an order that has multiple item across several rows of our table.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Order no</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Date</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Customer</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Product</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Quantity</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Lines</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1001-1</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1728</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">107</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">4</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1002-1</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3194</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">2</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1002-2</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3194</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">452</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1003-1</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">7532</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">220</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1004-1</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1263</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">2</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although we can now store as many items in an order as we wish, things have become more complicated. Firstly, the details of a single order are now split across multiple rows of our table. Secondly, we have been forced to add an extra column so that we can know how many lines there are in the order. Also, we have duplicated some information, a step which actually breaks another of the Laws of Normalisation. To avoid this last complication, a typical implementation of this sort of data in a fully normalised system (e.g. Oracle or Access) would break the order into two separate tables, one containing the basic information about the order and the other containing the details of the items ordered.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:515px; padding:3px; border:none"><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:86px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Order no</span></p>
+</td>
+<td style="vertical-align:top; width:92px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Date</span></p>
+</td>
+<td style="vertical-align:top; width:88px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Customer</span></p>
+</td>
+<td style="vertical-align:top; width:63px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Lines</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:86px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1001</span></p>
+</td>
+<td style="vertical-align:top; width:92px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:88px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1728</span></p>
+</td>
+<td style="vertical-align:top; width:63px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:86px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1002</span></p>
+</td>
+<td style="vertical-align:top; width:92px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:88px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3194</span></p>
+</td>
+<td style="vertical-align:top; width:63px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:86px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1003</span></p>
+</td>
+<td style="vertical-align:top; width:92px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:88px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">7532</span></p>
+</td>
+<td style="vertical-align:top; width:63px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:86px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1004</span></p>
+</td>
+<td style="vertical-align:top; width:92px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:88px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1263</span></p>
+</td>
+<td style="vertical-align:top; width:63px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td style="vertical-align:top; width:330px; padding:3px; border:none"><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Detail Ref</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Product</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Quantity</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1001-1</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">107</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">4</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1002-1</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1002-2</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">452</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1003-1</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">220</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1004-1</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">2</span></p>
+</td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Things are becoming complex and this is supposed to be a trivial application!</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Multivalue database products avoid this complication by removing the need to adhere to the First Law of Normalisation. We allow a single cell of our table to hold more than one value (hence &quot;multivalue&quot;).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Order no</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Date</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Customer</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Product</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Quantity</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1001</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1728</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">107</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">4</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1002</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3194</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">318</span></p>
+<p style="page-break-after: avoid;"><span style="color: #0000ff;">452</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">2</span></p>
+<p style="page-break-after: avoid;"><span style="color: #0000ff;">3</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1003</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">7532</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">220</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1004</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">13 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">1263</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">318</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p><span style="color: #0000ff;">2</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If you have spent many years working with fully normalised databases, you are probably shaking your head and saying that we cannot do this. Yes, we can do it; it's just a different way to hold our data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Think about the advantages: The entire order is all held as a single record; there is no redundant duplication of data; we do not need an item counter.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The end result of this is that our multivalue view of the world is typically much faster than its fully normalised counterpart though there will always be situations where this model is not ideal. In such cases, you can freely revert to using the fully normalised approach. Notice that fully normalised data can be stored in a multivalue database. The opposite tends not to be true.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The time has come to introduce some terminology. A typical application will have many tables, perhaps hundreds or even thousands though the multivalue model usually results in far fewer tables than in other data models. Each table is stored as a <span style="font-weight: bold;">file</span>. The rows of our table are known as <span style="font-weight: bold;">records</span> and the columns as <span style="font-weight: bold;">fields</span> (some users refer to these as <span style="font-weight: bold;">attributes</span>). The data stored in a field may be made up of multiple <span style="font-weight: bold;">values</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note how in our multivalued implementation of the above example, the values in the product and quantity columns are related together. For any particular order, the first product number belongs with the first quantity, the second product number belongs with the second quantity and so on. A typical realistic table may have several separate sets of fields that are linked in this way. The relationship between the values in different fields (e.g. product and quantity above) is referred to as an <span style="font-weight: bold;">association</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By adopting this data model instead of using additional columns, the data model imposes no limit to the number of items that may be included in an order.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This extended form of the relational database model is at the heart of the QM database. You may also see it referenced as post-relational, nested table or NF2 (non-first normal form). They all mean the same thing.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In a multivalue database, the tables can gain a fourth dimension (<span style="font-weight: bold;">subvalues</span>). Continuing with the above example, perhaps we need to record the serial number of each item that we sell. Thus each value line in the table depicted above would have subvalues containing the serial numbers for each item supplied. Order 1002 might become</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Order no</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Date</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Customer</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Product</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Quantity</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">Serial</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:106px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">1002</span></p>
+</td>
+<td style="vertical-align:top; width:104px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">12 Jan 05</span></p>
+</td>
+<td style="vertical-align:top; width:142px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">3194</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">318</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="color: #0000ff;">452</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">2</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="color: #0000ff;">3</span></p>
+</td>
+<td style="vertical-align:top; width:74px; padding:4px; border:solid thin #000000;"><p style="page-break-after: avoid;"><span style="color: #0000ff;">21222</span></p>
+<p style="page-break-after: avoid;"><span style="color: #0000ff;">21223</span></p>
+<p style="page-break-after: avoid;"><span style="color: #0000ff;">41272</span></p>
+<p style="page-break-after: avoid;"><span style="color: #0000ff;">41723</span></p>
+<p style="page-break-after: avoid;"><span style="color: #0000ff;">41728</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The model described above leads to a very flexible design in which a database record may have any number of fields (table columns). The entire record and the constituent fields are of variable length, there being no restriction applied by<span style="font-weight: bold;"> </span>QM. A record may exist in the database with no data or with many megabytes of data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Every record in a data file has to have a unique <span style="font-weight: bold;">record id</span> or <span style="font-weight: bold;">primary key</span> that identifies that record as distinct from all other records in the same table and can be used to retrieve the record. In the above example, the order number would serve this purpose. Although it may be useful to show the record id as a column in the tabular representation of the data, the record id is not part of the actual database record but is instead a handle by which it is accessed. Thus the record above has id 1002 and contains five fields representing the date, customer number, product numbers, quantities and serial numbers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Internally, a record is stored as a simple character representation of the data. Because the fields are of variable length, it is necessary to mark where one field ends and the next begins. This is done by placing a special marker character called a <span style="font-weight: bold;">field mark</span> between the fields. A field may be divided into values by use of <span style="font-weight: bold;">value mark</span> characters and values may be further divided by use of <span style="font-weight: bold;">subvalue mark</span> characters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Record 1002 depicted above would be stored as</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;">13527<span style="font-size: 6pt;">FM</span>3194<span style="font-size: 6pt;">FM</span>318<span style="font-size: 6pt;">VM</span>452<span style="font-size: 6pt;">FM</span>2<span style="font-size: 6pt;">VM</span>3<span style="font-size: 6pt;">FM</span>21222<span style="font-size: 6pt;">SM</span>21223<span style="font-size: 6pt;">VM</span>41272<span style="font-size: 6pt;">SM</span>41723<span style="font-size: 6pt;">SM</span>41728</p>
+<p>where the FM, VM and SM items represent the mark characters.The way to read a record structure such as that shown above is to dismantle it layer by layer. First find the field marks to separate out each field, then look for the values within the fields, and finally the subvalues within the values</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The data model defines two additional mark characters. The <span style="font-weight: bold;">text mark</span> is typically used to mark points in text data where newlines should be inserted. This mark character is often inserted by programs manipulating data in memory rather than being stored in the database. The <span style="font-weight: bold;">item mark</span> is defined mainly for compatibility with other database systems. Its only reserved use within QM is to separate items in the <a href="data.htm" class="topiclink">DATA</a> queue.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When the multivalue data model was originally invented, the upper half of the ASCII character set was not defined and the last five of the unused character values were adopted for the internal representation of the mark characters:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Item mark</td><td style="border:none;padding:0">char(255)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Field mark</td><td style="border:none;padding:0">char(254)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Value mark</td><td style="border:none;padding:0">char(253)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Subvalue mark</td><td style="border:none;padding:0">char(252)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">Text mark</td><td style="border:none;padding:0">char(251)</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The memory representation of a record containing mark characters for use in QMBasic programs is known as a <span style="font-weight: bold;">dynamic array</span> and there are many specialised program operations for working on this data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Fields, values within a field and subvalues within a value are numbered from one upwards. By convention the record key is sometimes referred to as field zero though it is not strictly part of the dynamic array and references to field zero are only recognised by QM in certain contexts.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">The History of Multivalue Databases</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The original multivalue database is usually attributed to Dick Pick (hence the frequently used term &quot;Pick databases&quot;) back in 1968 though their origins can be tracked back further. The current D3 database from Rocket Software is a direct descendant of the original Pick product but there have been many other players along the way, some large, some small. Some of these are significant to the way in which QM works.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The Reality database, previously implemented on McDonnell Douglas systems but now owned by Northgate Information Solutions, closely follows the Pick style of operation. The long defunct Prime Information database from Prime Computer retained the same data model and general principles but made some fairly significant changes to the command and programming languages.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the mid-1980's the various companies with multivalue products hit a problem. The world was standardising on the Unix operating system but these products did not run on Unix. As a result of this, McDonnell Douglas developed an &quot;open systems&quot; version of Reality (Reality X) and Prime Computer developed the PI/open database. At the same time, two start up companies appeared each with their own Unix based multivalue implementation, VMark (UniVerse) and Unidata (Unidata). These companies set out to capture users from the existing products as well as taking on new users. The history is long and complex but to bring it up to date in one step, D3, mvBase, UniVerse and Unidata are now all owned by Rocket Software.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The UniVerse and Unidata products (usually referred to collectively as U2) follow the Information style of implementation by default but have features that allow them to look more like the Pick style if required.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM was originally developed in 1993 by Ladybridge Systems for use as an embedded database and was released as a product in its own right in 2001. Like the U2 products, it is an Information style database but has options to make it more like Pick for those who need it. Ownership of QM was acquired by Zumasys in January 2019 and subsequently by Rocket Software in October 2021.</p>
+
+</td></tr></table>
+
+</body>
+</html>

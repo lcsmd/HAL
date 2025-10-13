@@ -1,0 +1,159 @@
+     SUBROUTINE AT.SEND.EMAIL.SMTP(ADDRESS, SUBJECT, MESSAGE, ATTACH, CONFIG, STAT)
+     *
+     EQU AM TO CHAR(254), VM TO CHAR(253), SVM TO CHAR(252)
+     *
+     * Send email message using SMTP mail server
+     *
+     * This routine uses the free open-source command-line email sender mailsend.exe created,
+     * by Muhammad Muquit, hosted on Google Code at http://code.google.com/p/mailsend.
+     * To use this routine, you need to pass a congiruation record (dynamic array) with your
+     * SMTP server configuration (name or IP address, port, user name, etc.) Other arguments
+     * specify the recipient address list, subject, message body and attachment list. The
+     * result of the operation is returned in the STAT argument.
+     *
+     * This routine uses AccuTerms DOSSVC subroutine to download the email message body,
+     * invoke the mailsend.exe program, and upload any errors returned by mailsend.exe.
+     * A command window is displayed while the message is being sent.
+     *
+     * ADDRESS: recipients email address (multiple addresses separated by AM)
+     * SUBJECT: one-line email subject (optional)
+     * MESSAGE: multi-line email message (plain text or html, lines separated by AM)
+     * ATTACH: optional attachment file path(s)
+     * CONFIG: dynamic array containing mail server configuration
+     * STAT: retuned status  NULL on success, otherwise error message from mailsend.exe
+     *
+     *
+     * CONFIG dynamic array:
+     *
+     SMTP = CONFIG<1> ;* smtp server name or IP address (smtp.gmail.com)
+     PORT = CONFIG<2> ;* 25 (no security), 465 (SSL) or 587 (STARTTLS)
+     AUTH = CONFIG<3> ;* 0 = no authentication, 1 = use authentication
+     SECURE = CONFIG<4> ;* 0 = none, 1 = SSL, 2 = STARTTLS
+     SENDER = CONFIG<5> ;* senders email address
+     NAME = CONFIG<6> ;* senders name (optional)
+     REPLY = CONFIG<7> ;* reply-to email address (optional)
+     USER = CONFIG<8> ;* user ID for authentication
+     PSWD = CONFIG<9> ;* password for authentication
+     PATH = CONFIG<10> ;* path for mailsend directory
+     *
+     PROG = "mailsend.exe" ;* command-line program to send email (http://www.muquit.com/muquit/software/mailsend/mailsend.html)
+     *
+     * set up paths for message & result files
+     *
+     USER.NO = FIELD(OCONV("","U50BB")," ",1) ;* we need a unique filename
+     IF PATH <>  "" THEN IF PATH[LEN(PATH),1] <> "\" THEN PATH=PATH:"\"
+     MSGFILE = MSG : USER.NO : ".TXT"
+     RSLTFILE = RSLT : USER.NO : ".TXT"
+     *
+     * is message body text or html?
+     *
+     FIRSTLINE = OCONV(MESSAGE<1>, MCU)
+     IF FIRSTLINE[1, 5] = "<HTML" OR FIRSTLINE[1, 14] = "<!DOCTYPE HTML" THEN
+          MIME = "text/html"
+
+     END ELSE
+
+          MIME = "text/plain"
+
+     END
+     *
+     * build the mailsend command line
+     *
+     COMMAND="CMD.EXE /s /c ":PATH:PROG
+     COMMAND=COMMAND:" -from ":SENDER
+     IF NAME <> "" THEN
+
+          COMMAND=COMMAND:" -name ":NAME
+
+     END
+     N = DCOUNT(ADDRESS,AM)
+     COMMAND=COMMAND:" -to "
+     FOR I=1 TO N
+
+          COMMAND=COMMAND:ADDRESS<I>
+          IF I < N THEN COMMAND=COMMAND:","
+
+     NEXT I
+     IF REPLY <> ""  THEN
+
+          COMMAND=COMMAND:" -rt ":REPLY
+
+     END
+     COMMAND=COMMAND:" -smtp ":SMTP
+     IF PORT <> "" THEN
+
+          COMMAND=COMMAND:" -port ":PORT
+
+     END
+     IF SUBJECT <> "" THEN
+
+          ARG=SUBJECT; GOSUB 100
+          COMMAND=COMMAND :"  -sub ":ARG
+
+     END
+     IF MESSAGE <> "" THEN
+
+          COMMAND=COMMAND:" -attach ":PATH:MSGFILE:",'":MIME:",i ";* first inline attachment is message body
+
+     END
+     N = DCOUNT(ATTACH,AM)
+     FOR I = 1 TO N
+
+          COMMAND=COMMAND :" -attach ":ATTACH<I>
+
+     NEXT I
+     IF AUTH THEN
+
+          COMMAND=COMMAND:" -auth"
+
+     END
+     IF SECURE=1 THEN
+
+          COMMAND=COMMAND:" -ssl"
+
+     END
+     IF SECURE=2 THEN
+
+          COMMAND=COMMAND: -starttls
+
+     END
+     IF USER <> "" THEN
+
+          COMMAND=COMMAND:" -user ":USER
+
+     END
+     IF PSWD <> "" THEN
+
+          COMMAND=COMMAND:" -pass ":PSWD
+
+     END
+     COMMAND=COMMAND:" +cc +bc > ":PATH:RSLTFILE:" 2>&1"
+     *
+     * call DOSSVC to download the message, invoke the mailsend command, and upload the result
+     *
+     CALL DOSSVC(COMMAND, PATH, MSGFILE, MESSAGE, PATH, RSLTFILE, RESULT)
+     *
+     * check result
+     *
+     FOR I=LEN(RESULT) TO 1 STEP -1
+
+          IF RESULT[I,1] = AM THEN RESULT=RESULT[1,I-1] ELSE I=0
+
+     NEXT I
+     IF RESULT = "" THEN
+
+          STAT= "";* NULL indicates success
+
+     END ELSE
+
+          STAT=RESULT ;* return error message
+
+     END
+     *
+     RETURN
+     *
+100  * Local subroutine to remove embedded double-quote marks
+     LOOP J=INDEX(ARG,"",1) WHILE J DO ARG=ARG[1,J-1]:ARG[J+1,99999] REPEAT
+     RETURN
+     *
+     END

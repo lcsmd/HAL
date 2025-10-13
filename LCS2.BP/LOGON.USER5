@@ -1,0 +1,125 @@
+     !BP LOGON.USER                              >GET USER LOGON
+     INCLUDE UTLSBP ASSIGN.VAR
+     F = ''
+     OPEN 'MASTER' TO F.MASTER ELSE F = F:', MASTER'
+     OPEN 'CONTROL' TO CTRL.F ELSE F=F:', CONTROL'
+     OPEN 'SCREENS' TO F.SCREENS ELSE F=F:', SCREENS'
+     !
+     IF TRIM(F) # '' THEN PRINT FILE.ERRORS:F:BCK: ; INPUT NL,1_ ; STOP
+     !
+     READV VER FROM CTRL.F, 'SOFTWARE.VERSION', 1 ELSE VER = ''
+     VERSION = OCONV(VER<1,1>,'G0.1')
+     !
+     !
+     ! USERS RECORD
+     !
+     READ USER.B FROM F.MASTER, 'SYSTEM.USERS' ELSE
+          MSG = 'SYSTEM.USERS Record Missing from MASTER File !'
+          CALL ERRORS.SUB (MSG)
+          STOP
+     END
+     !
+     READ SCR.B FROM F.SCREENS, 'LOGON.USER' ELSE
+          MSG = 'SCREENS LOGON.USER Record Missing !'
+          CALL ERRORS.SUB (MSG)
+          STOP
+     END
+     YEAR = OCONV(DATE(),'D4/')[7,4]
+     !
+     ! DISPLAY SCREEN
+     !
+     SCR = CLS
+     CALL SCREEN.PAINTER (SCR.B, SCR, '')
+     SCR = SCR:@(28,20):DMON:YEAR:DMOFF
+     SCR = SCR:@(65,20):DLULON:VERSION:DLULOFF
+     PRINT SCR:
+     READV ALL.ACCUTERM FROM F.MASTER, 'ACCUTERM.SETTINGS', 1 ELSE ALL.ACCUTERM = ''
+     IF ALL.ACCUTERM = 'Y' THEN ACCUTERM = TRUE ELSE ACCUTERM = FALSE
+     !
+     ! CHECK IF USING ACCUTERM
+     !
+     **** BY PASS CHECKING INDIVIDUAL STATIONS FOR ACCUTERM SETTING FOR NOW-LS
+     EXECUTE "WHO" CAPTURING CAP
+     INTLS = TRIM(FIELD(CAP<1>,"\",2))
+     IF LEN(INTLS) > 3 THEN
+          IF NOT(ACCUTERM) THEN
+               ECHO OFF
+               PRINT C22:ESC:CHAR(2):'S'
+               PRINT C22:
+               ECHO ON
+          END
+          CTR = 0 ; PW.OK = FALSE
+          XMISC = 1:IVM:STR('x',10) ; XMISC<7> = 'Y' ; XMISC<19> = 'Y'
+          LOOP
+               CTR = CTR + 1
+          WHILE CTR LE 3 AND NOT(PW.OK) DO
+               CALL CIP (49, 18, 10, '', PW, ESCFLG, XMISC)
+               IF ESCFLG THEN CHAIN 'OFFF' ELSE
+                    IF INDEX(PW,'Status:',1) THEN
+                         INPUT PW2
+                         PW = PW:PW2
+                         ACCUTERM = TRUE
+                         PRINT @(49,18):EOL:@(71):DVERTLN:
+                         CTR = CTR - 1
+                    END ELSE
+                         LOCATE PW IN USER.B<2> SETTING VM THEN
+                              NAME = USER.B<1,VM>
+                              LEVEL= USER.B<3,VM>
+                              INTLS= USER.B<4,VM>
+                              FULL.NAME = USER.B<7,VM>
+                              PW.OK = TRUE
+                         END
+                    END
+               END
+          REPEAT
+     END ELSE
+          LOCATE INTLS IN USER.B<4> SETTING VM THEN
+               PW = USER.B<2,VM>
+               NAME = USER.B<1,VM>
+               LEVEL= USER.B<3,VM>
+               FULL.NAME = USER.B<7,VM>
+               PW.OK = TRUE
+          END
+     END
+     IF NOT(PW.OK) THEN
+          EXECUTE 'WRONG'
+          DEBUG
+          RQM
+          CHAIN 'OFFF'
+     END
+     !
+     CTRL.B = ''
+     CTRL.B<1> = NAME
+     CTRL.B<2> = PW
+     CTRL.B<3> = LEVEL
+     CTRL.B<4> = INTLS
+     CTRL.B<11>= ACCUTERM
+     CTRL.B<12>= TIME()
+     CTRL.B<15>= FULL.NAME
+     WRITE CTRL.B ON F.MASTER, 'USER*':PORT
+     CALL PLAYWAV (CTRL.F, CTRL.B, 4, ATTEMPTED, '')
+     PRINT C23:@(25):'Thank You,  ':NAME:
+     RQM
+     !
+     LEVELS = DCOUNT(LEVEL<1,1>,ISVM)
+     MLEVEL = LEVEL<1,1,1>
+     IF LEVELS GT 1 THEN MLEVEL = MLEVEL:'..'
+     IF INDEX(OCONV(LOCALPATH,'MCU'),'IBM',1) THEN
+          CONVERT.PID.TO.USER = 3
+          CONVERT.USER.TO.PID = 2
+          STATION = PORT
+          CALL USERPID (CONVERT.USER.TO.PID, STATION, '')
+          IF STATION<1,2> # '' THEN STATION = ABS(STATION<1,2>)
+     END ELSE STATION = PORT
+     MSG = OCONV(DATE(),'D2/'):' Station-':STATION:' ':MLEVEL:'-'
+     READ COMPS.B FROM F.MASTER, 'COMPANIES' ELSE COMPS.B = ''
+     COMPANIES = DCOUNT(COMPS.B<1>,CHAR(253))
+     IF COMPANIES GT 1 THEN
+          LOCATE SYS.ACCOUNT IN COMPS.B<2> SETTING VM THEN
+               MSG = MSG:INTLS:' ':COMPS.B<1,VM>
+          END ELSE
+               MSG = MSG:INTLS:' ':OCONV('COMPANY','TCONTROL;X;1;1')
+          END
+     END ELSE MSG = MSG:NAME
+     PRINT CLS:STATUS.LINE:MSG
+     PRINT CLS:

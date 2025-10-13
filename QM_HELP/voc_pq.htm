@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>VOC PQ-type records - PROCs</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="PROCs,VOC PQ type records" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "voc_pq.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">VOC PQ-Type Records &nbsp;- &nbsp;PROCs</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="voc_ph.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="voc_q.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>PROCs are the predecessor of paragraphs. They are generally thought to be much harder to understand and maintain but are supported in QM for compatibility with other systems. New applications should use paragraphs or QMBasic programs in place of PROCs.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">1:</td><td style="border:none;padding:0">PQ{N} &nbsp;{ descriptive text }</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">2+:</td><td style="border:none;padding:0">PROC statements</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>PROCs come in two styles identified by the VOC record type; standard PROCs (PQ) and new style PROCs (PQN). QM supports the major features of PROCs but is not a full implementation of the various PROC environments found in other multivalue products.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Because development of new PROCs is discouraged, only an overview of the elements of PROCs that are supported by QM is given here. It is not intended as a detailed reference document or a learning aid.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Proc Buffers</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A PROC works by manipulating data in a set of buffers, each stored internally as a field mark delimited dynamic array (PQN) or a space delimited string (PQ). These are:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">The Primary Input Buffer (PIB)</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The PIB initially holds the command that started the PROC and any command line options. A PROC can use the PIB to store other data during its operation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">The Secondary Input Buffer (SIB)</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The SIB is typically used to store user input entered in response to the IN statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">The Primary Output Buffer (POB)</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The POB is used to construct a command to be executed. Execution of the assembled command is triggered by use of the P statement or by termination of the PROC.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">The Secondary Output Buffer (SOB)</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The SOB, often called the stack, is used to hold data to be processed by the command in the POB. It can also hold supplementary commands to be executed after the POB has been executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>At any moment, one input and one output buffer is considered as being active. The SP and SS statements can be used to make the primary or secondary input buffer active respectively. Similarly the STOFF and STON statements can be used to select the primary or secondary output buffers as active.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The input buffer pointer is used to identify a position within the active input buffer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When a PROC starts, the primary input and output buffers are active and the input buffer pointer points to the start of the PIB.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">The File Buffers</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are ten file buffers, numbered from 0 to 9. File buffers 1 to 9 are the standard file buffers. File buffer 0 is the fast file buffer and can be accessed with a special buffer reference syntax.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">Select List Buffers</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The eleven numbered select lists can be accessed using the select list buffers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">Buffer References</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;">Many statements can reference buffers using the tokens shown below:</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:65px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-weight: bold;">Token</span></p>
+</td>
+<td style="vertical-align:top; width:185px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-weight: bold;">Buffer</span></p>
+</td>
+<td colspan="2"  style="vertical-align:top; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-weight: bold;">Direct</span></p>
+</td>
+<td colspan="2"  style="vertical-align:top; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-weight: bold;">Indirect</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:65px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">%</span></p>
+</td>
+<td style="vertical-align:top; width:185px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">Primary input buffer</span></p>
+</td>
+<td style="vertical-align:top; width:68px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">%1</span></p>
+</td>
+<td style="vertical-align:top; width:157px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">PIB field 1</span></p>
+</td>
+<td style="vertical-align:top; width:95px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">%#2</span></p>
+</td>
+<td style="vertical-align:top; width:320px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">PIB field referenced by #2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:65px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">#</span></p>
+</td>
+<td style="vertical-align:top; width:185px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">Active output buffer</span></p>
+</td>
+<td style="vertical-align:top; width:68px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">#1</span></p>
+</td>
+<td style="vertical-align:top; width:157px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">AOB field 1</span></p>
+</td>
+<td style="vertical-align:top; width:95px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">#%1</span></p>
+</td>
+<td style="vertical-align:top; width:320px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">AOB field referenced by %1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:65px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">&amp;</span></p>
+</td>
+<td style="vertical-align:top; width:185px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">File buffer</span></p>
+</td>
+<td style="vertical-align:top; width:68px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">&amp;4.2</span></p>
+</td>
+<td style="vertical-align:top; width:157px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">File 4, field 2</span></p>
+</td>
+<td style="vertical-align:top; width:95px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">&amp;%1.%2</span></p>
+</td>
+<td style="vertical-align:top; width:320px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">File %1, field %2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:65px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">&amp;</span></p>
+</td>
+<td style="vertical-align:top; width:185px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">Fast file buffer</span></p>
+</td>
+<td style="vertical-align:top; width:68px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">&amp;1</span></p>
+</td>
+<td style="vertical-align:top; width:157px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">Field 1</span></p>
+</td>
+<td style="vertical-align:top; width:95px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">&amp;%2</span></p>
+</td>
+<td style="vertical-align:top; width:320px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">Field referenced by %2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:65px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">!</span></p>
+</td>
+<td style="vertical-align:top; width:185px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">Select list</span></p>
+</td>
+<td style="vertical-align:top; width:68px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">!5</span></p>
+</td>
+<td style="vertical-align:top; width:157px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">List 5</span></p>
+</td>
+<td style="vertical-align:top; width:95px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">!%1</span></p>
+</td>
+<td style="vertical-align:top; width:320px; padding:3px; border:none"><p style="page-break-inside: avoid;"><span style="font-size: 10pt;">List referenced by %1</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An indirect reference uses the content of one buffer to index into another.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In a file buffer, field 0 references the record id associated with the buffer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">A-References</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An A-reference is a reference to data in the active input buffer using the syntax of the A statement described in the following section. When used in this form, an A-reference does not move the input pointer or change the content of the buffers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">PROC Statement Summary</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">A &nbsp; &nbsp; &nbsp; &nbsp;</span>Move a field from the active input buffer to the end of the active output buffer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">A</span>{<span style="font-style: italic;">c</span>}{<span style="font-style: italic;">p</span>}{<span style="font-weight: bold;">,</span><span style="font-style: italic;">m</span>}</p>
+<p style="margin: 0 0 0 30px;">Move up to <span style="font-style: italic;">m</span> characters of field <span style="font-style: italic;">p</span> to the output buffer, enclosing the text in character <span style="font-style: italic;">c</span>.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">c</span> may be any character except a digit, left bracket or comma and defaults to a space. Specifying <span style="font-style: italic;">c</span> as a backslash suppresses the surround character. The surround character is ignored if the data is copied to the secondary output buffer.</p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">p</span> is omitted, data is copied from the field addressed by the current position of the input pointer.</p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">m</span> is omitted, data is copied until the end of the field is reached.</p>
+<p style="margin: 0 0 0 30px;">The input pointer is positioned following the last character moved.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">A(</span>{<span style="font-style: italic;">n</span>}{<span style="font-weight: bold;">,</span><span style="font-style: italic;">m</span>}<span style="font-weight: bold;">)</span></p>
+<p style="margin: 0 0 0 30px;">Move up to <span style="font-style: italic;">m</span> characters, starting at character <span style="font-style: italic;">n</span>, to the output buffer.</p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">n</span> is omitted, data is copied from the current position of the input pointer.</p>
+<p style="margin: 0 0 0 30px;">If <span style="font-style: italic;">m</span> is omitted, data is copied until the end of the field is reached.</p>
+<p style="margin: 0 0 0 30px;">The input pointer is positioned following the last character moved.</p>
+<p style="margin: 0 0 0 30px;">Data copying normally terminates at the end of the field. Use the PROC.A or PICK.PROC modes of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command to enable compatibility with D3 where the copy continues past the end of the field.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">B &nbsp; &nbsp; &nbsp; &nbsp;</span>Move the input pointer back to the previous field.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If the input pointer is at the start of a field, it is moved back to the start of the previous field. Otherwise it is moved back to the start of the current field.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">BO &nbsp; &nbsp; &nbsp; &nbsp;</span>Move the output pointer back to the previous field</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The output buffer pointer is moved back to the previous field, truncating the data at its new position.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">C &nbsp; &nbsp; &nbsp; &nbsp;</span>Comment</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">C</span><span style="font-style: italic;">text</span></p>
+<p style="margin: 0 0 0 30px;">All text following the C is ignored.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">D &nbsp; &nbsp; &nbsp; &nbsp;</span>Display fields from the active input buffer</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">D</span>{<span style="font-style: italic;">ref</span>|<span style="font-style: italic;">p</span>}{<span style="font-weight: bold;">,</span><span style="font-style: italic;">m</span>}{<span style="font-weight: bold;">+</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">ref</span> is a direct or indirect reference to a buffer containing the field number of the active input buffer that is to be displayed.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">p</span> is the field number of the active input buffer that is to be displayed. If p is zero, the entire input buffer is displayed.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">m</span> is the maximum number of characters to be displayed.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">+ &nbsp; &nbsp; &nbsp; &nbsp;</span>suppresses the normal newline after display</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DB &nbsp; &nbsp; &nbsp; &nbsp;</span>Display all input and output buffers</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The content of the primary and secondary input and output buffers is displayed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-weight: bold;">DEBUG</span></td><td style="border:none;padding:0">Enters the Proc debugger.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">This command is supported only in QMConsole sessions on Windows or when using AccuTerm with a terminal type with a -at suffix (e.g. vt100-at). The debugger shows a portion of the Proc around the current line and the content of the PIB, POB, SIB and SOB buffers. The currently active buffers are highlighted. If the buffer content exceeds the space available to display it, the final characters shown are an ellipsis.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The debugger supports the following command keystrokes:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">F1 or ?</td><td style="border:none;padding:0">Show help screen</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">F4 or V</td><td style="border:none;padding:0">View application screen</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">F5 or R</td><td style="border:none;padding:0">Run (exit debug mode)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">F8 or S</td><td style="border:none;padding:0">Step</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">Q</td><td style="border:none;padding:0">Quit</td></tr></table></div><p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DF &nbsp; &nbsp; &nbsp; &nbsp;</span>Display file buffer</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">DF</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="margin: 0 0 0 30px;">The content of the specified file buffer is displayed. If <span style="font-style: italic;">n</span> is omitted or specified as zero, the fast file buffer is displayed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">DS &nbsp; &nbsp; &nbsp; &nbsp;</span>Display select buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">DS</span><span style="font-style: italic;">n</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The content of the specified select buffer is displayed. If <span style="font-style: italic;">n</span> is omitted, it defaults to zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">F &nbsp; &nbsp; &nbsp; &nbsp;</span>Moves the input buffer pointer forward</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The input buffer pointer is moved forward to the start of the next field. If the pointer was in the last field, it is moved to the end of the buffer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">F; &nbsp; &nbsp; &nbsp; &nbsp;</span>Perform stack based arithmetic</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">F;</span><span style="font-style: italic;">element</span>{<span style="font-weight: bold;">;</span><span style="font-style: italic;">element...</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">F;</span> statement performs integer arithmetic using a stack. The <span style="font-style: italic;">element</span> list contains values to be added to the stack and operators to be performed against the stack values.</p>
+<div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">ref</span></td><td style="border:none;padding:0">A direct or indirect reference to a buffer element to be placed on the stack.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">A numeric constant to be placed on the stack. The value may be preceded by <span style="font-weight: bold;">C</span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">+</span></td><td style="border:none;padding:0">Adds the top two stack items, replacing them by the result.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">-</span></td><td style="border:none;padding:0">Subtracts the top stack item from the next item, replacing them by the result.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">*</span></td><td style="border:none;padding:0">Multiplies the top two stack items, replacing them by the result.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">/</span></td><td style="border:none;padding:0">Divides the second item on the stack by the first item, replacing them by the truncated integer result.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">R</span></td><td style="border:none;padding:0">Divides the second item on the stack by the first item, replacing them by the remainder value.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">{</span></td><td style="border:none;padding:0">Interchanges the top two items on the stack.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">_</span></td><td style="border:none;padding:0">Interchanges the top two items on the stack.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">?P</span></td><td style="border:none;padding:0">Moves the top item from the stack into the primary input buffer at the input pointer position.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">?</span><span style="font-style: italic;">ref</span></td><td style="border:none;padding:0">Moves the top item from the stack into the specified register location.</td></tr></table></div><p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">F-CLEAR &nbsp; &nbsp; &nbsp; &nbsp;</span>Clear a file buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">F-C</span>{<span style="font-weight: bold;">LEAR</span>} <span style="font-style: italic;">n</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The file buffer for file <span style="font-style: italic;">n</span> is cleared.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">F-DELETE &nbsp; &nbsp; &nbsp; &nbsp;</span>Delete a record from an open file</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">F-D</span>{<span style="font-weight: bold;">ELETE</span>} <span style="font-style: italic;">n</span></p>
+<p style="margin: 0 0 0 30px;">The record identified by the file and id associated with file buffer <span style="font-style: italic;">n</span> is deleted. An error will be reported if there is no open file associated with the file buffer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">F-FREE &nbsp; &nbsp; &nbsp; &nbsp;</span>Release a record lock in an open file</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">F-F</span>{<span style="font-weight: bold;">REE</span>} {<span style="font-style: italic;">n</span> {<span style="font-style: italic;">id</span>|<span style="font-style: italic;">ref</span>}}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The record lock identified by the file and id associated with file buffer <span style="font-style: italic;">n</span> is released. The record id may be specified using a buffer reference. If no id is specified or it is a null string, all locks in that file are released. An error will be reported if there is no open file associated with the file buffer.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">If no file number or id are specified, all locks associated with files opened by the PROC are released. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">F-OPEN &nbsp; &nbsp; &nbsp; &nbsp;</span>Open a file</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">F-O</span>{<span style="font-weight: bold;">PEN</span>} <span style="font-style: italic;">n</span> {<span style="font-weight: bold;">DICT</span>} {<span style="font-style: italic;">filename</span>|<span style="font-style: italic;">ref</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Opens the file specified by <span style="font-style: italic;">filename</span> or by the buffer addressed by <span style="font-style: italic;">ref</span>, associating it with file buffer <span style="font-style: italic;">n</span>. The <span style="font-weight: bold;">DICT</span> qualifier specifies that the dictionary portion of the file is to be opened.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">If the file cannot be opened, the PROC continues at the next statement, otherwise this statement is skipped.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">All files are closed on return to the command processor.</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">F-READ &nbsp; &nbsp; &nbsp; &nbsp;</span>Read a record from an open file</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">F-R</span>{<span style="font-weight: bold;">EAD</span>} <span style="font-style: italic;">n</span> {<span style="font-style: italic;">id</span>|<span style="font-style: italic;">ref</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The record with id specified by <span style="font-style: italic;">id</span> or by the direct or indirect <span style="font-style: italic;">ref</span> is read into file buffer <span style="font-style: italic;">n</span>. If the record cannot be found, the PROC continues at the next statement, otherwise this statement is skipped. In either case, the record id will be stored as field zero of the file buffer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">F-UREAD &nbsp; &nbsp; &nbsp; &nbsp;</span>Read a record from an open file with an update lock</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">F-U</span>{<span style="font-weight: bold;">READ</span>} <span style="font-style: italic;">n</span> {<span style="font-style: italic;">id</span>|<span style="font-style: italic;">ref</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The record with id specified by <span style="font-style: italic;">id</span> or by the direct or indirect <span style="font-style: italic;">ref</span> is read into file buffer <span style="font-style: italic;">n</span>, locking it for update. If the record cannot be found, the PROC continues at the next statement, otherwise this statement is skipped. In either case, the record id will be stored as field zero of the file buffer and the process will own the lock.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">F-WRITE &nbsp; &nbsp; &nbsp; &nbsp;</span>Write a record to an open file</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">F-W</span>{<span style="font-weight: bold;">RITE</span>} <span style="font-style: italic;">n</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The record stored in file buffer <span style="font-style: italic;">n</span> is written using the id stored in field zero of the file buffer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">FB &nbsp; &nbsp; &nbsp; &nbsp;</span>Read a record into the fast file buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">FB</span>{<span style="font-weight: bold;">U</span>}<span style="font-weight: bold;">(</span>{<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">filename</span>|<span style="font-style: italic;">ref1</span> <span style="font-style: italic;">id</span>|<span style="font-style: italic;">ref2</span><span style="font-weight: bold;">)</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The file identified by <span style="font-style: italic;">filename</span> or <span style="font-style: italic;">ref1</span> is opened to the fast file buffer and the record identified by <span style="font-style: italic;">id</span> or <span style="font-style: italic;">ref2</span> is read into the buffer. The <span style="font-weight: bold;">U</span> option specifies that an update lock is required.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">If the file cannot be opened or the record cannot be found, the PROC continues at the next statement, otherwise this statement is skipped. Where the action fails because the file was opened but the record could not be found, the id will be stored in field zero of the file buffer and the process will own the update lock if the <span style="font-weight: bold;">U</span> option was specified.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">GO &nbsp; &nbsp; &nbsp; &nbsp;</span>Jump to a label or a mark (Synonyms <span style="font-weight: bold;">G</span> and <span style="font-weight: bold;">GOTO</span>)</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">GO</span> <span style="font-style: italic;">label</span>|<span style="font-style: italic;">A-ref</span>|<span style="font-style: italic;">ref</span>|<span style="font-weight: bold;">F</span>|<span style="font-weight: bold;">B</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The PROC continues execution at the given position.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">label</span> specifies a numeric label attached to the destination.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">A-ref</span> is an A-reference used to determine the destination label.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">ref</span> is a direct or indirect buffer reference to a location containing the label.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">F</span> jumps forward to the next <span style="font-weight: bold;">M</span> statement in the PROC.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">B</span> jumps to the location of the last <span style="font-weight: bold;">M</span> statement executed within the PROC.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; page-break-after: avoid;"><span style="font-weight: bold;">GOSUB &nbsp; &nbsp; &nbsp; &nbsp;</span>Enter a labelled subroutine</p>
+<p style="page-break-inside: avoid; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; page-break-after: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">GOSUB</span> <span style="font-style: italic;">label</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Label specifies a numeric label at the start of the subroutine.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Execution continues at the given location. The subroutine may return to the statement following the <span style="font-weight: bold;">GOSUB</span> by use of <span style="font-weight: bold;">RSUB</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">H &nbsp; &nbsp; &nbsp; &nbsp;</span>Add text to the active output buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">H</span>{<span style="font-style: italic;">text</span>|<span style="font-style: italic;">ref</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The literal <span style="font-style: italic;">text</span> or the content of the buffer location identified by the direct or indirect <span style="font-style: italic;">ref</span> is added to the active output buffer.</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; page-break-after: avoid;"><span style="font-weight: bold;">IF &nbsp; &nbsp; &nbsp; &nbsp;</span>Conditional execution</p>
+<p style="page-break-inside: avoid; page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">IF </span>{<span style="font-weight: bold;">N</span>} <span style="font-style: italic;">condition</span> <span style="font-style: italic;">statement</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">N</span> specifies that a numeric comparison is to be performed where only the leading numeric part of the data to be tested is used.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-style: italic;">condition</span> may take several alternative forms referencing an <span style="font-style: italic;">item</span> which may be:</p>
+<div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-style: italic;">A-ref</span></td><td style="border:none;padding:0">Data obtained using an A-reference</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-style: italic;">ref</span></td><td style="border:none;padding:0">A direct or indirect buffer reference</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-weight: bold;">E</span></td><td style="border:none;padding:0">The value of @SYSTEM.RETURN.CODE</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:59px"><span style="font-weight: bold;">S</span><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Tests whether select list is active. <span style="font-style: italic;">n</span> defaults to 0 if omitted.</td></tr></table></div><p style="margin: 0 0 0 30px;">The <span style="font-style: italic;">conditions</span> are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">item</span></td><td style="border:none;padding:0">Tests that <span style="font-style: italic;">item</span> is not blank. Used with <span style="font-weight: bold;">E</span>, this tests whether the value is negative.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">#</span><span style="font-style: italic;">item</span></td><td style="border:none;padding:0">Tests that item is blank. Used with <span style="font-weight: bold;">E</span>, this tests whether the value is not negative.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">item</span> <span style="font-style: italic;">op text</span>|<span style="font-style: italic;">ref</span></td><td style="border:none;padding:0">Compares <span style="font-style: italic;">item</span> with unquoted literal <span style="font-style: italic;">text</span> or a value obtained from a direct or indirect buffer reference. The operator <span style="font-style: italic;">op</span> may be</td></tr></table></div><p style="margin: 0 0 0 240px;">= &nbsp; &nbsp; &nbsp; &nbsp;Equality</p>
+<p style="margin: 0 0 0 240px;"># &nbsp; &nbsp; &nbsp; &nbsp;Inequality</p>
+<p style="margin: 0 0 0 240px;">&gt; &nbsp; &nbsp; &nbsp; &nbsp;Greater than</p>
+<p style="margin: 0 0 0 240px;">&lt; &nbsp; &nbsp; &nbsp; &nbsp;Less than</p>
+<p style="margin: 0 0 0 240px;">] &nbsp; &nbsp; &nbsp; &nbsp;Greater than or equal to</p>
+<p style="margin: 0 0 0 240px;">[ &nbsp; &nbsp; &nbsp; &nbsp;Less than or equal to</p>
+<p style="text-indent: -150px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 210px;">If <span style="font-style: italic;">text</span> or <span style="font-style: italic;">ref</span> is enclosed in round brackets and the operator is = or #, it is treated as a pattern match. The <span style="font-style: italic;">text</span> item should be enclosed in single or double quotes if it contains spaces.</p>
+<p style="margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 210px;">If the data identified by <span style="font-style: italic;">text</span> or <span style="font-style: italic;">ref</span> is multivalued and the operator is = or #, the operator tests whether <span style="font-style: italic;">item</span> appears in the multivalued data. There are two extended syntaxes available with this style of test:</p>
+<p style="margin: 0 0 0 240px;">IF <span style="font-style: italic;">item</span> = A<span style="font-size: 6pt;">VM</span>B<span style="font-size: 6pt;">VM</span>C GO 10<span style="font-size: 6pt;">VM</span>20<span style="font-size: 6pt;">VM</span>30</p>
+<p style="margin: 0 0 0 210px;">and</p>
+<p style="margin: 0 0 0 240px;">IF <span style="font-style: italic;">item</span> = A<span style="font-size: 6pt;">VM</span>B<span style="font-size: 6pt;">VM</span>C GOSUB 10<span style="font-size: 6pt;">VM</span>GO 20<span style="font-size: 6pt;">VM</span>XDone</p>
+<p style="margin: 0 0 0 210px;">The first form, applicable to GO only, jumps to one of a list of labels dependant on the value of the <span style="font-style: italic;">item</span>. The second form takes a multivalued list of statements to be executed dependant on the value of <span style="font-style: italic;">item</span>.</p>
+<p style="margin: 0 0 0 24px;">The default behaviour is that the IF command compares the two items in a case sensitive manner. The PROC.IF.NO.CASE setting of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command can be used to make the comparison case insensitive.</p>
+<p style="margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">IH &nbsp; &nbsp; &nbsp; &nbsp;</span>Insert test in the active input buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">I</span>{<span style="font-weight: bold;">B</span>}<span style="font-weight: bold;">H</span><span style="font-style: italic;">text</span>|<span style="font-style: italic;">ref</span>|<span style="font-weight: bold;">\| \</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Copies the unquoted literal <span style="font-style: italic;">text </span>or the data addressed by the direct or indirect buffer <span style="font-style: italic;">ref</span> to the active input buffer at the position given by the input buffer pointer. If this is positioned at the start of a field, the entire field is replaced. If it is positioned part way though the field, the new data is appended to the portion before the input pointer position.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The input buffer pointer is not moved by this operation.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">For compatibility with other systems, the following additional syntax elements are recognised in PQN style Procs or in PQ style Procs executed without the PICK.PROC mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command enabled:</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 60px;">The <span style="font-weight: bold;">\</span> token with no preceding space, clears the field addressed by the input buffer pointer. If the pointer is positioned part way through a field, characters before the pointer position are retained.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 60px;">The <span style="font-weight: bold;">\</span> token with a preceding space, inserts an empty field. This syntax is not recognised as a special case if the PICK.PROC mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command is enabled.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 60px;">Leading and trailing spaces are removed and multiple embedded are compressed to single spaces. If the <span style="font-weight: bold;">B</span> option is not present, the spaces are then converted to field marks.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">IN &nbsp; &nbsp; &nbsp; &nbsp;</span>Input data from the terminal to the secondary input buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">I</span>{<span style="font-weight: bold;">B</span>}<span style="font-weight: bold;">N</span>{<span style="font-style: italic;">c</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The secondary input buffer is activated and the user input overwrites any existing content. All leading and trailing spaces in the input data are removed and multiple embedded spaces are compressed to a single space. If the <span style="font-weight: bold;">B</span> option is not present, all remaining spaces are then replaced by field marks. The optional prompt character <span style="font-style: italic;">c</span> specifies an alternative to the default of a question mark and remains in effect for subsequent input until another prompt character is set.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">IP &nbsp; &nbsp; &nbsp; &nbsp;</span>Input data from the terminal to any buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">I</span>{<span style="font-weight: bold;">B</span>}<span style="font-weight: bold;">P</span>{<span style="font-weight: bold;">B</span>}{<span style="font-style: italic;">c</span>}<span style="font-style: italic;">ref</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">User input overwrites the location specified by the direct or indirect <span style="font-style: italic;">ref</span>. If <span style="font-style: italic;">ref</span> is omitted, the field addressed by the input buffer pointer in the primary input buffer is overwritten. All leading and trailing spaces in the input data are removed and multiple embedded spaces are compressed to a single space. If the <span style="font-weight: bold;">B</span> option is not present, all remaining spaces are then replaced by field marks. The optional prompt character <span style="font-style: italic;">c</span> specifies an alternative to the default of a question mark and remains in effect for subsequent input until another prompt character is set. The prompt character must be present if <span style="font-style: italic;">ref</span> is used.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">In a PQ style Proc, entering a blank response retains the existing content of the input buffer. A PQN style Proc would clear the buffer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">IS &nbsp; &nbsp; &nbsp; &nbsp;</span>Input data from the terminal to the secondary input buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">This is a synonym for <span style="font-weight: bold;">IN</span> described above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">L &nbsp; &nbsp; &nbsp; &nbsp;</span>Send output to a printer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">L</span>{'<span style="font-style: italic;">text</span>'|<span style="font-style: italic;">ref</span>|<span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">),</span>...}{<span style="font-weight: bold;">+</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Outputs the items specified in the comma separated list. These may be quoted literal <span style="font-style: italic;">text</span> or the data addressed by the direct or indirect buffer <span style="font-style: italic;">ref</span>. Use of <span style="font-style: italic;">ref</span> may be followed by an input conversion code enclosed in semicolons or an output conversion code enclosed in colons.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span> element can be used to move to a specific column number where the leftmost column is column one.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">+</span> element suppresses the normal newline at the end of the output.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The list may span multiple lines by breaking it after a comma.</p>
+<p style="margin: 0 0 0 30px;">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">LC &nbsp; &nbsp; &nbsp; &nbsp;</span>Close printer</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The printer is closed and the output is passed to the underlying print management system for printing.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">LE &nbsp; &nbsp; &nbsp; &nbsp;</span>Page eject</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Starts a new page</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">LHDR &nbsp; &nbsp; &nbsp; &nbsp;</span>Set page header</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">LHDR</span>{'<span style="font-style: italic;">text</span>'|<span style="font-style: italic;">ref</span>|<span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span>|<span style="font-weight: bold;">P</span>|<span style="font-weight: bold;">T</span>|<span style="font-weight: bold;">Z</span>|<span style="font-style: italic;">n</span>|<span style="font-weight: bold;">,</span>...}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Sets the page header using the items specified in the comma separated list. These may be quoted literal <span style="font-style: italic;">text</span> or the data addressed by the direct or indirect buffer <span style="font-style: italic;">ref</span>. Use of <span style="font-style: italic;">ref</span> may be followed by an input conversion code enclosed in semicolons or an output conversion code enclosed in colons.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span> element can be used to move to a specific column number where the leftmost column is column one.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">P</span> element inserts the page number.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">T</span> element inserts the date and time.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">Z</span> element restarts page numbering.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-style: italic;">n</span> element specifies a number of newlines.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The list may span multiple lines by breaking it after a comma.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">LN &nbsp; &nbsp; &nbsp; &nbsp;</span>Redirect printer output to the terminal</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Specifies that output from the <span style="font-weight: bold;">L</span> statement is to be directed to the terminal. This is mainly useful for debugging purposes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">M &nbsp; &nbsp; &nbsp; &nbsp;</span>Mark</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">M</span> statement marks a location in a PROC for use by the <span style="font-weight: bold;">GO F</span> and <span style="font-weight: bold;">GO B</span> operations.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">MV &nbsp; &nbsp; &nbsp; &nbsp;</span>Move data from one location to another</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">MV</span> <span style="font-style: italic;">destination source</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">destination</span> is a direct or indirect reference to the buffer location to which data is to be copied.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">source</span> is a list of one or more items to be copied. Each item may be direct or indirect buffer reference or a quoted literal string.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">A comma separating two items inserts the items as separate fields. Use of two or more consecutive commas with no source item between them skips fields in the destination.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">An asterisk between two items concatenates them.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">An asterisk after a file buffer reference as the last item in the <span style="font-style: italic;">source</span> list copies all remaining fields from the file buffer.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">An asterisk followed by a number after a file buffer reference in the <span style="font-style: italic;">source</span> list copies the given number of fields from the file buffer.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">An underscore as the last item in the list truncates the destination by removing all fields after the last one copied.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">MVA &nbsp; &nbsp; &nbsp; &nbsp;</span>Move data from one location to another as a sorted multivalued field</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">MVA</span> <span style="font-style: italic;">destination source</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">destination</span> is a direct or indirect reference to the buffer location to which data is to be copied.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">source</span> is a direct or indirect buffer reference or an unquoted literal string.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The source data is inserted as a new value in the multivalued destination using a left aligned ascending sort order to determine its position. The item will not be inserted if it would duplicate an existing entry in the list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">MVD &nbsp; &nbsp; &nbsp; &nbsp;</span>Delete an entry from a multivalued field</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">MVD</span> <span style="font-style: italic;">destination item</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">destination</span> is a direct or indirect reference to the buffer location from which the data is to be deleted.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">item </span>is a direct or indirect buffer reference or an unquoted literal string.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The multivalued destination is searched for the first occurrence of <span style="font-style: italic;">item</span>, removing this entry from the list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">O &nbsp; &nbsp; &nbsp; &nbsp;</span>Output text to the terminal</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">O</span><span style="font-style: italic;">text</span>{<span style="font-weight: bold;">+</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The unquoted literal <span style="font-style: italic;">text</span> is displayed on the user's terminal. The optional <span style="font-weight: bold;">+</span> token suppresses the normal newline after output.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">P &nbsp; &nbsp; &nbsp; &nbsp;</span>Process the command in the primary output buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">P</span>{<span style="font-weight: bold;">P</span>}{<span style="font-weight: bold;">H</span>}{<span style="font-weight: bold;">X</span>}{<span style="font-weight: bold;">W</span>}{<span style="font-weight: bold;">L</span><span style="font-style: italic;">n</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The command in the primary output buffer is passed to the command processor for execution. Any data in the secondary output buffer is queued up as data for use by the executed command. If there is any unprocessed data remaining after the command has been executed, the first field of this data is passed to the command processor for execution, using the remaining fields as data. This cycle continues until all the data has been processed.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">P</span> option displays the content of the output buffer before execution of the command.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">H</span> option suppresses terminal output by the executed command.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">X</span> option terminates the PROC after the command has been executed.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">W</span> option displays the command and prompts the user to confirm whether it should be executed. Valid replies are Y to execute the command, N to terminate the PROC without executing the command and S to skip the command but continue execution of the PROC.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">L</span><span style="font-style: italic;">n</span> option sets process task lock <span style="font-style: italic;">n</span> for the duration of the command.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">After the command has been executed, the output buffers are cleared and the primary output buffer is activated.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">There is an implied <span style="font-weight: bold;">P</span> command at the end of a PROC.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">Q &nbsp; &nbsp; &nbsp; &nbsp;</span>Quit</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">Q</span><span style="font-style: italic;">text</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The PROC and all other underlying programs, paragraphs, menus, etc are terminated, displaying the optional unquoted <span style="font-style: italic;">text</span> on the user's terminal. The user is returned to the command prompt, executing any <a href="command_scripts.htm" class="topiclink">ON.ABORT</a> VOC entry on the way.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">RI &nbsp; &nbsp; &nbsp; &nbsp;</span>Reset input buffers</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">RI</span>{<span style="font-style: italic;">f</span>|<span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Used with no options, this statement clears both input buffers, resets the pointer to the start of the primary input buffer and makes this the active buffer.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-style: italic;">f</span> option specifies that the primary input buffer is to be cleared from field <span style="font-style: italic;">f</span> onwards, leaving the input buffer pointer positioned at the end of the remaining data.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span> option specifies that the primary input buffer is to be cleared from the given character position, leaving the input buffer pointer positioned at the end of the remaining data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">RO &nbsp; &nbsp; &nbsp; &nbsp;</span>Reset output buffers</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Both output buffers are cleared and the primary output buffer is activated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">RSUB &nbsp; &nbsp; &nbsp; &nbsp;</span>Return from a GOSUB</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">RSUB</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Without the <span style="font-style: italic;">n </span>option, the PROC continues execution at the statement following the last GOSUB executed.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">n</span> specifies that execution is to continue starting <span style="font-style: italic;">n</span> lines following the GOSUB.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The RSUB statement is ignored if the PROC is not in a subroutine.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">RTN &nbsp; &nbsp; &nbsp; &nbsp;</span>Return to a calling PROC</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">RTN</span>{<span style="font-style: italic;">n</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The PROC returns to the PROC from which it was called, continuing execution <span style="font-style: italic;">n</span> lines after the [] statement that called the current PROC. If <span style="font-style: italic;">n</span> is omitted, it defaults to 1.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">S &nbsp; &nbsp; &nbsp; &nbsp;</span>Set the input buffer pointer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">S</span><span style="font-style: italic;">f</span>|<span style="font-style: italic;">ref</span>|<span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Moves the input buffer pointer of the active input buffer at the specified position.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">f</span> specifies that the pointer is to be positioned at field <span style="font-style: italic;">f</span>.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">ref</span> is a direct or indirect buffer reference used to obtain the field number.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span> option sets the pointer to the given character position.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">SP &nbsp; &nbsp; &nbsp; &nbsp;</span>Activate the primary input buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The primary input buffer is activated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">SS &nbsp; &nbsp; &nbsp; &nbsp;</span>Activate the secondary input buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The secondary input buffer is activated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">STOFF &nbsp; &nbsp; &nbsp; &nbsp;</span>Activate the primary output buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The primary output buffer is activated. This statement can also be written as <span style="font-weight: bold;">STOF</span> or <span style="font-weight: bold;">ST OFF</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">STON &nbsp; &nbsp; &nbsp; &nbsp;</span>Activate the secondary output buffer</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The secondary output buffer is activated. This statement can also be written as <span style="font-weight: bold;">ST ON</span>.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">T &nbsp; &nbsp; &nbsp; &nbsp;</span>Terminal output</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">T</span><span style="font-style: italic;">element</span>{<span style="font-weight: bold;">,</span><span style="font-style: italic;">element</span>...}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Outputs each element of a comma separated list to the terminal. The elements may be:</p>
+<div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">text</span></td><td style="border:none;padding:0">Quoted literal text</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">ref</span></td><td style="border:none;padding:0">A direct or indirect buffer reference identifying the data to be displayed. This may be followed by an input conversion code enclosed in semicolons or an output conversion code enclosed in colons.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span></td><td style="border:none;padding:0">Position the cursor to the specified column of the current line. The value of <span style="font-style: italic;">col</span> may be given as a number or as a direct or indirect buffer reference.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">,</span><span style="font-style: italic;">row</span><span style="font-weight: bold;">)</span></td><td style="border:none;padding:0">Position the cursor to the specified row and column. The value of <span style="font-style: italic;">row</span> and <span style="font-style: italic;">col</span> may be given as a number or as a direct or indirect buffer reference.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">B</span></td><td style="border:none;padding:0">Sounds the terminal &quot;bell&quot;.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">C</span></td><td style="border:none;padding:0">Clears the screen.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">D</span></td><td style="border:none;padding:0">Pauses for one second.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">I</span><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Displays character <span style="font-style: italic;">n</span> where <span style="font-style: italic;">n</span> may be given as a number or a buffer reference.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">L</span></td><td style="border:none;padding:0">Terminates a <span style="font-weight: bold;">T</span>...<span style="font-weight: bold;">L</span> loop.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">S</span><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Emits <span style="font-style: italic;">n</span> spaces where <span style="font-style: italic;">n</span> may be given as a number or a buffer reference.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">T</span></td><td style="border:none;padding:0">Starts a <span style="font-weight: bold;">T</span>...<span style="font-weight: bold;">L</span> loop where the elements enclosed in the loop will be executed three times.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">U</span></td><td style="border:none;padding:0">Moves the cursor up by one line.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">X</span><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Displays character <span style="font-style: italic;">n</span> where <span style="font-style: italic;">n</span> may be given as a number or a buffer reference to a two digit hexadecimal value.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">+</span></td><td style="border:none;padding:0">Suppresses the normal newline after display.</td></tr></table></div><p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">)</span> and <span style="font-weight: bold;">(</span><span style="font-style: italic;">col</span><span style="font-weight: bold;">,</span><span style="font-style: italic;">row</span><span style="font-weight: bold;">)</span> elements can also be used to access the terminal control codes that use negative <span style="font-style: italic;">col</span> values.</p>
+<p style="margin: 0 0 0 30px;">The list of elements for display can span multiple lines by breaking it after a comma.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">TR &nbsp; &nbsp; &nbsp; &nbsp;</span>Enable or disable tracing</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">TR </span>{<span style="font-weight: bold;">ON</span>|<span style="font-weight: bold;">OFF</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">ON</span> option causes the PROC processor to display each statement before it is executed.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-weight: bold;">OFF</span> option terminates trace mode.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The space before the mode keyword can be omitted. If no mode is specified, tracing is enabled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">U &nbsp; &nbsp; &nbsp; &nbsp;</span>Call a QMBasic program</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">U</span><span style="font-style: italic;">name</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The catalogued program identified by <span style="font-style: italic;">name</span> is called. This program should take no arguments and can access the PROC buffers using @-variables. The <span style="font-weight: bold;">U</span> command is frequently used to reference Pick style &quot;user exits&quot;. Many of these are provided in source form in the BP file of the QMSYS account and can be compiled as needed. The user exists described below are integrated into the PROC processor and always available.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">U01A6 &nbsp; &nbsp; &nbsp; &nbsp;</span>Screen painting</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">U01A6</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">action</span>, <span style="font-style: italic;">action</span>...</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">This special user exit emulation processes successive lines of the PROC as being a comma separated list of codes that control updates to the screen. Processing continues on the next line of the PROC if the final character of the current line is a comma. The codes available are:</p>
+<div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">(<span style="font-style: italic;">col</span>,<span style="font-style: italic;">row</span>)</td><td style="border:none;padding:0">position cursor to specified location.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">B</td><td style="border:none;padding:0">sound the terminal &quot;bell&quot;.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">C</td><td style="border:none;padding:0">clear screen.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">I<span style="font-style: italic;">n</span></td><td style="border:none;padding:0">display character with ASCII decimal value <span style="font-style: italic;">n</span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">X<span style="font-style: italic;">n</span></td><td style="border:none;padding:0">display character with ASCII hexadecimal value <span style="font-style: italic;">n</span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">&quot;<span style="font-style: italic;">text</span>&quot;</td><td style="border:none;padding:0">display <span style="font-style: italic;">text</span>. The cursor is left positioned immediately following the <span style="font-style: italic;">text</span>.</td></tr></table></div><p style="page-break-inside: avoid; margin: 0 0 0 30px;">The <span style="font-style: italic;">col</span>, <span style="font-style: italic;">row</span> and <span style="font-style: italic;">n</span> values may be buffer references.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">U01AD &nbsp; &nbsp; &nbsp; &nbsp;</span>Fetch data from a file</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">U01AD</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">filename id fno action</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">This special user exit emulation reads four parameters from the next line of the PROC. These may be literal values or buffer references. The record identified by <span style="font-style: italic;">filename</span> and <span style="font-style: italic;">id</span> is read and field <span style="font-style: italic;">fno</span> is extracted from it. The case insensitive value of <span style="font-style: italic;">action</span> determines the destination for this data:</p>
+<div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">a</td><td style="border:none;padding:0">append to alternative (non-active) output buffer.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">p</td><td style="border:none;padding:0">append to primary input buffer.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">s</td><td style="border:none;padding:0">append to active output buffer.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">t</td><td style="border:none;padding:0">display on user's terminal.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">v</td><td style="border:none;padding:0">verifies that record exists.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">va</td><td style="border:none;padding:0">verifies that attribute <span style="font-style: italic;">fno</span> exists.</td></tr></table></div><p style="page-break-inside: avoid; margin: 0 0 0 30px;">If the successful, the next line of the PROC is skipped, otherwise it is executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">U31AD &nbsp; &nbsp; &nbsp; &nbsp;</span>Get QM user number</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">U31AD</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-style: italic;">code</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">This user exit gets the QM user number (equivalent to a Pick port number) and places it in a destination determined by the <span style="font-style: italic;">code</span> value on the next line of the PROC:</p>
+<div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">a</td><td style="border:none;padding:0">alternative (non-active) output buffer.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">p</td><td style="border:none;padding:0">primary input buffer.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">s</td><td style="border:none;padding:0">active output buffer.</td></tr></table></div><div style="text-align: left; text-indent: 0; page-break-inside: avoid; padding: 0 0 0 0; margin: 0 0 0 59px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:46px">t</td><td style="border:none;padding:0">display on user's terminal.</td></tr></table></div><p style="text-indent: -46px; page-break-inside: avoid; margin: 0 0 0 105px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">X &nbsp; &nbsp; &nbsp; &nbsp;</span>Exit from the PROC</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">X</span><span style="font-style: italic;">text</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Displays the optional unquoted <span style="font-style: italic;">text</span> and terminates the PROC, returning to the calling PROC, program, menu, etc.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">+ &nbsp; &nbsp; &nbsp; &nbsp;</span>Add an integer value to a numeric field</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">+</span><span style="font-style: italic;">n</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The specified numeric value is added to the field of the active input buffer identified by the input buffer pointer. Non-numeric data is treated as zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">- &nbsp; &nbsp; &nbsp; &nbsp;</span>Subtract an integer value from a numeric field</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">-</span><span style="font-style: italic;">n</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The specified numeric value is subtracted from the field of the active input buffer identified by the input buffer pointer. Non-numeric data is treated as zero. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">( ) &nbsp; &nbsp; &nbsp; &nbsp;</span>Transfer control to another PROC</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">(</span>{<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">filename</span> {<span style="font-style: italic;">id</span>}<span style="font-weight: bold;">) </span>{<span style="font-style: italic;">label</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The PROC identified by the given <span style="font-style: italic;">filename</span> and <span style="font-style: italic;">id</span> is executed, starting at <span style="font-style: italic;">label</span>, or the first statement if no <span style="font-style: italic;">label</span> is specified. If <span style="font-style: italic;">id</span> is omitted, the record id is obtained from the field of the active input buffer addressed by the input buffer pointer.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The buffers and pointers are not changed by this statement.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Control does not return to the current PROC when the called PROC terminates.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">[ ] &nbsp; &nbsp; &nbsp; &nbsp;</span>Transfer control to another PROC</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-weight: bold;">[</span>{{<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">filename</span> {<span style="font-style: italic;">id</span>}}<span style="font-weight: bold;">] </span>{<span style="font-style: italic;">label</span>}</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The PROC identified by the given <span style="font-style: italic;">filename</span> and <span style="font-style: italic;">id</span> is executed, starting at <span style="font-style: italic;">label</span>, or the first statement if no <span style="font-style: italic;">label</span> is specified. If <span style="font-style: italic;">id</span> is omitted, the record id is obtained from the field of the active input buffer addressed by the input buffer pointer. If no <span style="font-style: italic;">filename</span> or <span style="font-style: italic;">id</span> are specified, transfer is controlled to the same Proc at <span style="font-style: italic;">label</span>.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">The buffers and pointers are not changed by this statement.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">Control returns to the current PROC when the called PROC executes a RTN or X statement.</p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">/* &nbsp; &nbsp; &nbsp; &nbsp;</span>Start block comment</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;">All lines until and including one that ends with */ are treated as comment text.</p>
+
+</td></tr></table>
+
+</body>
+</html>

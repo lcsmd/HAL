@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>$IFDEF and $IFNDEF compiler directives</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="$ELSE,$ENDIF,$IFDEF,$IFNDEF" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbd_ifdef.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">$IFDEF and $IFNDEF Compiler Directives</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbd_execute.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbd_include.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">$IFDEF</span> directive provides conditional compilation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">$IFDEF</span> <span style="font-style: italic;">name</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">...statements...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">$ELSE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">...statements...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">$ENDIF</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">$ELSE</span> and associated statements are optional. Statements conditioned by the <span style="font-weight: bold;">$IFDEF</span> directive are ignored if <span style="font-style: italic;">name</span> has not been defined by a previous <a href="qmbd_define.htm" class="topiclink">$DEFINE</a> directive. Statements under the <span style="font-weight: bold;">$ELSE</span> directive are ignored if <span style="font-style: italic;">name</span> has been defined by a previous <a href="qmbd_define.htm" class="topiclink">$DEFINE</a> directive.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">$IFNDEF</span> directive provides the inverse action of <span style="font-weight: bold;">$IFDEF</span>, compiling the following statements if <span style="font-style: italic;">name</span> has not been defined.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Multiple token names may specified in a single directive with an intervening <span style="font-weight: bold;">AND</span> or <span style="font-weight: bold;">OR</span> operator (or their symbolic equivalents, &amp; and !). The expression is evaluated left to right and brackets are not permitted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">$IFDEF</span> and <span style="font-weight: bold;">$IFNDEF</span> statements may be nested to any depth though nesting more than two deep can make program maintenance very difficult.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Portable Software</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>One use of conditional compilation is to allow a single source stream to be compiled in different multivalue environments rather than having to maintain separate source streams. When compiling on QM, the name QM is always defined thus a construct such as</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">$IFDEF QM</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; SETLEFT 'DATE' FROM INV.F</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;SELECTRIGHT 'DATE' FROM INV.F SETTING DT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; UNTIL STATUS()</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;READLIST IDS THEN GOSUB PROCESS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; REPEAT</span></p>
+<p style="margin: 0 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">$ENDIF</span></p>
+<p>might be used scan an alternate key index on QM. The same program might contain an equivalent for UniVerse</p>
+<p style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">$IFDEF UV</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; BSCAN DT, IDS FROM INV.F USING 'DATE' RESET THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; GOSUB PROCESS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; BSCAN DT, IDS FROM INV.F USING 'DATE' ELSE EXIT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;REPEAT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p style="margin: 0 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">$ENDIF</span></p>
+<p>though UniVerse does not define the UV token automatically. This would need to be done in the source code, probably as part of a platform specific include record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Some environments such as D3 do not support conditional compilation. There is a skeleton pre-processor program in the BP file of the QMSYS account that can be compiled on D3, etc to resolve conditional compilation constructs.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="qmbd_define.htm" class="topiclink">$DEFINE</a></span>, <span style="font-weight: bold;"><a href="qmbd_error.htm" class="topiclink">$ERROR</a></span>, <span style="font-weight: bold;"><a href="qmbd_stop.htm" class="topiclink">$STOP</a></span>, <span style="font-weight: bold;"><a href="qmbd_warning.htm" class="topiclink">$WARNING</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

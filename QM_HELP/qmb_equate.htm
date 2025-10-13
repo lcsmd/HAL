@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>EQUATE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="EQU,EQUATE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_equate.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">EQUATE, EQU</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_eqs.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_ereplace.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">EQUATE</span> statement, often abbreviated to <span style="font-weight: bold;">EQU</span>, defines a symbolic name to represent a QMBasic expression.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">EQUATE</span> <span style="font-style: italic;">name</span> <span style="font-weight: bold;">LITERALLY</span> <span style="font-weight: bold;">&quot;</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">&quot;</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">EQUATE</span> <span style="font-style: italic;">name</span> <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">expression</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name to be attached to the value or matrix reference.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is a quoted string consisting of QMBasic language elements.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">expression</span></td><td style="border:none;padding:0">is any valid QMBasic expression.</td></tr></table></div><p style="text-indent: -90px; margin: 10px 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The <span style="font-weight: bold;">EQUATE</span> statement defines a name that can be used later within the program as a reference to the string or expression.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In most cases, the two forms of this statement are interchangeable but the first form will be needed if the <span style="font-style: italic;">string</span> contains unpaired brackets. The LITERALLY keyword may be abbreviated to LIT.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The second form of the <span style="font-weight: bold;">EQUATE</span> statement can alternatively be written using the <span style="font-weight: bold;"><a href="qmbd_define.htm" class="topiclink">$DEFINE</a></span> compiler directive.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">EQUATE</span> statements are often placed in <a href="qmbd_include.htm" class="topiclink">include records</a> so that the same values can be incorporated into many programs without duplication. Common uses of <span style="font-weight: bold;">EQUATE</span> include:</p>
+<p style="margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 6px 60px;"><span style="font-weight: bold;">EQUATE</span> <span style="font-style: italic;">name</span> <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">value</span></p>
+<p style="margin: 0 0 0 90px;">This form of the <span style="font-weight: bold;">EQUATE</span> statement creates a symbolic <span style="font-style: italic;">name</span> that can be used in place of the constant <span style="font-style: italic;">value</span>. The <span style="font-weight: bold;">EQUATE</span> statement can be used to eliminate constants for state variables, field positions, etc from the main body of a program. Subsequent changes to the <span style="font-style: italic;">value</span> thus only require a single amendment and recompilation of all programs using <span style="font-style: italic;">name</span>.</p>
+<p style="margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 6px 60px;"><span style="font-weight: bold;">EQUATE</span> <span style="font-style: italic;">name</span> <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">variable</span></p>
+<p style="margin: 0 0 0 90px;">This form of <span style="font-weight: bold;">EQUATE</span> defines a synonym for a variable name.</p>
+<p style="margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 6px 60px;"><span style="font-weight: bold;">EQUATE</span> <span style="font-style: italic;">name</span> <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">matrix</span><span style="font-weight: bold;">(</span><span style="font-style: italic;">index1</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">index2</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 0 0 0 90px;">This form of <span style="font-weight: bold;">EQUATE</span> defines a name by which an element of a dimensioned array can be referenced. The index values must be numeric constants.</p>
+<p style="margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 6px 60px;"><span style="font-weight: bold;">EQUATE</span> <span style="font-style: italic;">name</span> <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">dyn.array</span><span style="font-weight: bold;">&lt;</span><span style="font-style: italic;">field</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">value </span>{<span style="font-weight: bold;">,</span> <span style="font-style: italic;">subvalue</span>}}<span style="font-weight: bold;">&gt;</span></p>
+<p style="margin: 0 0 0 90px;">This form of <span style="font-weight: bold;">EQUATE</span> defines a name by which an element of a dynamic array can be referenced. The index values must be numeric constants. Declaration and dimensionality of the <span style="font-style: italic;">matrix</span> are only checked when a reference to <span style="font-style: italic;">name</span> is encountered during program compilation.</p>
+<p style="margin: 0 0 0 60px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 6px 60px;"><span style="font-weight: bold;">EQUATE</span> <span style="font-style: italic;">name</span> <span style="font-weight: bold;">TO CHAR(</span><span style="font-style: italic;">seq</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 0 0 0 89px;">This form of <span style="font-weight: bold;">EQUATE</span> defines a name to represent a character value. It is often used with non-printing characters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Multiple tokens may be equated on a single line by separating each definition by a comma. For example:</p>
+<p style="margin: 5px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EQUATE LOW TO 12, HIGH TO 20</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An equated token may not be used within the same source line as its definition. For example</p>
+<p style="margin: 5px 0 5px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EQUATE NAME TO CLIENT.REC(1) ; NAME = &quot;&quot;</span></p>
+<p>will not recognise the use of NAME in the second statement as being a reference to CLIENT.REC(1)</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although it is valid for <span style="font-style: italic;">name</span> to correspond to a built-in function, statement or reserved word, use in this way is discouraged as the function, statement or reserved word becomes inaccessible. As an aid to detecting this situation, particularly when migrating an existing application to QM, use of the STRICT.EQUATE setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive will generate a compiler warning for name clashes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EQUATE ADDRESS TO 1</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EQUATE TEL.NO TO 2</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">READ REC FROM DATA.FILE, ID THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PRINT &quot;Address: &quot; : REC&lt;ADDRESS&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PRINT &quot;Telephone: &quot; : REC&lt;TEL.NO&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment attaches name to two fields of a data record and then uses these when the data is extracted for printing.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EQUATE ADDRESS TO REC(1)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EQUATE TEL.NO TO REC(2)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DIM REC(10)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">...</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">MATREAD REC FROM DATA.FILE, ID THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PRINT &quot;Address: &quot; : ADDRESS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PRINT &quot;Telephone: &quot; : TEL.NO</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment achieves the same as the previous example but uses the <span style="font-weight: bold;"><a href="qmb_matread.htm" class="topiclink">MATREAD</a></span> statement to separate the fields of the record read from the file into the elements of matrix REC. The names defined in the <span style="font-weight: bold;">EQUATE</span> statements are then used to reference elements of this matrix</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EQUATE VALUE LIT &quot;COST * QTY&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COST = 14</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">QTY = 2</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY VALUE</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above example uses an equated token, VALUE, to represent the calculation of COST * QTY. When executed, this example would display the value 28.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmbd_define.htm" class="topiclink">$DEFINE</a></span>,<span style="font-weight: bold;"> <a href="generate.htm" class="topiclink">GENERATE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

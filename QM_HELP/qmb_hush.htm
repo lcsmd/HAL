@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>HUSH</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="HUSH" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_hush.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">HUSH</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_heading.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_iconv.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="page-break-after: avoid; margin: 0 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">HUSH</span> statement enables or disables display output.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">HUSH</span> <span style="font-weight: bold;">OFF</span> {<span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">var</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">HUSH ON </span>{<span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">var</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">HUSH </span><span style="font-style: italic;">expr </span>{<span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">var</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">evaluates to a number.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is a variable to receive the previous state of display output control.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">HUSH ON</span> statement causes all output sent to the display by <span style="font-weight: bold;"><a href="qmb_display.htm" class="topiclink">CRT</a></span>, <span style="font-weight: bold;"><a href="qmb_display.htm" class="topiclink">DISPLAY</a></span> or <span style="font-weight: bold;"><a href="qmb_print.htm" class="topiclink">PRINT</a></span> statements to be suppressed. The <span style="font-weight: bold;">HUSH OFF</span> statement re-enables display.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">HUSH</span> <span style="font-style: italic;">expr</span> format of this statement is equivalent to <span style="font-weight: bold;">HUSH ON</span> if the value of <span style="font-style: italic;">expr</span> is non-zero and <span style="font-weight: bold;">HUSH OFF</span> if <span style="font-style: italic;">expr</span> is zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">SETTING</span> clause saves the previous state of display output control in <span style="font-style: italic;">var</span> which can be used later to revert to that state. Alternatively, the previous state can be obtained using the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function immediately after the <span style="font-weight: bold;">HUSH</span> statement. In either case, the value is 1 if output was suppressed or 0 if it was enabled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">HUSH ON</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">EXECUTE &quot;SELECT STOCK.FILE WITH QTY &gt; 50&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">HUSH OFF</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment suppresses display while the SELECT statement is executed. Use of the query processor <span style="font-weight: bold;"><a href="count_sup.htm" class="topiclink">COUNT.SUP</a></span> option might be better as it would not hide any errors.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ENCRYPT(), ENCRYPTX()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ENCRYPT(),ENCRYPTX()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_encrypt.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ENCRYPT(), ENCRYPTX()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_enable_key.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_end.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ENCRYPT()</span> and <span style="font-weight: bold;">ENCRYPTX()</span> functions encrypt data for secure storage or transmission.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ENCRYPT(</span><span style="font-style: italic;">data</span><span style="font-weight: bold;">,</span><span style="font-style: italic;"> key</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">data</span></td><td style="border:none;padding:0">is the string to be encrypted.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">key</span></td><td style="border:none;padding:0">is the encryption key to be used. Note that this is the actual key string, not a reference to a key established using the <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.KEY</a></span> command.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ENCRYPT()</span> function applies the AES 128 bit encryption algorithm to the supplied data and returns the encrypted text. The key string may be up to 64 characters in length and may contain any character. It is automatically transformed into a form that is usable by the AES algorithm. For optimum data security, the key should be about 16 characters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The encrypted data is post-processed so that it can never contain characters from the C0 control group (characters 0 to 31) or the mark characters. As a result of this operation, the encrypted data is slightly longer than the original source data. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ENCRYPTX()</span> function is similar but uses a random initialisation vector that it included in the returned encrypted string. This results in greater security.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Both encrypted data formats are decrypted using the <span style="font-weight: bold;"><a href="qmb_decrypt.htm" class="topiclink">DECRYPT()</a></span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On an ECS mode system, the data to be encrypted must be converted to a byte string using the <span style="font-weight: bold;"><a href="conv_bs.htm" class="topiclink">BS</a></span> conversion code prior to encryption if it may contain ECS characters. This is because encryption is a byte level operation. The effect of encrypting an ECS string directly is undefined. There is an implication that a program decrypting the data must know that it will need to convert the byte string back to ECS characters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Also note that encrypting the same string in both ECS and non-ECS modes will yield different results as the underlying representation of the data is different.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">FUNCTION LOGIN()</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; OPEN 'USERS' TO USR.F ELSE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DISPLAY 'Cannot open USERS file'</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;RETURN @FALSE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY 'User name: ' :</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INPUT USERNAME, 20_:</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READ USER.REC FROM USR.F THEN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;FOR I = 1 TO 3</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY 'Password: ' :</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; INPUT PW,20_: HIDDEN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; IF ENCRYPT(PW, 'MySecretKey') = USR.REC&lt;1&gt; THEN RETURN @TRUE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY 'Password incorrect'</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;NEXT I</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RETURN @FALSE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above function prompts for a user name and password, validating these against a record in the USERS file. The password field of this file is encrypted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Changing the encryption line in the above example to be</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">IF ENCRYPT(OCONV(PW, 'BSH'), 'MySecretKey') = USR.REC&lt;1&gt; THEN RETURN @TRUE</span></p>
+<p class="p_Normal">would allow use of ECS characters in the password.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="encryption.htm" class="topiclink">Data encryption</a>, <span style="font-weight: bold;"><a href="qmb_decrypt.htm" class="topiclink">DECRYPT()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MATPARSE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MATPARSE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_matparse.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MATPARSE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_matchfield.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_matread.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MATPARSE</span> statement breaks a delimited string into component substrings, assigning each to an element of a matrix. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MATPARSE</span> <span style="font-style: italic;">mat</span> <span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">string</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">delimiter</span>} {<span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">var</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MATPARSE</span> <span style="font-style: italic;">mat</span> <span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">string</span><span style="font-weight: bold;"> </span>{<span style="font-weight: bold;">USING</span> <span style="font-style: italic;">delimiter</span>} {<span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">var</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">mat</span></td><td style="border:none;padding:0">is the matrix into which the substrings are to be assigned. This matrix must already have been dimensioned.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is the string to be parsed.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">delimiter</span></td><td style="border:none;padding:0">evaluates to the delimiter that separates substrings within <span style="font-style: italic;">string</span>. If omitted, a field mark is used.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is a variable to receive the count of items.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MATPARSE</span> statement operates in one of three ways depending on the length of the <span style="font-style: italic;">delimiter</span> string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">delimiter</span> is a null string, each character of <span style="font-style: italic;">string</span> is assigned to a separate element of <span style="font-style: italic;">mat</span>. If both <span style="font-style: italic;">string</span> and <span style="font-style: italic;">delimiter</span> are null, no elements are assigned.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">delimiter</span> is a one character string, each substring of <span style="font-style: italic;">string</span> delimited by <span style="font-style: italic;">delimiter</span> is assigned to a separate element of <span style="font-style: italic;">mat</span>. The delimiter character is not stored in <span style="font-style: italic;">mat</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">delimiter</span> is more than one character long, each substring of <span style="font-style: italic;">string</span> delimited by any character of <span style="font-style: italic;">delimiter</span> is assigned to a separate element of <span style="font-style: italic;">mat</span>. The next element is assigned the character that delimited the items. Where two or more occurrences of the same delimiter character occur within <span style="font-style: italic;">string</span> with no other intervening characters, only a single element of <span style="font-style: italic;">mat</span> is used to receive the multiple delimiters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">mat</span> is two dimensional, its elements are assigned row by row.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">SETTING</span> clause sets <span style="font-style: italic;">var</span> to the number of elements assigned. Alternatively, the <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function after a <span style="font-weight: bold;">MATPARSE</span> returns the same value. Unused elements are set to null strings.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>With the default style of matrix, where there are insufficient elements in <span style="font-style: italic;">mat</span> to receive the parsed <span style="font-style: italic;">string</span>, the remaining unparsed data is stored in the zero element of <span style="font-style: italic;">mat</span>. In this case, the <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function will return zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pick style matrices do not have a zero element. Any excess data is stored in the final element of the matrix and the <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function returns zero to indicate this condition. See the <span style="font-weight: bold;"><a href="qmb_common.htm" class="topiclink">COMMON</a></span> and <span style="font-weight: bold;"><a href="qmb_dim.htm" class="topiclink">DIMENSION</a></span> statements for more details.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DIM A(30)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">MATPARSE A FROM S, @FM</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF INMAT() THEN DISPLAY INMAT() : ' elements used'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">ELSE DISPLAY 'Data overflows available space'</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment assigns successive fields of string S to elements of matrix A and displays the actual number of elements used. If there are more than 30 fields, the remaining fields and delimiting mark characters are stored in A(0).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_matbuild.htm" class="topiclink">MATBUILD</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

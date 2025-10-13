@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Migrating to OpenQM</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Migrating to OpenQM" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "migrating-to-openqm.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Migrating to OpenQM</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="tools.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="datatransfer.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This section gives some guidance on the documents and tools that are available to assist in migrating an application to QM.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span><a href="datatransfer.htm" class="topiclink">Transferring Data from other Multivalue Systems</a></p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span><a href="option-and-mode-shortcuts.htm" class="topiclink">Option and Mode Shortcuts</a></p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span><a href="conversion-tools.htm" class="topiclink">Conversion Tools</a></p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span><a href="user-exits.htm" class="topiclink">User exits</a></p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Documents</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A document outlining the process of migrating to QM can be found towards the bottom of the QM downloads page on the Rocket Software web site. There are two versions of this document; one for migration from Pick style systems (D3 and mvBase) and one for migration from U2 systems (UniVerse and Unidata).</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Source Code</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The BP file of the QMSYS account includes source code for many Pick style user exits.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Additional source modules that might be useful to developers migrating an application from D3 is available from the QM downloads page as a zip file. The content of this file is:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">ACCESS</td><td style="border:none;padding:0">A limited emulation of some features of the D3 ACCESS() function.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">D3.CREATE.INDEX</td><td style="border:none;padding:0">A wrapper for the D3 syntax of CREATE.INDEX.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">D3.CONVERT</td><td style="border:none;padding:0">A wrapper for the CONVERT() function to use the D3 argument order. Use of $MODE PCONVERT provides a better solution.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">D3.SORT</td><td style="border:none;padding:0">An emulation of the D3 SORT() function.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Details of the procedure to move a QM account to a different computer (possibly with a different operating system) can be found in the section entitled &quot;<a href="moveaccount.htm" class="topiclink">Moving an Account</a>&quot;.</p>
+
+</td></tr></table>
+
+</body>
+</html>

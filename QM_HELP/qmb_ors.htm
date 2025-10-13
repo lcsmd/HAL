@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ORS()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ORS()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_ors.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ORS()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_option.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_os_error.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ORS()</span> function performs a logical OR operation on successive elements of a dynamic array, returning a similarly structured dynamic array of results.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 22px;"><span style="font-weight: bold;">ORS(</span><span style="font-style: italic;">expr1</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">expr2</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 23px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:157px"><span style="font-style: italic;">expr1</span>, <span style="font-style: italic;">expr2</span></td><td style="border:none;padding:0">are the dynamic arrays to be processed.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ORS()</span> function performs the logical OR operation between corresponding elements of the two dynamic arrays and constructs a similarly structured dynamic array of results as its return value. An element of the returned dynamic array is 1 if either or both of the corresponding elements of <span style="font-style: italic;">expr1</span> and <span style="font-style: italic;">expr2</span> are True.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_reuse.htm" class="topiclink">REUSE()</a></span> function can be applied to either or both expressions. Without this function, any absent trailing values are taken as False.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A contains &nbsp; 1<span style="font-size: 6pt;">VM</span>1<span style="font-size: 6pt;">SM</span>0<span style="font-size: 6pt;">VM</span>0<span style="font-size: 6pt;">VM</span>1<span style="font-size: 6pt;">FM</span>0<span style="font-size: 6pt;">VM</span>1</p>
+<p>B contains &nbsp; 1<span style="font-size: 6pt;">VM</span>0<span style="font-size: 6pt;">SM</span>1<span style="font-size: 6pt;">VM</span>0<span style="font-size: 6pt;">VM</span>1<span style="font-size: 6pt;">FM</span>1<span style="font-size: 6pt;">VM</span>0</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">C = ORS(A, B)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>C now contains &nbsp; 1<span style="font-size: 6pt;">VM</span>1<span style="font-size: 6pt;">SM</span>1<span style="font-size: 6pt;">VM</span>0<span style="font-size: 6pt;">VM</span>1<span style="font-size: 6pt;">FM</span>1<span style="font-size: 6pt;">VM</span>1</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_ands.htm" class="topiclink">ANDS()</a></span>, <span style="font-weight: bold;"><a href="qmb_eqs.htm" class="topiclink">EQS()</a></span>, <span style="font-weight: bold;"><a href="qmb_ges.htm" class="topiclink">GES()</a></span>, <span style="font-weight: bold;"><a href="qmb_gts.htm" class="topiclink">GTS()</a></span>, <span style="font-weight: bold;"><a href="qmb_ifs.htm" class="topiclink">IFS()</a></span>, <span style="font-weight: bold;"><a href="qmb_les.htm" class="topiclink">LES()</a></span>, <span style="font-weight: bold;"><a href="qmb_lts.htm" class="topiclink">LTS()</a></span>, <span style="font-weight: bold;"><a href="qmb_nes.htm" class="topiclink">NES()</a></span>, <span style="font-weight: bold;"><a href="qmb_not.htm" class="topiclink">NOTS()</a></span>, <span style="font-weight: bold;"><a href="qmb_reuse.htm" class="topiclink">REUSE()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

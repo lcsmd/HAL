@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>DATE.FORMAT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="DATE.FORMAT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "date_format.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">DATE.FORMAT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="date.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="debug.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DATE.FORMAT</span> command selects the date format to be used by default or displays this setting.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">DATE.FORMAT</span> <span style="font-weight: bold;">OFF</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">DATE.FORMAT</span> { <span style="font-weight: bold;">ON </span>}</p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">DATE.FORMAT</span> <span style="font-weight: bold;">DISPLAY</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">DATE.FORMAT</span> <span style="font-weight: bold;">INFORM</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">DATE.FORMAT</span> <span style="font-style: italic;">conv.code</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">DATE.FORMAT</span> command controls the behaviour of <a href="conv_d.htm" class="topiclink">date conversion</a> operations that do not include a specific display format. Any conversion that has a fixed form such as use of the <span style="font-weight: bold;"><a href="date.htm" class="topiclink">DATE</a></span> or <span style="font-weight: bold;"><a href="time.htm" class="topiclink">TIME</a></span> commands is not affected. The initial state of the European date format setting is taken from the <a href="configparams.htm#eurodate" class="topiclink">EURODATE</a> configuration parameter, defaulting to off if this parameter is not present.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">DATE.FORMAT OFF</span> selects American date format (month, day, year) as the default for date conversions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DATE.FORMAT ON</span> or <span style="font-weight: bold;">DATE.FORMAT </span>with no qualifying information selects European date format (day, month, year) as the default for date conversions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DATE.FORMAT DISPLAY</span> displays the current setting of the date format mode. If a non-default conversion code has been set, this is also displayed. <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> is set to 0 for American date format or 1 for European date format.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DATE.FORMAT INFORM</span> sets <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> as described above but does not display the date setting.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">DATE.FORMAT</span> <span style="font-style: italic;"><a href="conv_code.htm" class="topiclink">conv.code</a></span> sets the default conversion code that will be used for date conversions that specify a code of D with no qualifying options. The <span style="font-style: italic;"><a href="conv_code.htm" class="topiclink">conv.code</a></span> must be a valid date conversion code. Specifying <span style="font-style: italic;"><a href="conv_code.htm" class="topiclink">conv.code</a></span> as D reverts to the standard default setting.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DATE.FORMAT ON</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DATE.FORMAT DISPLAY</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">European date format is on</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above commands set European date format and then confirm this selection.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>UNLOCK</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="UNLOCK" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "unlock.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">UNLOCK</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="umask.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="unlock_key_vault.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">UNLOCK </span>command, available only in the QMSYS account, releases task, record or file locks set by any process.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">UNLOCK  </span>{ <span style="font-weight: bold;">USER</span> <span style="font-style: italic;">user.no</span> } &nbsp;{ <span style="font-weight: bold;">FILE</span> <span style="font-style: italic;">file.no</span> } &nbsp;{ <span style="font-weight: bold;">ALL</span> &nbsp;|  <span style="font-style: italic;">record.ids</span>... }</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">UNLOCK  </span>{ <span style="font-weight: bold;">USER</span> <span style="font-style: italic;">user.no</span> } &nbsp;{ <span style="font-weight: bold;">FILE</span> <span style="font-style: italic;">file.no</span> }  <span style="font-weight: bold;">FILELOCK</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">UNLOCK &nbsp;TASKLOCK</span> <span style="font-style: italic;">lock.no</span>...</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the first form, <span style="font-weight: bold;">UNLOCK</span> releases record ids set by user <span style="font-style: italic;">user.no</span> on file<span style="font-style: italic;"> file.no</span>. At least one of these options must be present. The values of <span style="font-style: italic;">user.no</span> and <span style="font-style: italic;">file.no</span> can be found from the output of the <span style="font-weight: bold;"><a href="list_readu.htm" class="topiclink">LIST.READU</a> </span>command. The <span style="font-weight: bold;">UNLOCK </span>requires either a list of record ids or the <span style="font-weight: bold;">ALL</span> keyword to determine which records to unlock.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the second form, the file lock set by the specified user on the given file is released. Again, at least one of the <span style="font-weight: bold;">USER</span> and <span style="font-weight: bold;">FILE</span> options must be specified.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The third form allows task locks owned by other users to be released. Any number of locks may be released in a single command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">UNLOCK</span> command is restricted to users with administrator rights and should be used with great care. Locks are taken by application software to protect critical operations. Releasing a lock can cause data integrity problems.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST.READU</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">File &nbsp;Path</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp;17 &nbsp;D:\SALES\INVENTORY</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">File User Type Id</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp;17 &nbsp; &nbsp;4 &nbsp;RU &nbsp;18464</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;"> &nbsp;17 &nbsp; &nbsp;4 &nbsp;RU &nbsp;21968</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">UNLOCK USER 4 18464</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In this example, <span style="font-weight: bold;"><a href="list_readu.htm" class="topiclink">LIST.READU</a> </span>is used to check which locks are outstanding and the <span style="font-weight: bold;">UNLOCK</span> command is used to release a specific record lock.</p>
+
+</td></tr></table>
+
+</body>
+</html>

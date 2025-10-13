@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>REPEATING</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="REPEATING" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "repeating.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">REPEATING</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="require_select.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="reporting.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">REPEATING</span> keyword causes the query processor to repeat single valued data against further values in other fields.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">REPEATING</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In a report that includes multivalued fields, the value of any single valued items normally only appears once. The <span style="font-weight: bold;">REPEATING</span> keyword duplicates the single valued items against each multivalued element of other fields. It is related to the <span style="font-weight: bold;"><a href="rpt.htm" class="topiclink">RPT</a></span> field qualifier that can be applied to specific single-valued items included in the report.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The decision as to whether an item is single or multivalued is based on the S/M flag in the D/I-type dictionary definition or use of the equivalent field qualifiers, not by whether the data includes value marks. This is to ensure that a multivalued field with only a single entry does not get repeated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pick style A/S-type dictionary items are always treated as multivalued.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A file containing a multivalued list of order numbers corresponding to each customer might produce a report that includes the following section:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">LIST CUST.SALES ORDER.NO HDR.SUP</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Customer &nbsp; Order No</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1447 &nbsp; &nbsp; &nbsp; 10045</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1587 &nbsp; &nbsp; &nbsp; 10051</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 10059</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Using the <span style="font-weight: bold;">REPEATING</span> keyword changes this to:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">LIST CUST.SALES ORDER.NO HDR.SUP REPEATING</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Customer &nbsp; Order No</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1447 &nbsp; &nbsp; &nbsp; 10045</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1587 &nbsp; &nbsp; &nbsp; 10051</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">1587 &nbsp; &nbsp; &nbsp; 10059</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="by_exp.htm" class="topiclink">BY.EXP</a></span><a href="by_exp.htm" class="topiclink">,</a> <span style="font-weight: bold;"><a href="rpt.htm" class="topiclink">RPT</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

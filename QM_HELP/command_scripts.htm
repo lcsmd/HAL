@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Command Scripts</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Command scripts,LOGIN paragraph,MASTER.LOGIN paragraph,ON.ABORT paragraph,ON.EXIT paragraph,ON.LOGTO paragraph" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "command_scripts.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Command Scripts</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="loginprocess.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="connection_pooling.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QM <a href="voc.htm" class="topiclink">VOC file</a> normally contains one or more items that represent scripts of commands to be executed automatically at certain events. Although these are usually <a href="voc_pa.htm" class="topiclink">paragraphs</a>, all except for the MASTER.LOGIN item may actually be any executable type of VOC record (verbs, menus, Procs, etc). None of these items need exist. They provide the means to perform a fixed sequence of commands at the events described below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">LOGIN</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The LOGIN paragraph is executed on entry to QM and also when the <span style="font-weight: bold;"><a href="logto.htm" class="topiclink">LOGTO</a></span> command is used to switch to a new account. &nbsp;The break key is inhibited until first execution of this paragraph has been completed. This paragraph is executed for interactive (terminal) users, phantom processes and QMClient connections. The <a href="at_variables.htm#tty" class="topiclink">@TTY</a> variable can be tested to determine the user type and, as in this example, used to control flow through the paragraph. The LOGIN paragraph is typically used to set QM <a href="option.htm" class="topiclink">option</a> flags, perform security checks, set up printers, set terminal characteristics and enter the application. The last step ensures that an application user does not see a QM command prompt.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Example</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PA</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DATE.FORMAT ON</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF @TTY IN 'phantom', 'vbsrvr' THEN STOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PTERM CASE NOINVERT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">BELL OFF</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPTION NO.USER.ABORTS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">BREAK ON</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">RUN BP MAIN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">ON.LOGTO</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The ON.LOGTO paragraph is executed on use of the <span style="font-weight: bold;"><a href="logto.htm" class="topiclink">LOGTO</a></span> command before switching to the new account. This paragraph might be used, for example, to clear down application specific data such as named common blocks.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Example</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PA</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DELETE.COMMON ALL</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">ON.EXIT</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The ON.EXIT paragraph is executed on leaving QM by use of the <span style="font-weight: bold;"><a href="quit.htm" class="topiclink">QUIT</a></span> command or any of its synonyms. The break key is inhibited during execution of this paragraph. An abort occurring in this paragraph will terminate the QM session immediately.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Example</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PA</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SELECT TEMP WITH UNO = &lt;&lt;@USERNO&gt;&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF @SELECTED THEN DELETE TEMP NO.QUERY</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">ON.ABORT</span></p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The primary role of the ON.ABORT paragraph is to prevent the user reaching a command prompt if the application fails. It may be useful to include logging of the cause of the abort.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The ON.ABORT paragraph is executed when QM aborts a program due to an internally detected error, a QMBasic program executes an <span style="font-weight: bold;"><a href="qmb_abort.htm" class="topiclink">ABORT</a></span> statement or when the Abort response is chosen after use of the break key. The <a href="at_variables.htm#abort.code" class="topiclink">@ABORT.CODE</a> and <a href="at_variables.htm#abort.message" class="topiclink">@ABORT.MESSAGE</a> variables may be useful in determining the cause of the error. Aborts occurring in commands started using the QMBasic <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> statement with the TRAPPING ABORTS option do not execute the ON.ABORT paragraph.</p>
+<p><span style="width:48px;display:inline-block">&nbsp;</span> &nbsp; &nbsp; &nbsp; &nbsp;</p>
+<p>A further abort occurring whilst executing the ON.ABORT paragraph will cause a message to be displayed without re-entering the paragraph. If execution of the application is to be resumed, the ON.ABORT paragraph should execute a <span style="font-weight: bold;"><a href="clear_abort.htm" class="topiclink">CLEAR.ABORT</a></span> statement to inform the command processor that the abort condition has been handled and normal execution is to resume.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Example</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PA</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">RUN BP LOG.ABORT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">QUIT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">MASTER.LOGIN</span> (QMSYS account)</p>
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This item, if present, must be a paragraph and is executed on initial entry to QM in any account before the LOGIN paragraph but not when the <span style="font-weight: bold;"><a href="logto.htm" class="topiclink">LOGTO</a></span> command is used to switch to a new account. This paragraph is executed with the break key inhibited for terminal users and phantom processes. It is also executed for QMClient connections. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Example</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PA</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DATE.FORMAT ON</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPTION NO.USER.ABORTS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPTION DUMP.ON.ERROR</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

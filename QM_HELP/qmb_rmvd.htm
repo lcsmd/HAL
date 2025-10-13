@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>RMVD()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="RMVD()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_rmvd.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">RMVD()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_right.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_root.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RMVD()</span> function extracts characters from a dynamic array up to the next delimiter character. It is closely related to <span style="font-weight: bold;"><a href="qmb_remove.htm" class="topiclink">REMOVE()</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">RMVD(</span><span style="font-style: italic;">dyn.array</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">var</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">dyn.array</span></td><td style="border:none;padding:0">is the dynamic array from which <span style="font-style: italic;">string</span> is to be extracted.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is the variable to be set according to the delimiter that terminates the extracted substring.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RMVD()</span> function is similar to the <span style="font-weight: bold;"><a href="qmb_remove.htm" class="topiclink">REMOVE()</a></span> function but recognises only the field, value and subvalue marks as delimiters. Text marks and item marks are treated as part of the data. The function</p>
+<p>associates a <span style="font-weight: bold;">remove pointer</span> with the <span style="font-style: italic;">dyn.array</span> from which data is extracted. Whenever a string is assigned to a variable the remove pointer is set to point one character before the start of the string. Subsequent <span style="font-weight: bold;">RMVD()</span> operations advance the pointer by one character and then extract characters from the position of the remove pointer up to the next delimiter character or the end of the string. Because the remove pointer gives immediate access to the position at which the data extraction should commence, this operation can be much faster than field, value or subvalue extraction.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The value returned in <span style="font-style: italic;">var</span> indicates the delimiter that terminated the removal. The delimiter character is not stored as part of the extracted substring. Values of <span style="font-style: italic;">var</span> are</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">0 &nbsp; &nbsp; &nbsp; &nbsp;End of string</p>
+<p style="margin: 0 0 0 30px;">2 &nbsp; &nbsp; &nbsp; &nbsp;Field mark</p>
+<p style="margin: 0 0 0 30px;">3 &nbsp; &nbsp; &nbsp; &nbsp;Value mark</p>
+<p style="margin: 0 0 0 30px;">4 &nbsp; &nbsp; &nbsp; &nbsp;Subvalue mark</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The mark character itself can be reconstructed as CHAR(256 - <span style="font-style: italic;">var</span>) for a non-zero value of <span style="font-style: italic;">var</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Once the end of the <span style="font-style: italic;">dyn.array</span> has been reached, the remove pointer remains positioned one character beyond the end of the string and further <span style="font-weight: bold;">RMVD()</span> operations would return a null string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The remove pointer may be reset to the start of the string by assigning a new value to <span style="font-style: italic;">string</span>. Where it is required to reset the remove pointer without changing the string, the <span style="font-weight: bold;"><a href="qmb_setrem.htm" class="topiclink">SETREM</a></span> statement can be used. Alternatively, applications frequently use a statement such as</p>
+<p style="margin: 5px 0 5px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = S</span></p>
+<p>which will assign S to itself thus resetting the remove pointer.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that the <span style="font-weight: bold;">RMVD()</span> function performs a type conversion on <span style="font-style: italic;">dyn.array</span> if it is not already a string. Thus the program</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = 99</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">X = RMVD(S, DELIM)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>would convert S to be a string &quot;99&quot;. Although this is unlikely to have any undesirable effects, it is a side effect to be aware of.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; BOOK.NO = RMVD(BOOK.LIST, DELIM)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PRINT &quot;Book number is &quot; : BOOK.NO</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">WHILE DELIM</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment extracts entries from the BOOK.LIST dynamic array and prints them. There is an assumption that BOOK.LIST is not a null string (in which case a single null BOOK.NO would be printed).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = &quot;&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; FLD = RMVD(REC, DELIM)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; S := FLD</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IF DELIM = 2 OR DELIM = 0 THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;PRINT S</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;S = &quot;&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END ELSE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;S := CHAR(256 - DELIM)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">WHILE DELIM</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program prints fields from REC. Note the use of the <span style="font-weight: bold;">ELSE</span> clause to append the delimiter that terminated the substring if it was not a field mark or the end of the string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This is equivalent to</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = DCOUNT(REC, @FM)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FOR I = 1 TO N</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PRINT REC&lt;I&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEXT I</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>but may be much faster where REC is large and has a very large number of fields.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_getrem.htm" class="topiclink">GETREM()</a></span>,<span style="font-weight: bold;"> <a href="qmb_remove.htm" class="topiclink">REMOVE</a></span>, <span style="font-weight: bold;"><a href="qmb_removef.htm" class="topiclink">REMOVEF()</a></span>,<span style="font-weight: bold;"> <a href="qmb_setrem.htm" class="topiclink">SETREM</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

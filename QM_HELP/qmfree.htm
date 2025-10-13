@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMFree()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMFree()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmfree.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMFree()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmfield.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmget.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMFree()</span> function releases memory returned by other functions. It is only used with the C API library.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The function takes one argument, <span style="font-style: italic;">Addr</span>, as the memory address of the area to be released.</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">void QMFree(void * </span><span style="font-style: italic;">Addr</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Many of the C API functions return dynamically allocated memory. The <span style="font-weight: bold;">QMFree()</span> function allows a program to release this. The C runtime library free() function should not be used as it may not be compatible with the memory allocator used within the API functions.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>To simplify application design where errors may lead to null pointers being returned by QMClient functions, passing a null pointer into <span style="font-weight: bold;">QMFree()</span> has no effect.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec = QMReadu(fClients, ClientNo, TRUE, Err);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Rec2 = QMReplace(Rec, 1, Pos, 0, NewData);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMWrite(fClients, ClientNo, Rec2);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMFree(Rec);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMFree(Rec2);</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment reads a record with an update lock, modifies it and then writes it back to the file. A real program should test the Err status from the read operation to determine if it was successful. The <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span> is used to release the dynamic memory allocated to store Rec and Rec2.</p>
+
+</td></tr></table>
+
+</body>
+</html>

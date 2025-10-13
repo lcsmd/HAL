@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>The Display Clause</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Default listing phrase,Display clause,Qualified display clauses" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "displayclause.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">The Display Clause</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sortclause.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="scan.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">display clause</span> determines which fields (columns) are reported and how they are displayed. This clause is applicable to the <span style="font-weight: bold;"><a href="list.htm" class="topiclink">LIST</a></span> and <span style="font-weight: bold;"><a href="list.htm" class="topiclink">SORT</a></span> verbs only. If omitted, the query processor uses the <span style="font-weight: bold;">default listing phrase</span> to determine what is shown.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are a wide variety of options in this clause. Some determine the actual layout of the data while others set breakpoints at which totals, averages, etc are to be reported.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Fields appear in the report left to right in the order of the display clause elements. The default view of the record id (@ID) is always shown as the leftmost column unless it is suppressed using the <span style="font-weight: bold;"><a href="id_sup.htm" class="topiclink">ID.SUP</a></span> keyword. If there is no @ID dictionary item, the default action is to show this as 12 characters, left justified but this can be amended using the <a href="queryintro.htm#query.defaults" class="topiclink">$QUERY.DEFAULTS</a> record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The display clause is constructed from the elements in the table below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-weight: bold;">Prefix</span></p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-weight: bold;">Data Item</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-weight: bold;">Suffix</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">AVG</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">D-type item</p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">CONV &quot;<span style="font-style: italic;">code</span>&quot;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">BREAK.ON [&quot;<span style="font-style: italic;">text</span>&quot;]</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">I-type item</p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">FMT &quot;<span style="font-style: italic;">spec</span>&quot;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">BREAK.SUP [&quot;<span style="font-style: italic;">text</span>&quot;]</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">A/S-type item</p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">COL.HDG &quot;<span style="font-style: italic;">text</span>&quot;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">CALC</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">EVAL &quot;<span style="font-style: italic;">expr</span>&quot; &nbsp;[AS <span style="font-style: italic;">xx</span>]</p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">ASSOC &quot;<span style="font-style: italic;">name</span>&quot;</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">CUMULATIVE</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">F<span style="font-style: italic;">n</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">ASSOC.WITH <span style="font-style: italic;">field</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">ENUM</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt;">A</span><span style="font-size: 10pt; font-style: italic;">n</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">DISPLAY.LIKE <span style="font-style: italic;">field</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">MAX</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">SINGLE.VALUE</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">MEDIAN</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">MULTI.VALUE</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">MIN</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">NO.NULLS</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">MODE</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p class="p_Normal">RPT</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">PCT [<span style="font-style: italic;">n</span>]</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">RANGE</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:200px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;">TOTAL</p>
+</td>
+<td style="vertical-align:top; width:218px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+<td style="vertical-align:top; width:217px; padding:4px; border:solid 2px #000000;"><p style="margin: 5px 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Each data item may optionally be prefixed by one of the qualifiers in the first column and followed by any number of compatible options from the third column.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where no such item is defined in the dictionary or the VOC, the F<span style="font-style: italic;">n</span> or A<span style="font-style: italic;">n</span> data item is recognised by the query processor as a reference to field <span style="font-style: italic;">n</span>, treating the data as single valued with a default format code of &quot;15T&quot;. These display characteristics can be modified using other elements from the table above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Qualified Display Clauses</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For improved compatibility with other multivalue databases, QM supports the concept of <span style="font-weight: bold;">qualified display clauses</span>. These combine the role of the display clause with simple selection clause elements. Because qualified display clauses lead to a potential ambiguity in the interpretation of a query, this feature must be enabled using the QUALIFIED.DISPLAY mode of the  <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A qualified display clause element inserts a conditional test after the data item but before any items from the third column of the table above. This conditional test consists of an operator and a field or value against which the test is to be performed. It may not include the <span style="font-weight: bold;"><a href="and.htm" class="topiclink">AND</a></span> or <span style="font-weight: bold;"><a href="or.htm" class="topiclink">OR</a></span> operator or the use of brackets.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For example, the query</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST STOCK SUPPLIER = 14 DESCRIPTION</span></p>
+<p>would list the record id (default), SUPPLIER and DESCRIPTION fields, showing only those record where the SUPPLIER field contains 14. This is equivalent to</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST STOCK SUPPLIER DESCRIPTION WITH SUPPLIER = 14</span></p>
+<p>Qualified display clauses can also use Pick style wildcards which are much less powerful than the <span style="font-weight: bold;"><a href="like.htm" class="topiclink">LIKE</a></span> operator. For details, see the <span style="font-weight: bold;"><a href="eq.htm" class="topiclink">EQ</a></span> operator.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The Default Listing Phrase</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If a query sentence contains no display clause, the query processor looks in the dictionary for a PH-type (phrase) entry named @. If this is found, it is attached to the end of the query sentence. Typically, this phrase contains a default list of fields to be shown but it may also include other query sentence elements. If there is no @ phrase, only the record id will be shown.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where a report is directed to a printer by using the <span style="font-weight: bold;"><a href="lptr.htm" class="topiclink">LPTR</a></span> keyword, the query processor's search for a default listing phrase is extended by first looking for a phrase named @LPTR. If this is not found, the query processor uses the @ phrase as for reports directed to the screen. This extra stage allows users to set up a different set of default fields for the printer and the screen, usually because printers tend to be wider than the screen and can therefore fit more data.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+      INCLUDE FILE.EQU SMS.EQ
+      INCLUDE FILE.EQU SMSGRP.EQ
+      
+   
+      open 'CONTACT.CARDS' to cont.cards else print 'contact.cards';stop
+      open 'CONTACTS' to contacts else print 'contacts';stop
+      open 'LCS.CONTROL' to lcs.control else print 'lcs.control';stop
+      open 'SMS' to sms else print 'sms'
+      open 'SMSGRP' to smsgrp else print 'smsgrp';stop
+
+      parts = "own,members,lines"
+      parts=change(parts,",",@fm)
+      lm=1
+      select cont.cards
+
+
+      delim = ","
+      ct=0
+      read next.sms.id from lcs.control,'next.sms.id' else next.sms.id = 100001
+      loop while readv exists from sms,next.sms.id,0 do
+         next.sms.id += 1
+      repeat
+      read next.smsgrp.id from lcs.control,'next.smsgrp.id' else next.smsgrp.id = 5001
+      loop while readv exists from sms,next.smsgrp.id,0 do
+         next.smsgrp.id += 1
+      repeat
+
+
+      select.str = "SSELECT CONTACT.CARDS"
+      if lm then print select.str
+      execute select.str capturing cap
+      if lm then print cap
+      readlist cont.ids then
+         cont.ct = dcount(cont.ids,@fm)
+         if cont.ct then
+            for x = 1 to cont.ct
+               cont.id = cont.ids<x>
+               smsgrp.id = next.smsgrp.id
+               next.smsgrp.id+=1
+               read buff from cont.cards,cont.id then
+                  lct = dcount(buff,@fm)
+                  if lct then
+                     own = trim(Change(line<1>,"Message from",""))
+                     if line<2> = "With" then
+                        members = ""
+                        member.ct=0
+                        a =2
+                        loop
+                           a+=1
+                        while line<a> > "" do
+                           member.ct+=1
+                           members<member> = line<a>
+                        repeat
+                        smsid = next.sms.id
+                        smsgrp.id = own:"|"
+
+                     until
+                        members = trim(line<3>)
+
+                        for lx = 6 to lct
+                           line=buff<lx>
+                           parse.csv line,delim,fromid,toid,datetime,message
+                           key = own:"|":cont.id:
+

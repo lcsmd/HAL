@@ -1,0 +1,18 @@
+      PROGRAM PROCESS.FOLDER
+      S=@SENTENCE
+      FOLDER = FIELD(S," ",2)
+      OPEN FOLDER TO F.FOLDER ELSE PRINT FOLDER;STOP
+      EXECUTE F.FOLDER
+      LOOP
+         READLIST ITEMS
+         ITEM.CT = DCOUNT(ITEMS,@FM)
+         FOR X = 1 TO ITEM.CT
+            ITEM = ITEMS<X>
+            CMD = "PROCESS_WORDS ":FOLDER:" ":ITEM
+            PRINT CMD
+            EXECUTE CMD
+         NEXT X
+      REPEAT
+      END
+
+

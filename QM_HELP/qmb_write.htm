@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>WRITE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="WRITE,WRITEU" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_write.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">WRITE, WRITEU</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_while.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_write_socket.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WRITE</span> statement writes a record to a previously opened file. The <span style="font-weight: bold;">WRITEU</span> statement is identical but preserves any lock on the record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">WRITE</span> <span style="font-style: italic;">var</span> {<span style="font-weight: bold;">ENCODING</span> <span style="font-style: italic;">name</span>} <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">file.var</span><span style="font-style: italic; font-weight: bold;">,</span> <span style="font-style: italic;">record.id</span> {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 5px 0 0 30px;"><span style="font-weight: bold;">WRITE</span> <span style="font-style: italic;">var</span> {<span style="font-weight: bold;">ENCODING</span> <span style="font-style: italic;">name</span>} <span style="font-weight: bold;">TO</span> <span style="font-style: italic;">file.var</span><span style="font-style: italic; font-weight: bold;"> </span><span style="font-weight: bold;">CREATING.SEQKEY </span><span style="font-style: italic;">id.var</span> {<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is the name of a variable containing the data to be written.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.var</span></td><td style="border:none;padding:0">is the file variable associated with the file.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">record.id</span></td><td style="border:none;padding:0">evaluates to the id of the record to be written.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">id.var</span></td><td style="border:none;padding:0">is the variable to receive the record id.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statements to be executed if the write fails.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The keyword <span style="font-weight: bold;">ON</span> may be used in place of <span style="font-weight: bold;">TO</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">In the first form of the <span style="font-weight: bold;">WRITE</span> statement, the contents of var are written to the file using the supplied record id. Any existing record of the same id is replaced by this action.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>When writing to a directory file, field marks in the data to be written are replaced by newlines. This action may be suppressed by using the <span style="font-weight: bold;"><a href="qmb_mark_mapping.htm" class="topiclink">MARK.MAPPING</a></span> statement after opening the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">ENCODING</span> element to this statement sets the character encoding to be used, overriding any encoding set in the <a href="voc_f.htm" class="topiclink">VOC F-type</a> record or when the file was opened. This is relevant only to directory files and is ignored for other file types. A null string as the encoding name is equivalent to not having the <span style="font-weight: bold;">ENCODING</span> clause at all. To disable the default encoding, the encoding name should be specified as &quot;NULL&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WRITE</span> statement releases any read or update lock on this record. The <span style="font-weight: bold;">WRITEU</span> statement preserves the lock. Within a transaction, the lock is retained until the transaction terminates and then released regardless of which statement is used. Attempting to write a record in a transaction will fail if the process does not hold an update lock on the record or the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ON ERROR</span> clause is executed for serious fault conditions such as errors in a file's internal control structures. It is also executed if the write operation is disallowed by a pre-write  <a href="triggers.htm" class="topiclink">trigger function</a> associated with the file. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return an error number. If no <span style="font-weight: bold;">ON ERROR</span> clause is present, an abort would occur.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although it is generally acceptable to assume that a <span style="font-weight: bold;">WRITE</span> that does not execute the <span style="font-weight: bold;">ON ERROR</span> clause or abort was successful, the <span style="font-weight: bold;">WRITE</span> operation normally returns zero from an immediately following use of the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function. On ECS mode systems, status value ER$ECS.DATA will be returned if a record containing ECS characters is written to a non-ECS mode hashed file or a directory file with no encoding. The write will have completed but only the low order byte of each character will have been written.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When writing a new record to a directory file on a Linux or Unix system, the operating system level file that represents the QM record is created using the current umask value. For sessions that connect directly to QM rather than from the operating system shell (direct telnet and QMClient), the umask value is specified by the <a href="configparams.htm#umask" class="topiclink">UMASK</a> configuration parameter or, if this parameter is not present, a default of 002. This behaviour can be modified by executing a <span style="font-weight: bold;"><a href="umask.htm" class="topiclink">UMASK</a></span> command within the session.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">Automatic Generation of Sequential Numeric Keys</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The second form uses the <span style="font-weight: bold;">CREATING.SEQKEY</span> clause to create a sequentially numbered record id, returning this id in <span style="font-style: italic;">id.var</span>. This form of write is only valid with hashed files, including those opened over a <a href="qmnet.htm" class="topiclink">QMNet</a> connection. Use with data replication is likely to fail as the internal sequence number will not be updated on the subscriber system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Used inside a transaction, the record id is generated when the <span style="font-weight: bold;">WRITE</span> statement is executed, not at transaction commit. This could lead to gaps in sequential record numbering if a transaction does not commit. Gaps can also occur as a result of errors detected after the point when locking must be enforced such as rejection of the write by a trigger function. Because the record id is generated automatically, a program cannot lock it prior to the <span style="font-weight: bold;">WRITE</span>. Instead, an update lock is automatically applied for the duration of the internal processing of the write operation. Except when using <span style="font-weight: bold;">WRITEU</span>, this lock will be released before continuing with the next program statement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">By default, the sequential record numbering begins at 1 for a newly created file. The <span style="font-weight: bold;"><a href="qmb_fcontrol.htm" class="topiclink">FCONTROL()</a></span> function provides a way for an application to access and update the internal sequence number. The <span style="font-weight: bold;"><a href="qmb_fileinfo.htm" class="topiclink">FILEINFO()</a></span> function allows retrieval of the last used sequential record key. The sequence number can be updated using the <span style="font-weight: bold;"><a href="configure_file.htm" class="topiclink">CONFIGURE.FILE</a></span> command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Application developers should take great care when using automatic key generation. It is essential that all records are written using this method or by reserving a key value with the FC$GET.SEQ.KEY mode of the <span style="font-weight: bold;"><a href="qmb_fcontrol.htm" class="topiclink">FCONTROL()</a></span> function. Failure to comply with this rule could result in records being overwritten as there is no check whether a record with the automatically generated record id already exists. In addition, if the system suffers a power failure or similar condition in which a record may have been written but the file header (where the sequential counter is maintained) has not been flushed to disk. This situation is no different from that which would occur with other methods of allocating sequential numeric keys, however, the <a href="qmfix.htm" class="topiclink">qmfix</a> tool will detect and correct any inconsistency. It is good operational practice to run qmfix after a system failure regardless of whether automatic key generation is in use. Note that this issue applies only to system failures, not application errors or forced logout of a QM process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Use of a THEN/ELSE Clause</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For compatibility with the way in which triggers operate in some other multivalue products, the <span style="font-weight: bold;">WRITE</span> statement has an optional <span style="font-weight: bold;">THEN/ELSE</span> clause. Because this would otherwise lead to a syntactic ambiguity, compilation of programs that use this clause requires the WRITE.DELETE.THEN.ELSE option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive to be enabled. Once this is done, the optional <span style="font-weight: bold;">THEN/ELSE</span> clauses can be included in their usual position, after the <span style="font-weight: bold;">ON ERROR</span> clause.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When a <span style="font-weight: bold;">WRITE</span> statement has a <span style="font-weight: bold;">THEN/ELSE</span> clause, a failure returned from a trigger function, typically as a result of a pre-write data validation error, will cause the <span style="font-weight: bold;">ELSE</span> clause to be executed instead of the <span style="font-weight: bold;">ON ERROR</span> clause.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">WRITE ITEM TO STOCK, ITEM.ID</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement writes the content of ITEM to a record with the id in ITEM.ID on the file previously opened to file variable STOCK.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">WRITE LOG.REC TO LOG.F CREATING.SEQKEY LOG.ID</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement writes the content of LOG.REC to the file opened to file variable LOG.F, using an automatically generated sequential record id that is returned in the LOG.ID variable.</p>
+
+</td></tr></table>
+
+</body>
+</html>

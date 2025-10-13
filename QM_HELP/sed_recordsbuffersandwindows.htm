@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SED - Records, buffers and windows</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sed_recordsbuffersandwindows.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SED &nbsp;- &nbsp;Records, Buffers and Windows</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sed.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sed_standardkeybindingsquickreference.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A record to be edited is held in a <span style="font-weight: bold;">buffer</span>. Buffers may also hold records being created but not yet written to disk or other data such as lists of records in a file. <span style="font-weight: bold;">SED</span> allows use of up to 20 buffers.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The editor displays a <span style="font-weight: bold;">window</span> in which a number of lines of the record being edited can be seen at any one time. Where a line is wider than the display, the entire window pans from side to side to maintain the cursor within the display area.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The bottom two lines of the screen display status information. The upper status line shows the file and record names of the data being edited. If the data has been changed and hence does not match what is stored in the file, an asterisk is displayed at the start of this line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The lower status line displays several status fields. From left to right these show</p>
+<p style="margin: 0 0 0 30px;">the number of lines in the record</p>
+<p style="margin: 0 0 0 30px;">the current cursor position (line and column, both numbered from one)</p>
+<p style="margin: 0 0 0 30px;">the status of macro collection</p>
+<p style="margin: 0 0 0 30px;">the state of insertion overlay mode</p>
+<p style="margin: 0 0 0 30px;">the state of indentation mode</p>
+<p style="margin: 0 0 0 30px;">the search mode</p>
+<p style="margin: 0 0 0 30px;">the count for repeated functions and operations with a numeric prefix</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The lower status line is also used by some editor functions to request qualifying information. A limited set of editing functions can be used within this prompt area. These are <span style="font-weight: bold;">forward char</span>, <span style="font-weight: bold;">back char</span>, <span style="font-weight: bold;">start line</span>, <span style="font-weight: bold;">end line</span>, <span style="font-weight: bold;">delete char</span>, <span style="font-weight: bold;">backspace</span>, <span style="font-weight: bold;">kill line</span> and <span style="font-weight: bold;">insert kill buffer</span>. The <span style="font-weight: bold;">kill line</span> function used in this area deletes all characters after the cursor without affecting the kill buffer. The <span style="font-weight: bold;">insert kill buffer</span> function will insert the first line from the kill buffer at the current cursor position.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The display may optionally include line numbering. See the <span style="font-weight: bold;">LNUM</span> command for further details.</p>
+
+</td></tr></table>
+
+</body>
+</html>

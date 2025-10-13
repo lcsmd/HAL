@@ -1,0 +1,22 @@
+      FN = field(@sentence,' ',2)
+      if fn then
+         CMD.STR = "DELETE.FILE ":FN
+         CMD.STR<2> =  "!DEL ":@PATH:"\":FN:" * /Q"
+         CMD.STR<3> =  "!RMDIR ":@PATH:"\":FN:" /Q"
+         CMD.STR<4> =  "!DEL ":@PATH:"\":FN:".DIC * /Q"
+         CMD.STR<5> =  "!RMDIR ":@PATH:"\":FN:".DIC /Q"
+         CMD.STR<6> =  "DELETE MD ":FN
+         CMD.STR<7> =  "CREATE.FILE ":FN
+         CMD.CT = DCOUNT(CMD.STR,@FM)
+         FOR CMD.X = 1 TO CMD.CT
+            CMD.STR.A = CMD.STR<CMD.X>
+            GOSUB DO.CMD:
+         NEXT CMD.X
+      end
+      STOP
+
+DO.CMD:
+      PRINT CMD.STR.A
+      EXECUTE CMD.STR.A CAPTURING CAP
+      PRINT CAP
+      RETURN

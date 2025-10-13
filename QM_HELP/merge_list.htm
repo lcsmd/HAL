@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MERGE.LIST</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MERGE.LIST" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "merge_list.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MERGE.LIST</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="med.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="message.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MERGE.LIST</span> command creates a new active select list by merging two other lists according to one of three relational operators.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MERGE.LIST</span> <span style="font-style: italic;">list1 rel.op list2</span> {<span style="font-weight: bold;">TO</span> <span style="font-style: italic;">tgt.list</span>} {<span style="font-weight: bold;">COUNT.SUP</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">list1</span>, <span style="font-style: italic;">list2</span></td><td style="border:none;padding:0">identify the select lists to be merged. These must be select list numbers in the range 0 to 10. They may not reference the same list.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">rel.op</span></td><td style="border:none;padding:0">is the relational operator and is one of</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">INTERSECTION</span></td><td style="border:none;padding:0">Create a new list containing only those record keys that appear in both <span style="font-style: italic;">list1</span> and <span style="font-style: italic;">list2</span>. The keyword may be abbreviated to <span style="font-weight: bold;">INTERSECT</span>.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 390px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">UNION</span></td><td style="border:none;padding:0">Create a new list containing all record keys from both <span style="font-style: italic;">list1</span> and <span style="font-style: italic;">list2</span>. Keys appearing in both lists appear only once in the resultant list.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 390px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">DIFFERENCE</span></td><td style="border:none;padding:0">Create a new list containing all record keys from <span style="font-style: italic;">list1</span> except those that are also in <span style="font-style: italic;">list2</span>. The keyword may be abbreviated to <span style="font-weight: bold;">DIFF</span>.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">tgt.list</span></td><td style="border:none;padding:0">is the number of the select list (0 to 10) to receive the result. If omitted, select list zero is used. It is valid for <span style="font-style: italic;">tgt.list</span> to reference one of the source lists.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">COUNT.SUP</span></td><td style="border:none;padding:0">indicates that display of the record count in the merged list is to be suppressed.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MERGE.LIST</span> command allows construction of one select list from two others. Use of <span style="font-weight: bold;">MERGE.LIST</span> can be significantly faster than a full select of the file to create the new list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If either source list has already been partially processed before the <span style="font-weight: bold;">MERGE.LIST</span> command is executed, only the remaining unprocessed items are used. The resultant list will replace any already active <span style="font-style: italic;">tgt.list</span>. The source lists are cleared after the new list has been set up. The ordering of <span style="font-style: italic;">tgt.list</span> is undefined.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> is set to the number of items in the new list or a negative error code.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Example</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">GET.LIST FRANCE.CUSTOMERS TO 1</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">27 records selected.</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">GET.LIST GERMANY.CUSTOMERS TO 2</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">31 records selected.</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">MERGE.LIST 1 UNION 2 TO 3</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">58 records selected.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This example restores two saved select lists, one holding keys for customers in France, the other for customers in Germany and merges these to form select list 3 as a list of customers in either of these countries.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="list_diff.htm" class="topiclink">LIST.DIFF</a></span>, <span style="font-weight: bold;"><a href="list_inter.htm" class="topiclink">LIST.INTER</a></span>, <span style="font-weight: bold;"><a href="list_union.htm" class="topiclink">LIST.UNION</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

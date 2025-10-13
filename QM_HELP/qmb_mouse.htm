@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MOUSE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MOUSE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_mouse.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MOUSE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_mod.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_movelist.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="width:48px;display:inline-block">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MOUSE</span> statement enables or disables mouse input.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MOUSE ON</span> {<span style="font-weight: bold;">SETTING</span><span style="font-style: italic;"> var</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">MOUSE OFF</span> {<span style="font-weight: bold;">SETTING</span><span style="font-style: italic;"> var</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">MOUSE </span><span style="font-style: italic;">expr</span> {<span style="font-weight: bold;">SETTING</span><span style="font-style: italic;"> var</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">is an expression that evaluates to True or False.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is the variable to receive the previous mouse state.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Mouse input is initially off. &nbsp;Use of <span style="font-weight: bold;">MOUSE ON</span> enables mouse input until a subsequent <span style="font-weight: bold;">MOUSE OFF</span> statement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">MOUSE</span> <span style="font-style: italic;">expr</span> format of this statement is equivalent to <span style="font-weight: bold;">MOUSE ON</span> if the value of <span style="font-style: italic;">expr</span> is non-zero and <span style="font-weight: bold;">MOUSE OFF</span> if <span style="font-style: italic;">expr</span> is zero or null.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">SETTING</span> clause saves the previous mouse state in <span style="font-style: italic;">var</span> which can be used later to revert to that state. Alternatively, the previous state can be obtained using the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function immediately after the <span style="font-weight: bold;">MOUSE</span> statement. In either case, the value is 1 if the mouse was enabled or 0 if it was disabled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Mouse input is only available on console sessions, via QMTerm, and using AccuTerm with terminal types that have the -at suffix. &nbsp;When the mouse is enabled, clicking a mouse button sends a message that can be retrieved via the normal keyboard input statements and functions. This message is prefixed by char(200) on non-ECS systems, character echar(0xF8C8) on ECS mode systems. The format of the qualifying data in the message varies between terminal types. Use of the <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODE()</a></span> or <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODEV()</a></span> function traps the mouse event prefix processes the qualifying data, leaving the button number in <a href="at_variables.htm#mbutton" class="topiclink">@MBUTTON</a> and the screen position at which the mouse was clicked in <a href="at_variables.htm#mcol" class="topiclink">@MCOL</a> and <a href="at_variables.htm#mrow" class="topiclink">@MROW</a>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The button state is the result of adding the values of each button that is depressed: 1 for the left button, 2 for the right button, 4 for the centre button. The x and y positions are based on character coordinates using the same conventions as for the cursor movement functions. Some terminal types only allow use of the left button.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">MOUSE ON</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">...</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF KEYCODEV() = KV$MOUSE THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY 'Mouse clicked at column ' : @MCOL : ', row ' : @MROW</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment read mouse input, displaying the screen position.</p>
+
+</td></tr></table>
+
+</body>
+</html>

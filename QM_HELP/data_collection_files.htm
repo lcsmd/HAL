@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Data Collection Files</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Data collection files" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "data_collection_files.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Data Collection Files</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="dynamicfiles.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="distributed_files.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A data collection file is a variant of a dynamic file in which the records are <a href="qmbasic_collections.htm" class="topiclink">data collections</a>, sets of items structured as arbitrarily multi-dimensional name/value pairs. A data collection file is created using <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> with the COLLECTION option.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The dictionary part of a data collection file is a standard dynamic file. The only valid use of A/D/S type items in the dictionary is to reference the record id (field 0) because data collections do not have the concept of fields, values or subvalues (though a character string in a collection could be structured in this way). Instead, dictionaries use <a href="dict_e.htm" class="topiclink">E-type</a> (element path) items to identify elements of the collection by name. These have the same form as a <a href="dict_d.htm" class="topiclink">D-type</a> record except that field 2 holds the element path instead of a field number.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The data part stores records as data collections. Reading a record in a QMBasic program yields a data collection variable. Conversely, only a data collection can be written to these files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Elements of the collection that have types that cannot be stored in a file (e.g. file variables) will be stored as SQL style null values.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A data collection file may have indices built on data defined by an E-type dictionary record in exactly the same way as those based on D-type items in other files. It is also possible to define a trigger function in a collection file in which case the record data passed in to the trigger function will be a collection instead of a string. Only record level encryption is supported for collection files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The query processor can access collection files by using E-type dictionary items instead of D-type items. The <a href="element.htm" class="topiclink">ELEMENT</a> &quot;<span style="font-style: italic;">name</span>&quot; construct can be used to reference a collection element on the command line.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Collection files are fully supported by QMNet, data replication, transactions and record level encryption.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Records in a data collection file can be viewed and edited using the collection editor, <span style="font-weight: bold;"><a href="ced.htm" class="topiclink">CED</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

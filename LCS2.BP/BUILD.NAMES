@@ -1,0 +1,35 @@
+      OPEN 'TRANS' TO TRANS ELSE PRINT 'TRANS';STOP
+      OPEN 'PAYEES' TO PAYEES ELSE PRINT 'PAYEES';STOP
+      OPEN 'LCS.CONTROL' TO LCS.CONTROL ELSE PRINT 'LCS.CONTROL';STOP
+      READ NEXT.PID FROM LCS.CONTROL,'NEXT.PID' ELSE NEXT.PID = 1001
+      SELECT TRANS
+      CT=0
+      READLIST TRANS.IDS THEN
+         TR.CT = DCOUNT(TRANS.IDS,@FM)
+         FOR TRX = 1 TO TR.CT
+            AA=TRANS.IDS<TRX>
+            READ TR.B FROM TRANS,AA THEN
+               TR.NAME = TR.B<6>
+               IF TR.NAME THEN
+                  SELECT.STR = 'SELECT PAYEES WITH NAME = "':TR.NAME:'"'
+                  EXECUTE SELECT.STR CAPTURING CAP
+                  READLIST PID THEN
+                     PID = PID<1,1>
+                  END ELSE
+                     NEXT.PID +=1
+                     PID = NEXT.PID
+                  END
+                  CT+=1
+                  PRINT CT:"  ":TR.NAME
+                  READ PAY.B FROM PAYEES,PID ELSE PAY.B = ""
+                  PAY.B<1> = TR.NAME
+                  LOCATE AA IN PAY.B<4> BY 'AL' SETTING POS ELSE
+                     INS AA BEFORE PAY.B<4,POS>
+                  END
+                  WRITE PAY.B ON PAYEES,PID
+               END
+            END
+         NEXT TRX
+         WRITE NEXT.PID ON LCS.CONTROL,'NEXT.PID'
+      END
+      STOP

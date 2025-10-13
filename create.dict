@@ -1,0 +1,115 @@
+* Program: CREATE.DICT
+* Description: Creates dictionary items with specified parameters
+* Usage: CREATE.DICT FILENAME DICT.NAME [CONV] [FORM] [INDEX] [X] [ASS=value] [M|S]
+
+PROGRAM CREATE.DICT
+$INCLUDE PARSER.H
+
+* Get command line arguments
+args = FIELD(@COMMAND, ' ', 2, 999)
+IF args = '' THEN
+    PRINT 'Usage: CREATE.DICT FILENAME DICT.NAME [CONV] [FORM] [INDEX] [X] [ASS=value] [M|S]'
+    STOP
+END
+
+* Parse arguments
+filename = FIELD(args, ' ', 1)
+dict.name = FIELD(args, ' ', 2)
+IF filename = '' OR dict.name = '' THEN
+    PRINT 'Filename and dictionary name are required'
+    STOP
+END
+
+* Initialize default values
+conv = ''
+form = '15L'
+index = ''
+xflag = 0
+assoc = ''
+multi = 'S'
+type = 'D'
+
+* Process remaining arguments
+FOR i = 3 TO DCOUNT(args, ' ')
+    arg = FIELD(args, ' ', i)
+    
+    BEGIN CASE
+        CASE arg = 'X'
+            xflag = 1
+        CASE arg = 'M'
+            multi = 'M'
+        CASE arg = 'S'
+            multi = 'S'
+        CASE arg[1,4] = 'ASS='
+            assoc = arg[5,999]
+        CASE arg[1,5] = 'FORM='
+            form = arg[6,999]
+        CASE arg[1,5] = 'CONV='
+            conv = arg[6,999]
+        CASE 1
+            IF conv = '' THEN
+                conv = arg
+            ELSE
+                IF form = '15L' THEN
+                    form = arg
+                ELSE
+                    IF index = '' THEN
+                        index = arg
+                    END
+                END
+            END
+    END CASE
+NEXT i
+
+* Check if name ends in 'date' or 'dt' and set defaults if not overridden
+IF dict.name[-4,4] = 'DATE' OR dict.name[-2,2] = 'DT' THEN
+    IF conv = '' THEN conv = 'D4-'
+    IF form = '15L' THEN form = '10R'
+END
+
+* Open dictionary
+OPEN 'DICT', filename TO dict.file ELSE
+    CREATE.FILE 'DICT', filename ELSE
+        PRINT 'Unable to create dictionary for file: ':filename
+        STOP
+    END
+END
+
+* Find next available location
+next.loc = 1
+READ dict.rec FROM dict.file, '@ID' ELSE dict.rec = ''
+IF dict.rec NE '' THEN
+    max.loc = 0
+    FOR i = 1 TO DCOUNT(dict.rec<1>, @VM)
+        loc = dict.rec<1,i>
+        IF loc > max.loc THEN max.loc = loc
+    NEXT i
+    next.loc = max.loc + 1
+END
+
+* Build dictionary record
+dict.item = ''
+dict.item<1> = type        ;* Type
+dict.item<2> = next.loc    ;* Location (Field number)
+dict.item<3> = conv        ;* Conversion code
+dict.item<4> = ''          ;* Display name (blank)
+dict.item<5> = form        ;* Format specification
+dict.item<6> = multi       ;* Single/multivalue flag
+dict.item<7> = assoc       ;* Association name
+dict.item<8> = IF xflag THEN 'X' ELSE ''  ;* Index flag
+dict.item<9> = ''          ;* Reserved
+dict.item<10> = ''         ;* Reserved
+dict.item<11> = ''         ;* User available
+dict.item<12> = ''         ;* Data integrity constraints
+
+* Write dictionary item
+WRITE dict.item ON dict.file, dict.name
+
+* Execute MAKE.INDEX if X flag is set
+IF xflag THEN
+    EXECUTE 'MAKE.INDEX ':filename:' ':dict.name
+END
+
+PRINT 'Dictionary item ':dict.name:' created successfully'
+
+END 

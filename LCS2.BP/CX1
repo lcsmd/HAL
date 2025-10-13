@@ -1,0 +1,43 @@
+     TAB = CHAR(9)
+     VMAX = 0
+     LM =1
+     V2MAX = 0
+     S=""
+     R=""
+     FILE.ITEM.NAME = FIELD(@SENTENCE," ",2)
+     IF LM THEN PRINT "FILE.ITEM.NAME:":FILE.ITEM.NAME
+     IF INDEX(FILE.ITEM.NAME,",",1) THEN
+          FILE.NAME = FIELD(FILE.ITEM.NAME,",",1)
+          ITEM.NAME = FIELD(FILE.ITEM.NAME,",",2)
+     END ELSE
+          FILE.NAME = "LCS.XLS"
+          ITEM.NAME = FILE.ITEM.NAME
+     END
+     IF FILE.NAME  = "" THEN FILE.NAME = "LCS.XLS"
+     PRINT "FILE.NAME:":FILE.NAME
+     PRINT "ITEM.NAME:":ITEM.NAME
+     RX = 0
+     CRLF = CHAR(13):CHAR(20)
+     BUFF2= ''
+     BUFF3=""
+     OPEN FILE.NAME TO LCS.AT ELSE PRINT FILE.NAME;STOP
+     YEAR = FIELD(ITEM.NAME,"_",3)[1,4]
+     YEARA = "/":YEAR
+     IF LM THEN PRINT YEAR:" ":YEARA
+     READ BUFF FROM LCS.AT,ITEM.NAME THEN
+          BUFF = CHANGE(BUFF,CHAR(9),@VM)
+          *BUFF = CHANGE(BUFF,CHAR(13),@FM)
+          BUFF = CHANGE(BUFF,CRLF,@FM)
+          PRINT BUFF
+     END
+     X=1
+     LOOP
+          X+=1
+     WHILE BUFF<X> DO
+          L=LEN(BUFF<X>)
+          FOR Y = 1 TO L
+               PRINT BUFF<X>[Y,1]:":":SEQ(BUFF<X>[Y,1])
+          NEXT Y
+          PRINT BUFF<X>
+          INPUT ANS,1
+     REPEAT

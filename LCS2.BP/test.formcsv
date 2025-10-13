@@ -1,0 +1,27 @@
+      program test.formcsv
+      deffun formcsv(darray,options)
+
+      equ tab to char(9)
+      
+      a=""
+      a<1> = '1/1/2004'
+      a<2> = 'lawrence c. sullivan, m.d.'
+      a<3> = 'happy go "lucky"'
+      a<4> = 1344.40
+      a<5> = '1,344.40'
+      a<6> = ''
+      a<8> = 'end'
+      a<9> = 9
+      
+      options = 'tab' 
+      print 'tab'
+      print 'delim:':options
+      print formcsv(a,options)    
+      print 'tab visible'
+      print change(formcsv(a,options),tab,'^')
+ 
+      print 'comma'
+      options = 'comma'
+      print "delim:":options
+      print formcsv(a,options)
+      end

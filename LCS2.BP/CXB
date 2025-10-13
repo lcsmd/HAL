@@ -1,0 +1,307 @@
+     PROGRAM CX
+     DEFFUN FORMCSV(ARRAY,DELIM)
+     PRINT "starting cx"
+
+     INCLUDE FILE.EQU STANDARD.EQ
+     INCLUDE FILE.EQU ACCOUNT.EQ
+     INCLUDE FILE.EQU TRANS.EQ
+     INCLUDE FILE.EQU STATEMENT.EQ
+     INCLUDE FILE.EQU PERIOD.EQ
+
+     EQU START.TRANS.MARK TO "TRANSACTION DETAIL"
+     EQU START.TRANS.MARK2 TO "(continued)TRANSACTION DETAIL"
+     EQU BEGIN.BAL.MARK TO "Beginning Balance"
+     EQU END.BAL.MARK TO "Ending Balance"
+     EQU ACCT.NUMBER.MARK TO "Primary Account:"
+     EQU ACCT.NUMBER.MARK2 TO "Account Number:"
+
+     OPEN 'CONTROL' TO F.CONTROL ELSE PRINT 'Control';STOP
+     OPEN 'TRANS' TO F.TRANS ELSE PRINT 'trans';STOP
+
+     OPEN 'ACCOUNT' TO F.ACCOUNT ELSE PRINT 'Account';STOP
+     OPEN 'PERIOD' TO F.PERIOD ELSE PRINT 'Period';STOP
+     OPEN 'STATEMENT' TO F.STATEMENT ELSE PRINT 'statement';STOP
+     ACC.B = ""
+     PER.B = ""
+     ST.ID = ""
+     PER.ID = ""
+     ST.ID.LAST = ""
+     PER.ID.LAST = ""
+     TR.PER.ID.LAST = ""
+     ST.B = ""
+     TR.B = ""
+     TRANS.STATUS = 0
+
+     LM =1
+     S=""
+     R=""
+
+     TR.B = ""
+     HEADER = ""
+     ST.ID.LAST = ""
+     ACC.ID.LAST = ""
+     ACC.ID = ""
+     TR.STATUS = 0;IF LM THEN PRINT "TR.STATUS=0"
+     TXT.FILE.NAME.ITEM = FIELD(@SENTENCE, " ", 2)
+     IF LM THEN PRINT "TXT.FILE.NAME.ITEM:":TXT.FILE.NAME.ITEM
+     IF INDEX(TXT.FILE.NAME.ITEM, ",", 1) THEN
+          TXT.FILE = FIELD(TXT.FILE.NAME.ITEM, ",", 1)
+          ITEM.NAME = FIELD(TXT.FILE.NAME.ITEM, ",", 2)
+     END ELSE
+          TXT.FILE = "LCS.TXT"
+          ITEM.NAME = TXT.FILE.NAME.ITEM
+     END
+     IF TXT.FILE = "" THEN TXT.FILE = "LCS.TXT"
+     TXT.FILE.NAME = FIELD(ITEM.NAME,'.',1):'.TXT'
+     PDF.FILE.NAME = CHANGE(TXT.FILE.NAME,'.TXT','.PDF')
+     CSV.FILE.NAME = CHANGE(TXT.FILE.NAME,'.TXT','.CSV')
+
+     TR.PDF.FILE = PDF.FILE.NAME
+     PRINT "TXT.FILE:":TXT.FILE
+     PRINT "ITEM.NAME:":ITEM.NAME
+     ITEM = FIELD(ITEM.NAME, ".", 1)
+     EXT = FIELD(ITEM.NAME, ".", 2)
+     ACC.NAME = FIELD(ITEM,"_",1):"_":FIELD(ITEM,"_",2)
+     ACC.ID = ACC.NAME
+     WRITE ACC.B ON F.ACCOUNT,ACC.ID
+
+     PER.NAME = FIELD(ITEM,"_",3)
+     IF LM THEN
+          PRINT "ACC.NAME:":ACC.NAME
+          PRINT "PER.NAME:":PER.NAME
+     END
+     OPEN TXT.FILE TO F.TXT.FILE ELSE PRINT "Cannot Open ":TXT.FILE;STOP
+     YEAR = FIELD(ITEM.NAME, "_", 3)[1, 4]
+     YEARA = "/":YEAR
+     OPEN.BAL.FIRST = @FALSE
+     CSV.B = ""
+     ROW=0
+     READ TR.ID.P FROM F.CONTROL, 'TR.ID' ELSE TR.ID.P = '1000000'
+     TR.ID = TR.ID.P
+     IF LM THEN PRINT "TR.ID:":TR.ID
+     READ TEXT.B FROM F.TXT.FILE,ITEM.NAME THEN
+          TEXT.B = CHANGE(TEXT.B,CRLF,@FM)
+          TEXT.B.CT = DCOUNT(TEXT.B,@FM)
+          IF LM THEN PRINT TEXT.B.CT:" LINES COUNTED"
+          FOR TR.B.X = 1 TO TEXT.B.CT
+               TEXT.LINE.O = TEXT.B<TR.B.X>
+               TEXT.LINE = TEXT.LINE.O
+               BEGIN CASE
+                    CASE ACC.LONG.NAME = "" AND TRIM(TEXT.LINE) > ""
+                         ACC.LONG.NAME = TRIM(TEXT.LINE)
+                    CASE INDEX(TEXT.LINE,ACCT.NUMBER.MARK,1) OR INDEX(TEXT.LINE,ACCT.NUMBER.MARK2,1)
+                         IF TRIM(FIELD(TEXT.LINE,":",2)) > "" THEN
+                              ACC.NUMBER = TRIM(FIELD(TEXT.LINE,":",2))
+                         END
+                         IF INDEX(UPCASE(TEXT.B<TR.B.X-1>),'THROUGH',1) THEN
+                              ST.DESC.P = UPCASE(TEXT.B<TR.B.X-1>)
+                         END
+                    CASE (TEXT.LINE[1,LEN(START.TRANS.MARK)] = START.TRANS.MARK OR TEXT.LINE[1,LEN(START.TRANS.MARK2)] = START.TRANS.MARK2)
+                         TRANS.STATUS = 1
+                         IF LM THEN PRINT "Trans.status=1"
+                         PRINT "**** Entering data zone ****"
+                         ST.OPEN.BAL.P = ""
+                    CASE (TRANS.STATUS > 0 AND TEXT.LINE[1,LEN(BEGIN.BAL.MARK)] = BEGIN.BAL.MARK)
+                         ST.B = ""
+                         ST.DESC = ST.DESC.P
+                         ST.DATE=ST.DESC
+                         ST.DATE2 = CHANGE(ST.DATE,'THROUGH',@FM)
+                         ST.OPEN.DATE = ST.DATE2<1>
+                         ST.CLOSE.DATE = ST.DATE2<2>
+                         ST.ACC.ID = ACC.ID
+                         PERIOD.DATE.I  = ST.OPEN.DATE
+                         GOSUB GET.PERIOD.DATE:
+                         ST.ID = ACC.ID:"|":PER.ID
+
+                         TRANS.STATUS = 2;
+                         IF LM THEN PRINT "Trans.status=2"
+                         ST.OPEN.BAL = TRIM(FIELD(TEXT.LINE,"$",2))
+                         IF LM THEN PRINT "************Begin bal:":ST.OPEN.BAL
+
+                    CASE TEXT.LINE[1,LEN(END.BAL.MARK)] = END.BAL.MARK
+                         ST.CLOSE.BAL = TRIM(FIELD(TEXT.LINE,SPACE,2))
+                         TRANS.STATUS=0;IF LM THEN PRINT "Trans.status=0"
+                         GOSUB WRITE.STATEMENT:
+                    CASE 1
+                         IF TEXT.LINE[3,1] = "/" THEN GOSUB PARSE.LINE:
+               END CASE
+          NEXT TR.B.X
+          OPEN CSV.FILE.NAME TO F.CSV.FILE ELSE PRINT "Cannot Open ":CSV.FILE.NAME;STOP
+          WRITE UPCASE(CSV.B) TO F.CSV.FILE,ITEM:".CSV"
+          WRITE ACC.B TO F.ACCOUNT,ACC.ID
+
+     END
+
+     CLOSE F.TXT.FILE
+     CLOSE F.CSV.FILE
+     CLOSE F.TRANS
+     WRITE TR.ID ON F.CONTROL,"TR.ID"
+     CLOSE F.CONTROL
+
+     STOP
+
+GET.PERIOD.DATE:
+     I.PERIOD.DATE.I = ICONV(PERIOD.DATE.I,'D4-')
+     ST.YEAR = FIELD(OCONV(I.PERIOD.DATE.I+4,'D4-'),'-',3)
+     ST.MONTH = ('0':FIELD(OCONV(I.PERIOD.DATE.I+4,'D4-'),'-',1)) "R#2"
+     ST.PER.ID = ST.YEAR:"-":ST.MONTH
+     PER.ID = ST.PER.ID
+     IF PER.ID <> PER.ID.LAST THEN 
+          GOSUB WRITE.STATEMENT:
+          PER.ID.LAST = PER.ID
+     END
+     RETURN
+
+
+PARSE.LINE:
+     IF NOT(HEADER) THEN
+          IF LM THEN PRINT "**** Creating Header"
+          GOSUB CREATE.HEADER:
+     END ELSE
+          IF LM THEN PRINT "*****  PARSING LINE"
+          IF ST.ID <> ST.ID.LAST THEN
+               READ ST.B.O FROM F.STATEMENT,ST.ID THEN
+                    ST.B = ST.B.O
+               END
+          END
+          TEXT.LINE = TRIM(TEXT.LINE)
+          TEXT.LINE=CHANGE(TEXT.LINE,SPACE,@FM)
+          TR.TYPE = TEXT.LINE<1>
+          *PRINT TEXT.LINE
+          WORD.COUNT = DCOUNT(TEXT.LINE,@FM)
+          TR.DATE = TEXT.LINE<1>:YEARA
+          PERIOD.DATE.I = TR.DATE
+          GOSUB GET.PERIOD.DATE:
+          TR.MONTH = ST.MONTH
+          TR.YEAR = ST.YEAR
+          IF TR.PER.ID <> TR.PER.ID.LAST THEN
+               GOSUB NEW.MONTH:
+               TR.PER.ID.LAST = TR.PER.ID
+          END
+          TR.AMT = TEXT.LINE<WORD.COUNT-1>
+          TR.BAL = TEXT.LINE<WORD.COUNT>
+          FOR DESC.X = 2 TO WORD.COUNT-2
+               TR.DESC=TR.DESC:SPACE:TEXT.LINE<DESC.X>
+          NEXT DESC.X
+          IF (TEXT.B<TR.B.X+1>[3,1] <> "/" AND TEXT.B<TR.B.X+1>[1,LEN(END.BAL.MARK)]<>END.BAL.MARK) THEN
+               TR.DESC=TR.DESC:SPACE:TEXT.B<TR.B.X+1>
+               TR.B.X = TR.B.X + 1
+          END
+          TR.DESC = TRIM(TR.DESC)
+          *IF LM THEN PRINT " ****"
+     END
+
+     GOSUB ADD.ROW:
+     RETURN
+
+ADD.ROW:
+     IF LM THEN PRINT "**** ADDING LINE"
+     ROW =  ROW +1
+     TR.CSV = FORMCSV(TR.B,'COMMA')
+     CSV.B<ROW> = TR.CSV
+     *IF LM THEN PRINT ROW:TR.CSV
+     IF ROW > 1 THEN
+          TR.ID = TR.ID + 1
+          TR.ST.ID = ST.ID
+          TR.ACC.ID = ACC.ID
+          TR.PER.ID = PER.ID
+          TR.SOURCE = TEXT.LINE.O
+          TR.PDF.FILE = PDF.FILE.NAME
+          WRITE TR.B ON F.TRANS, TR.ID
+     END
+     *PRINT
+     *PRINT "Trans: ":TR.B
+     PRINT "Writing Trans: ":TR.CSV
+     *PRINT ROW:"/":TR.ID
+     RETURN
+
+CREATE.HEADER:
+     ROW=0
+     CSV.B = ""
+     TR.B = ""
+     TR.ACC.ID = "Account"
+     TR.PER.ID = "Period"
+     TR.PDF.FILE = "PDF file name"
+     TR.TYPE = "Type"
+     TR.DATE = "Trans Date"
+     TR.DESC ="Description"
+     TR.AMT ="Amount"
+     TR.CLASS = "Class"
+     TR.COMMENT = "Comment"
+     TR.ST.ID = "Statement"
+     TR.SOURCE = "Source line from statement PDF"
+     TR.BAL = "Balance"
+     HEADER = TR.B
+     RETURN
+
+NEW.MONTH:
+     ST.DATE =  TRIM(TEXT.B<TR.B.X-1>)
+     IF ST.DATE = "" THEN ST.DATE =  TRIM(TEXT.B<TR.B.X-2>)
+     ST.DESC = ST.DATE
+     ST.DATE = CHANGE(ST.DATE," through ",@FM)
+     ST.OPEN.DATE = ST.MONTH:"-01-":ST.YEAR
+     I.ST.OPEN.DATE = ICONV(ST.OPEN.DATE,"D4")
+     NXMO = ST.MONTH + 1
+     IF NXMO = '13' THEN
+          NXMO = '01'
+          NXYR = ST.YEAR + 1
+     END ELSE
+          NXYR = ST.YEAR
+     END
+     ST.CLOSE.DATE = OCONV(ICONV(NXMO:"-01-":NXYR,"D4")-1,"D4-")
+     I.ST.CLOSE.DATE = ICONV(ST.CLOSE.DATE,"D4")
+
+     ST.CLOSE.DATE = OCONV(ICONV(ST.OPEN.DATE,"D4-")+32,"D4-")[1,2]
+     I.ST.CLOSE.DATE = ICONV(ST.CLOSE.DATE,"D4")
+     ST.DATE = OCONV(I.ST.CLOSE.DATE,"D4-")
+     ST.YEAR = FIELD(ST.DATE,"-",3)
+     ST.MONTH = FIELD(ST.DATE,"-",1)
+     PER.ID = ST.YEAR:"-":ST.MONTH
+     STATE.ID = ACC.ID:":":PER.ID
+     IF LM THEN
+          PRINT "primary acct:":ACC.NUMBER
+          PRINT "statement.date:":ST.DATE
+          PRINT "statement.date.period:":PER.ID
+          PRINT "statement.date.period.year:":ST.YEAR
+          PRINT "statement.date.period.month:":ST.MONTH
+     END
+     PER.ID.LAST = PER.ID
+     RETURN
+
+OPEN.STATEMENT:
+     READ ST.B.O FROM F.STATEMENT,ST.ID THEN ST.B = ST.B.O ELSE ST.B = ""
+     RETURN
+
+WRITE.STATEMENT:
+     WRITE ST.B ON F.STATEMENT, ST.ID
+     LOCATE ST.ID IN ST.ACC.ID BY 'AL' SETTING POS ELSE
+          INS ST.ID BEFORE ACC.B<ST.ACC.ID.H,POS>
+     END
+     LOCATE ST.ID IN ST.PER.ID BY 'AL' SETTING POS ELSE
+          INS ST.ID BEFORE PER.B<ST.PER.ID.H,POS>
+     END
+     
+     RETURN
+
+WRITE.PERIOD:
+     LOCATE ACC.ID IN PER.B<PER.ACC.ID> BY 'AL' SETTING POS ELSE
+          INS ACC.ID BEFORE PER.B<PER.ACC.ID,POS>
+     END
+     LOCATE ST.ID IN PER.B<ST.PER.ID> BY 'AL' SETTING POS ELSE
+          INS ST.ID BEFORE PER.B<ST.PER.ID,POS>
+     END
+     WRITE PER.B ON F.PERIOD, PER.ID
+     RETURN
+
+WRITE.ACCOUNT:
+     WRITE ACC.B ON F.ACCOUNT,ACC.ID
+     RETURN
+
+
+
+
+
+
+
+
+

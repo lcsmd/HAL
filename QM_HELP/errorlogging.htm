@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Error Logging</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="!ERRLOG.FILTER,Error Logging" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "errorlogging.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Error Logging</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="command-logging.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qm_command_options.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM includes an error logging system that records brief details of errors that may require investigation by system administrators or application developers. These include:</p>
+<p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Run time program errors (e.g. unassigned variables)</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>User authentication errors (failed logins)</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Forced logout</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Internal file system errors</p><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The error log is maintained in a text file named errlog in the QMSYS directory. This file will be created automatically when the first message is logged. On Linux and Unix systems, the file permissions will be set to allow all users full access to the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although the errlog file can be written directly by programs using the sequential file processing statements, this should be avoided as the buffering used by these statements may result in lost messages. Application developers should use the QMBasic <span style="font-weight: bold;"><a href="qmb_logmsg.htm" class="topiclink">LOGMSG</a></span> statement or the <span style="font-weight: bold;"><a href="logmsg.htm" class="topiclink">LOGMSG</a></span> command if they wish to add their own messages to the log file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On ECS mode systems, the log file is maintained in UTF-8 encoding.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To avoid faulty programs generating very large log files and to remove the need for file maintenance, the <span style="font-weight: bold;"><a href="configparams.htm#errlog" class="topiclink">ERRLOG</a></span> configuration parameter sets the maximum size in kilobytes to which the error log file may grow. When this size is reached, the first half of the data in the file is discarded. The minimum acceptable non-zero value of the <span style="font-weight: bold;"><a href="configparams.htm#errlog" class="topiclink">ERRLOG</a></span> configuration parameter is 10. A smaller value will be treated as 10. Setting the <span style="font-weight: bold;"><a href="configparams.htm#errlog" class="topiclink">ERRLOG</a></span> parameter to zero disables error logging.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Each log message consists of two or more lines of text. The first gives the date and time in the time zone of the user that started QM, the QM user number, process id, login name and account name of the user generating the error. The second line gives the actual message, indented by three spaces to make the file more readable. Further lines may be present, also indented by three columns. This format is easy to process using user written tools if required.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Log Filtering</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Prior to logging the first message from a QM session, the system checks for the presence of a catalogued subroutine named !ERRLOG.FILTER and, if this is present, calls it for each logged message from that point onwards. The subroutine can be used to filter messages such that certain messages are not logged or to trigger other application events such as emailing run time error messages to support staff.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The subroutine must be declared as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">SUBROUTINE ERRLOG.FILTER(RESULT, MSG, STATUS, ERR)</span></p>
+<p>where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">RESULT</td><td style="border:none;padding:0">should be returned as a Boolean value indicating whether the message is to be written to the error log. This defaults to true if not changed by the subroutine.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">MSG</td><td style="border:none;padding:0">is the text of the log message. Modifying this text has no effect.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">STATUS</td><td style="border:none;padding:0">is the value of the STATUS() function at the point when the log action was initiated. This is only meaningful for some messages.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px">ERRNO</td><td style="border:none;padding:0">is the value of the OS.ERROR() function at the point when the log action was initiated. This is only meaningful for some messages.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The subroutine must be catalogued with the ! prefix on its name. A log message generated from the filter subroutine such as a run time error is always logged without calling the filter subroutine recursively. Also, log messages from other QM processes such as the replication server (qmrpl) or the network monitor (qmsvc or qmlnxd) are not filtered.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The !ERRLOG.FILTER subroutine must abide by some rules:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Must not use STOP or ABORT</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Must not use transactions or related QMBasic operations</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Must use the NON.TRANSACTIONAL option when opening files</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Must not throw exceptions unless caught in the same subroutine</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Must not request input from the user's terminal</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Must not write to files that are published for replication</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Must not start a phantom process</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Must not execute a shell command</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

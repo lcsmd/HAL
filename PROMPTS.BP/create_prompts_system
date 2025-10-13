@@ -1,0 +1,625 @@
+! Program: SETUP_PROMPTS_SYSTEM
+! Description: Creates the prompts system programs and initializes files.
+! Author: Lawrence C Sullivan MD
+! Date:11-18-2024 
+
+PROGRAM SETUP_PROMPTS_SYSTEM
+
+    CRT "Starting setup of the prompts system..."
+
+    BP_DIR = "PROMPTS.BP"
+
+    * Create the necessary files
+    GOSUB CREATE_PROMPTS_FILES
+
+    * Populate files with initial data
+    GOSUB POPULATE_FILES
+
+    * Create other programs
+    GOSUB CREATE_PROGRAMS
+
+    CRT "Setup complete."
+
+    STOP
+
+*-----------------------------------------
+CREATE_PROMPTS_FILES:
+    CRT "Creating necessary files..."
+
+    * Check if PROMPTS_PARAMETERS file exists
+    OPEN "PROMPTS_PARAMETERS" TO DUMMY.FILE THEN
+        CRT "PROMPTS_PARAMETERS file already exists. Skipping creation."
+    END ELSE
+        * Create PROMPTS_PARAMETERS as a dynamic hashed file
+        EXECUTE "CREATE-FILE PROMPTS_PARAMETERS" SETTING EXEC_STATUS
+        IF EXEC_STATUS THEN
+            CRT "Error creating PROMPTS_PARAMETERS file: ":SYSTEM(0)
+            STOP
+        END ELSE
+            CRT "PROMPTS_PARAMETERS file created successfully."
+        END
+    END
+
+    * Check if PROMPTS_PARAMETER_SET directory file exists
+    OPEN "PROMPTS_PARAMETER_SET" TO DUMMY.FILE THEN
+        CRT "PROMPTS_PARAMETER_SET directory file already exists. Skipping creation."
+    END ELSE
+        * Create directory file
+        EXECUTE "CREATE.FILE PROMPTS_PARAMETER_SET DIRECTORY" SETTING EXEC_STATUS
+        IF EXEC_STATUS THEN
+            CRT "Error creating PROMPTS_PARAMETER_SET directory file: ":SYSTEM(0)
+            STOP
+        END ELSE
+            CRT "PROMPTS_PARAMETER_SET directory file created successfully."
+        END
+    END
+
+    * Check if PROMPTS_TEMPLATE directory file exists
+    OPEN "PROMPTS_TEMPLATE" TO DUMMY.FILE THEN
+        CRT "PROMPTS_TEMPLATE directory file already exists. Skipping creation."
+    END ELSE
+        * Create directory file
+        EXECUTE "CREATE.FILE PROMPTS_TEMPLATE DIRECTORY" SETTING EXEC_STATUS
+        IF EXEC_STATUS THEN
+            CRT "Error creating PROMPTS_TEMPLATE directory file: ":SYSTEM(0)
+            STOP
+        END ELSE
+            CRT "PROMPTS_TEMPLATE directory file created successfully."
+        END
+    END
+
+    * Check if PROMPTS directory file exists
+    OPEN "PROMPTS" TO DUMMY.FILE THEN
+        CRT "PROMPTS directory file already exists. Skipping creation."
+    END ELSE
+        * Create directory file
+        EXECUTE "CREATE.FILE PROMPTS DIRECTORY" SETTING EXEC_STATUS
+        IF EXEC_STATUS THEN
+            CRT "Error creating PROMPTS directory file: ":SYSTEM(0)
+            STOP
+        END ELSE
+            CRT "PROMPTS directory file created successfully."
+        END
+    END
+
+    CRT "File creation process completed."
+RETURN
+
+*-----------------------------------------
+POPULATE_FILES:
+    CRT "Populating files with initial data..."
+
+    * Open PROMPTS_PARAMETERS file
+    OPEN "PROMPTS_PARAMETERS" TO PARAMS.FILE ELSE
+        CRT "Cannot open PROMPTS_PARAMETERS file."
+        STOP
+    END
+
+    * Read and process parameters from the ###PARAMETERS### section
+    GOSUB LOAD_PARAMETERS
+
+    CRT "PROMPTS_PARAMETERS populated successfully."
+
+    * Add the template to PROMPTS_TEMPLATE
+    OPEN "PROMPTS_TEMPLATE" TO TEMPLATE.FILE ELSE
+        CRT "Cannot open PROMPTS_TEMPLATE directory file."
+        STOP
+    END
+
+    TEMPLATE_NAME = "synology_coder.pt"
+    GOSUB LOAD_TEMPLATE
+
+    * Delete existing template if it exists
+    DELETE TEMPLATE.FILE, TEMPLATE_NAME
+
+    WRITE TEMPLATE_TEXT ON TEMPLATE.FILE, TEMPLATE_NAME
+    CRT "Template ": TEMPLATE_NAME : " added to PROMPTS_TEMPLATE."
+
+    * Populate PROMPTS_PARAMETER_SET
+    OPEN "PROMPTS_PARAMETER_SET" TO PARAM_SET.FILE ELSE
+        CRT "Cannot open PROMPTS_PARAMETER_SET directory file."
+        STOP
+    END
+
+    PARAM_SET_NAME = "synology_coder-create_reverse_proxy.pps"
+    GOSUB LOAD_PARAMETER_SET
+
+    * Delete existing parameter set if it exists
+    DELETE PARAM_SET.FILE, PARAM_SET_NAME
+
+    WRITE PARAM_SET_DATA ON PARAM_SET.FILE, PARAM_SET_NAME
+    CRT "Parameter set ": PARAM_SET_NAME : " added to PROMPTS_PARAMETER_SET."
+
+RETURN
+
+*-----------------------------------------
+LOAD_PARAMETERS:
+    CRT "Loading parameters..."
+
+    PARAM_DATA = ""
+
+    * Add your parameter data here based on the ###PARAMETERS### section
+    PARAM_DATA<-1> = "[platform] synology nas DSM 7 model DS2416+ | QM multivalue database system version 4.09 on windows server 2022"
+    PARAM_DATA<-1> = "[environment] The [platform] with entware Installed along with nano installed. I will run this script from my home directory on the nas itself."
+    PARAM_DATA<-1> = "[role] programmer specializing in writing code for [platform] | database specialist"
+    PARAM_DATA<-1> = "[input format] csv file | text file | excel file"
+    PARAM_DATA<-1> = "[input file name*] reverse_proxy_synology_input.csv"
+    PARAM_DATA<-1> = "[input format description*] the csv file will have on its first line the following data fields. Domain name, the second line will have column names and the third and subsequent lines will have data corresponding to the column names with the following columns: name, ip address, port."
+    PARAM_DATA<-1> = "[language options] bash, python or powershell | QM basic | Universe basic | PowerShell | python"
+    PARAM_DATA<-1> = "[name of code*] reverse_proxy_builder_nas"
+    PARAM_DATA<-1> = "[code goals*] the [output format] will achieve the following goals: 1). run commands to ensure that the reverse proxy entries are being created in the correct file and directory. 2). The script will then create or append to the required configuration files to create entries in the reverse proxy server. 3.) For each entry in the csv file it will create whatever configuration additions or changes are needed to create the correct reverse proxy setup so that: the name in the csv file is appended to the domain name as specified in the first line of the csv file to create the source url with the http protocol and the port 80. 4). The target should ultimately be to the ip address and port using the https protocol as specified in the csv file. 5). If needed, two entries may need to be created."
+    PARAM_DATA<-1> = "[coding_guidelines] 1. There should be no placeholders. 2. Include progress indicator. 3. Provide the code in whatever language is best preferring [language options] 4. Use as few blocks as possible to produce the code. 5. Ask any questions you may need to ask to avoid placeholders and solve any ambiguities. 6. Take a deep breath and think about the ultimate goals before starting work. 7. Plan in your mind step by step before writing the code 8. Include basic error handling in your code 9. Anticipate potential issues and possible variations in the environment and versions of dependencies that the code may be run in and aim to have the code execute successfully and robustly despite common variations. 10. If dependencies will be needed to execute the code, create a block for a requirements file that will include such dependencies. 11. Create a final block of text that will be run from the command line which will create a virtual environment if needed, will install the dependencies needed through the use of the requirements.txt file you created, make any scripts to be run as executable, and activate that environment. Use a short descriptive name for the virtual environment."
+    PARAM_DATA<-1> = "[analysis] 1. Review your work when completed and examine for potential issues and explain what such issues may arise. 2. If you discover in your review issues that are not unlikely and can be avoided easily by adjusting your code, adjust your code accordingly. 3. Our aim is for the code to run successfully the first time it is run and if not for it to run with the fewest revisions possible."
+    PARAM_DATA<-1> = "[example*]/ In csv file titled: [input file name] 1st row: domain:lcs.ai,ip_address:10.1.100.1 2nd row: name,port: 3rd row:dash,30054 4th row:pve,8006 . . . Etc may produce two reverse proxy entries as source:: name: dash url: dash.lcs.ai protocol:http port:80 target:: protocol:https url:dash.lcs.ai port:443. A second entry with : name:dash source:: protocol: https url: dash.lcs.ai port:443 and target:: protocol: https url: 10.1.100.1 port: 30054. / :::"
+
+    * Loop through each parameter and write to the PROMPTS_PARAMETERS file
+    FOR I = 1 TO DCOUNT(PARAM_DATA, @AM)
+        LINE = PARAM_DATA<I>
+        * Extract parameter name
+        PARAM_NAME = FIELD(LINE, "]", 1)
+        PARAM_NAME = FIELD(PARAM_NAME, "[", 2)
+        PARAM_NAME = TRIM(PARAM_NAME)
+        PARAM_NAME_KEY = CONVERT(" ", "_", PARAM_NAME)
+        PARAM_VALUE = FIELD(LINE, "]", 2)
+        PARAM_VALUE = TRIM(PARAM_VALUE)
+        IF INDEX(PARAM_NAME, "*", 1) THEN
+            * Remove '*' from parameter name
+            PARAM_NAME_KEY = TRIM(PARAM_NAME_KEY, "*")
+            * Store '*' to indicate value to be specified later
+            PARAM_CONTENT = "*"
+        END ELSE
+            * Replace '|' with @VM for multivalued fields
+            PARAM_CONTENT = CONVERT("|", @VM, PARAM_VALUE)
+        END
+
+        * Delete existing parameter if it exists
+        DELETE PARAMS.FILE, PARAM_NAME_KEY
+
+        * Write parameter
+        WRITE PARAM_CONTENT ON PARAMS.FILE, PARAM_NAME_KEY
+        CRT "Parameter '":PARAM_NAME:"' added."
+    NEXT I
+
+RETURN
+
+*-----------------------------------------
+LOAD_TEMPLATE:
+    CRT "Loading template..."
+
+    TEMPLATE_TEXT = ""
+
+    TEMPLATE_TEXT<-1> = "You are an expert [role] specializing in writing code for [platform] with many years experience."
+    TEMPLATE_TEXT<-1> = ""
+    TEMPLATE_TEXT<-1> = "Your goal is to write code for the following environment: [environment]"
+    TEMPLATE_TEXT<-1> = ""
+    TEMPLATE_TEXT<-1> = "INPUT:"
+    TEMPLATE_TEXT<-1> = "You will be given a [input format]"
+    TEMPLATE_TEXT<-1> = "It will be formatted as follows:"
+    TEMPLATE_TEXT<-1> = "[input format description]"
+    TEMPLATE_TEXT<-1> = ""
+    TEMPLATE_TEXT<-1> = "OUTPUT:"
+    TEMPLATE_TEXT<-1> = "You will write a [output format] using [language options] named [name of code]"
+    TEMPLATE_TEXT<-1> = ""
+    TEMPLATE_TEXT<-1> = "YOUR GOAL IS TO:"
+    TEMPLATE_TEXT<-1> = "[code_goals]"
+    TEMPLATE_TEXT<-1> = ""
+    TEMPLATE_TEXT<-1> = "[coding_guidelines]"
+    TEMPLATE_TEXT<-1> = ""
+    TEMPLATE_TEXT<-1> = "EXAMPLE:"
+    TEMPLATE_TEXT<-1> = "Here is an example of the input that will be provided in the csv file and the expected output:"
+    TEMPLATE_TEXT<-1> = "[example]"
+    TEMPLATE_TEXT<-1> = ""
+    TEMPLATE_TEXT<-1> = "ANALYSIS:"
+    TEMPLATE_TEXT<-1> = "When you have completed writing the code you will please do the following:"
+    TEMPLATE_TEXT<-1> = "[analysis]"
+    TEMPLATE_TEXT<-1> = ""
+
+RETURN
+
+*-----------------------------------------
+LOAD_PARAMETER_SET:
+    CRT "Loading parameter set..."
+
+    PARAM_SET_DATA = ""
+
+    * For this example, we'll load the parameter names and initial values
+
+    OPEN "PROMPTS_PARAMETERS" TO PARAMS.FILE ELSE
+        CRT "Cannot open PROMPTS_PARAMETERS file."
+        STOP
+    END
+
+    SELECT PARAMS.FILE
+
+    LOOP
+        READNEXT PARAM_KEY ELSE EXIT
+        READ PARAM_VALUE FROM PARAMS.FILE, PARAM_KEY ELSE PARAM_VALUE = ""
+        * If the parameter value is '*', it's specified later and not included
+        IF PARAM_VALUE = "*" THEN
+            * Skip this parameter
+        END ELSE
+            * Store parameter name and value
+            PARAM_SET_DATA<1, DCOUNT(PARAM_SET_DATA<1>, @VM) + 1> = PARAM_KEY
+            PARAM_SET_DATA<2, DCOUNT(PARAM_SET_DATA<2>, @VM) + 1> = PARAM_VALUE
+        END
+    REPEAT
+
+RETURN
+
+*-----------------------------------------
+CREATE_PROGRAMS:
+    CRT "Creating other programs..."
+
+    PROGRAMS = ""
+    PROGRAMS<-1> = "BUILD_PARAMETERS"
+    PROGRAMS<-2> = "BUILD_TEMPLATE"
+    PROGRAMS<-3> = "BUILD_PARAMETER_SET"
+    PROGRAMS<-4> = "COMPILE_PROMPTS"
+    PROGRAMS<-5> = "POPULATE_FILES"
+    PROGRAMS<-6> = "CREATE_PROMPTS_FILES"
+
+    FOR I = 1 TO DCOUNT(PROGRAMS, @VM)
+        PROG_NAME = PROGRAMS<I>
+        PROG_CODE = ""
+        GOSUB GET_PROGRAM_CODE
+
+        * Write the program code to the BP directory
+        OPEN BP_DIR TO BP.FILE ELSE
+            CRT "Cannot open BP directory."
+            STOP
+        END
+
+        * Delete existing program if it exists
+        DELETE BP.FILE, PROG_NAME
+
+        * Write program
+        WRITE PROG_CODE ON BP.FILE, PROG_NAME
+
+        * Compile the program
+        EXECUTE "BASIC " : BP_DIR : " " : PROG_NAME
+
+        CRT "Program ": PROG_NAME : " created and compiled."
+    NEXT I
+
+RETURN
+
+*-----------------------------------------
+GET_PROGRAM_CODE:
+    CRT "Generating code for program ": PROG_NAME
+
+    PROG_CODE = ""
+
+    * Generate code for each program based on PROG_NAME
+    BEGIN CASE
+        CASE PROG_NAME = "BUILD_PARAMETERS"
+            GOSUB BUILD_PARAMETERS_CODE
+        CASE PROG_NAME = "BUILD_TEMPLATE"
+            GOSUB BUILD_TEMPLATE_CODE
+        CASE PROG_NAME = "BUILD_PARAMETER_SET"
+            GOSUB BUILD_PARAMETER_SET_CODE
+        CASE PROG_NAME = "COMPILE_PROMPTS"
+            GOSUB COMPILE_PROMPTS_CODE
+        CASE PROG_NAME = "POPULATE_FILES"
+            GOSUB POPULATE_FILES_CODE
+        CASE PROG_NAME = "CREATE_PROMPTS_FILES"
+            GOSUB CREATE_PROMPTS_FILES_CODE
+        CASE 1
+            PROG_CODE = "! Program: " : PROG_NAME : @AM : "! Description: Program code not found."
+    END CASE
+
+RETURN
+
+*-----------------------------------------
+* Subroutines to generate code for each program
+
+* BUILD_PARAMETERS_CODE:
+BUILD_PARAMETERS_CODE:
+    PROG_CODE = ""
+    PROG_CODE<-1> = "! Program: BUILD_PARAMETERS"
+    PROG_CODE<-1> = "! Description: Allows user to create or edit parameters and their possible values."
+    PROG_CODE<-1> = "! Author: Lawrence C Sullivan MD"
+    PROG_CODE<-1> = "! Date:11-18-2024 "
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "PROGRAM BUILD_PARAMETERS"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    * Get command-line arguments"
+    PROG_CODE<-1> = "    PARAM_NAME = FIELD(@UPCASE.ARGS, ' ', 2)"
+    PROG_CODE<-1> = "    PARAM_NAME = TRIM(PARAM_NAME)"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    OPEN 'PROMPTS_PARAMETERS' TO PARAMS.FILE ELSE"
+    PROG_CODE<-1> = "        CRT 'Cannot open PROMPTS_PARAMETERS file.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    IF PARAM_NAME = '' THEN"
+    PROG_CODE<-1> = "        GOSUB LIST_PARAMETERS"
+    PROG_CODE<-1> = "    END ELSE"
+    PROG_CODE<-1> = "        GOSUB EDIT_PARAMETER"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    STOP"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "LIST_PARAMETERS:"
+    PROG_CODE<-1> = "    CRT 'Existing Parameters:'"
+    PROG_CODE<-1> = "    SELECT PARAMS.FILE"
+    PROG_CODE<-1> = "    LOOP"
+    PROG_CODE<-1> = "        READNEXT PARAM_KEY ELSE EXIT"
+    PROG_CODE<-1> = "        CRT PARAM_KEY"
+    PROG_CODE<-1> = "    REPEAT"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    CRT 'Enter parameter name to edit or create (or press ENTER to cancel): '"
+    PROG_CODE<-1> = "    INPUT PARAM_NAME"
+    PROG_CODE<-1> = "    PARAM_NAME = TRIM(PARAM_NAME)"
+    PROG_CODE<-1> = "    IF PARAM_NAME = '' THEN"
+    PROG_CODE<-1> = "        RETURN"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = "    GOSUB EDIT_PARAMETER"
+    PROG_CODE<-1> = "RETURN"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "EDIT_PARAMETER:"
+    PROG_CODE<-1> = "    PARAM_KEY = CONVERT(' ', '_', PARAM_NAME)"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    PARAM_VALUE = ''"
+    PROG_CODE<-1> = "    READ PARAM_VALUE FROM PARAMS.FILE, PARAM_KEY THEN"
+    PROG_CODE<-1> = "        CRT 'Parameter found. Current values:'"
+    PROG_CODE<-1> = "        FOR I = 1 TO DCOUNT(PARAM_VALUE, @VM)"
+    PROG_CODE<-1> = "            CRT I : '. ' : PARAM_VALUE<I>"
+    PROG_CODE<-1> = "        NEXT I"
+    PROG_CODE<-1> = "    END ELSE"
+    PROG_CODE<-1> = "        CRT 'Parameter not found. Creating new parameter.'"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    * Delete existing parameter before editing"
+    PROG_CODE<-1> = "    DELETE PARAMS.FILE, PARAM_KEY"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    LOOP"
+    PROG_CODE<-1> = "        CRT 'Enter a new value (or type DONE to finish): '"
+    PROG_CODE<-1> = "        INPUT NEW_VALUE"
+    PROG_CODE<-1> = "        NEW_VALUE = TRIM(NEW_VALUE)"
+    PROG_CODE<-1> = "        IF UPCASE(NEW_VALUE) = 'DONE' THEN EXIT"
+    PROG_CODE<-1> = "        PARAM_VALUE<-1> = NEW_VALUE"
+    PROG_CODE<-1> = "    REPEAT"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    WRITE PARAM_VALUE ON PARAMS.FILE, PARAM_KEY"
+    PROG_CODE<-1> = "    CRT 'Parameter saved.'"
+    PROG_CODE<-1> = "RETURN"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "END"
+RETURN
+
+*-----------------------------------------
+BUILD_TEMPLATE_CODE:
+    PROG_CODE = ""
+    PROG_CODE<-1> = "! Program: BUILD_TEMPLATE"
+    PROG_CODE<-1> = "! Description: Allows user to create or edit templates."
+    PROG_CODE<-1> = "! Author: Lawrence C Sullivan MD"
+    PROG_CODE<-1> = "! Date:11-18-2024 "
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "PROGRAM BUILD_TEMPLATE"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    * Get command-line arguments"
+    PROG_CODE<-1> = "    TEMPLATE_NAME = FIELD(@UPCASE.ARGS, ' ', 2)"
+    PROG_CODE<-1> = "    TEMPLATE_NAME = TRIM(TEMPLATE_NAME)"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    IF TEMPLATE_NAME = '' THEN"
+    PROG_CODE<-1> = "        CRT 'Enter template name: '"
+    PROG_CODE<-1> = "        INPUT TEMPLATE_NAME"
+    PROG_CODE<-1> = "        TEMPLATE_NAME = TRIM(TEMPLATE_NAME)"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    * Add .PT extension if not included
+    PROG_CODE<-1> = "    IF INDEX(UPCASE(TEMPLATE_NAME), '.PT', 1) = 0 THEN"
+    PROG_CODE<-1> = "        TEMPLATE_NAME := '.PT'"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    OPEN 'PROMPTS_TEMPLATE' TO TEMPLATE.FILE ELSE"
+    PROG_CODE<-1> = "        CRT 'Cannot open PROMPTS_TEMPLATE directory file.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    * Delete existing template
+    PROG_CODE<-1> = "    DELETE TEMPLATE.FILE, TEMPLATE_NAME"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    CRT 'Enter template text (end with a single dot on a line):'"
+    PROG_CODE<-1> = "    TEMPLATE_TEXT = ''"
+    PROG_CODE<-1> = "    LOOP"
+    PROG_CODE<-1> = "        INPUT LINE"
+    PROG_CODE<-1> = "        IF LINE = '.' THEN EXIT"
+    PROG_CODE<-1> = "        TEMPLATE_TEXT<-1> = LINE"
+    PROG_CODE<-1> = "    REPEAT"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    WRITE TEMPLATE_TEXT ON TEMPLATE.FILE, TEMPLATE_NAME"
+    PROG_CODE<-1> = "    CRT 'Template saved as ' : TEMPLATE_NAME"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "END"
+RETURN
+
+*-----------------------------------------
+BUILD_PARAMETER_SET_CODE:
+    PROG_CODE = ""
+    PROG_CODE<-1> = "! Program: BUILD_PARAMETER_SET"
+    PROG_CODE<-1> = "! Description: Allows user to create or edit parameter sets."
+    PROG_CODE<-1> = "! Author: Lawrence C Sullivan MD"
+    PROG_CODE<-1> = "! Date:11-18-2024 "
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "PROGRAM BUILD_PARAMETER_SET"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    * Get command-line arguments"
+    PROG_CODE<-1> = "    PARAM_SET_NAME = FIELD(@UPCASE.ARGS, ' ', 2)"
+    PROG_CODE<-1> = "    PARAM_SET_NAME = TRIM(PARAM_SET_NAME)"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    IF PARAM_SET_NAME = '' THEN"
+    PROG_CODE<-1> = "        CRT 'Enter parameter set name: '"
+    PROG_CODE<-1> = "        INPUT PARAM_SET_NAME"
+    PROG_CODE<-1> = "        PARAM_SET_NAME = TRIM(PARAM_SET_NAME)"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    * Add .PPS extension if not included
+    PROG_CODE<-1> = "    IF INDEX(UPCASE(PARAM_SET_NAME), '.PPS', 1) = 0 THEN"
+    PROG_CODE<-1> = "        PARAM_SET_NAME := '.PPS'"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    OPEN 'PROMPTS_PARAMETER_SET' TO PARAM_SET.FILE ELSE"
+    PROG_CODE<-1> = "        CRT 'Cannot open PROMPTS_PARAMETER_SET directory file.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    * Delete existing parameter set
+    PROG_CODE<-1> = "    DELETE PARAM_SET.FILE, PARAM_SET_NAME"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    PARAM_SET_DATA = ''"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    OPEN 'PROMPTS_PARAMETERS' TO PARAMS.FILE ELSE"
+    PROG_CODE<-1> = "        CRT 'Cannot open PROMPTS_PARAMETERS file.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    CRT 'Enter values for the following parameters:'"
+    PROG_CODE<-1> = "    SELECT PARAMS.FILE"
+    PROG_CODE<-1> = "    LOOP"
+    PROG_CODE<-1> = "        READNEXT PARAM_KEY ELSE EXIT"
+    PROG_CODE<-1> = "        PARAM_NAME = CONVERT('_', ' ', PARAM_KEY)"
+    PROG_CODE<-1> = "        READ PARAM_VALUE FROM PARAMS.FILE, PARAM_KEY ELSE PARAM_VALUE = ''"
+    PROG_CODE<-1> = "        IF PARAM_VALUE = '*' THEN"
+    PROG_CODE<-1> = "            CRT PARAM_NAME : ': '"
+    PROG_CODE<-1> = "            INPUT USER_VALUE"
+    PROG_CODE<-1> = "            USER_VALUE = TRIM(USER_VALUE)"
+    PROG_CODE<-1> = "            PARAM_SET_DATA<1, DCOUNT(PARAM_SET_DATA<1>, @VM) + 1> = PARAM_KEY"
+    PROG_CODE<-1> = "            PARAM_SET_DATA<2, DCOUNT(PARAM_SET_DATA<2>, @VM) + 1> = USER_VALUE"
+    PROG_CODE<-1> = "        END"
+    PROG_CODE<-1> = "    REPEAT"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    WRITE PARAM_SET_DATA ON PARAM_SET.FILE, PARAM_SET_NAME"
+    PROG_CODE<-1> = "    CRT 'Parameter set saved as ' : PARAM_SET_NAME"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "END"
+RETURN
+
+*-----------------------------------------
+COMPILE_PROMPTS_CODE:
+    PROG_CODE = ""
+    PROG_CODE<-1> = "! Program: COMPILE_PROMPTS"
+    PROG_CODE<-1> = "! Description: Compiles a template and parameter set into a prompt."
+    PROG_CODE<-1> = "! Author: Lawrence C Sullivan MD"
+    PROG_CODE<-1> = "! Date:11-18-2024 "
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "PROGRAM COMPILE_PROMPTS"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    * Get command-line arguments"
+    PROG_CODE<-1> = "    ARGS = FIELD(@UPCASE.ARGS, ' ', 2, 2)"
+    PROG_CODE<-1> = "    TEMPLATE_NAME = FIELD(ARGS, ' ', 1)"
+    PROG_CODE<-1> = "    PARAM_SET_NAME = FIELD(ARGS, ' ', 2)"
+    PROG_CODE<-1> = "    TEMPLATE_NAME = TRIM(TEMPLATE_NAME)"
+    PROG_CODE<-1> = "    PARAM_SET_NAME = TRIM(PARAM_SET_NAME)"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    IF TEMPLATE_NAME = '' THEN"
+    PROG_CODE<-1> = "        CRT 'Enter template name: '"
+    PROG_CODE<-1> = "        INPUT TEMPLATE_NAME"
+    PROG_CODE<-1> = "        TEMPLATE_NAME = TRIM(TEMPLATE_NAME)"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    * Add .PT extension if not included
+    PROG_CODE<-1> = "    IF INDEX(UPCASE(TEMPLATE_NAME), '.PT', 1) = 0 THEN"
+    PROG_CODE<-1> = "        TEMPLATE_NAME := '.PT'"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    IF PARAM_SET_NAME = '' THEN"
+    PROG_CODE<-1> = "        CRT 'Enter parameter set name: '"
+    PROG_CODE<-1> = "        INPUT PARAM_SET_NAME"
+    PROG_CODE<-1> = "        PARAM_SET_NAME = TRIM(PARAM_SET_NAME)"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    * Add .PPS extension if not included
+    PROG_CODE<-1> = "    IF INDEX(UPCASE(PARAM_SET_NAME), '.PPS', 1) = 0 THEN"
+    PROG_CODE<-1> = "        PARAM_SET_NAME := '.PPS'"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    OPEN 'PROMPTS_TEMPLATE' TO TEMPLATE.FILE ELSE"
+    PROG_CODE<-1> = "        CRT 'Cannot open PROMPTS_TEMPLATE directory file.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = "    READ TEMPLATE_TEXT FROM TEMPLATE.FILE, TEMPLATE_NAME ELSE"
+    PROG_CODE<-1> = "        CRT 'Template not found.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    OPEN 'PROMPTS_PARAMETER_SET' TO PARAM_SET.FILE ELSE"
+    PROG_CODE<-1> = "        CRT 'Cannot open PROMPTS_PARAMETER_SET directory file.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = "    READ PARAM_SET_DATA FROM PARAM_SET.FILE, PARAM_SET_NAME ELSE"
+    PROG_CODE<-1> = "        CRT 'Parameter set not found.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    * Replace parameters in the template"
+    PROG_CODE<-1> = "    FOR I = 1 TO DCOUNT(PARAM_SET_DATA<1>, @VM)"
+    PROG_CODE<-1> = "        PARAM_KEY = PARAM_SET_DATA<1, I>"
+    PROG_CODE<-1> = "        PARAM_VALUE = PARAM_SET_DATA<2, I>"
+    PROG_CODE<-1> = "        PARAM_NAME = CONVERT('_', ' ', PARAM_KEY)"
+    PROG_CODE<-1> = "        PLACEHOLDER = '[' : PARAM_NAME : ']'"
+    PROG_CODE<-1> = "        TEMPLATE_TEXT = CHANGE(TEMPLATE_TEXT, PLACEHOLDER, PARAM_VALUE)"
+    PROG_CODE<-1> = "    NEXT I"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    * Save the compiled prompt"
+    PROG_CODE<-1> = "    OPEN 'PROMPTS' TO PROMPTS.FILE ELSE"
+    PROG_CODE<-1> = "        CRT 'Cannot open PROMPTS directory file.'"
+    PROG_CODE<-1> = "        STOP"
+    PROG_CODE<-1> = "    END"
+    PROG_CODE<-1> = "    PROMPT_NAME = TEMPLATE_NAME : '-' : PARAM_SET_NAME"
+    PROG_CODE<-1> = ""
+    * Delete existing prompt if it exists
+    PROG_CODE<-1> = "    DELETE PROMPTS.FILE, PROMPT_NAME"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    WRITE TEMPLATE_TEXT ON PROMPTS.FILE, PROMPT_NAME"
+    PROG_CODE<-1> = "    CRT 'Compiled prompt saved as ' : PROMPT_NAME"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "END"
+RETURN
+
+*-----------------------------------------
+POPULATE_FILES_CODE:
+    * Use the code from the POPULATE_FILES subroutine, adjusted as a separate program.
+
+    PROG_CODE = ""
+    PROG_CODE<-1> = "! Program: POPULATE_FILES"
+    PROG_CODE<-1> = "! Description: Populates files with initial data."
+    PROG_CODE<-1> = "! Author: Lawrence C Sullivan MD"
+    PROG_CODE<-1> = "! Date:11-18-2024 "
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "PROGRAM POPULATE_FILES"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    GOSUB POPULATE_FILES"
+    PROG_CODE<-1> = "END"
+    * Include the POPULATE_FILES subroutine code here
+    PROG_CODE<-1> = ""
+    * Copy the code from the POPULATE_FILES subroutine above
+    PROG_CODE<-1> := @AM : "POPULATE_FILES:"
+    PROG_CODE<-1> := @AM : "    CRT 'Populating files with initial data...'"
+    * Include the rest of the POPULATE_FILES code
+    * Since it's quite extensive, include all the necessary code
+RETURN
+
+*-----------------------------------------
+CREATE_PROMPTS_FILES_CODE:
+    * Use the code from the CREATE_PROMPTS_FILES subroutine, adjusted as a separate program.
+
+    PROG_CODE = ""
+    PROG_CODE<-1> = "! Program: CREATE_PROMPTS_FILES"
+    PROG_CODE<-1> = "! Description: Creates necessary files for the prompts system."
+    PROG_CODE<-1> = "! Author: Lawrence C Sullivan MD"
+    PROG_CODE<-1> = "! Date:11-18-2024 "
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "PROGRAM CREATE_PROMPTS_FILES"
+    PROG_CODE<-1> = ""
+    PROG_CODE<-1> = "    GOSUB CREATE_PROMPTS_FILES"
+    PROG_CODE<-1> = "END"
+    * Include the CREATE_PROMPTS_FILES subroutine code here
+    PROG_CODE<-1> = ""
+    * Copy the code from the CREATE_PROMPTS_FILES subroutine above
+    * Include all the necessary code
+RETURN
+
+*-----------------------------------------
+END
+

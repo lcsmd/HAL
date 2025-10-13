@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Command Logging</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Command logging" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "command-logging.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Command Logging</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="language.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="errorlogging.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Command logging allows an application to create a detailed audit log of every command executed, including those from within Procs, paragraphs, menus, etc. The QM command processor passes the command and its origin to an optional user supplied logging subroutine, leaving the application designer free to determine what information is actually logged.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The logging is performed by a QMBasic class module globally catalogued as !CLOG. This has a public subroutine named LOG that two arguments; the command and its origin. The source code for the default version of !CLOG is provided in the BP file of the QMSYS account.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The origin is one of the following:</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">User</td><td style="border:none;padding:0">A command entered by the user at the command prompt, including commands executed from the command stack.</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">S <span style="font-style: italic;">name</span></td><td style="border:none;padding:0">Execution of a VOC sentence.</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">PA <span style="font-style: italic;">name</span>@<span style="font-style: italic;">n</span></td><td style="border:none;padding:0">The command from line <span style="font-style: italic;">n</span> of a VOC paragraph. For an <span style="font-weight: bold;"><a href="if.htm" class="topiclink">IF</a></span> command, the conditioned command is separately logged if the condition is true.</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">PQ <span style="font-style: italic;">name</span>@<span style="font-style: italic;">n</span></td><td style="border:none;padding:0">The command from line <span style="font-style: italic;">n</span> of the named Proc.</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">M <span style="font-style: italic;">name</span>@<span style="font-style: italic;">n</span></td><td style="border:none;padding:0">The command from option <span style="font-style: italic;">n</span> of the named VOC menu.</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">Exec <span style="font-style: italic;">name</span>@<span style="font-style: italic;">n</span></td><td style="border:none;padding:0">An <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> on line <span style="font-style: italic;">n</span> of a QMBasic program.</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">Chain <span style="font-style: italic;">cmd</span></td><td style="border:none;padding:0">A command executed using <span style="font-weight: bold;"><a href="qmb_chain.htm" class="topiclink">CHAIN</a></span>.</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">Cli</td><td style="border:none;padding:0">A command executed by a QMClient session.</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">Auto</td><td style="border:none;padding:0">Execution of an automatic script (MASTER.LOGIN, LOGIN, ON.LOGTO, ON.EXIT, ON.ABORT).</td></tr></table></div><p class="p_Normal" style="text-indent: -169px; margin: 0 0 0 193px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:169px">Cmd</td><td style="border:none;padding:0">A command executed from the operating system shell by supplying it as a command line argument to the QM executable.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where a command includes an inline prompt construct, the command is logged a second time after expansion of the inline prompt.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Logging may be enabled in two mutually exclusive manners. If the <a href="configparams.htm#cmdlog" class="topiclink">CMDLOG</a> configuration parameter is not null, it specifies the pathname of the directory in which logging data is to be recorded. Logging is enabled across all processes and merged into a single log file per day in the specified directory using a name formed from the date in yymmdd format with a .log suffix.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the <a href="configparams.htm#cmdlog" class="topiclink">CMDLOG</a> configuration parameter is null, logging may be enabled in individual processes by use of the <span style="font-weight: bold;"><a href="command_logging.htm" class="topiclink">COMMAND.LOGGING ON</a></span> command. In this mode, the logged data is written to a file named clog.<span style="font-style: italic;">nnn</span>.log in the QM temporary directory (as set by the TEMPDIR configuration parameter) where <span style="font-style: italic;">nnn</span> is the QM user number.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default command logger shown below is catalogued as part of QM and is also issued in source form in the BP file of the QMSYS account. Users may adapt this to meet their own needs.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">class clog</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">$catalogue !clog</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">$include keys.h</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; private log.f, log.date, log.dir</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; public subroutine create.object</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;log.date = 0</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;log.dir = config('CMDLOG')</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; end</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; public subroutine log(cmd, origin)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;tm = epoch()</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;if not(fileinfo(log.f, FL$OPEN)) then</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; if log.dir = '' then &nbsp; &nbsp;;* Single process logging</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;log.path = system(SYS$TEMP) : @ds : 'clog.' : @user.no : '.log'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; end else</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;dt = mvdate(tm)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if log.date # dt then &nbsp;;* New date - switch log files</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; closeseq log.f &nbsp; &nbsp; &nbsp;;* No effect if file was not open</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; log.date = dt</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;end</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;log.path = log.dir : @ds : oconv(log.date, 'D2YMD[&quot;&quot;,&quot;&quot;]') : '.log'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; end</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; openseq log.path shared to log.f else return</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;end</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;* Construct and write log data</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;log.rec = tm</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;log.rec&lt;-1&gt; = @user.no</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;log.rec&lt;-1&gt; = @logname</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;log.rec&lt;-1&gt; = origin</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;log.rec&lt;-1&gt; = cmd</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;writeseq change(log.rec, @fm, char(9)) to log.f else null</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;return</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; end</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">end</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This example logger constructs a dynamic array that it then converts to be tab delimited. The logged data is the epoch value (allowing consistent logging across time zones), the QM user number, user name, command origin and the command itself.</p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

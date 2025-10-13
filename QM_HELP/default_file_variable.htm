@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Default File Variable</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="@STDFIL,Default file variable" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "default_file_variable.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Default File Variable</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sequential_file_io.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbasic_objects.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For compatibility with other environments, QMBasic supports the concept of the <span style="font-weight: bold;">default file variable</span> but, because use of this feature can result in mis-typed programs compiling without errors but not functioning correctly, it must be enabled by use of the STDFIL or STDFIL.SHARED option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive or the equivalent setting in the <a href="basic.htm#basic.options" class="topiclink">$BASIC.OPTIONS</a> record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default file variable allows a program to open a file without referencing a specific variable name.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using the STDFIL.SHARED option of <span style="font-weight: bold;">$MODE</span>, the default file variable is an implied reference to the @STDFIL variable. All programs and subroutines executed at the same command processor level share a single default file variable. It is therefore important that an application uses this feature with care. @STDFIL is maintained separately for each command processor level. Thus a program that uses the default file variable can use the QMBasic EXECUTE statement to run a separate program that uses the default file variable to reference a different file. On return from the EXECUTE, @STDFIL references the original file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using the STDFIL option of $MODE instead of STDFIL.SHARED, the default file variable is maintained separately for each program or subroutine. The @STDFIL variable is local to the program in which it is referenced.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A single application can validly include a mix of programs that use both modes but use of both STDFIL and STDFIL.SHARED together in a single program is equivalent to use of STDFIL.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When this feature is enabled, the syntax of many of the QMBasic statements that access files is modified to allow the file variable to be omitted. The revised syntax for use with the default file variable is as shown below but not referenced elsewhere in this manual.</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">CLEARFILE {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">CLOSE {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">DELETE <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">DELETEU <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">FILELOCK {ON ERROR <span style="font-style: italic;">statement(s)</span>} {LOCKED <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">FILEUNLOCK {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">OPEN {<span style="font-style: italic;">dict.expr</span>, } <span style="font-style: italic;">filename</span> {READONLY} {ON ERROR <span style="font-style: italic;">statement(s)</span>} {THEN <span style="font-style: italic;">statement(s)</span>} {ELSE <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">OPENPATH <span style="font-style: italic;">pathname</span> {READONLY} {ON ERROR <span style="font-style: italic;">statement(s)</span>} {THEN <span style="font-style: italic;">statement(s)</span>} {ELSE <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">MATREAD <span style="font-style: italic;">mat</span> FROM <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} {THEN <span style="font-style: italic;">statement(s)</span>} {ELSE <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">MATREADL <span style="font-style: italic;">mat</span> FROM <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} {LOCKED <span style="font-style: italic;">statement(s)</span>} {THEN <span style="font-style: italic;">statement(s)</span>} {ELSE <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">MATREADU <span style="font-style: italic;">mat</span> FROM <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} {LOCKED <span style="font-style: italic;">statement(s)</span>} {THEN <span style="font-style: italic;">statement(s)</span>} {ELSE <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">MATWRITE <span style="font-style: italic;">mat</span> TO <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">MATWRITEU <span style="font-style: italic;">mat</span> TO <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">READ <span style="font-style: italic;">rec</span> FROM <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} {THEN <span style="font-style: italic;">statement(s)</span>} {ELSE <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">READL <span style="font-style: italic;">rec</span> FROM <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} {LOCKED <span style="font-style: italic;">statement(s)</span>} {THEN <span style="font-style: italic;">statement(s)</span>} {ELSE <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">READU <span style="font-style: italic;">rec</span> FROM <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} {LOCKED <span style="font-style: italic;">statement(s)</span>} {THEN <span style="font-style: italic;">statement(s)</span>} {ELSE <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">RELEASE , <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} &nbsp; &nbsp; &nbsp; [Note comma before <span style="font-style: italic;">record.id</span>]</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">SELECT {TO <span style="font-style: italic;">list</span>} {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">SELECTN {TO <span style="font-style: italic;">list</span>} {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">SELECTV {TO <span style="font-style: italic;">list</span>} {ON ERROR <span style="font-style: italic;">statement(s)</span>}</p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">WRITE <span style="font-style: italic;">rec</span> TO <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} </p>
+<p class="p_Normal" style="margin: 10px 0 0 0;">WRITEU <span style="font-style: italic;">rec</span> TO <span style="font-style: italic;">record.id</span> {ON ERROR <span style="font-style: italic;">statement(s)</span>} </p>
+<p class="p_Normal" style="margin: 6px 0 0 0;">&nbsp;</p>
+<p class="p_Normal" style="margin: 6px 0 0 0;">QM does not support use of the default file variable with READV, WRITEV and the locking related variants of these statements.</p>
+
+</td></tr></table>
+
+</body>
+</html>

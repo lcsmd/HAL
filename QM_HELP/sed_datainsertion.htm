@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SED - Data insertion</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sed_datainsertion.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SED &nbsp;- &nbsp;Data Insertion</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sed_cursormovementfunctions.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sed_copyingdeletingandrestoringdata.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Data is inserted at the current cursor position. If overlay mode is set the new data overwrites any existing data at this position, otherwise it is inserted before the character under the cursor. Overlay mode may be toggled using the <span style="font-weight: bold;">overlay</span> function (Ctrl-O) or the <span style="font-weight: bold;">OVERLAY</span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The return key inserts a newline. If indent mode is active (see the <span style="font-weight: bold;">INDENT</span> command), the cursor is indented to line up with the previous line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Any character other than a field mark or item mark may be inserted. The <span style="font-weight: bold;">quote character</span> function (Ctrl-Q or Esc-Q) allows insertion of non-printing characters. It may be used in four ways:</p>
+<p style="margin: 10px 0 0 30px;">Followed by a number of up to three digits, it inserts the character with that decimal ASCII sequence (0 to 253 only).</p>
+<p style="margin: 10px 0 0 30px;">Followed by V, S or T, it inserts a value mark, subvalue mark or text mark respectively.</p>
+<p style="margin: 10px 0 0 30px;">Followed by X and two (non-ECS mode) or four (ECS mode) hexadecimal digits, it inserts the character with that character code point value.</p>
+<p style="margin: 10px 0 0 30px;">Followed by K, it waits for a key to be pressed and then inserts the key binding code required for this key as described under <a href="sed_dynamickeybindings.htm" class="topiclink">Dynamic Key Bindings</a>.</p>
+<p style="margin: 10px 0 0 30px;">Followed by any other character, usually a non-printing character, it will insert that character.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ROUNDDOWN(), ROUNDUP()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ROUNDDOWN(),ROUNDUP()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_rounddown.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ROUNDDOWN(), ROUNDUP()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_rnd.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_stringmath.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ROUNDDOWN()</span> function returns an integer value rounded towards zero in a given increment. The <span style="font-weight: bold;">ROUNDUP()</span> function returns an integer value rounded away from zero in a given increment.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ROUNDDOWN(</span><span style="font-style: italic;">value</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">increment</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">ROUNDUP(</span><span style="font-style: italic;">value</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">increment</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">value</span></td><td style="border:none;padding:0">is a numeric value to be rounded.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">increment</span></td><td style="border:none;padding:0">is the integer rounding increment.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ROUNDDOWN()</span> function returns the integer <span style="font-style: italic;">value</span> rounded towards zero in steps of <span style="font-style: italic;">increment</span>. It is equivalent to use of</p>
+<p> &nbsp; IDIV(<span style="font-style: italic;">value</span>, <span style="font-style: italic;">increment</span>) * <span style="font-style: italic;">increment</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ROUNDUP()</span> function returns the integer <span style="font-style: italic;">value</span> rounded away from zero in steps of <span style="font-style: italic;">increment</span>. For a positive <span style="font-style: italic;">value</span> it is equivalent to use of</p>
+<p> &nbsp; IDIV(<span style="font-style: italic;">value</span> + <span style="font-style: italic;">increment</span> - 1, <span style="font-style: italic;">increment</span>) * <span style="font-style: italic;">increment</span></p>
+<p>or, for a negative value</p>
+<p> &nbsp; IDIV(<span style="font-style: italic;">value</span> - <span style="font-style: italic;">increment</span> + 1, <span style="font-style: italic;">increment</span>) * <span style="font-style: italic;">increment</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-style: italic;">increment</span> is less than one, the function returns zero.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">FOR I = -10 TO 10</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY I, ROUNDDOWN(I, 3), ROUNDUP(I,3)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">NEXT I</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above loop displays:</p>
+<p class="p_CodeBody"><span class="f_CodeBody">-10 &nbsp;-9 &nbsp; -12</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-9 &nbsp; -9 &nbsp; -9</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-8 &nbsp; -6 &nbsp; -9</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-7 &nbsp; -6 &nbsp; -9</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-6 &nbsp; -6 &nbsp; -6</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-5 &nbsp; -3 &nbsp; -6</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-4 &nbsp; -3 &nbsp; -6</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-3 &nbsp; -3 &nbsp; -3</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-2 &nbsp; 0 &nbsp; &nbsp;-3</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">-1 &nbsp; 0 &nbsp; &nbsp;-3</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">0 &nbsp; &nbsp;0 &nbsp; &nbsp;0</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">1 &nbsp; &nbsp;0 &nbsp; &nbsp;3</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">2 &nbsp; &nbsp;0 &nbsp; &nbsp;3</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">3 &nbsp; &nbsp;3 &nbsp; &nbsp;3</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">4 &nbsp; &nbsp;3 &nbsp; &nbsp;6</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">5 &nbsp; &nbsp;3 &nbsp; &nbsp;6</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">6 &nbsp; &nbsp;6 &nbsp; &nbsp;6</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">7 &nbsp; &nbsp;6 &nbsp; &nbsp;9</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">8 &nbsp; &nbsp;6 &nbsp; &nbsp;9</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">9 &nbsp; &nbsp;9 &nbsp; &nbsp;9</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">10 &nbsp; 9 &nbsp; &nbsp;12</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_ceil.htm" class="topiclink">CEIL()</a></span>, <span style="font-weight: bold;"><a href="qmb_ceil.htm" class="topiclink">FLOOR()</a></span>, <span style="font-weight: bold;"><a href="qmb_mod.htm" class="topiclink">MOD()</a></span>, <span style="font-weight: bold;"><a href="qmb_rem.htm" class="topiclink">REM()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

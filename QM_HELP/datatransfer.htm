@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Transferring Data from other Multivalue Systems</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Migration,QMRESTORE,QMSAVE,Transferring data,UDIMPORT,UVIMPORT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "datatransfer.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Transferring Data from other Multivalue Systems</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="migrating-to-openqm.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="option-and-mode-shortcuts.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM includes versions of the Pick style data restore tools such as <span style="font-weight: bold;"><a href="t_load.htm" class="topiclink">T.LOAD</a></span> and <span style="font-weight: bold;"><a href="account_restore.htm" class="topiclink">ACCOUNT.RESTORE</a></span> however, because the media format used by the corresponding save tools (T.DUMP and ACCOUNT.SAVE) is not publicly documented, some variations have been encountered where restore of a Pick style save into QM fails. To avoid this, QM includes a tool named QMSAVE which is issued in source form and can be compiled and run on a variety of other environments. The QMRESTORE tool can then be used to read the saved data into QM.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">QMSAVE</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QMSAVE tool is provided in source form in the BP file of the QMSYS account. It includes conditional compilation constructs (<a href="qmbd_ifdef.htm" class="topiclink">$IFDEF</a>) for the parts that vary according to the environment from which data is being transferred. These constructs can be resolved manually by editing the source code or by compiling and running the preprocessor released as PREPROC in the BP file of the QMSYS account.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The source code has been written in a way that allows it to be moved to the source system simply by running the ED editor on the Pick system, going into insert mode and using the &quot;Paste from File&quot; option of AccuTerm.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A full description of how to modify, compile and run this tool is included in the source code. The extracted data is moved to one or more export files, each with a numeric suffix and limited to a size set in the source code. Unless the exported data is visible from the QM system, the files should then be moved using binary mode FTP, removable hard drive or other data transfer method. </p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QMSAVE tool is subject to change. Users who modify it to work in new environments are encouraged to contribute their changes back to QM so that they may be shared with other users.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">QMRESTORE</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QMRESTORE tool is used to restore the exported data into QM.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;">The command line to run this tool is</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">QMRESTORE </span><span class="f_CodeSingleLine" style="font-style: italic;">pathname</span><span class="f_CodeSingleLine"> {</span><span class="f_CodeSingleLine" style="font-style: italic;">options</span><span class="f_CodeSingleLine">}</span></p>
+<p class="p_Normal">where</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;"><span style="font-style: italic;">pathname</span> is the name of the file holding the saved data. The sequence number is added automatically.</p>
+<p class="p_Normal" style="margin: 0 0 0 24px;"><span style="font-style: italic;">options</span> are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 48px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:95px">CLEAR</td><td style="border:none;padding:0">Clear file before restoring</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 48px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:95px">NO.CASE</td><td style="border:none;padding:0">Create new accounts with case insensitive VOC</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 48px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:95px">NO.QUERY</td><td style="border:none;padding:0">Suppress confirmation queries</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The command will prompt for the name of the saved account and the name of the files to be restored. Use of an asterisk as the file name restores all files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To avoid damaging the QM VOC file, any file named VOC or MD in the saved data is restored as VOC-RESTORE or MD-RESTORE respectively. Any files with names that clash with a QM VOC entry that is not a file will be restored with a &quot;-CLASH&quot; suffix added and must be resolved manually.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">UVIMPORT and UDIMPORT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The UVIMPORT tool can transfer data directly from UniVerse data files to QM files. The UDIMPORT tool is similar but reads Unidata files. Both tools are in the standard global catalogue but need a VOC entry to be created in the account(s) where they are to be used. For UVIMPORT, this should be:</p>
+<p class="p_CodeBody"><span class="f_CodeBody">UVIMPORT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">1: V</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">2: CA</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">3: $UVIMPORT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For UDIMPORT, it is similar but with $UDIMPORT in field 3.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The programs can import all or selected files from a U2 account. The source files may be static hashed, dynamic hashed or directory. The file byte ordering will be corrected automatically if the file has come from a system with a different architecture.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">These tools do not make changes to the source files, however, it is recommended that a copy of the U2 account is used rather than the live data. It is essential that no U2 users are using the files while the import process is running.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Although the tools will work with a standard 80 x 24 screen, it is useful to enlarge the window to have as many lines as will fit on the screen. For example,</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">TERM 80,43</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The tools have two modes of operation; interactive mode and command line mode.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Interactive Mode</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">LOGTO the account into which data is to be imported. Create the VOC item described above if it does not already exist.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Type UVIMPORT or UDIMPORT to start the program.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Enter the pathname of the U2 account from which data is to be imported. The program scans the VOC of this account to build a list of importable files and displays this list. Each file is numbered for reference. This process may take some time to complete if there are many files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Two file status columns are displayed, one for the data file and one for the dictionary. &nbsp;These columns may contain:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:73px">none</td><td style="border:none;padding:0">The file component does not exist</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:73px">err</td><td style="border:none;padding:0">There was an error opening the file</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:73px">sys</td><td style="border:none;padding:0">The file corresponds to a QM file in the QMSYS account</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:73px">clash</td><td style="border:none;padding:0">There is an item of this name in the VOC of target account that is not a file</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:73px">COPY</td><td style="border:none;padding:0">The file is selected for copying</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the column is blank, the file could be copied but is not yet selected.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A help text box is displayed at the bottom of the screen. This display can be toggled by typing a question mark and pressing return.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To select files, type:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>the line number (e.g. &quot;5&quot;) to select a specific file</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>a range of line numbers (e.g. &quot;4-9&quot;) to select multiple files</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>&quot;A&quot; to select all files</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To deselect files, use the same codes prefixed with &quot;X&quot;.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The selection/deselection initially affects both the data and dictionary portions. Type &quot;D&quot; to switch between both, data and dictionary modes. The current mode is displayed at the top right of the screen.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To scroll through the pages of the display (where applicable), type N or P.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Once files have been selected, type Q to quit from this screen. If any files have been selected, the program will prompt for confirmation that import is to continue.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For each selected file, the program displays the file name, source pathname and target name.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Press return to import the file, a space to omit the file, or an asterisk to import all files without further prompting.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Two progress bars are displayed, one for files, the other for groups. In a directory type file, each record is considered as a group.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If selected for import with UVIMPORT, the VOC and VOCLIB files will be restored as UV_VOC and UV_VOCLIB. For UDIMPORT, the VOC will be restored as UD_VOC.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Command Line Operation</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">LOGTO the account into which data is to be imported. Create the VOC item described above if it does not already exist.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The command syntax is identical for both tools. Using UVIMPORT as an example, to import to the default location, type</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">UVIMPORT </span><span class="f_CodeSingleLine" style="font-style: italic;">source.path</span></p>
+<p class="p_Normal">or, to import to a specific location, type</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">UVIMPORT </span><span class="f_CodeTopLine" style="font-style: italic;">source.path</span><span class="f_CodeTopLine"> {{DICT} </span><span class="f_CodeTopLine" style="font-style: italic;">target.file</span><span class="f_CodeTopLine">}</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the source.path begins &quot;D_&quot;, the program assumes that it is a dictionary and imports to the dictionary of the corresponding file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Alternatively, if the default select list contains a list of filenames to be imported from the U2 account, type</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">UVIMPORT </span><span class="f_CodeTopLine" style="font-style: italic;">account.path</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The following additional command line options are supported:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:132px">ALL</td><td style="border:none;padding:0">Import all files without prompting.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:132px">LOCAL</td><td style="border:none;padding:0">Similar to ALL but imports only local files.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:132px">CLEAR</td><td style="border:none;padding:0">Clear files before importing.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:132px">OVERWRITING</td><td style="border:none;padding:0">Overwrite files without prompting.</td></tr></table></div>
+</td></tr></table>
+
+</body>
+</html>

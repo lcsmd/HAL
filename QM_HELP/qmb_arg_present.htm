@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ARG.PRESENT()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ARG.PRESENT()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_arg_present.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ARG.PRESENT()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_arg_count.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_ascii.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ARG.PRESENT()</span> function tests whether an argument variable was passed by the caller of a subroutine or function declared with the <a href="qmb_subroutine.htm" class="topiclink">VAR.ARGS</a> option.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ARG.PRESENT(</span><span style="font-style: italic;">var</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:61px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is the name of an argument variable.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When a program calls a subroutine or function that has been declared with the <a href="qmb_subroutine.htm" class="topiclink">VAR.ARGS</a> option, the actual number of arguments passed may be fewer than the number of argument variables in the subroutine definition. The unused argument variables will be left unassigned. The <span style="font-weight: bold;">ARG.PRESENT()</span> function allows the subroutine or function to test whether the argument was passed by the caller. Use of default values for missing arguments does not affect the value returned by this function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Note that the <span style="font-weight: bold;">ARG.PRESENT()</span> function relates to the arguments passed into a <span style="font-weight: bold;">SUBROUTINE</span>, <span style="font-weight: bold;">FUNCTION</span> or <span style="font-weight: bold;">CLASS</span> module and does not reflect the number of arguments passed into a local subroutine or function.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SUBROUTINE INCREMENT.COUNTER(CT) VAR.ARGS</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READU REC FROM @VOC, 'COUNTER' ELSE STOP 'COUNTER missing'</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IF ARG.PRESENT(CT) THEN CT = REC&lt;2&gt;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; REC&lt;2&gt; += 1</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; WRITE REC TO @VOC, 'COUNTER'</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RETURN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above subroutine increments a counter stored in field 2 of a VOC X-type record. If the CT argument is present in the call to this subroutine, the previous value of the counter is returned via this argument.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_arg.htm" class="topiclink">ARG()</a></span>,<span style="font-weight: bold;"> <a href="qmb_arg_count.htm" class="topiclink">ARG.COUNT()</a></span>,<span style="font-weight: bold;"> <a href="qmb_set_arg.htm" class="topiclink">SET.ARG</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

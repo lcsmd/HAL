@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>$DEFINE compiler directive</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="$DEFINE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbd_define.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">$DEFINE Compiler Directive</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbd_debug.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbd_error.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">$DEFINE</span> directive is used to associate a value with a symbolic name at compile time. The standard include records in the SYSCOM file contain many examples of <span style="font-weight: bold;">$DEFINE</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">$DEFINE </span><span style="font-style: italic;">name</span> <span style="font-style: italic;">value</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where <span style="font-style: italic;">name</span> is the symbol to be used in the program and <span style="font-style: italic;">value</span> is a constant. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although it is valid for <span style="font-style: italic;">name</span> to correspond to a built-in function, statement or reserved word, use in this way is discouraged as the function, statement or reserved word becomes inaccessible. As an aid to detecting this situation, particularly when migrating an existing application to QM, use of the STRICT.EQUATE setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive will generate a compiler warning for name clashes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The token QM is automatically defined and may be used with <span style="font-weight: bold;"><a href="qmbd_ifdef.htm" class="topiclink">$IFDEF</a></span> to determine whether a program is being compiled on the QM database. The token QM.WINDOWS, QM.LINUX, QM.FREEBSD, QM.MAC, QM.AIX, QM.SOLARIS, QM.RPI or QM.PDA is defined corresponding to the underlying operating system. Because these are only relevant at compile time, take care when using them in programs that may be moved between platforms. The <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key 1010 (SYS$PLATFORM) can be used to determine platform type at run time.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>See <span style="font-weight: bold;"><a href="qmbd_ifdef.htm" class="topiclink">$IFDEF</a></span> for an example of use of define tokens to control conditional compilation, allowing a single source stream to be used in different multivalue environments.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_equate.htm" class="topiclink">EQUATE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>EXPAND()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="EXPAND()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_expand.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">EXPAND()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_exp.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_extract.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">EXPAND()</span> function merges a data collection with a linked item.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">EXPAND(</span><span style="font-style: italic;">link.item</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">EXPAND(</span><span style="font-style: italic;">link.item</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">fvar</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">link.item</span></td><td style="border:none;padding:0">is a reference to a data collection string element containing the link.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">fvar</span></td><td style="border:none;padding:0">is the file variable to be used when resolving a link that does not specify a filename.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">A data collection stored in a collection file may contain links to other collections in the same file or a different file. The links are stored as a string variable that contains a reference to the linked item as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine" style="font-style: italic;">filename</span><span class="f_CodeSingleLine">:</span><span class="f_CodeSingleLine" style="font-style: italic;">id</span></p>
+<p class="p_Normal">The <span style="font-style: italic;">filename</span> (but not the colon) can be omitted if the link is to a record in a default file (perhaps the same file) but this reduced syntax has implications for the application as described below. There is nothing about this string item that defines it as a link except for how it is used by the application.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where a data collection containing a link has been read into a QMBasic variable, the linked item can be joined onto its parent by use of the<span style="font-weight: bold;"> EXPAND()</span> function</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">OK = EXPAND(VAR{'link'})</span></p>
+<p class="p_Normal">where <span style="font-style: italic;">link</span> is the element path of the string that defines the link.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the link string uses the reduced syntax that has no <span style="font-style: italic;">filename</span>, the extended form of the <span style="font-weight: bold;">EXPAND()</span> function must be used where <span style="font-style: italic;">fvar</span> is a file variable that references the file containing the linked item. This optional function argument is ignored when using the full syntax of the link string.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">EXPAND()</span> function returns True if successful.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="qmbasic_collections.htm" class="topiclink">Data collections</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

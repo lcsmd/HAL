@@ -1,0 +1,13 @@
+     OPEN 'CONTROL' TO CONTROL ELSE PRINT 'CONTROL';STOP
+     OPEN 'TSVEND' TO TSVEND ELSE PRINT 'TSVEND';STOP
+     READ I2V FROM CONTROL,'I2.VEND' THEN
+          V.CT = DCOUNT(I2V<1>,@VM)
+          FOR V.X = 1 TO V.CT
+               I2VBUFF = ""
+               I2V.KEY = I2V<1,V.X>
+               FOR A.X = 1 TO 5
+                    I2VBUFF<A.X> = I2V<A.X+1,V.X>
+               NEXT A.X
+               WRITE I2VBUFF ON TSVEND,I2V.KEY
+          NEXT V.X
+     END

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>EVAL</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="EVAL,EVALUATE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "eval.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">EVAL, EVALUATE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="eq.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="fmt.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">EVAL</span> (or <span style="font-weight: bold;">EVALUATE</span>) keyword prefixes an expression to be evaluated and used as though it were an I-type defined in the dictionary.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">EVAL</span> <span style="font-style: italic;">expr</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">is the expression. This must be enclosed in single or double quotes.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">EVAL</span> keyword prefixes an expression which is handled as a temporary I-type. It may be used as a field for display or in selection or sort clauses.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">expr</span> string conforms to the same rules as I-type expressions. It is compiled by the query processor for use within the command being executed but is not saved in the dictionary. Where the value of <span style="font-style: italic;">expr</span> is a constant, the expression is evaluated only once and then treated as a literal value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default display name used for an <span style="font-weight: bold;">EVAL</span> expression in the absence of a <span style="font-weight: bold;"><a href="col_hdg.htm" class="topiclink">COL.HDG</a></span> qualifier is the expression itself.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default display format and conversion of the evaluated item are taken from the first field referenced by the expression. If no fields are referenced, the format defaults to 10L with no conversion. Alternative format or conversion may be specified with the <span style="font-weight: bold;"><a href="fmt.htm" class="topiclink">FMT</a></span> or <span style="font-weight: bold;"><a href="conv.htm" class="topiclink">CONV</a></span> field qualifiers. Defaulting in this way means that, for example, calculating a profit value as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">EVAL &quot;SELLING.PRICE - COST.PRICE&quot;</span></p>
+<p>will produce a properly formatted and converted monetary value, however, calculating an elapsed period from two date fields as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">EVAL &quot;END.DATE - START.DATE&quot;</span></p>
+<p>will calculate the numeric difference between the two dates and then convert it as a date rather than a simple numeric value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For increased data privacy, the <a href="configparams.htm#security" class="topiclink">SECURITY</a> configuration parameter can be used to set a mode whereby use of <span style="font-weight: bold;">EVAL</span> requires the user to have write access to the file's dictionary. Note that this is the dictionary associated with the file being reported regardless of possible use of the <span style="font-weight: bold;"><a href="using.htm" class="topiclink">USING</a></span> clause to select an alternative dictionary.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES EVAL &quot;SUM(RECEIVED)&quot;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command processes records from the INVOICES file and reports the record id (probably the invoice number) and the total of the RECEIVED field which is multivalued to allow for more than one payment against an invoice. The conversion and format applied to the evaluated result are taken from the RECEIVED dictionary item.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="as.htm" class="topiclink">AS</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>CREATE.FILE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CREATE.FILE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_create_file.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">CREATE.FILE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_create.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_create_server_socket.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CREATE.FILE</span> statement creates the operating system representation of a directory or dynamic hash file.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">CREATE.FILE</span>  <span style="font-style: italic;">path</span></td><td style="border:none;padding:0">{<span style="font-weight: bold;">DIRECTORY</span> | <span style="font-weight: bold;">DYNAMIC</span>}</td></tr></table></div><p style="margin: 0 0 0 210px;">{<span style="font-weight: bold;">GROUP.SIZE</span> <span style="font-style: italic;">grpsz</span>}</p>
+<p style="margin: 0 0 0 210px;">{<span style="font-weight: bold;">BIG.REC.SIZE</span> <span style="font-style: italic;">bigrec</span>}</p>
+<p style="margin: 0 0 0 210px;">{<span style="font-weight: bold;">MIN.MODULUS</span> <span style="font-style: italic;">minmod</span>}</p>
+<p style="margin: 0 0 0 210px;">{<span style="font-weight: bold;">SPLIT.LOAD</span> <span style="font-style: italic;">split</span>}</p>
+<p style="margin: 0 0 0 210px;">{<span style="font-weight: bold;">MERGE.LOAD</span> <span style="font-style: italic;">merge</span>}</p>
+<p style="margin: 0 0 0 210px;">{<span style="font-weight: bold;">VERSION</span> <span style="font-style: italic;">ver</span>}</p>
+<p style="margin: 0 0 0 210px;">{<span style="font-weight: bold;">ON ERROR</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">path</span></td><td style="border:none;padding:0">evaluates to the pathname of the file to be created. The <span style="font-weight: bold;">DIRECTORY</span> or <span style="font-weight: bold;">DYNAMIC</span> keywords determine the type of file to be created. One and only one of these keywords must be present. The remaining options apply only to creation of a dynamic file and, where included, must appear in the order shown above.</td></tr></table></div><p style="text-indent: -89px; margin: 0 0 0 119px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">grpsz</span></td><td style="border:none;padding:0">is the group size (1 - 8) in multiples of 1024 bytes.</td></tr></table></div><p style="text-indent: -89px; margin: 0 0 0 119px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">bigrec</span></td><td style="border:none;padding:0">is the large record size in bytes.</td></tr></table></div><p style="text-indent: -89px; margin: 0 0 0 119px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">minmod</span></td><td style="border:none;padding:0">is the minimum modulus value. For compatibility with the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command, the synonym <span style="font-weight: bold;">MINIMUM.MODULUS</span> may be used.</td></tr></table></div><p style="text-indent: -89px; margin: 0 0 0 119px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">split</span></td><td style="border:none;padding:0">is the split load percentage.</td></tr></table></div><p style="text-indent: -89px; margin: 0 0 0 119px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">merge</span></td><td style="border:none;padding:0">is the merge load percentage.</td></tr></table></div><p style="text-indent: -89px; margin: 0 0 0 119px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-style: italic;">ver</span></td><td style="border:none;padding:0">is the file version.</td></tr></table></div><p style="text-indent: -89px; margin: 0 0 0 119px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CREATE.FILE</span> statement creates the operating system representation of a directory or dynamic hash file using the configuration information supplied via its optional parameters. Omitted parameters take their system defined default values. Note that this statement does not create a corresponding VOC entry.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CREATE.FILE 'C:\MYFILE' DYNAMIC GROUP.SIZE 4</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement creates a dynamic hash file with group size 4 (4096 bytes) as the C:\MYFILE directory.</p>
+
+</td></tr></table>
+
+</body>
+</html>

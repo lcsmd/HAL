@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Moving an Account</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Moving an account" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "moveaccount.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Moving an Account</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="accounts.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="entering_qm.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Moving an account within the same QM environment usually requires nothing more than copying the entire account directory, changing the pathname in the QM.ACCOUNTS file and modifying any VOC records that reference the account pathname such as those describing locally catalogued subroutines for which the FULL.PATH option of the <span style="font-weight: bold;"><a href="catalogue.htm" class="topiclink">CATALOGUE</a></span> command was used.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Moving an account to a different server is more complex and requires the steps below.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Note: It is essential that there are no QM sessions accessing a file while it is moved using an operating system level command. Failure to observe this rule may result in file corruption.</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Linux to Linux or Windows to Windows</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin-left: 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">1.</span>Copy the entire account directory to the new server, preferably using the same pathname as the original system.</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 8px 0 0 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">2.</span>Ensure that the new account location is referenced from the QM.ACCOUNTS file.</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 8px 0 0 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">3.</span>If the account pathname has changed, any reference to the old pathname in the VOC file must be changed.</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 8px 0 0 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">4.</span>Identify any files outside of the account directory that are used by the application and copy these, again preserving or modifying the pathname.</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 8px 0 0 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">5.</span>If the application uses globally catalogued subroutines, these must be recatalogued on the new system. If all application accounts are being moved, the easiest way to do this is to copy the global catalogue directory (the gcat subdirectory of the QMSYS account) from the original system to a temporary location on the new system and then use the <span style="font-weight: bold;"><a href="tools.htm" class="topiclink">*IMPGCAT</a></span> tool to import the items that are not part of QM itself.</p><p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin: 8px 0 0 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">6.</span>Ensure that any external software used by the application is available on the new system.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Windows to Linux</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are two additional problems when moving from Windows to Linux.</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Operating system pathnames are case insensitive in Windows but case sensitive in Linux.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Directory files use a carriage return / linefeed pair as the newline in Windows and just a linefeed in Linux. The <span style="font-weight: bold;"><a href="copy.htm" class="topiclink">COPY</a></span> command has a TEXT or BINARY option that may be useful.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The case sensitivity issue applies to all operating system files and directories within the account, including record ids in directory files though movement of these may be helped by use of the TO.UPPERCASE or TO.LOWERCASE options of the <span style="font-weight: bold;"><a href="copy.htm" class="topiclink">COPY</a></span> command. It can only be resolved by examination of the application to ensure that casing is as expected.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The line terminator issue can be resolved by use of the *FIXDIR tool but it is essential that this is not applied to directories that hold binary data such as QMBasic object code.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span class="f_BoldSubheading">Linux to Windows</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The same two additional issues apply as for Windows to Linux but the case sensitivity issue is less of a problem moving in this direction. It is important to note that on a Lunix system, a directory file could have two records named, for example, &quot;A&quot; and &quot;a&quot; but on a Windows system these are both the same record and one will overwrite the other.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Copying Items from the QMSYS Account Directory</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">It is strongly recommended that users do not copy the QMSYS account in its entirety because this may result in system errors, especially if the two systems are running different releases of QM. Instead, selective copying/editing should be used.</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">$FORMS</td><td style="border:none;padding:0">If the system uses Pick style form queue emulation, the relevant form queue definitions should be copied or recreated.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">$LOGINS</td><td style="border:none;padding:0">This file is inaccessible to QM sessions but holds information relating to the features controlled by the <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> command and the application level security option. If all users are moving to the new system, simply use an operating system copy command to move the file. If only some users are moving, use <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> to recreate the required user definitions.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">$SERVERS</td><td style="border:none;padding:0">This file is also inaccessible to QM sessions and holds server definitions for QMNet and the Virtual File System. Either copy it in its entirety with an operating system command or recreate it.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">$VAULT</td><td style="border:none;padding:0">If the encryption key vault is copied to the new system, the master key must be re-entered using the <span style="font-weight: bold;"><a href="reset_master_key.htm" class="topiclink">RESET.MASTER.KEY</a></span> command.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">ACCOUNTS</td><td style="border:none;padding:0">Records may be copied selectively or the entire file may be moved using an operating system command.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">ecs-maps</td><td style="border:none;padding:0">ECS character maps can be copied individually or in their entirety.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">gcat</td><td style="border:none;padding:0">The global catalogue must not be copied in its entirety unless both systems are running the same version of QM. The *IMPGCAT tool mentioned above may be useful.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">VOC</td><td style="border:none;padding:0">The only item that should be copied is the MASTER.LOGIN paragraph, if present.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">qmconfig</td><td style="border:none;padding:0">This file should be examined carefully and items moved/edited as needed. The <span style="font-weight: bold;"><a href="edit_config.htm" class="topiclink">EDIT.CONFIG</a></span> command may be useful.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 8px 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">terminfo.mods</td><td style="border:none;padding:0">If used, this file may need to be copied to the new system.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Copying an Entire System to a New Server</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As an alternative to the steps described above, moving an entire system to a new server of the same type (Windows/Linux/etc) can be done as follows:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Install QM on the new system. This will require a change to the licence and it may be useful to visit www.openqm.com/emergency.htm to generate a seven day &quot;emergency licence&quot; which will be replaced by a new permanent licence later.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin-left: 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">1.</span>Shutdown QM on both the old and new servers.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin-left: 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">2.</span>Use an operating system tool to copy all account directories, including QMSYS to the new server, using the same pathnames as on the old server.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin-left: 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">3.</span>Reinstall QM on the new server so that any standard parts of QM such as globally catalogued programs that were copied from the old server are replaced with the correct versions for the release of QM being used on the new server. If the old system uses encryption, the installer will request entry of the master key.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 20px; margin-left: 0;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">4.</span>If the old server was a replication subscriber, the RPLSRVR configuration parameter may need updating.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

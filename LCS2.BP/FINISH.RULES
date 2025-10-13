@@ -1,0 +1,204 @@
+      OPEN 'RULES' TO RULES ELSE PRINT 'RULES';STOP
+      OPEN 'TRANS' TO TRANS ELSE PRINT 'TRANS';STOP
+      OPEN 'ACCOUNTS' TO ACCOUNTS ELSE PRINT 'ACCOUNTS';STOP
+      INCLUDE FILE.EQU TRANS.EQ
+      INCLUDE FILE.EQU RULES.EQ
+      PROMPT ''
+      LABS = "KEYWORD,NAME,ACCOUNT.ID,ACCOUNT NAME,CLASS,DEPT"
+      LABL = "20,20,15,40,10,10"
+      CLASSES="Practice,Personal"
+      DEPTs="NONE,LCS,JMB,MAG,RILEY,DISPUTE"
+      CLASSES= CHANGE(CLASSES,",",@FM)
+      DEPTS=CHANGE(DEPTS,",",@FM)
+      LABS = CHANGE(LABS,',',@FM)
+      LABL = CHANGE(LABL,',',@FM)
+      LABC = DCOUNT(LABS,@FM)
+      DEPTC = DCOUNT(DEPTS,@FM)
+      CLASSC = DCOUNT(CLASSES,@FM)
+      LABLINE = ""
+      FOR LABX = 1 TO LABC
+         LABLINE :=LABS<LABX>:SPACE(LABL<LABX>-LEN(LABS<LABX>))
+      NEXT LABX
+
+      ITEM.CT = 0
+      ITEM.CT += 1
+      SCREEN.WIDTH = 190
+      SCREEN.LENGTH = 48
+      DISPLAY.ROWS = 40
+      COMMAND.LOC= DISPLAY.ROWS+5
+      GOSUB WYSE.WIDE:
+      PRINT @(-1):
+      SELECT.STR = "SSELECT RULES"
+      PRINT SELECT.STR
+      EXECUTE SELECT.STR CAPTURING CAP
+      PRINT CAP
+      READLIST RULES.IDS THEN
+         RULE.CT = DCOUNT(RULES.IDS,@FM)
+         FOR RULE.X = 1 TO RULE.CT
+MAIN:       RULE.ID = RULES.IDS<RULE.X>
+            READ RU.B FROM RULES,RULE.ID THEN
+               IF RU.CLASS.NAME = "" THEN RU.CLASS.NAME = "Practice"
+               IF NOT(RU.ACCT.ID) THEN
+                  KEYWD = RU.KEYWORD
+                  SELECT.STR = 'SELECT TRANS WITH NAME_DESC LIKE "...':KEYWD:'..."'
+                  PRINT SELECT.STR
+                  EXECUTE SELECT.STR CAPTURING CAP
+                  PRINT CAP
+                  PRINT STR("-",70)
+                  PRINT
+                  READLIST TRANS.IDS ELSE TRANS.IDS = ""
+                  TRANS.CT = DCOUNT(TRANS.IDS,@FM)
+                  IF TRANS.CT THEN
+                     FOR TX = 1 TO TRANS.CT
+                        READ TR.B FROM TRANS,TRANS.IDS<TX> ELSE TR.B = ""
+                        PRINT TR.B
+                     NEXT TX
+                  END
+                  PRINT
+                  ITEM.CT  +=1
+                  GOSUB FIX.RULE:
+               END
+            END
+         NEXT RULE.X
+      END
+      PRINT ITEM.CT :" ITEMS PROCESSED"
+
+      STOP
+
+
+
+FIX.RULE:
+      RULE.NUM = RULE.ID
+      YPOS = COMMAND.LOC+2
+      PRINT @(1,45):LABLINE:
+KEY:  DLX=1
+      XPOS=1
+      KEYWD=RU.B<1>
+      *INPUT @(x, y) {,} {:} var {, length {, fill}} {_} {:} {format} {modes}
+      LEN.IN = LABL<DLX>
+      INPUT @(XPOS,YPOS):KEYWD,LEN.IN,"*":
+      IF KEYWD = "Q" THEN STOP
+      IF KEYWD <> "S" THEN
+NAME:    DLX=2
+         NAME = RU.PAYEE.NAME
+         IF NAME = "" THEN NAME = KEYWD
+         LEN.IN = LABL<DLX>
+         XPOS+=LABL<DLX-1>
+         INPUT @(XPOS,YPOS):NAME,LEN.IN,"*":
+ACCT.ID: DLX=3
+         ACCT.KEY = ""
+         XPOS+=LABL<DLX-1>
+         LEN.IN=LABL<DLX>
+         ACCT.ID = ""
+         LOOP WHILE ACCT.ID = ""
+            INPUT @(XPOS,YPOS):ACCT.KEY,LEN.IN,"*":
+            READV ACCOUNT.NAME FROM ACCOUNTS,ACCT.KEY,1 THEN
+               ACCT.ID = ACCT.KEY
+            END ELSE
+               SELECT.STR = 'SSELECT ACCOUNTS WITH NAME LIKE "...':ACCT.KEY:'..."'
+               EXECUTE SELECT.STR CAPTURING CAP
+               READLIST ACCTS.ID THEN
+                  ACCT.CT = DCOUNT(ACCTS.ID,@FM)
+                  IF ACCT.CT > 0 THEN
+                     IF ACCT.CT=1 THEN
+                        ACCT.ID=ACCTS.ID<1>
+                        READV ACCOUNT.NAME FROM ACCOUNTS,ACCT.ID,1 ELSE ACCOUNT.NAME = ""
+                     END ELSE
+                        ACCT.ID = ""
+                        PTR = 1
+                        LOOP WHILE ACCT.ID="" DO
+                           READV ACCOUNT.NAME FROM ACCOUNTS,ACCTS.ID<PTR>,1 ELSE ACCOUNT.NAME = ""
+                           PRINT @(XPOS,YPOS):ACCTS.ID<PTR>:SPACE(LABL<3>-LEN(ACCTS.ID<PTR>)):@(XPOS+LABL<DLX>,YPOS):ACCOUNT.NAME:SPACE(LABL<4>-LEN(ACCOUNT.NAME)):@(XPOS+LEN(ACCTS.ID<PTR>)):
+                           INPUT TRIGGER,1:
+                           IF TRIGGER = " " THEN
+                              PTR+=1
+                              IF PTR > ACCT.CT THEN PTR =1
+                           END ELSE
+                              IF TRIGGER = "" THEN
+                                 ACCT.ID=ACCTS.ID<PTR>
+                              END ELSE
+                                 ACCT.ID=TRIGGER
+                                 INPUT @(XPOS,YPOS):ACCT.ID,LEN.IN,"*": APPEND
+                              END
+                           END
+                        REPEAT
+                     END
+                  END
+               END
+            END
+         REPEAT
+         PRINT @(XPOS,YPOS):ACCT.ID:SPACE(LABL<3>-LEN(ACCT.ID)):ACCOUNT.NAME:SPACE(LABL<4>-LEN(ACCOUNT.NAME)):
+         XPOS+=LABL<3>+LABL<4>
+CLASS:   DLX=5
+         PTR=1
+         LEN.IN=LABL<DLX>
+         CLASS = ""
+         LOOP WHILE NOT(CLASS) DO
+            PRINT @(XPOS,YPOS):CLASSES<PTR>:SPACE(LABL<5>-LEN(CLASSES<PTR>)):@(XPOS+LEN(CLASSES<PTR>)):
+            INPUT TRIGGER,1:
+            IF TRIGGER = " " THEN
+               PTR+=1
+               IF PTR > CLASSC THEN PTR = 1
+            END ELSE
+               IF TRIGGER = "" THEN
+                  CLASS = CLASSES<PTR>
+               END ELSE
+                  CLASS = TRIGGER
+                  INPUT @(XPOS,YPOS):CLASS,LEN.IN,"*": APPEND
+               END
+            END
+         REPEAT
+         PRINT @(XPOS,YPOS):CLASS:SPACE(LABL<5>-LEN(CLASS)):
+         XPOS+=LABL<DLX>
+DEPT:    DLX=6
+         PTR=1
+         DEPT=''
+         LEN.IN=LABL<DLX>
+         LOOP WHILE NOT(DEPT) DO
+            PRINT @(XPOS,YPOS):DEPTS<PTR>:SPACE(LABL<6>-LEN(DEPTS<PTR>)):@(XPOS+LEN(DEPT<PTR>)):
+            INPUT TRIGGER,1:
+            IF TRIGGER = " " THEN
+               PTR+=1
+               IF PTR > DEPTC THEN PTR = 1
+            END ELSE
+               IF TRIGGER = "" THEN
+                  DEPT = DEPTS<PTR>
+               END ELSE
+                  DEPT = TRIGGER
+                  INPUT @(XPOS,YPOS):DEPT,LEN.IN,"*": APPEND
+               END
+            END
+         REPEAT
+         PRINT @(XPOS,YPOS):DEPT:SPACE(LABL<6>-LEN(DEPT)):
+         RU.B = ""
+         IF DEPT ="NONE" THEN DEPT = ""
+         RU.KEYWORD = KEYWD
+         RU.ACCT.ID = ACCT.ID
+         RU.DEPT = DEPT
+         RU.PAYEE.NAME = NAME
+         RU.CLASS.NAME = CLASS
+         WRITE RU.B ON RULES,RULE.NUM
+         *CALL RUN.RULE(RULES,TRANS,RULE.EXP,RULE.NUM)
+      END
+EXIT: RETURN
+
+
+      !
+      ! WYSE WIDE CHARATER SET
+      !
+WYSE.WIDE: *
+
+      ************
+SET.SESSION:
+      ************
+      SET.CMND = "AT.SS":@FM
+      SET.CMND:="DATA SET":@FM
+      SET.CMND:="DATA ,,1,1,"
+      IF SCREEN.WIDTH GE 82 THEN
+         SET.CMND:=SCREEN.WIDTH:",":SCREEN.LENGTH:",,,1"
+      END ELSE
+         SET.CMND:=",,":SCREEN.WIDTH:",":SCREEN.LENGTH:",0"
+      END
+      EXECUTE SET.CMND
+      RETURN
+

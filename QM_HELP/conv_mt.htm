@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Time Conversion (MT)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Time conversion (MT)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_mt.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1"> Time Conversion (MT)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_md.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_mk.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The time conversion code converts a time from its internal representation (number of seconds since midnight) to a string representing hours, minutes and seconds or vice versa.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The full format of this conversion code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MT</span> {<span style="font-weight: bold;">M</span>} {<span style="font-weight: bold;">H</span>} {<span style="font-weight: bold;">S</span>} {<span style="font-style: italic;">c</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">M</span></td><td style="border:none;padding:0">specifies that the time value to be converted is in milliseconds (output conversion only).</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">H</span></td><td style="border:none;padding:0">specifies that the time is to appear in 12-hour format with either &quot;am&quot; or &quot;pm&quot; appended. If <span style="font-weight: bold;">H</span> is not specified, 24-hour conversion is used for output conversion and assumed for input conversion. If the AMPM.UPCASE mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command is active, the appended suffix is in uppercase (AM or PM).</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">S</span></td><td style="border:none;padding:0">specifies that output conversion is to include the seconds field. If the <span style="font-weight: bold;">M</span> option is also present, a period and the three digit fractional seconds value will be included in the converted output. Input conversion determines whether seconds are included by examination of the data to be converted and may not include a fractional element.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">c</span></td><td style="border:none;padding:0">is the character to separate the hours, minutes and seconds fields. If omitted, a colon is used. The separator character should be enclosed in quotes if required to avoid syntactic ambiguity (for example MT'h' for French format times such as 09h30). A pair of adjacent quotes can be used to specify that no separator is to be inserted.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional M, H and S qualifiers may be in any order.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When used as an input conversion, a four digit time such as &quot;0800&quot; will be treated as hours and minutes, <span style="font-style: italic;">hhmm</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="width:400px; border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p><span style="font-weight: bold;">Output Conversion</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p><span style="font-weight: bold;">Data</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">00:00</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">31653</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">08:47</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">63306</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">17:35</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MTH</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">0</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">12:00am</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MTH</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">31653</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">08:47am</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MTH</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">63306</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">05:35pm</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MTS</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">31653</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">08:47:33</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MTS</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">63306</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">17:35:06</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MTHS</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">63306</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">05:35:06pm</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MTS.</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">63306</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">17:35:06</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MTMS</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">33888250</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">09:24:48.250</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT'h'</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">63306</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">17h35</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT''</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">63306</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">1735</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="width:400px; border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p><span style="font-weight: bold;">Input Conversion</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p><span style="font-weight: bold;">Data</span></p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">00:00</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">0</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">10:45</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">38700</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">12:01AM</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">60</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">12:01PM</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">43260</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">MT</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">0800</p>
+</td>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 6px 0 0 0;">28800</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="dates_times_and_epoch_values.htm" class="topiclink">Dates, Times and Epoch Values</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

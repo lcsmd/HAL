@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Format Specifications</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Format specifications" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "fmt_spec.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Format Specifications</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_field.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="locks.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Format specifications appear in field 5 of <a href="dict_c.htm" class="topiclink">C-type</a>, <a href="dict_d.htm" class="topiclink">D-type</a> and <a href="dict_i.htm" class="topiclink">I-type</a> dictionary items to determine the default format of output from the <span style="font-weight: bold;"><a href="list.htm" class="topiclink">LIST</a></span> and <span style="font-weight: bold;"><a href="list.htm" class="topiclink">SORT</a></span> query processor commands. They are also used in the QMBasic <span style="font-weight: bold;"><a href="qmb_fmt.htm" class="topiclink">FMT()</a></span> function and with the query processor <span style="font-weight: bold;"><a href="fmt.htm" class="topiclink">FMT</a></span> keyword.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The full form of a format code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">{<span style="font-style: italic;">field.width</span>} {<span style="font-style: italic;">fill.char</span>} <span style="font-style: italic;">justification</span> {<span style="font-style: italic;">n</span>{<span style="font-style: italic;">m</span>}} {<span style="font-style: italic;">conv</span>} {<span style="font-style: italic;">mask</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">field.width</span></td><td style="border:none;padding:0">is the width of the field into which the data is to be formatted. If <span style="font-style: italic;">field.width</span> is omitted, <span style="font-style: italic;">mask</span> must be specified.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">fill.char</span></td><td style="border:none;padding:0">is the character to be used to expand the string to <span style="font-style: italic;">field.width</span> characters. If omitted, a space is used by default. Where <span style="font-style: italic;">fill.char</span> is a digit, it must be enclosed in single or double quotes.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">justification</span></td><td style="border:none;padding:0">indicates the justification mode to be applied. It takes one of the following values:</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">C</span></td><td style="border:none;padding:0">specifies centered justification. The data is centered in a field of <span style="font-style: italic;">field.width</span> characters, additional <span style="font-style: italic;">fill.char</span> characters being added to either side if the data is shorter than <span style="font-style: italic;">field.width</span>. If the data is longer than <span style="font-style: italic;">field.width</span>, text marks are inserted at intervals of <span style="font-style: italic;">field.width</span> from the start of the data.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">L</span></td><td style="border:none;padding:0">specifies left justification. The data is left aligned in a field of <span style="font-style: italic;">field.width</span> characters, additional <span style="font-style: italic;">fill.char</span> characters being appended if the data is shorter than <span style="font-style: italic;">field.width</span>. If the data is longer than <span style="font-style: italic;">field.width</span>, text marks are inserted at intervals of <span style="font-style: italic;">field.width</span> from the start of the data.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">R</span></td><td style="border:none;padding:0">specifies right justification. The data is right aligned in a field of <span style="font-style: italic;">field.width</span> characters, additional <span style="font-style: italic;">fill.char</span> characters being inserted at the start if the data is shorter than <span style="font-style: italic;">field.width</span>. If the data is longer than <span style="font-style: italic;">field.width</span>, text marks are inserted at intervals of <span style="font-style: italic;">field.width</span> from the start of the data.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">T</span></td><td style="border:none;padding:0">specifies text justification. Text marks are inserted to break the data into fragments of no more than <span style="font-style: italic;">field.width</span> characters, aligning breaks onto the positions of spaces in the data. Where there is no suitable space at which to break the data, the text mark is inserted <span style="font-style: italic;">field.width</span> characters after the last break position. The final fragment is padded using <span style="font-style: italic;">fill.char</span> to be <span style="font-style: italic;">field.width</span> characters in length.</td></tr></table></div><p style="margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 240px;">When the data is displayed, output moves to a new line where a text mark is present in the formatted data.</p>
+<p style="text-indent: -60px; margin: 0 0 0 240px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 180px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-weight: bold;">U</span></td><td style="border:none;padding:0">specifies left justification and is treated identically to the <span style="font-weight: bold;">L</span> code by the QMBasic <span style="font-weight: bold;"><a href="qmb_fmt.htm" class="topiclink">FMT()</a></span> function. Within the query processor, data formatted with this code that is wider than <span style="font-style: italic;">field.width</span> is not wrapped over multiple lines but extends into the space to its right, possibly overwriting whitespace in later columns.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">n</span></td><td style="border:none;padding:0">specifies the number of decimal places to appear in the result when formatting numeric data. The value is rounded in the normal manner. If <span style="font-style: italic;">n</span> is zero, the value is rounded to an integer.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">m</span></td><td style="border:none;padding:0">specifies the scaling factor to be applied. The value being formatted is scaled by moving the decimal point <span style="font-style: italic;">m</span> - <span style="font-style: italic;">p</span> places to the left, where <span style="font-style: italic;">p</span> is the current <a href="qmb_precision.htm" class="topiclink">precision</a> value.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">conv</span></td><td style="border:none;padding:0">is any meaningful combination of the following codes:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-style: italic;">$</span></td><td style="border:none;padding:0">specifies that the national currency symbol should be used as a prefix to the converted data on output conversion and may be present on input conversion. The default currency symbol is a dollar sign but this may be changed by use of the <span style="font-weight: bold;"><a href="nls.htm" class="topiclink">NLS</a> </span>command or the <span style="font-weight: bold;"><a href="qmb_setnls.htm" class="topiclink">SETNLS</a> </span>QMBasic statement.</td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 209px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">,</span></td><td style="border:none;padding:0">indicates that the national language convention thousands delimiter is to be inserted every third digit to the left of the decimal point when converting numeric data. This delimiter defaults to a comma.</td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 209px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">B</span></td><td style="border:none;padding:0">appends db to negative numbers, two spaces to positive numbers. Use the <span style="font-weight: bold;">CRDB.UPCASE</span> keyword of the  <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span>command to change this to DB<span style="font-family: Arial,Helvetica,sans-serif;">.</span></td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 209px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">C</span></td><td style="border:none;padding:0">appends cr to negative numbers, two spaces to positive numbers. Use the <span style="font-weight: bold;">CRDB.UPCASE</span> keyword of the  <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span>command to change this to CR<span style="font-family: Arial,Helvetica,sans-serif;">.</span></td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 209px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">D</span></td><td style="border:none;padding:0">appends db to positive numbers, two spaces to negative numbers. Use the <span style="font-weight: bold;">CRDB.UPCASE</span> keyword of the  <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span>command to change this to DB<span style="font-family: Arial,Helvetica,sans-serif;">.</span></td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 209px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">E</span></td><td style="border:none;padding:0">encloses negative number in angle brackets (&lt;…&gt;). Positive numbers are followed by a single space.</td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 209px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">M</span></td><td style="border:none;padding:0">appends a minus sign to negative numbers.</td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 209px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">N</span></td><td style="border:none;padding:0">suppresses any sign indicator.</td></tr></table></div><p style="text-indent: -30px; margin: 0 0 0 209px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">Z</span></td><td style="border:none;padding:0">indicates that a value of zero should be represented by a null string.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">mask</span></td><td style="border:none;padding:0">specifies a mask to be used to format the data. If omitted, <span style="font-style: italic;">field.width</span> must be specified. Both can be used together.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 150px;">The mask consists of a character string containing #, * or % characters and other characters. Each #, * or % is substituted by one character from the source data. Other characters are copied directly to the result string. Multiple #, * or % characters may be represented by a single #, * or % followed by a number indicating the number of characters to be inserted. Characters having special meaning within the format string may be prefixed by a backslash (\) to indicate that they are to be treated as text.</p>
+<p style="text-indent: -120px; margin: 0 0 0 270px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -120px; margin: 0 0 0 270px;">The value 1234567 with a format specification of 9L#2-#3-#2 would return 12-345-67.</p>
+<p style="text-indent: -120px; margin: 0 0 0 270px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 150px;">Where the <span style="font-style: italic;">mask</span> specifies more characters than in the data being converted, positions corresponding to # characters in the mask are replaced by the <span style="font-style: italic;">fill.char</span>, positions corresponding to * characters in the mask are replaced by asterisks and positions corresponding to % characters in the mask are replaced by zeros. If the data is left aligned, the padding is inserted in the rightmost positions. If the data is right aligned, the padding is inserted in the leftmost positions.</p>
+<p style="text-indent: -120px; margin: 0 0 0 270px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 150px;">If the <span style="font-style: italic;">mask</span> specifies fewer characters than in the data being converted, part of the source data will be lost. A left aligned format will truncate the source data and a right aligned format will lose data from the start of the source.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Data formatting attempts to handle the data as a number if the decimal places, currency symbol, comma insertion or null zero features are included in the format specification. If these features are all absent, or if the data cannot be converted to a number, it is handled as a string. The difference in handling is relevant when processing data such as a string with leading zeros.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Special Case</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with other multivalue products, QM supports a special case of a format code that is just a number. If this is a single digit, it is treated as being the number of decimal &nbsp;places (<span style="font-style: italic;">n</span> from the descriptions above). If it is two digits, the first is the number of decimal places and the second is the scale factor (<span style="font-style: italic;">m</span> above). No other formatting is applied.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format Code Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following table shows some uses of format codes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Arial,Helvetica,sans-serif; font-weight: bold;">Value</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Arial,Helvetica,sans-serif; font-weight: bold;">Format code</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Arial,Helvetica,sans-serif; font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'ABCDE'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'8L'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'ABCDE &nbsp; '</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'ABCDE'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'8R'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">' &nbsp; ABCDE'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'ABCDE'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'8'*'L'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'ABCDE***'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'0012345'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'8R'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">' 0012345'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'0012345'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'8RZ'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">' &nbsp; 12345'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'0000000'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'84RZ'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">''</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'12345'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'8&quot;0&quot;R'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'00012345'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'1234567'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'15R2'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">' &nbsp; &nbsp; 1234567.00'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'1234567'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'15R2$,'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">' &nbsp;$1,234,567.00'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'12345.67'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'15*R2$,'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'*****$12,345.67'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'1234567'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'14L2'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'1234567.00 &nbsp; &nbsp;'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'43'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'L###m'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'43 m'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'43'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'R###m'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">' 43m'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'43'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'&quot;0&quot;R###m'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'043m'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'1234567890'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'L###-#######'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'123-4567890'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'123456789'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'L#3-#3-#3'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'123-456-789'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'12345'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'L#'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'1'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'12345'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'R#'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'5'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'123456789'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'L#5'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'12345'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'123456789'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'R#5'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'56789'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'12345'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'L#6'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'12345 '</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'12345'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'R#6'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">' 12345'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'A LONG LINE'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'6T'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'A LONG</span><span style="font-size: 6pt;">TM</span><span style="font-family: Courier,monospace;">LINE &nbsp;'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'A LONG LINE'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'7T'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'A LONG</span><span style="font-size: 6pt;">TM</span><span style="font-family: Courier,monospace;">LINE &nbsp; '</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'A LONG LINE'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'8T'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'A LONG</span><span style="font-size: 6pt;">TM</span><span style="font-family: Courier,monospace;">LINE &nbsp; &nbsp;'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'A LONG LINE'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'8R'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-inside: avoid;"><span style="font-family: Courier,monospace;">'A LONG L</span><span style="font-size: 6pt;">TM</span><span style="font-family: Courier,monospace;">INE'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p><span style="font-family: Courier,monospace;">'BANANAS'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p><span style="font-family: Courier,monospace;">'3T'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p><span style="font-family: Courier,monospace;">'BAN</span><span style="font-size: 6pt;">TM</span><span style="font-family: Courier,monospace;">ANA</span><span style="font-size: 6pt;">TM</span><span style="font-family: Courier,monospace;">S &nbsp;'</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p><span style="font-family: Courier,monospace;">'1.236'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p><span style="font-family: Courier,monospace;">'2'</span></p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p><span style="font-family: Courier,monospace;">'1.24'</span></p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+</body>
+</html>

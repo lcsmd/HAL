@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>OBJECT()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="OBJECT()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_object.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">OBJECT()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_nv.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_objinfo.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">OBJECT() </span>function instantiates an object for <a href="qmbasic_objects.htm" class="topiclink">object oriented programming</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">OBJECT(</span><span style="font-style: italic;">cat.name</span><span style="font-weight: bold;">,</span> {<span style="font-style: italic;">args...</span>}<span style="font-weight: bold;">)</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">OBJECT(</span><span style="font-style: italic;">obj.var</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">cat.name</span></td><td style="border:none;padding:0">is the name of the catalogued <span style="font-weight: bold;"><a href="qmb_class.htm" class="topiclink">CLASS</a></span> module defining the object.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">args</span></td><td style="border:none;padding:0">are optional arguments that will be passed into the CREATE.OBJECT subroutine.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">obj.var</span></td><td style="border:none;padding:0">is a reference to an instantiated object.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first form of the <span style="font-weight: bold;">OBJECT()</span> function loads the catalogued class module defined by <span style="font-style: italic;">cat.name</span> and creates an object that references it. The function returns an object reference that should be stored in a program variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OBJ = OBJECT(&quot;MYOBJECT&quot;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the class module includes a public subroutine named CREATE.OBJECT this is executed as part of object instantiation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Copying an object reference variable creates a second reference to the same object, not a new instantiation of the same object. The second form of the <span style="font-weight: bold;">OBJECT()</span> function creates a new object as a clone of an existing object. The CREATE.OBJECT subroutine is not executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEWOBJ = OBJECT(OBJ)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An object remains in existence until the last variable referencing it is overwritten or discarded. At this point, if the class module includes a public subroutine named DESTROY.OBJECT, it will be executed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Attempting to instantiate an object that does not exist will result in an abort. Alternatively, the error can be trapped by use of an exception handler:</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">TRY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; OBJ = OBJECT(&quot;MYOBJECT&quot;)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">CATCH SYS$ANY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY &quot;Cannot load object&quot;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="qmbasic_objects.htm" class="topiclink">Object oriented programming</a>, <span style="font-weight: bold;"><a href="qmb_class.htm" class="topiclink">CLASS</a></span>, <span style="font-weight: bold;"><a href="qmb_disinherit.htm" class="topiclink">DISINHERIT</a></span>, <span style="font-weight: bold;"><a href="qmb_inherit.htm" class="topiclink">INHERIT</a></span>, <span style="font-weight: bold;"><a href="qmb_objinfo.htm" class="topiclink">OBJINFO()</a></span>, <span style="font-weight: bold;"><a href="qmb_private.htm" class="topiclink">PRIVATE</a></span>, <span style="font-weight: bold;"><a href="qmb_public.htm" class="topiclink">PUBLIC</a></span>.</p>
+
+</td></tr></table>
+
+</body>
+</html>

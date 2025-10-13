@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SET.SOCKET.MODE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SET.SOCKET.MODE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_set_socket_mode.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SET.SOCKET.MODE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_set_port_params.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_set_status.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SET.SOCKET.MODE()</span> function sets parameters for an open socket.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SET.SOCKET.MODE(</span><span style="font-style: italic;">skt</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">key</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">value</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">skt</span></td><td style="border:none;padding:0">is the socket variable for an open socket.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">key</span></td><td style="border:none;padding:0">identifies the mode to be set:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">SKT$INFO.BLOCKING</td><td style="border:none;padding:0">Default to blocking mode?</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">SKT$INFO.NO.DELAY</td><td style="border:none;padding:0">Nagle algorithm disabled?</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">SKT$INFO.KEEP.ALIVE</td><td style="border:none;padding:0">Send keep alives?</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">SKT$INFO.TRACE</td><td style="border:none;padding:0">Activate socket tracing to the file pathname in <span style="font-style: italic;">value</span>. A null pathname turns off tracing.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">SKT$INFO.EVENTS</td><td style="border:none;padding:0">Specify events to be monitored for use with <span style="font-weight: bold;"><a href="qmb_select_socket.htm" class="topiclink">SELECT.SOCKET()</a></span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:240px">SKT$INHERITABLE</td><td style="border:none;padding:0">Make the socket <a href="using_socket_connections.htm#inheritance" class="topiclink">inheritable</a>.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">value</span></td><td style="border:none;padding:0">is the required value of the parameter. Except as explicitly shown above, this is a Boolean value enabling or disabling the mode identified by <span style="font-style: italic;">key</span>.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SET.SOCKET.MODE()</span> function returns True if the action is successful, False if it fails. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function can be used to determine the cause of failure. </p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The SKT$INFO.EVENTS mode allows a program to specify events that are to be monitored for the socket when using the <span style="font-weight: bold;"><a href="qmb_select_socket.htm" class="topiclink">SELECT.SOCKET()</a></span> function. The <span style="font-style: italic;">value</span> argument is an additive value chosen from:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:39px; padding:0; border:none"><p style="margin: 6px 0 0 0;">1</p>
+</td>
+<td style="vertical-align:top; width:293px; padding:0; border:none"><p style="margin: 6px 0 0 0;">SKT$READ.EVENT</p>
+</td>
+<td style="vertical-align:top; width:576px; padding:0; border:none"><p style="margin: 6px 0 0 0;">Notify availability of a new connection on a server socket</p>
+<p>Notify availability of data that can be read with <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span></p>
+<p>Notify closure of connection</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:39px; padding:0; border:none"><p style="margin: 6px 0 0 0;">2</p>
+</td>
+<td style="vertical-align:top; width:293px; padding:0; border:none"><p style="margin: 6px 0 0 0;">SKT$WRITE.EVENT</p>
+</td>
+<td style="vertical-align:top; width:576px; padding:0; border:none"><p style="margin: 6px 0 0 0;">Notify when data can be sent with <span style="font-weight: bold;"><a href="qmb_write_socket.htm" class="topiclink">WRITE.SOCKET()</a></span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:39px; padding:0; border:none"><p style="margin: 6px 0 0 0;">4</p>
+</td>
+<td style="vertical-align:top; width:293px; padding:0; border:none"><p style="margin: 6px 0 0 0;">SKT$EXCEPTION.EVENT</p>
+</td>
+<td style="vertical-align:top; width:576px; padding:0; border:none"><p style="margin: 6px 0 0 0;">Notify exceptions</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="using_socket_connections.htm" class="topiclink">Using Socket Connections</a>, <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION</a></span>, <span style="font-weight: bold;"><a href="qmb_close_socket.htm" class="topiclink">CLOSE.SOCKET</a></span>, <span style="font-weight: bold;"><a href="qmb_create_server_socket.htm" class="topiclink">CREATE.SERVER.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_open_socket.htm" class="topiclink">OPEN.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_select_socket.htm" class="topiclink">SELECT.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_server_addr.htm" class="topiclink">SERVER.ADDR()</a></span>, <span style="font-weight: bold;"><a href="qmb_socket_info.htm" class="topiclink">SOCKET.INFO()</a></span>, <span style="font-weight: bold;"><a href="qmb_write_socket.htm" class="topiclink">WRITE.SOCKET()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MVEPOCH()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MVEPOCH()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_mvepoch.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MVEPOCH()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_mvdate_time.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_mvtime.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MVEPOCH()</span> function returns the epoch value corresponding to a multivalue style date and time combination (days since 31 December 1967 and seconds since midnight) using the currently selected time zone.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MVEPOCH(</span><span style="font-style: italic;">time.string</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">MVEPOCH(</span><span style="font-style: italic;">date</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">time</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-style: italic;">time.string</span></td><td style="border:none;padding:0">is the multivalue style date and time values separated by an underscore.</td></tr></table></div><p style="text-indent: -121px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-style: italic;">date</span> and <span style="font-style: italic;">time</span></td><td style="border:none;padding:0">are separate date and time values.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An epoch value represents a moment in time. The <span style="font-weight: bold;">MVEPOCH()</span> function converts the supplied date and time values to the corresponding epoch value using the currently selected time zone.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the <span style="font-style: italic;">time.string</span> or <span style="font-style: italic;">date</span> and <span style="font-style: italic;">time</span> represents a moment in time that cannot be converted to an epoch value, the function returns a null string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Daylight Saving Time</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For most time values, the <span style="font-weight: bold;">MVEPOCH()</span> function will correctly handle daylight saving time. There is an one hour period when the clocks are moved backwards where the same external time value will correspond to two alternative epoch values. It is not defined which of the two will be returned by this function in this situation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+<span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">S = '15021_41490'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">SET.TIMEZONE 'Pacific/Wake'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">DISPLAY MVEPOCH(S)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment displays 1234567890.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="dates_times_and_epoch_values.htm" class="topiclink">Date, Times and Epoch Values</a>, <span style="font-weight: bold;"><a href="qmb_epoch.htm" class="topiclink">EPOCH()</a></span>, <span style="font-weight: bold;"><a href="qmb_mvdate.htm" class="topiclink">MVDATE()</a></span>, <span style="font-weight: bold;"><a href="qmb_mvdate_time.htm" class="topiclink">MVDATE.TIME()</a></span>, <span style="font-weight: bold;"><a href="qmb_mvtime.htm" class="topiclink">MVTIME()</a></span>, <span style="font-weight: bold;"><a href="qmb_set_timezone.htm" class="topiclink">SET.TIMEZONE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+     FILE.NAME = FIELD(@SENTENCE," ",2)
+     OPEN 'DICT',FILE.NAME TO D.CUST ELSE PRINT FILE.NAME;STOP
+     SELECT D.CUST
+     LOOP WHILE READNEXT AA1 DO
+          AA2 = AA1
+          PRINT AA1:" --> ":
+          READ BUFF FROM D.CUST,AA1 THEN
+               CONVERT "%@#.?/\@ " TO "" IN AA2
+               PRINT AA2
+               DELETE D.CUST,AA1
+               IF BUFF<1> = 'A' THEN
+                    BUFF2 = ''
+                    BUFF2<1>='D'
+                    BUFF2<2> = BUFF<2>
+                    BUFF2<3> = BUFF<7>
+                    BUFF2<4> = BUFF<3>
+                    BUFF2<5> = BUFF<10>:BUFF<9>
+                    BUFF2<6> = 'S'
+                END ELSE
+                    BUFF2 = BUFF
+                END
+                    
+               WRITE BUFF2 ON D.CUST,AA2
+          END
+     REPEAT
+     READ BUFF FROM D.CUST,"AC" THEN
+          CONVERT "%@#.?/\" TO "" IN BUFF
+          WRITE BUFF ON D.CUST,"AC"
+     END
+
+     STOP
+

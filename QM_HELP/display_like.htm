@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>DISPLAY.LIKE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="DISPLAY.LIKE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "display_like.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">DISPLAY.LIKE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="det_sup.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="element.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DISPLAY.LIKE</span> keyword is a field qualifier which causes the field to be displayed using the attributes of another field defined in the dictionary.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">field.name</span> <span style="font-weight: bold;">DISPLAY.LIKE</span> <span style="font-style: italic;">other.field</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">field.name</span></td><td style="border:none;padding:0">is the field or an evaluated expression to be displayed.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">other.field</span></td><td style="border:none;padding:0">is the field whose attributes are to be used when <span style="font-style: italic;">field.name</span> is displayed.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DISPLAY.LIKE</span> keyword causes the attributes of <span style="font-style: italic;">other.field</span> to be used when displaying <span style="font-style: italic;">field.name</span>. The attributes are the display name, conversion, format, single / multiple value flag and association. The <span style="font-weight: bold;"><a href="col_hdg.htm" class="topiclink">COL.HDG</a></span>, <span style="font-weight: bold;"><a href="conv.htm" class="topiclink">CONV</a></span>, <span style="font-weight: bold;"><a href="fmt.htm" class="topiclink">FMT</a></span>, <span style="font-weight: bold;"><a href="single_value.htm" class="topiclink">SINGLE.VALUE</a></span>, <span style="font-weight: bold;"><a href="multi_value.htm" class="topiclink">MULTI.VALUE</a></span>, <span style="font-weight: bold;"><a href="assoc.htm" class="topiclink">ASSOC</a></span> and <span style="font-weight: bold;"><a href="assoc_with.htm" class="topiclink">ASSOC.WITH</a></span> field qualifiers can be used to further modify the attributes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES EVAL &quot;ISSUE.DATE + 90&quot; DISPLAY.LIKE DUE.DATE COL.HDG &quot;Reminder date&quot;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command processes records from the INVOICES file and reports the record id (probably the invoice number) and the date 90 days after that stored in the ISSUE.DATE field using the attributes of the DUE.DATE field except for the column heading which is specifically set.</p>
+
+</td></tr></table>
+
+</body>
+</html>

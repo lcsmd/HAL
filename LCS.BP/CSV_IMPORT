@@ -1,0 +1,48 @@
+      SUBROUTINE CSV_IMPORT(CSV_FILENAME, DYNAMIC_FILENAME)
+      TAB = CHAR(9) ;* Tab character
+
+      OPEN "DICT " : DYNAMIC_FILENAME TO DICT.FILE ELSE
+         CREATE.FILE "DICT " : DYNAMIC_FILENAME DYNAMIC
+         OPEN "DICT " : DYNAMIC_FILENAME TO DICT.FILE ELSE PRINT DYNAMIC_FILENAME;STOP
+      END
+
+      OPEN CSV_FILENAME TO CSV.FILE ELSE
+         STOP 201, CSV_FILENAME
+      END
+
+      READ CSV.HEADER FROM CSV.FILE, 0 THEN
+         HEADERS = CSV.HEADER
+         FIELD.COUNT = DCOUNT(HEADERS, TAB)
+         FOR I = 1 TO FIELD.COUNT
+            HEADER.NAME = FIELD(HEADERS, TAB, I)
+            WRITE @ID : @VM : "D" : @VM : @VM : @VM : @VM : @VM : @VM : @VM : @VM : "1" ON DICT.FILE, HEADER.NAME
+         NEXT I
+      END
+
+      RECORD.COUNT = 0
+
+      OPEN DYNAMIC_FILENAME TO OUT.FILE ELSE
+         PRINT "Error: Unable to open file " : DYNAMIC_FILENAME
+         RETURN
+      END
+      LOOP
+         READNEXT ID, CSV.RECORD FROM CSV.FILE ELSE
+            EXIT
+         END
+
+         DATA = ""
+         FOR I = 1 TO FIELD.COUNT
+            DATA<-1> = FIELD(CSV.RECORD, TAB, I)
+         NEXT I
+
+
+
+         WRITE DATA ON OUT.FILE, ID
+         CLOSE OUT.FILE
+
+         RECORD.COUNT += 1
+      REPEAT
+
+      PRINT "Imported " : RECORD.COUNT : " records from " : CSV_FILENAME : " into " : DYNAMIC_FILENAME
+      RETURN
+      END

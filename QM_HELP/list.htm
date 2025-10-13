@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LIST and SORT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LIST,SORT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "list.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LIST and SORT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="search.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="list_item.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LIST</span> and <span style="font-weight: bold;">SORT</span> verbs produce reports from QM<span style="font-weight: bold;"> </span>files. The <span style="font-weight: bold;">LIST</span> verb displays records in the order in which they are encountered in the file unless a sort clause in present in the command. The <span style="font-weight: bold;">SORT</span> verb is equivalent to <span style="font-weight: bold;">LIST</span> with a final sort by record id.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LIST</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span></p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">USING</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;">field.name</span> {<span style="font-style: italic;">field.qualifier</span>} ...}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;"><a href="selectionclause.htm" class="topiclink">selection.clause</a></span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;"><a href="sortclause.htm" class="topiclink">sort.clause</a></span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;"><a href="displayclause.htm" class="topiclink">display.clause</a></span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;">record.id...</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">select.list.no</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SORT</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span></p>
+<p style="margin: 0 0 0 52px;">{<span style="font-weight: bold;">USING</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span>}</p>
+<p style="margin: 0 0 0 52px;">{<span style="font-style: italic;">field.name</span> {<span style="font-style: italic;">field.qualifier</span>} ...}</p>
+<p style="margin: 0 0 0 52px;">{<span style="font-style: italic;"><a href="selectionclause.htm" class="topiclink">selection.clause</a></span>}</p>
+<p style="margin: 0 0 0 52px;">{<span style="font-style: italic;"><a href="sortclause.htm" class="topiclink">sort.clause</a></span>}</p>
+<p style="margin: 0 0 0 52px;">{<span style="font-style: italic;"><a href="displayclause.htm" class="topiclink">display.clause</a></span>}</p>
+<p style="margin: 0 0 0 52px;">{<span style="font-style: italic;">record.id...</span>}</p>
+<p style="margin: 0 0 0 52px;">{<span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">select.list.no</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The record id is always reported as the first item in the output unless the <span style="font-weight: bold;"><a href="id_sup.htm" class="topiclink">ID.SUP</a></span> keyword has been used to suppress it. The format of this item is determined by the @ID dictionary record. If this record is not found in the dictionary, a default format is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If <span style="font-weight: bold;">field names</span> are specified in the command, these fields are displayed in the order specified. If no field names are present, the query processor looks for a phrase in the dictionary defining a default set of fields to be reported. If the <span style="font-weight: bold;"><a href="lptr.htm" class="topiclink">LPTR</a></span> keyword has been included, the query processor first looks for a phrase record named @LPTR. If this cannot be found or the <span style="font-weight: bold;"><a href="lptr.htm" class="topiclink">LPTR</a></span> keyword was not used, it looks for a phrase record named @. The @LPTR and @ phrases can be used to create separate default field name lists for output to the printer and the display respectively. If no @LPTR or @ record is found, only the record id is reported.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default listing phrase may include field qualifiers, selection, sort and display clause items.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LIST</span> and <span style="font-weight: bold;">SORT</span> verbs normally produce a tabular format report with items listed side by side. If the total width of the items to be reported exceeds the width of the display or printer to which the report is directed, a vertical format report is produced. This can be forced by use of the <span style="font-weight: bold;"><a href="vertically.htm" class="topiclink">VERTICALLY</a></span> keyword.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="pan.htm" class="topiclink">PAN</a></span> keyword allows reports wider than the display to be produced using the left and right cursor keys to pan part or all of the displayed data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="scroll.htm" class="topiclink">SCROLL</a></span> keyword allows scrolling back and forward using the up and down cursor keys.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When <span style="font-weight: bold;">LIST</span> or <span style="font-weight: bold;">SORT</span> are used to list a dictionary with the no display clause, the action of the default listing phrase (@), includes transformation of A and S-type dictionary items into a form that maps onto the standard dictionary display format used for other types.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST STOCK QTY REORDER.LEVEL WITH QTY &lt; REORDER.LEVEL</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command lists all records from the STOCK file for which the quantity in stock (QTY field) is less than or equal to the reorder level (REORDER.LEVEL field). These two fields are displayed together with the record id.</p>
+
+</td></tr></table>
+
+</body>
+</html>

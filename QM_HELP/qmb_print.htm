@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>PRINT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="PRINT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_print.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">PRINT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_precision.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_printcsv.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PRINT</span> statement outputs data to a print unit.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">PRINT </span>{<span style="font-weight: bold;">NO.ENCODING</span>} {<span style="font-weight: bold;">ON </span><span style="font-style: italic;">print.unit</span>} {<span style="font-style: italic;">print.list</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">print.unit</span></td><td style="border:none;padding:0">identifies the print unit to which output is to be directed. If omitted, print unit zero is used.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">print.list</span></td><td style="border:none;padding:0">is a list of items to print in the format described for the <span style="font-weight: bold;"><a href="qmb_display.htm" class="topiclink">DISPLAY</a></span> statement.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The data is output to the requested print unit. Print unit -1 is always associated with the display and cannot be changed. Print unit 0 can be switched between the display and the printer by use of the <span style="font-weight: bold;"><a href="qmb_printer.htm" class="topiclink">PRINTER</a></span> statement. Print units 1 to 255 direct their output to the hold file by default but can be redirected using the <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span> command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The NO.ENCODING option suppresses encoding when the terminal or printer is set to use an encoding such as UTF-8. It is useful when the data to be output has already be encoded.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>By using <span style="font-weight: bold;">PRINT</span> statements instead of <span style="font-weight: bold;"><a href="qmb_display.htm" class="topiclink">DISPLAY</a></span> in programs it is possible to select whether the output is directed to the display or to a printer. The <span style="font-weight: bold;">LPTR</span> option to the <span style="font-weight: bold;"><a href="run.htm" class="topiclink">RUN</a></span> command is equivalent to a <span style="font-weight: bold;"><a href="qmb_printer.htm" class="topiclink">PRINTER ON</a></span> at the start of the program.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <span style="font-weight: bold;"><a href="qmb_at_fun.htm" class="topiclink">@(x,y)</a></span> cursor movement function in a <span style="font-weight: bold;">PRINT</span> statement that sends output to the display will disable pagination. See <span style="font-weight: bold;"><a href="qmb_display.htm" class="topiclink">DISPLAY</a></span> for more details.</p>
+<p style="margin: 20px 0 0 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = DCOUNT(LINE, @FM)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FOR I = 1 TO N</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; PRINT ON PU LINE&lt;I&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEXT I</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PAGE ON PU</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment emits each field of LINE to the print unit identified by PU and then advances to a new page.</p>
+
+</td></tr></table>
+
+</body>
+</html>

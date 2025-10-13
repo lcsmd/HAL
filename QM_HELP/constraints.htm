@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Data Integrity Constraints</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Data Integrity Constraints" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "constraints.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Data Integrity Constraints</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="triggers.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="encryption.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Multivalue database products do not normally impose validation rules when writing data to files. Instead, they largely rely on validation being performed when data is entered into the system. In some products, developers who wish to apply validation can do so via a pre-write trigger, rejecting the write request if the validation fails.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM allows use of a pre-write trigger but also provides an alternative mechanism for hashed files where the validation rules for each field are defined in the dictionary and encoded into the data file in a manner that makes it impossible to skip the validation. This feature is known as <span style="font-weight: bold;">Data Integrity Constraints</span>. If both a pre-write trigger and data integrity constraints are present, the trigger is executed before the constraint validation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The constraints are defined by an expression stored in field 12 of the A/D/S-type dictionary record for each field that is to have rules applied. Where multiple dictionary items define different views of the same field, the constraints expression must appear in only one of them. Constraints apply to the actual internal format data stored in the record, not calculated values from I-type records or A/S-type records with a correlative expression. Fields for which no constraints are defined are written with no validation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Failure of constraint validation can be handled in several ways:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 23px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>If the full constraint validation system is enabled, the write operation is abandoned, taking the ON ERROR clause of the <span style="font-weight: bold;">WRITE</span>, if present, or the optional ELSE clause. If neither of these is present, QM throws a SYS.FILESYS.CONSTRAINTS exception or, if there is no suitable exception handler, aborts.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 23px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Validation can operate in logging mode where details of a validation error is written to the error log but the write is allowed to continue.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 23px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Validation can be disabled, allowing potentially invalid data to be written and subsequently reported using the <span style="font-weight: bold;"><a href="verify_constraints.htm" class="topiclink">VERIFY.CONSTRAINTS</a></span> command described below.</p><p class="p_Normal" style="margin: 4px 0 0 0;">These three modes can be selected separately on a file by file basis.</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">&nbsp;</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">If a validation error occurs, the field number will be in @FNO and the corresponding field name will be in @FNAME.</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">&nbsp;</p>
+<p class="p_Normal">Data integrity constraints are fully compatible with both record level and field level encryption. In the latter case, the constraints validation is skipped for any field that is not accessible by the user applying the update.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using data replication, the data integrity constraints validation does not occur on the subscriber system as it would have already been done on the publisher.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Defining Constraints</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A constraint definition is an expression similar to an I-type with some restrictions:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 26px; margin-left: 0;"><span class="f_Normal" style="font-family: 'Courier New';display:inline-block;width:13px;margin-left:-13px">o</span>The <span style="font-weight: bold;"><a href="qmb_subr.htm" class="topiclink">SUBR()</a></span> function to execute a catalogued subroutine is not allowed.</p><p class="p_Normal" style="text-indent: 0; padding-left: 26px; margin-left: 0;"><span class="f_Normal" style="font-family: 'Courier New';display:inline-block;width:13px;margin-left:-13px">o</span>The <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span>, <span style="font-weight: bold;">RTRANS()</span> and <span style="font-weight: bold;">XLATE()</span> functions or the equivalent T-conversions are not allowed.</p><p class="p_Normal" style="text-indent: 0; padding-left: 26px; margin-left: 0;"><span class="f_Normal" style="font-family: 'Courier New';display:inline-block;width:13px;margin-left:-13px">o</span>References to evaluated dictionary expressions (I-type, C-type, correlatives) are not allowed.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Three special data names are provided:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 26px; margin-left: 0;"><span class="f_Normal" style="font-family: 'Courier New';display:inline-block;width:13px;margin-left:-13px">o</span>The data for the field being validated is available as @DATA</p><p class="p_Normal" style="text-indent: 0; padding-left: 26px; margin-left: 0;"><span class="f_Normal" style="font-family: 'Courier New';display:inline-block;width:13px;margin-left:-13px">o</span>The record id is available as @ID</p><p class="p_Normal" style="text-indent: 0; padding-left: 26px; margin-left: 0;"><span class="f_Normal" style="font-family: 'Courier New';display:inline-block;width:13px;margin-left:-13px">o</span>The entire record is available as @RECORD</p><p class="p_Normal">Note that these names are private to the constraints validation expression and are not the same as use of these names in other contexts such as @RECORD in a query processor command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When validating a field that is defined as multivalued in the dictionary, <a href="multivalue_functions.htm" class="topiclink">multivalued functions</a> such as the <span style="font-weight: bold;"><a href="qmb_eqs.htm" class="topiclink">EQS()</a></span> function should be used. If the result of the expression is multivalued, all values must comply with the constraint rule.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Compound expressions are supported with intermediate results stored as @1, @2, etc exactly as in an I-type expression.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Five special functions available only in constraints expressions are provided to handle common validation criteria:</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td colspan="3"  style="vertical-align:top; width:404px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Integer with optional low/high range limits</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Syntax</span></p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Example</span></p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><p class="p_Normal">INTEGER(<span style="font-style: italic;">low</span>,<span style="font-style: italic;"> high</span>)</p>
+<p class="p_Normal">INTEGER()</p>
+<p class="p_Normal">INTEGER(<span style="font-style: italic;">low</span>)</p>
+<p class="p_Normal">INTEGER(, <span style="font-style: italic;">high</span>)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">INTEGER(1, 10)</p>
+<p class="p_Normal">INTEGER()</p>
+<p class="p_Normal">INTEGER(4)</p>
+<p class="p_Normal">INTEGER(, 8)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">Range of integer values</p>
+<p class="p_Normal">Integer, no range check</p>
+<p class="p_Normal">Integer, minimum value 4</p>
+<p class="p_Normal">Integer, maximum value 8</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><br />
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:404px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Numeric with optional low/high range limits</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><p class="p_Normal">NUMBER(<span style="font-style: italic;">low</span>,<span style="font-style: italic;"> high</span>)</p>
+<p class="p_Normal">NUMBER()</p>
+<p class="p_Normal">NUMBER(<span style="font-style: italic;">low</span>)</p>
+<p class="p_Normal">NUMBER(, <span style="font-style: italic;">high</span>)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">NUMBER(0.5, 100)</p>
+<p class="p_Normal">NUMBER()</p>
+<p class="p_Normal">NUMBER(0.5)</p>
+<p class="p_Normal">NUMBER(, 40.5)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">Range of numeric values</p>
+<p class="p_Normal">Number, no range check</p>
+<p class="p_Normal">Number, minimum value 0.5</p>
+<p class="p_Normal">Number, maximum value 40.5</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><br />
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:404px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">String, minimum/maximum length limits</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><p class="p_Normal">STRING(<span style="font-style: italic;">low</span>, <span style="font-style: italic;">high</span>)</p>
+<p class="p_Normal">STRING(<span style="font-style: italic;">len</span>)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">STRING(1, 200)</p>
+<p class="p_Normal">STRING(10)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">String, length 1 to 200 chars</p>
+<p class="p_Normal">String, exact length 10 chars</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><br />
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:404px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Pattern match, any number of patterns</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><p class="p_Normal">MATCHNG(<span style="font-style: italic;">pattern</span>, <span style="font-style: italic;">pattern</span>, ...)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">MATCHING('1-3N', '2N2A')</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">Passes if matches either pattern</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><br />
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><br />
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:404px; padding:0; border:none"><p class="p_Normal"><span style="font-weight: bold;">Test presence of record</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:206px; padding:0; border:none"><p class="p_Normal">EXISTS(<span style="font-style: italic;">filename</span>, <span style="font-style: italic;">id</span>)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">EXISTS('STOCK', @DATA)</p>
+</td>
+<td style="vertical-align:top; width:202px; padding:0; border:none"><p class="p_Normal">Inter-file data integrity check</p>
+</td>
+</tr>
+</table>
+</div>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that all but the last of the functions listed above operate against the @DATA item without this being named in the function call.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the field being validated is defined as multivalued in the dictionary, these functions operate on all values, returning a multivalued list of True/False results.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A simple constraints validation expression to check that the field is five digits might be written as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">@DATA MATCHES '5N'</span></p>
+<p class="p_Normal">This could also be written as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">MATCHING('5N')</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A stock file might have both a cost price and selling price field. The validation for the selling price might be</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">INTEGER(100, 50000) AND @DATA &gt; COST</span></p>
+<p class="p_Normal">to impose a range of prices from 1.00 to 500.00 (using the internal data format) and checking that the selling price is greater than the cost price.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A file might contain a multivalued list of dates that must be in January or July. This can be enforced with an expression that uses multivalued functions:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">OCONVS(@DATA, &quot;DM&quot;); ORS(EQS(@, REUSE(1)), EQS(@, REUSE(7)))</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Compiling the Constraint Definitions</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The data integrity constraint definitions in the dictionary must be compiled and stored in the data file before they take effect. This is done using the <span style="font-weight: bold;"><a href="compile_constraints.htm" class="topiclink">COMPILE.CONSTRAINTS</a></span> command:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">COMPILE.CONSTRAINTS </span><span class="f_CodeSingleLine" style="font-style: italic;">file.name</span></p>
+<p class="p_Normal">If <span style="font-style: italic;">file.name</span> is a multi-file, an individual subfile can be updated</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">COMPILE.CONSTRAINTS </span><span class="f_CodeSingleLine" style="font-style: italic;">file.name</span><span class="f_CodeSingleLine">,</span><span class="f_CodeSingleLine" style="font-style: italic;">subfile.name</span></p>
+<p class="p_Normal">or all subfiles can be updated together by giving the subfile name as an asterisk:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">COMPILE.CONSTRAINTS </span><span class="f_CodeSingleLine" style="font-style: italic;">file.name</span><span class="f_CodeSingleLine">,*</span></p>
+<p class="p_Normal">The default behaviour of the <span style="font-weight: bold;"><a href="compile_constraints.htm" class="topiclink">COMPILE.CONSTRAINTS</a></span> command is to enable full validation, failing any attempt to write faulty data. The LOGGING and DISABLE keywords to this command select the other two styles of validation described above.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Verifying Constraints</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When constraints are first defined or updated for an existing file, it may be useful to verify that all records already in the file meet the constraint conditions. The <span style="font-weight: bold;"><a href="verify_constraints.htm" class="topiclink">VERIFY.CONSTRAINTS</a></span> command does this:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">VERIFY.CONSTRAINTS </span><span class="f_CodeSingleLine" style="font-style: italic;">file.name</span></p>
+<p class="p_Normal">As with the <span style="font-weight: bold;">COMPILE.CONSTRAINTS</span> command, all subfiles of a multi-file can be processed in a single command by use of an asterisk as the subfile name.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">VERIFY.CONSTRAINTS</span> command shows the record ids and failing field number of all records that fail validation. On completion of the command, the <a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> variable is zero for success, negative for a command error or a positive number of records that failed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An application can use the QMBasic <span style="font-weight: bold;"><a href="qmb_validate.htm" class="topiclink">VALIDATE()</a></span> function to verify whether a record meets the constraint rules without attempting to write it.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">OK = VALIDATE(</span><span class="f_CodeSingleLine" style="font-style: italic;">fvar</span><span class="f_CodeSingleLine">, </span><span class="f_CodeSingleLine" style="font-style: italic;">id</span><span class="f_CodeSingleLine">, </span><span class="f_CodeSingleLine" style="font-style: italic;">data</span><span class="f_CodeSingleLine">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

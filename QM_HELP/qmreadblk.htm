@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMReadBlk()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMReadBlk()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmreadblk.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMReadBlk()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmread.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmreadl.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;">The <span style="font-weight: bold;">QMReadBlk()</span> function reads a specified number of bytes from a sequential file. It is analogous to the QMBasic <span style="font-weight: bold;"><a href="qmb_readblk.htm" class="topiclink">READBLK</a></span> statement.</p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;">The function arguments are:</p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">FileNo</span></td><td style="border:none;padding:0">is the file number returned by a previous <span style="font-weight: bold;"><a href="qmopenseq.htm" class="topiclink">QMOpenSeq()</a></span> call.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">Bytes</span></td><td style="border:none;padding:0">is the number of bytes to be read.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">ActualBytes</span></td><td style="border:none;padding:0">is an integer variable to receive the actual byte count which may be less than <span style="font-style: italic;">Bytes</span> if the end of the data is reached. Note that this argument is not present in all variants of the QMClient API.</td></tr></table></div><p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;">The <span style="font-weight: bold;">QMReadBlk()</span> function requests the server to return the given number of bytes from the file opened as <span style="font-style: italic;">FileNo</span>.</p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;">If successful, the function returns the data and the <span style="font-style: italic;">ActualBytes</span> variable is set to the number of bytes read.</p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;">If the data cannot be read, typically because the end of the file has been reached, the function returns a null string and the <span style="font-style: italic;">ActualBytes</span> variable is set to zero. The <span style="font-weight: bold;"><a href="qmstatus.htm" class="topiclink">QMStatus()</a></span> function can be used to retrieve the error number.</p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Note that when using the QMClient API in its wide character (Unicode) mode, <span style="font-weight: bold;">QMReadBlk</span> is a byte level operation and returns a string in which each character will represent one byte from the file and hence is always in the range char(0) to char(255).</p>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;">The example program fragments below open a sequential item named STOCK in the IMPORT file, read100 bytes of data and then closes the file. A real program should test the error status from the read to determine if the action was successful.</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">char * QMReadBlk(int </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, int </span><span style="font-style: italic;">Bytes</span><span style="font-weight: bold;">, int * </span><span style="font-style: italic;">ActualBytes</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">fData = QMOpenSeq(&quot;IMPORT&quot;, &quot;STOCK&quot;, 0);</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">Rec = QMReadBlk(fData, 100, &amp;Err);</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">QMFree(Rec);</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">QMClose(fData);</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The returned pointer references a dynamically allocated memory area that must be released using <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span> when no longer needed. Note that attempting to read beyond the end of the file returns a pointer to a null string, not a NULL pointer.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMReadBlk(ByVal </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;"> as Integer, ByVal </span><span style="font-style: italic;">Bytes</span><span style="font-weight: bold;"> as Integer, ByRef </span><span style="font-style: italic;">ActualBytes</span><span style="font-weight: bold;">) as String</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">fData = QMOpenSeq(&quot;IMPORT&quot;, &quot;STOCK&quot;, 0)</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">Rec = QMReadBlk(fData, 100, Err)</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">QMClose(fData)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A3_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A3','TOGGLE0186A3_ICON')">QMBasic</a> Class Module</span></td></tr></table></div><div id="TOGGLE0186A3" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">ReadBlk(</span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">Bytes</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">fData = session-&gt;OpenSeq(&quot;IMPORT&quot;, &quot;STOCK&quot;, 0)</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">Rec = session-&gt;ReadBlk(fData, 100)</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">session-&gt;Close(fData)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A4_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A4','TOGGLE0186A4_ICON')">Java</a></span></td></tr></table></div><div id="TOGGLE0186A4" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">String ReadBlk(int </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, int </span><span style="font-style: italic;">Bytes</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">fData = qm.OpenSeq(&quot;IMPORT&quot;, &quot;STOCK&quot;, 0);</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">Rec = qm.ReadBlk(fData, 100);</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">qm.Close(fData);</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;">If successful, the ServerError property will be set to SV$OK. Other values indicate an error.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A5_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A5','TOGGLE0186A5_ICON')">Python</a></span></td></tr></table></div><div id="TOGGLE0186A5" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">ReadBlk(</span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">Bytes</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">fData = qm.OpenSeq(&quot;IMPORT&quot;, &quot;STOCK&quot;, 0)</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">Rec, Err = qm.ReadBlk(fData, 100)</span></p>
+<p style="text-indent: -13px; margin: 0 0 0 13px;"><span style="font-family: 'Courier New',Courier,monospace;">qm.Close(fData)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="qmopenseq.htm" class="topiclink">QMOpenSeq()</a></span>, <span style="font-weight: bold;"><a href="qmreadseq.htm" class="topiclink">QMReadSeq()</a></span>, <span style="font-weight: bold;"><a href="qmseek.htm" class="topiclink">QMSeek()</a></span>, <span style="font-weight: bold;"><a href="qmweofseq.htm" class="topiclink">QMWeofSeq()</a></span>, <span style="font-weight: bold;"><a href="qmwriteblk.htm" class="topiclink">QMWriteBlk()</a></span>, <span style="font-weight: bold;"><a href="qmwriteseq.htm" class="topiclink">QMWriteSeq()</a></span></p>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A3_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A3\',\'TOGGLE0186A3_ICON\')');
+HMInitToggle('TOGGLE0186A3','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A4_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A4\',\'TOGGLE0186A4_ICON\')');
+HMInitToggle('TOGGLE0186A4','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A5_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A5\',\'TOGGLE0186A5_ICON\')');
+HMInitToggle('TOGGLE0186A5','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

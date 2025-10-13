@@ -1,0 +1,80 @@
+
+ *I've yet to find a decent parser for CSV on here, so here's one I threw together that appears to work well. This is written for D3. Feel
+*free to repost on PickWiki.
+      *
+      * (c)2009 - Glen Batchelor
+      * License: public domain, free to modify and distribute
+      * Please retain this information in all distributions
+      *
+      SUBROUTINE CSV.PARSER(STRING,ARRAY)
+      $OPTIONS EXT
+      ARRAY = STRING
+      *
+      * CARRIAGE RETURNS SHOULD NOT EXIST INSIDE QUOTED CELLS SO WE CAN CONVERT QUOTED CELLS TO CR DELIMITED DATA
+      * NOTE: LINE FEEDS/BREAKS MAY EXIST INSIDE QUOTED CELLS SO YOU MAY WANT TO LOOK FOR CHAR(10) AND CONVERT
+      *       ACCORDINGLY IN YOUR APPLICATION.
+      *
+      ARRAY = CHANGE(ARRAY,',"',CHAR(13))
+      ARRAY = CHANGE(ARRAY,'",',CHAR(13))
+      *
+      * GET RID OF "ESCAPED" QUOTES SINCE WE AREN'T LOOKING AT QUOTES AT ALL NOW
+      *
+      ARRAY = CHANGE(ARRAY,'""','"')
+      STRLEN = LEN(ARRAY)
+      *
+      * INDEX OUR CR DELIMITED CELLS OF COMMA-CONTAINING DATA AND MAP THE START/END CHAR LOCATIONS
+      *
+      IGNORE.RANGES = ''
+      RANGEPTR = 0
+      CELLACTIVE = 0
+      FOR PTR = 1 TO STRLEN
+         IF ARRAY[PTR,1] = CHAR(13) AND CELLACTIVE = 0 THEN
+            CELLACTIVE = 1
+            RANGEPTR = RANGEPTR + 1
+            IGNORE.RANGES<RANGEPTR,1> = PTR
+            GO SCAN.NEXT.CHAR
+         END
+         IF ARRAY[PTR,1] = CHAR(13) AND CELLACTIVE = 1 THEN
+            CELLACTIVE = 0
+            IGNORE.RANGES<RANGEPTR,2> = PTR
+         END
+SCAN.NEXT.CHAR:
+      NEXT PTR
+      *
+      * CONVERT COMMAS TO CHAR(254), SKIPPING ALL THE IGNORED RANGES FOR EMBEDDED COMMAS
+      *
+      DEL.CNT = 0
+      FOR PTR = 1 TO STRLEN
+         * SEE IF THE CURRENT CHAR SHOULD BE EXCLUDED FROM POSSIBLE COMMA-TO-CHAR(254) CONVERSION
+         GOSUB CHECK.RANGE
+         IF IGNORE.CHAR = 1 THEN
+            IF ARRAY[PTR,1] = CHAR(13) AND DEL.CNT = 0 THEN
+               NEWARRAY = ARRAY[1,PTR-1]:CHAR(254):ARRAY[PTR+1,STRLEN]
+               ARRAY = NEWARRAY
+               PTR = PTR - 1
+               STRLEN = LEN(ARRAY)
+               DEL.CNT = 1
+            END
+            IF ARRAY[PTR,1] = CHAR(13) AND DEL.CNT = 1 THEN
+               NEWARRAY = ARRAY[1,PTR-1]:CHAR(254):ARRAY[PTR+1,STRLEN]
+               ARRAY = NEWARRAY
+               PTR = PTR - 1
+               STRLEN = LEN(ARRAY)
+               DEL.CNT = 0
+            END
+         END ELSE
+            IF ARRAY[PTR,1] = "," THEN ARRAY[PTR,1] = CHAR(254)
+         END
+      NEXT PTR
+      RETURN
+      *
+      * IS THE CURRENT CHAR INSIDE A COMMA-CONTAINING DATA CELL?
+      *
+CHECK.RANGE:
+      IGNORE.CHAR = 0
+      FOR RPTR = 1 TO RANGEPTR
+         IF PTR >= IGNORE.RANGES<RPTR,1> AND PTR <= IGNORE.RANGES<RPTR,2> THEN
+            IGNORE.CHAR = 1
+         END
+      NEXT RPTR
+      RETURN

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SORT()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SORT()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_sort.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SORT()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_socket_info.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_sortadd.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">SORT()</span> function creates a sort variable.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SORT(</span><span style="font-style: italic;">key.count</span><span style="font-weight: bold;">,</span> {<span style="font-weight: bold;">MAT</span>} <span style="font-style: italic;">flags</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">key.count</span></td><td style="border:none;padding:0">specifies the number of keys in the sort. Up to 32 keys may be specified.</td></tr></table></div><p class="p_Normal" style="text-indent: -91px; margin: 0 0 0 121px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">flags</span></td><td style="border:none;padding:0">is the name of a single dimensional array of sort key mode flags prefixed with MAT. For a single key sort, <span style="font-style: italic;">flags</span> may be specified as a scalar variable or an expression.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">SORT()</span> function is used at the start of a sort operation to create a sort variable that controls the sort process. The function returns a sort variable that can be used in subsequent sort related operations.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-style: italic;">flags</span> value is formed from the items below. The token names shown are defined in the SYSCOM KEYS.H include record.</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:8px;">
+<tr>
+<td colspan="3"  style="vertical-align:top; width:1408px; padding:0; border:none"><p class="p_Normal">At most one of the following sort styles:</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">0</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$LEFT</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">A simple left justified comparison, examining corresponding characters from the start of each string until either a difference is found or the end of both strings has been reached.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">1</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$RIGHT</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">A simple right justified comparison in which the shorter item is effectively padded with leading spaces and the resultant strings are compared character by character from the start until either a difference is found or the end of both strings has been reached. If both strings can be treated as integer values, possibly with a leading sign character, a numeric comparison is performed.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">2</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$COMPOUND</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">A compound sort in which the two strings are considered to be formed from a series of alternating numeric and non-numeric elements. Numeric elements are sorted into numerical value, non-numeric elements are sorted into collating sequence order. If the first element is numeric, it may have an optional leading sign character. Sign characters appearing later in the strings are treated as being non-numeric characters.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">3</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$RIGHT.FLOAT</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">The same as mode 1 except that the test for numeric items allows non-integer values.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">4</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$STRICT</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">Similar to SRT$COMPOUND but elements that are numerically equivalent such as &quot;28&quot; and &quot;028&quot; are treated as being different.</p>
+</td>
+</tr>
+<tr>
+<td colspan="3"  style="vertical-align:top; width:1408px; padding:0; border:none"><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Any combination of the following sort options:</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">16</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$DESCENDING</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">The result of the comparison operation is reversed.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">32</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$UNIQUE</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">Duplicate key values are ignored.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">64</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$NOCASE</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">Case insensitive sort.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:44px; padding:0; border:none"><p class="p_Normal">128</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:0; border:none"><p class="p_Normal">SRT$DATA</p>
+</td>
+<td style="vertical-align:top; width:1106px; padding:0; border:none"><p class="p_Normal">Sort has the optional data element that will be used to hold a data string associated with each item in the sort. This flag is only significant in first <span style="font-style: italic;">flags</span> item and controls use of the <span style="font-weight: bold;"><a href="qmb_sortadd.htm" class="topiclink">SORTADD</a></span> <span style="font-style: italic;">data</span> argument.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 0 0 0 29px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The following example shows a simple sort with a single key and no data. The first loop enters the data. The second loop displays the sorted results.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">SORTVAR = SORT(1, SRT$LEFT)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; INPUT X</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">UNTIL X = &quot;&quot;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; SORTADD SORTVAR, X</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">REPEAT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; X = SORTNEXT(SORTVAR)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">UNTIL STATUS()</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY X</span><br />
+<span class="f_CodeBody">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The next example shows a two key sort using a descending order numeric value representing a date as the first key and a case insensitive left aligned sorted client id as the second key. The client name is attached to the keys as a data element.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">DIM KEYS(2)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">KEYS(1) = SRT$RIGHT + SRT$DESCENDING + SRT$DATA</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">KEYS(2) = SRT$NOCASE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">SORTVAR = SORT(2, MAT KEYS)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span><br />
+<span class="f_CodeBody">SELECT ORD.F</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; READNEXT ORD.ID ELSE EXIT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; READ ORD.REC FROM ORD.F, ORD.ID THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;KEYS(1) = ORD.REC&lt;O.DATE&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;KEYS(2) = ORD.REC&lt;O.CLIENT&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;SORTADD SORTVAR, MAT KEYS, ORD.REC&lt;O.NAME&gt;</span><br />
+<span class="f_CodeBody"> &nbsp; END</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">REPEAT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; NAME = SORTNEXT(SORTVAR, MAT KEYS)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">UNTIL STATUS()</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY OCONV(KEYS(1), 'D2DMY'), KEYS(2), NAME</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above example is broadly equivalent to use of a query</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LIST ORDERS DATE @ID NAME BY.DSND DATE BY @ID </span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="sorting.htm" class="topiclink">Sorting</a><span style="font-weight: bold;">, <a href="qmbs_multisort.htm" class="topiclink">!MULTISORT</a></span>,<span style="font-weight: bold;"> <a href="qmb_sortadd.htm" class="topiclink">SORTADD</a></span>, <span style="font-weight: bold;"><a href="qmb_sortclear.htm" class="topiclink">SORTCLEAR</a></span>, <span style="font-weight: bold;"><a href="qmb_sortdata.htm" class="topiclink">SORTDATA()</a></span>, <span style="font-weight: bold;"><a href="qmb_sortnext.htm" class="topiclink">SORTNEXT()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

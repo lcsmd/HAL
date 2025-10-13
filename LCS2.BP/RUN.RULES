@@ -1,0 +1,59 @@
+      OPEN 'RULES' TO RULES ELSE PRINT 'RULES' ; STOP
+      OPEN 'TRANS' TO TRANS ELSE PRINT 'TRANS' ; STOP
+      RULE.ID = FIELD(@SENTENCE, " ", 2)
+      RULE.EXP = ""
+      LM=1
+      RULE.CT = 0
+      IF RULE.ID = 'RESET' THEN
+         SELECT TRANS
+         CT=0
+         LOOP WHILE READNEXT TRANS.ID DO
+            CT+=1
+            IF NOT(MOD(CT,1000)) THEN PRINT CT
+            WRITEV "" ON TRANS, TRANS.ID, 15
+            WRITEV "" ON TRANS, TRANS.ID, 11
+            WRITEV "" ON TRANS, TRANS.ID, 12
+         REPEAT
+         SELECT RULES
+         CT=0
+         LOOP WHILE READNEXT RU.ID DO
+            READ RU.B FROM RULES,RU.ID THEN
+               CT+=1
+               PRINT CT
+               RU.B2 = ""
+               FOR X = 1 TO 5
+                  RU.B2<X> = RU.B<X>
+               NEXT X
+               RU.B2<9> = RU.B<9>
+               WRITE RU.B2 ON RULES,RU.ID
+            END
+         REPEAT
+      END ELSE
+         IF RULE.ID THEN
+            GOSUB RUN.RULE:
+         END ELSE
+            *EXECUTE "IMPORT.ACCT"
+            PROMPT ''
+            LM = 1
+            SELECT.STR = "SSELECT RULES BY SEQ BY-DSND LKEY"
+            IF LM THEN PRINT SELECT.STR
+            EXECUTE SELECT.STR CAPTURING CAP
+            IF LM THEN PRINT CAP
+            READLIST RULE.IDS THEN
+               RULE.CT1 = DCOUNT(RULE.IDS, @FM)
+               FOR RULE.X = 1 TO RULE.CT1
+                  RULE.ID = RULE.IDS<RULE.X>
+                  GOSUB RUN.RULE:
+               NEXT RULE.X
+            END
+         END
+      END
+      PRINT "EXECUTED ":RULE.CT:" RULES"
+      STOP
+
+RUN.RULE:
+      IF LM THEN PRINT "EXECUTING RULE :":RULE.ID
+      CALL RUN.RULE(RULES, TRANS, RULE.EXP, RULE.ID)
+      RULE.CT += 1
+      RETURN
+

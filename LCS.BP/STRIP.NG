@@ -1,0 +1,15 @@
+      FUNCTION STRIP.NG(WORD)
+      WORD2 = WORD
+      NG = "/-',\.#()7+[]`~!@$^&*;:=_%"
+      INVISIBLE=""
+      FOR X = 1 TO 12
+         INVISIBLE:=CHAR(X)
+      NEXT X
+      FOR X= 28 TO 128
+         INVISIBLE:=CHAR(X)
+      NEXT X
+      NG:=INVISIBLE
+      CONVERT NG TO "" IN WORD2
+      IF WORD2 = WORD THEN WORD2 = ""
+      RETURN (WORD2)
+      END

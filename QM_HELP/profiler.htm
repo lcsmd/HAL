@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>PROFILER</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Application Profiling,PROFILER" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "profiler.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">PROFILER</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="printer.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="pstat.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_ImageCaption"><span class="f_ImageCaption">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PROFILER</span> command handles all actions relating to the application event profiler.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">PROFILER</span> <span style="font-weight: bold;">ON </span>{<span style="font-weight: bold;">USER</span><span style="font-style: italic;"> n</span>} {<span style="font-style: italic;">mode...}</span></td><td style="border:none;padding:0">Start logging</td></tr></table></div><p style="text-indent: -306px; margin: 0 0 0 336px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">PROFILER OFF </span>{<span style="font-weight: bold;">USER</span><span style="font-style: italic;"> n</span>}</td><td style="border:none;padding:0">Stop logging and dump data to disk</td></tr></table></div><p style="text-indent: -306px; margin: 0 0 0 336px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:306px"><span style="font-weight: bold;">PROFILER </span>{<span style="font-weight: bold;">DISPLAY</span>}{<span style="font-weight: bold;">USER</span><span style="font-style: italic;"> n</span>}</td><td style="border:none;padding:0">Display logged data. The <span style="font-weight: bold;">DISPLAY</span> keyword is optional.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using the <span style="font-weight: bold;">ON</span> or <span style="font-weight: bold;">OFF</span> keywords, if the <span style="font-weight: bold;">USER</span> qualifier is absent, it defaults to the user performing the command. For the <span style="font-weight: bold;">DISPLAY</span> mode, if no user number is specified in the command, a list of available profiles is displayed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-weight: bold;">PROFILER ON</span> command starts collection of event log data. The optional <span style="font-style: italic;">mode</span> qualifier specifies the event type(s) to be recorded. It may be any combination of the following and defaults to recording all events:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">CALL</td><td style="border:none;padding:0">Calls to QMBasic subroutines</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">OPEN</td><td style="border:none;padding:0">QMBasic OPEN and OPENPATH statements</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">READ</td><td style="border:none;padding:0">QMBasic READ statements, including locking variants and MATREAD</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">WRITE</td><td style="border:none;padding:0">QMBasic WRITE statements</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">DELETE</td><td style="border:none;padding:0">QMBasic DELETE statements</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">OPENSEQ</td><td style="border:none;padding:0">QMBasic OPENSEQ statements</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">READSEQ</td><td style="border:none;padding:0">QMBasic READSEQ statements</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">WRITESEQ</td><td style="border:none;padding:0">QMBasic WRITESEQ statements</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">EXECUTE</td><td style="border:none;padding:0">QMBasic EXECUTE statements. Only the first 32 characters of the command are logged.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px">OBJECT</td><td style="border:none;padding:0">Calls to public subroutines/functions in a class module.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PROFILER OFF</span> command terminates logging and writes the data to a file named profile.<span style="font-style: italic;">uuu</span> in the QM temporary directory where <span style="font-style: italic;">uuu</span> is the user number. Note that although this appears to be a text file, it may contain both field marks and newline sequences and hence may not behave as expected in user written analysis tools. No assumptions should be made regarding the content of the log file as it may change between QM releases.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PROFILER DISPLAY</span> command displays the collected data. The initial display shows the event types that appear in the logged data together with the number of occurrences of each event type. The cursor down/up keys may then be used to select an event type. The return key will drill down into the data, displaying the qualifying data associated with each logged event of the selected type. In the same way, it is then possible to select and drill down into a list of programs that logged the selected event type and qualifying data combination. A final step, only available if the program was compiled in debug mode, allows the user to drill down to a list of line numbers within the selected program at which the logged event occurred. For non-debug mode programs, the line number will appear as zero. If there are no line numbers recorded for any displayed program, a message is displayed instead of the final screen. At each level, the backspace key can be used to return to the previous level.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="profiling.htm" class="topiclink">Application Profiling</a>, <span style="font-weight: bold;"><a href="fstat.htm" class="topiclink">FSTAT</a></span>, <span style="font-weight: bold;"><a href="fstat_user.htm" class="topiclink">FSTAT.USER</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

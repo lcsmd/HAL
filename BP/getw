@@ -1,0 +1,51 @@
+      PROGRAM GET_WEATHER
+      * This program demonstrates using !CALLHTTP to fetch weather data
+
+      * Create a new !CALLHTTP object
+      http = object("!CALLHTTP")
+
+      * Set up the request parameters
+      http->host = "https://api.open-meteo.com"
+      if http->GET"/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m" then
+
+         * Add query parameters
+         http->params = "city=New York&units=metric"
+
+         * Set headers
+         http->set.header("Accept", "application/json")
+         *http->set.header("API-Key", "your_api_key_here")
+
+         * Make the API call
+         status = http->call()
+      end
+
+      IF status THEN
+         * Request was successful
+         PRINT "Request successful"
+         PRINT "Status code: " : http->status.code
+
+         * Print the response body
+         PRINT "Response:"
+         PRINT http->response
+
+         * If you know it's JSON, you could parse it
+         * (Note: JSON parsing would require additional handling)
+         weather_data = http->response
+
+         * Process the weather data as needed
+         * (This is a simplified example; actual JSON parsing would be more complex)
+         temperature = FIELD(weather_data, '"temperature":', 2)
+         temperature = FIELD(temperature, ',', 1)
+
+         PRINT "Current temperature: " : temperature : "øC"
+      end ELSE
+         * Request failed
+         PRINT "Request failed"
+         PRINT "Error message: " : http->error.message
+      END
+
+      * Clean up
+      *delete object, http
+
+      END
+

@@ -1,0 +1,234 @@
+      SUBROUTINE QIDATE (PASS.DAT,RTRN.DAT)
+      **BASIC
+      **11-22-08 13:03:11
+      **09-05-87
+      **TOM PHILLIPS
+      **WWW.TOM-PHILLIPS.INFO
+      **Copyright 2008 by SQUASH. All rights reserved.
+      *
+      * QIDATE - A subroutine to "edit" a user keyed date and return
+      *          the internal format "Pick" date if valid - null otherwise.
+      *
+      *          where CALL QIDATE (PASS.DAT,RTRN.DAT)
+      *                 PASS.DAT is the date field to translate
+      *                 RTRN.DAT is the returned internal "Pick" date or null
+      *
+      *          All normal date formats that "Pick" supports are assumed here.
+      *
+      *          AND - in addition the date may be entered as:
+      *
+      *          TD    - for today
+      *          TD+nn - for today + nn days (example: TD+5)
+      *          TD-nn - for today - nn days (example: TD-10)
+      *
+      *          mmdd  or  mmddyy  or  mmddyyyy  format
+      *        [                 or                     ]
+      *        [ ddmm  or  ddmmyy  or  ddmmyyyy  format ]
+      *        [  where system date format flags apply  ]
+      *
+      *          SU or SUN  - the date of the next Sunday
+      *          MO or MON  - the date of the next Monday
+      *          TU or TUE  - the date of the next Tuesday
+      *          WE or WED  - the date of the next Wednesday
+      *          TH or THU  - the date of the next Thursday
+      *          FR or FRI  - the date of the next Friday
+      *          SA or SAT  - the date of the next Saturday
+      *
+      *          UNLESS - the abbveriation matches today, in which case
+      *                   today's date is returned.
+      *
+      *          In addition, the day-of-week abbreviations may also be suffixed
+      *          with a +nn or -nn for that day-of-week + or - nn weeks.
+      *
+      *          For example:
+      *           MO+1 would return the date for the 2nd monday from today,
+      *            unless today is monday - then 1st monday from today.
+      *           SA-3 would return the date for the 2nd saturday prior to today,
+      *            unless today is saturday - then 3rd prior saturday.
+      *
+      *          Finally,
+      *           all date formats may be prefixed or suffixed with an 'L';
+      *           then the date of the last day in the month for the calculated
+      *           date is returned.   (No more knuckle counting.)
+      *
+      *          For example:
+      *           TDL   TD-5L   1.1.07L   WEL   SA-1L
+      *           LTD   LTD-5   L1.1.07   LWE   LSA-1
+      *
+      *           If today is March 3, 1987 then TDL returns March 31, 1987
+      *
+      *          Flag added for MMDDYY vs. DDMMYY systems
+      *           per suggestion by Keith Johnson
+      *
+      *
+      RTRN.DAT='';* DEFAULT TO ERROR
+      ENTR.FLD=OCONV(PASS.DAT,'MCU')
+      *Double flag test - Either FLAG.MDY or FLAG.DMY should be 1
+      *                    otherwise the date will fail the 'L' edit
+      TEST.FLD=ICONV('12.31.2007','D')
+      IF TEST.FLD#'' THEN
+         FLAG.MDY=1
+      END ELSE
+         FLAG.MDY=0
+      END
+      TEST.FLD=ICONV('31.12.2007','D')
+      IF TEST.FLD#'' THEN
+         FLAG.DMY=1
+      END ELSE
+         FLAG.DMY=0
+      END
+      *
+      BEGIN CASE
+         CASE ENTR.FLD=''
+            DATE.LDM=0
+         CASE ENTR.FLD[1,1]='L'
+            DATE.LDM=1
+            ENTR.FLD=ENTR.FLD[2,LEN(ENTR.FLD)]
+         CASE ENTR.FLD[LEN(ENTR.FLD),1]='L'
+            DATE.LDM=1
+            ENTR.FLD=ENTR.FLD[1,LEN(ENTR.FLD)-1]
+         CASE 1
+            DATE.LDM=0
+      END CASE
+      BEGIN CASE
+         CASE ENTR.FLD=''
+         CASE ENTR.FLD[1,2]='TD'
+            GOSUB 1001;* PROCESS TODAY LOGIC
+         CASE (ENTR.FLD[1,1] MATCH '1A')
+            GOSUB 2001;* PROCESS DAY OF WEEK ABV.
+         CASE (ENTR.FLD MATCH \0N\) & LEN(ENTR.FLD)=6
+            ENTR.FLD=TRIM(ENTR.FLD'R## ## ##')
+            ENTR.FLD=ICONV(ENTR.FLD,'D')
+         CASE (ENTR.FLD MATCH \0N\) & LEN(ENTR.FLD)=8
+            ENTR.FLD=TRIM(ENTR.FLD'R## ## ####')
+            ENTR.FLD=ICONV(ENTR.FLD,'D')
+         CASE (ENTR.FLD MATCH \0N\) & LEN(ENTR.FLD)=4
+            ENTR.FLD=TRIM(ENTR.FLD'R##.##')
+            ENTR.FLD=ICONV(ENTR.FLD,'D')
+         CASE 1
+            ENTR.FLD=ICONV(ENTR.FLD,'D')
+      END CASE
+      BEGIN CASE
+         CASE ENTR.FLD=''
+         CASE (DATE.LDM)
+            MNTH.NBR=OCONV(ENTR.FLD,'DM')
+            YEAR.NBR=OCONV(ENTR.FLD,'DY')
+            GOSUB 3001;* DETERMINE 'L'AST DATE IN MONTH
+            IF (S300.ERR) THEN ENTR.FLD=''
+         CASE 1
+      END CASE
+      RTRN.DAT=ENTR.FLD
+      RETURN
+      *
+      ******
+1001  * HANDLE 'TD' FOR 'TODAY'
+      ******
+      BEGIN CASE
+         CASE ENTR.FLD='TD'
+            ENTR.FLD=DATE()
+         CASE ENTR.FLD MATCH 'TD-0N'
+            ENTR.FLD=ENTR.FLD[4,LEN(ENTR.FLD)]
+            ENTR.FLD=ENTR.FLD+0
+            ENTR.FLD=DATE()-ENTR.FLD
+         CASE ENTR.FLD MATCH 'TD+0N'
+            ENTR.FLD=ENTR.FLD[4,LEN(ENTR.FLD)]
+            ENTR.FLD=ENTR.FLD+0
+            ENTR.FLD=DATE()+ENTR.FLD
+         CASE 1
+            ENTR.FLD=''
+      END CASE
+      RETURN
+      *
+      ******
+2001  * PROCESS DAY OF WEEK ABV.
+      ******
+      BEGIN CASE
+         CASE (ENTR.FLD MATCH '0A')
+            JUMP.WEK=0
+         CASE (ENTR.FLD MATCH '0A+0N')
+            JUMP.WEK=FIELD(ENTR.FLD,'+',2)
+            JUMP.WEK=JUMP.WEK*7
+            ENTR.FLD=FIELD(ENTR.FLD,'+',1)
+         CASE (ENTR.FLD MATCH '0A-0N')
+            JUMP.WEK=FIELD(ENTR.FLD,'-',2)
+            JUMP.WEK=JUMP.WEK*(-7)
+            ENTR.FLD=FIELD(ENTR.FLD,'-',1)
+         CASE 1
+            ENTR.FLD=''
+      END CASE
+      IF ENTR.FLD#'' THEN
+         BASE.TBL=''
+         BASE.DAT=DATE()
+         FOR BASE.CTR=1 TO 7
+            BASE.AMC=REM(BASE.DAT,7)+1
+            BASE.TBL<BASE.AMC>=BASE.DAT
+            BASE.DAT=BASE.DAT+1
+         NEXT BASE.CTR
+         LITR.TBL=''
+         LITR.TBL<1,1>='SU'
+         LITR.TBL<2,1>='SUN'
+         LITR.TBL<1,2>='MO'
+         LITR.TBL<2,2>='MON'
+         LITR.TBL<1,3>='TU'
+         LITR.TBL<2,3>='TUE'
+         LITR.TBL<1,4>='WE'
+         LITR.TBL<2,4>='WED'
+         LITR.TBL<1,5>='TH'
+         LITR.TBL<2,5>='THU'
+         LITR.TBL<1,6>='FR'
+         LITR.TBL<2,6>='FRI'
+         LITR.TBL<1,7>='SA'
+         LITR.TBL<2,7>='SAT'
+         LOCATE(ENTR.FLD,LITR.TBL,1;BASE.AMC) ELSE
+            LOCATE(ENTR.FLD,LITR.TBL,2;BASE.AMC) ELSE
+               ENTR.FLD=''
+            END
+         END
+         IF ENTR.FLD#'' THEN
+            ENTR.FLD=BASE.TBL<BASE.AMC>+JUMP.WEK
+         END
+      END
+      RETURN
+      *
+      ******
+3001  * DETERMINE LAST DATE IN MONTH/YEAR
+      ******
+      LAST.DAY=''
+      S300.ERR=1
+      BEGIN CASE
+         CASE NOT(MNTH.NBR MATCH \0N\)
+         CASE MNTH.NBR<1
+         CASE MNTH.NBR>12
+         CASE NOT(YEAR.NBR MATCH '2N') & NOT(YEAR.NBR MATCH '4N')
+         CASE 1
+            S300.ERR=0
+      END CASE
+      IF (S300.ERR) THEN RETURN
+      *
+      STRT.DAY=31
+      LOOP
+         BEGIN CASE
+            CASE (FLAG.MDY)
+               LAST.DTE=MNTH.NBR:'/':STRT.DAY:'/':YEAR.NBR
+            CASE (FLAG.DMY)
+               LAST.DTE=STRT.DAY:'/':MNTH.NBR:'/':YEAR.NBR
+            CASE 1
+               S300.ERR=1
+               LAST.DAY='D'
+         END CASE
+         IF NOT(S300.ERR) THEN
+            LAST.DAY=ICONV(LAST.DTE,'D')
+            STRT.DAY=STRT.DAY-1
+         END
+      UNTIL LAST.DAY#'' DO
+      REPEAT
+      IF NOT(S300.ERR) THEN
+         ENTR.FLD=LAST.DAY
+      END ELSE
+         LAST.DAY=''
+      END
+      RETURN
+      *
+      END
+
+

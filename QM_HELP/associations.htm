@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Associations</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Associations" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "associations.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Associations</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="dict_x.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="itypeexpressions.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An association is a set of two or more multivalued fields that are related such that the values are inter-dependent. For example, an order processing database might contain a file listing the items in each order. This would require a multivalued list of products and a corresponding multivalued list of quantities. A realistic data file may contain several associated sets of fields.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The query processor needs to know about this relationship. An association is defined by giving it a name which appears in field 7 of the C/D/E/I-type dictionary entry of each field in the association. Applications migrated to QM from some other multivalue systems may also have a <a href="dict_ph.htm" class="topiclink">phrase record</a> with this name which contains a space separated list of the fields that make up the association though this is not required in QM.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Thus, starting from any one element of the association, its dictionary entry can be used to find the phrase record which, in turn, allows us to find all the members of the association.</p>
+<p><img alt="Associations" width="800" height="300" style="margin:0;width:800px;height:300px;border:none" src="associations.png"/></p>
+<p>Pick style A/S-type dictionary items use a different way to define associations. Reworking the example above based on an order processing system, one of the fields is chosen as the &quot;controlling field&quot; and others in the association are considered as &quot;dependent fields&quot;. In this example, the customer came to the shop to purchase some specific part and then decided how many he wanted. He did not go to the shop with the intention of buying three of something and then deciding what product it would be. Thus, the part number controls the association.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For the controlling field, the association element of the dictionary item (field 4) contains a string such as &quot;C;2;3;4&quot; where the numeric components are the field numbers of the dependent data items There is no way to use field names here. For the dependent fields, field 4 of the dictionary record contains &quot;D;1&quot; where the numeric component is the field number of the controlling field.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Internally, QM converts the controlling/dependent field definition into an association named __<span style="font-style: italic;">n</span> where <span style="font-style: italic;">n</span> is the controlling field number. This name can be used in field 7 of a C/D/E/I-type entry if the dictionary has mixed data type definition styles. Alternatively, as an extension to the Pick style A/S-type items, QM also allows field 4 to contain an association name. Thus it is possible to associate field definitions of any type.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with some other multivalue database products, the ASSOC.UNASSOC.MV mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command can be used to make the query processor treat all multivalue fields that are not in defined associations as being associated together. Reliance on this instead of properly defined associations is discouraged as it can lead to unexpected effects, especially with exploded sorts, and hides the relationship when the dictionary is used as the reference model of the data structure. </p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+      PROGRAM SaveNextIds
+      INCLUDE QM.INC
+
+      OPEN "NEXTIDS" TO NEXTIDS.FILE ELSE
+         CREATE NEXTIDS.FILE
+      END
+
+      FOR i = 1 TO DCOUNT(NEXT_IDS, @AM)
+         WRITE NEXT_IDS(i) ON NEXTIDS.FILE, STR(i, 2, "0")
+      NEXT i
+
+      PRINT "Next record IDs saved successfully"
+      END PROGRAM
+

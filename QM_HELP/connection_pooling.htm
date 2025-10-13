@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Connection Pooling</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Connection pooling" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "connection_pooling.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Connection Pooling</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="command_scripts.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="ecs.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Connection pooling can improve performance of applications such as web servers that continually start short life phantom processes or QMClient sessions. Instead of terminating when the phantom completes its work or a QMClient connection is closed, the process enters an idle state waiting for a new connection to arrive, at which point it continues processing. This removes the need for start-up processing both in QM itself and, more significantly, in the application. For example, files opened in the server process do not need to be reopened and data in common blocks does not need to be reinitialised.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This feature is not currently available in the AIX (RS6000) version of QM. On this platform, the <span style="font-weight: bold;"><a href="qmconnectpool.htm" class="topiclink">QMConnectPool()</a></span> function will behave identically to <span style="font-weight: bold;"><a href="qmconnect.htm" class="topiclink">QMConnect()</a></span> and a pool name associated with a phantom process will be ignored.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span style="font-weight: bold;">Configuring a Connection Pool</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A connection pool is defined by use of the <a href="configparams.htm#pool" class="topiclink">POOL</a> configuration parameter. This sets a case insensitive pool name of up to 15 characters and an associated pool size limit and timeout value.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">POOL=</span><span class="f_CodeSingleLine" style="font-style: italic;">name</span><span class="f_CodeSingleLine">,</span><span class="f_CodeSingleLine" style="font-style: italic;">limit</span><span class="f_CodeSingleLine">,</span><span class="f_CodeSingleLine" style="font-style: italic;">timeout</span></p>
+<p class="p_Normal">This parameter may be repeated to define multiple pools.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-style: italic;">limit</span> value sets the maximum number of idle processes that are allowed to be waiting in the pool. If the limit is reached, a process attempting to go into the idle state will be terminated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-style: italic;">timeout</span> value sets the period in seconds for which an idle process will wait before terminating. A value of zero implies no timeout. A timeout of a few seconds is recommended.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The current state of connection pooling can be viewed with the <span style="font-weight: bold;"><a href="pool_status.htm" class="topiclink">POOL.STATUS</a></span> command/</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Using Connection Pooling with Phantom Processes</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A phantom process can be started as a member of a connection pool by use of the <span style="font-weight: bold;">POOL</span> option to the <span style="font-weight: bold;"><a href="phantom.htm" class="topiclink">PHANTOM</a></span> command or the QMBasic <span style="font-weight: bold;"><a href="qmb_phantom.htm" class="topiclink">PHANTOM</a></span> statement. If a suitable idle phantom process exists in the pool, it will be woken, otherwise a new process is started. The <span style="font-weight: bold;">NEW.PROCESS</span> qualifier to the <span style="font-weight: bold;">POOL</span> option can be used to force creation of a new process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When it completes its work, the phantom process can use the <span style="font-weight: bold;">POOL.IDLE</span> statement to join the pool of idle processes.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Using Connection Pooling with QMClient</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A client process connects to the server using the <span style="font-weight: bold;"><a href="qmconnectpool.htm" class="topiclink">QMConnectPool()</a></span> function which is similar to <span style="font-weight: bold;"><a href="qmconnect.htm" class="topiclink">QMConnect()</a></span> but takes an additional argument as the pool name.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">QMConnectPool(</span><span class="f_CodeTopLine" style="font-style: italic;">host</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">port</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">username</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">password</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">account</span><span class="f_CodeTopLine">, </span><span class="f_CodeTopLine" style="font-style: italic;">poolname</span><span class="f_CodeTopLine">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On first use, this function behaves exactly like <span style="font-weight: bold;"><a href="qmconnect.htm" class="topiclink">QMConnect()</a></span> except that, if the pool name is recognised by the server, the process started by this function becomes a member of that pool.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">At the point when the client terminates the connection by using <span style="font-weight: bold;"><a href="qmpoolidle.htm" class="topiclink">QMPoolIdle()</a></span>, the server process will enter a waiting state and the client process connection to the server is closed. When a new QMClient connection arrives using <span style="font-weight: bold;"><a href="qmconnectpool.htm" class="topiclink">QMConnectPool()</a></span> for the same pool name, user name and account name, the waiting process resumes execution, processing the new connection. Note that the account name must match the account in which the idle process is currently operating which could be different from the account specified when the session started. If no suitable idle process is found, a new process is started.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the pool size limit has been reached, <span style="font-weight: bold;"><a href="qmpoolidle.htm" class="topiclink">QMPoolIdle()</a></span> will terminate the server process in the same way as <span style="font-weight: bold;"><a href="qmdisconnect.htm" class="topiclink">QMDisconnect()</a></span>. This parameter value does not limit the number of active processes in the pool.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because the server process will be picked up by a new client that has no knowledge of what has happened before, when a process goes into the idle state, files opened using <span style="font-weight: bold;"><a href="qmopen.htm" class="topiclink">QMOpen()</a></span> are closed and objects instantiated with <span style="font-weight: bold;"><a href="qmcreateobject.htm" class="topiclink">QMCreateObject()</a></span> are destroyed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmdisconnect.htm" class="topiclink">QMDisconnect()</a></span> function will force full termination of a server process when closing a connection in the same way as for sessions opened using <span style="font-weight: bold;"><a href="qmconnect.htm" class="topiclink">QMConnect()</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">From the client side, a connection pooling session looks identical to a non-pooled session. From the server side, the application must be written such that an executed series of commands or subroutines might not relate to the same client session. It may be necessary for the client to call some form of reset function prior to entering the idle state if there is session related data that must not be carried forward.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Although phantoms and QMClient sessions can exist in the same pool, only a process of the appropriate type will be woken from its idle state when new work arrives. It is recommended that different pool names are used for the two process types.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key 1060 (SYS$POOL.NAME) returns the pool name for a connection pooling process, a null string for other processes.</p>
+
+</td></tr></table>
+
+</body>
+</html>

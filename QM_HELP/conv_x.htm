@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Character Encoding Conversion (X)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Character encoding conversions" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_x.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Character Encoding Conversion (X)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_u.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_field.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">X</span> conversion code applies a character encoding.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The format of the conversion code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">X</span><span style="font-style: italic;">name</span></p>
+<p style="margin: 5px 0 0 30px;"><span style="font-weight: bold;">X</span><span style="font-style: italic;">name</span>.<span style="font-style: italic;">modes</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of the encoding to be applied.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">modes</span></td><td style="border:none;padding:0">is a list of case insensitive mode qualifiers to the specified encoding, each represented by a single character. The <span style="font-style: italic;">modes</span> are separated from the <span style="font-style: italic;">name</span> by a period.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Used as an output conversion, the <span style="font-weight: bold;">X</span> conversion code takes internal data and encodes it to an external representation such as UTF-8. Used as an input conversion, the data is transformed from its external representation to a QM character string. Although primarily intended for use on ECS mode systems, the <span style="font-weight: bold;">X</span> conversion code is supported on non-ECS mode systems but limited to the 8 bit character set.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>See <a href="character_encodings.htm" class="topiclink">Character Encodings</a> for a description of the built-in encodings.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Users can add their own encodings by cataloguing a pair of QMBasic subroutines named ENCODE.<span style="font-style: italic;">name</span> and DECODE.<span style="font-style: italic;">name</span> where <span style="font-style: italic;">name</span> is the encoding name to be defined. These subroutines should be declared as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">SUBROUTINE ENCODE.</span><span class="f_CodeSingleLine" style="font-style: italic;">name</span><span class="f_CodeSingleLine">(RESULT, STR, MODES, STATUS)</span></p>
+<p>and</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">SUBROUTINE DECODE.</span><span class="f_CodeSingleLine" style="font-style: italic;">name</span><span class="f_CodeSingleLine">(RESULT, STR, MODES, STATUS)</span></p>
+<p>where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">RESULT</td><td style="border:none;padding:0">is the returned encoded / decoded data</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">STR</td><td style="border:none;padding:0">is the data string to transform</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">MODES</td><td style="border:none;padding:0">is the <span style="font-style: italic;">modes</span> qualifier from the conversion code</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">STATUS</td><td style="border:none;padding:0">is set to the value to be returned by the STATUS() function after the conversion.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Encodings defined in this way can be used in all places where a character encoding name is used by QM.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The status value returned by the subroutine should follow the standard rules for conversion codes:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">0</td><td style="border:none;padding:0">Successful</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">1</td><td style="border:none;padding:0">Data cannot be converted</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">2</td><td style="border:none;padding:0">Conversion code not recognised</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">3</td><td style="border:none;padding:0">Data converted may be faulty. This might be used, for example, where an input conversion on a non-ECS system yields a character outside the 8 bit set that has been replaced by some substitute character.</td></tr></table></div>
+</td></tr></table>
+
+</body>
+</html>

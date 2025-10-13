@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LIST.PHANTOMS</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LIST.PHANTOMS" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "list_phantoms.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LIST.PHANTOMS</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="list_locks.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="list_printers.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LIST.PHANTOMS</span> command shows a list of currently running phantom processes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LIST.PHANTOMS</span> {<span style="font-weight: bold;">USER</span> <span style="font-style: italic;">username</span>} {<span style="font-weight: bold;">POOL</span> <span style="font-style: italic;">poolname</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The <span style="font-weight: bold;">LIST.PHANTOMS</span> command displays a summary of currently active phantom processes. It is effectively a subset of the information shown by the <span style="font-weight: bold;"><a href="listu.htm" class="topiclink">LISTU</a></span> command. For each phantom process, it shows the user number, operating system process id, login name, login time and account name. The login time is shown in the local time zone of the user executing the command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The optional <span style="font-weight: bold;">USER</span> qualifier causes the command to show only phantoms for the specified user name. Except on Windows, the user name is case sensitive.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The optional <span style="font-weight: bold;">POOL</span> qualifier causes the command to show only phantoms for the specified connection pool name.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>Phantom processes that are running as replication subscribers also show the name of the publisher system from which they are receiving data.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST.PHANTOMS</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">User &nbsp;Pid &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Username &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Login time &nbsp; &nbsp;Account</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; 2 &nbsp;5001 &nbsp; &nbsp; &nbsp; &nbsp; root &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;28 May 07:02 &nbsp;QMSYS</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;34 &nbsp;5220 &nbsp; &nbsp; &nbsp; &nbsp; jenny &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 28 May 11:24 &nbsp;SALES</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST.PHANTOMS USER jenny</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">User &nbsp;Pid &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Username &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Login time &nbsp; &nbsp;Account</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;34 &nbsp;5220 &nbsp; &nbsp; &nbsp; &nbsp; jenny &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 28 May 11:24 &nbsp;SALES</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_child.htm" class="topiclink">CHILD()</a></span>, <span style="font-weight: bold;"><a href="phantom.htm" class="topiclink">PHANTOM</a></span>, <span style="font-weight: bold;"><a href="qmbs_phlog.htm" class="topiclink">!PHLOG()</a></span>, <span style="font-weight: bold;"><a href="status.htm" class="topiclink">STATUS</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

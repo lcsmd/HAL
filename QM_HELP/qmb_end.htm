@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>END</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="END" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_end.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">END</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_encrypt.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_enter_package.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">END</span> statement terminates a program, subroutine or a block of statements conditioned by the <span style="font-weight: bold;">THEN</span>, <span style="font-weight: bold;">ELSE</span>, <span style="font-weight: bold;">LOCKED</span> or <span style="font-weight: bold;">ON ERROR</span> keywords.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When used to terminate a program or subroutine, the <span style="font-weight: bold;">END</span> statement may not be followed by any further executable statements; only comments and blank lines are allowed. An <span style="font-weight: bold;">END</span> statement is not mandatory at the end of a program, subroutine or function but lack of an <span style="font-weight: bold;">END</span> will cause a warning message to be displayed as this may be symptomatic of a structural problem elsewhere in the program.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The compiler will generate a <span style="font-weight: bold;"><a href="qmb_return.htm" class="topiclink">RETURN</a></span> statement at the end of the program or subroutine which will be executed if there is no <span style="font-weight: bold;"><a href="qmb_return.htm" class="topiclink">RETURN</a></span> or other program flow control statement immediately prior to the <span style="font-weight: bold;">END</span>. For compatibility with other multivalue database products, the IMPLIED.STOP option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive can be used to insert a <span style="font-weight: bold;"><a href="qmb_stop.htm" class="topiclink">STOP</a></span> in place of a return in program, subroutine or function modules. Class modules always insert an implied <span style="font-weight: bold;"><a href="qmb_return.htm" class="topiclink">RETURN</a></span> regardless of the setting of this mode.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">END</span> statement is also used to terminate a group of conditional statements. For details of the use of <span style="font-weight: bold;">END</span> in this way, see the description of the QMBasic statement to which the conditional element applies.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">READ REC FROM STOCK.FILE, ITEM THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY &quot;Stock item &quot; : ITEM</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; GOSUB PROCESS.ITEM</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment reads a record from a file, displays its record id and calls an internal subroutine to process the record. The two indented statements are both conditioned so that they only occur if the read was successful.</p>
+
+</td></tr></table>
+
+</body>
+</html>

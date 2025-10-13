@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>NOT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="NOT (query processor)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "not.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">NOT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="no.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="no_case.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">NOT</span> selection clause operator inverts the result of the immediately following condition.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">WITH NOT </span><span style="font-style: italic;">condition</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">condition</span></td><td style="border:none;padding:0">is a selection expression.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">NOT</span> operator can be used to invert the result of a selection clause expression. For most expressions, it is easier and more readable to use the inverse operator but there are occasions when the <span style="font-weight: bold;">NOT</span> operator is the only way to achieve the desired effect.</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LIST STAFF WITH NOT SURNAME = 'Smith'</span></p>
+<p class="p_Normal">is an alternative to</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LIST STAFF WITH SURNAME # 'Smith'</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If we wanted to use Soundex matching to include alternative spellings such as &quot;Smyth&quot;, there is no inverse of the <span style="font-weight: bold;"><a href="said.htm" class="topiclink">SAID</a></span> operator but we could do</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LIST STAFF WITH NOT SURNAME SAID 'Smith'</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There is an important difference in QM's implementation of the <span style="font-weight: bold;">NOT</span> operator and that of other multivalue products. A query such as</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LIST ORDERS WITH STATUS = &quot;P&quot; &quot;D&quot;</span></p>
+<p class="p_Normal">uses the implied OR to test STATUS against a list of values. This is equivalent to</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LIST ORDERS WITH STATUS = &quot;P&quot; OR STATUS = &quot;D&quot;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Inserting a NOT operator to invert the test</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LIST ORDERS WITH NOT STATUS = &quot;P&quot; &quot;D&quot;</span></p>
+<p class="p_Normal">associates the <span style="font-weight: bold;">NOT</span> only with the first value and is equivalent to</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">LIST ORDERS WITH NOT STATUS = &quot;P&quot; OR STATUS = &quot;D&quot;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Other multivalue products treat the list of status values as a single operation and apply the <span style="font-weight: bold;">NOT</span> to the result. In QM, it is necessary to write this as</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LIST ORDERS WITH NOT (STATUS = &quot;P&quot; &quot;D&quot;)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">NOT</span> keyword can also be used as a synonym for <span style="font-weight: bold;"><a href="ne.htm" class="topiclink">NE</a></span></p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">LIST ORDERS WITH STATUS NOT &quot;P&quot;</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

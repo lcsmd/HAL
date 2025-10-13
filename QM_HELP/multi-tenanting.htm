@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Multi-Tenanting</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Multi-tenanting" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "multi-tenanting.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Multi-Tenanting</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="licensing-overview.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="startup.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM supports the option to install multiple separate copies that each run in an isolated environment on the same server. This concept is referred to as <span style="font-weight: bold;">multi-tenanting</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Multi-Tenanting on Linux, FreeBSD, AIX or Solaris</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On Linux systems, this mode of install does not necessarily require root access though a non-root installation has weaker security. Non-root mode installations are referred to as &quot;user mode&quot;.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A multi-tenant installation is initiated by using the -u command line option with the <a href="installation.htm#nix" class="topiclink">install script</a>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Each installation is identified by a numeric value automatically formed from the device and inode values of a hidden empty .qmid file. In the unlikely event of QM failing to start because two user mode installations have the same qmid value, use the Linux/Unix touch command to create a new empty file, delete the existing .qmid file and rename the new file to replace it.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Multi-Tenanting on Windows</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Windows installation requires administrator rights to allow the QMSvc service to be installed. A multi-tenanted Windows system is installed by use of a command line option to the installer program</p>
+<p class="p_Normal" style="margin: 0 0 0 23px;">/Tenant=<span style="font-style: italic;">n</span></p>
+<p class="p_Normal">where <span style="font-style: italic;">n</span> is an integer value in the range 1 to 65535 identifying the specific tenant installation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The name of the QMSvc service is modified to become QMSvc-<span style="font-style: italic;">n</span>. and it is this modified name that will appear in the Windows services administration screen.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that the Windows installer offers the location of the most recent installation as its default QMSYS pathname.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QM Network Server Control tool has a browsable selection for the QMSYS pathname of the instance of QM to be monitored or updated. This defaults to the instance from which the QMNetworkCtrl executable is run.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Licensing and Configuration</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Each installation must be covered by a separate licence. </p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An application can access the qmid tenant number by using the QMBasic <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key value 1022 (SYS$QMID). Zero indicates a standard install, &nbsp;non-zero is the qmid value referenced above.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are some important rules to observe when using a multi-tenant installation. Firstly, the configuration parameters must be set such that each installation is listening on different port numbers for incoming network connections (see the PORT, CLIPORT and REPLPORT <a href="configparams.htm" class="topiclink">configuration parameters</a>). The installer will set PORT and CLIPORT to zero for a new installation, effectively disabling network connections until valid port numbers are set. Secondly, it is essential that no files are simultaneously open to more than one installed instance of QM unless this is via QMNet. For directory files, failure to observe this rule may result in data integrity problems. For hashed files, the file will almost certainly become corrupted and unusable.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">It is also essential that the qm command is executed from the bin subdirectory of the QMSYS account in the correct instance of QM. Users should take care to ensure that the search path list in the PATH environment variable does not cause the incorrect program to be run. Similarly, if the optional QMSYS environment variable is defined, it is essential that it points to the correct installation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">System administrators should set operating system permissions to ensure that a user cannot see other instances of QM on the same server.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because a user connecting to a multi-tenant installation directly over a network is routed to different installations based on the port number, it is necessary to ensure that a user can only connect to instances of QM for which they should have access. The easiest way to achieve this is to use QM's user security features to restrict login based on user name. For users entering a Linux system via the shell, operating system permissions should provide adequate enforcement of access restrictions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When running a Linux system in user mode, user authentication is handled differently depending on whether the qmlnxd daemon that manages network connections is run as the root user or as a non-root user.</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>If qmlnxd is running as root, the user name and password entered when starting a QM process must be known the underlying operating system and the QM process will run as this user.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>If qmlnxd is running as a non-root user and QM's user <a href="application_level_security.htm" class="topiclink">security features</a> are enabled, the user name and password must have been defined using the <span style="font-weight: bold;"><a href="create_user.htm" class="topiclink">CREATE.USER</a></span> or <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> commands. The QM process will run as the same user as the qmlnxd process but the @LOGNAME variable will contain the user name entered on connection.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 10px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span> If qmlnxd is running as a non-root user and QM's user security features are not enabled, no prompt for the user authentication details will appear. The QM process will run as the same user as the qmlnxd process and the @LOGNAME variable will contain the qmlnxd user name. On a QMClient connection, the user name and password supplied in the <span style="font-weight: bold;"><a href="qmconnect.htm" class="topiclink">QMConnect()</a></span> function will be ignored.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">User authentication can be disabled entirely by use of the <span style="font-weight: bold;"><a href="security.htm" class="topiclink">SECURITY</a></span> command but this is not recommended.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

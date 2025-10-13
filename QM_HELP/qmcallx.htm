@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMCallx()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMCallx" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmcallx.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMCallx()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmcall.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmchange.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-weight: bold;">QMCallx()</span> function calls a catalogued subroutine on the server. It is analogous to the QMBasic <span style="font-weight: bold;"><a href="qmb_call.htm" class="topiclink">CALL</a></span> statement. This function is only present in the C and VB.Net versions of the QMClient API. For other versions, use <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The subroutine may take up to 20 arguments that must be passed as strings. QMClient<span style="font-weight: bold;"> </span>does not provide a method to call subroutines with a greater number of arguments or those that are defined to pass a QMBasic dimensioned matrix as an argument.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The return value from <span style="font-weight: bold;">QMCallx()</span> is zero if successful or non-zero in the case of an error. The actual return value is one of the SV_<span style="font-style: italic;">xxx</span> codes as defined in the qmclilib.h include record. &nbsp; &nbsp; &nbsp; &nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Unlike <span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall()</a></span>, the updated values of any arguments modified by the subroutine do not overwrite the original argument variables. Instead, they can be retrieved using the <span style="font-weight: bold;"><a href="qmgetarg.htm" class="topiclink">QMGetArg() </a></span>function, removing the need to know the size of the returned data prior to the call.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The called subroutine may make use of any of the standard QMBasic programming statements and functions, however, it may not perform terminal input that is not handled via the data queue as there is no terminal associated with the server process. Any terminal output will be discarded unless redirected to a COMO file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <a href="configparams.htm#qmclient" class="topiclink">QMCLIENT</a> configuration parameter can be used to restrict <span style="font-weight: bold;">QMCallx()</span> to calling only subroutines that have been compiled with the <a href="qmbd_qmcall.htm" class="topiclink">$QMCALL</a> compiler directive. Use of this feature prevents a malicious application that uses the QMClient API calling other subroutines that might not perform adequate security validation to protect the system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The example below calls a subroutine on the server that sets the credit limit for a specific client. The subroutine takes three arguments, the third of which is used to return an error message if the action fails. Note how the ErrMsg variable is set to a null string before calling the subroutine so that any old content of this variable is not unnecessarily sent across the network to the server. To optimise network traffic, the server only returns arguments values if they have been modified by the called subroutine.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">int QMCallx(char * </span><span style="font-style: italic;">SubrName</span><span style="font-weight: bold;">, short int </span><span style="font-style: italic;">ArgCount</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">ArgList</span><span style="font-weight: bold;">...)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">ErrMsg[0] = '\0';</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">QMCallx(&quot;SET.CREDIT.LIMIT&quot;, 3, Client, NewLimit, ErrMsg);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">ErrMsg = QMGetArg(3);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">if (ErrMsg[0] != '\0') printf(&quot;Failed - %s\n&quot;, ErrMsg);</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The return value from this function is the ServerError status and will be SV_OK if the call is successful. The memory allocated by the <span style="font-weight: bold;"><a href="qmgetarg.htm" class="topiclink">QMGetArg()</a></span> function must subsequently be released using <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMCallx(ByVal </span><span style="font-style: italic;">SubrName</span><span style="font-weight: bold;"> as String, ByVal </span><span style="font-style: italic;">ArgCount</span><span style="font-weight: bold;"> as Short, Optional ByVal </span><span style="font-style: italic;">Arg1</span><span style="font-weight: bold;"> as String, ...) as Integer</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">ErrMsg = &quot;&quot;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">If QMCallx(&quot;SET.CREDIT.LIMIT&quot;, 3, Client, NewLimit, ErrMsg) Then</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; ErrMsg = QMGetArg(3)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; If ErrMsg &lt;&gt; &quot;&quot; Then MsgBox(ErrMsg, MsgBoxStyle.Exclamation, &quot;Failed&quot;)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">End If</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p>The return value from this function is the ServerError status and will be SV_OK if the call is successful. Note the use of <span style="font-weight: bold;"><a href="qmgetarg.htm" class="topiclink">QMGetArg()</a></span> to retrieve the updated argument value.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmcall.htm" class="topiclink">QMCall</a></span>, <span style="font-weight: bold;"><a href="qmtrapcallabort.htm" class="topiclink">QMTrapCallAbort</a></span></p>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

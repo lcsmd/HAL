@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Startup and Shutdown of QM</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Startup and shutdown" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "startup.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Startup and Shutdown of QM</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="multi-tenanting.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="deinstallation.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM maintains some persistent data in shared memory that is accessed by all QM users. This includes the locking tables, user tables, configuration data and other information that must be visible to all QM user processes.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Windows Systems</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On a Windows system except when using a USB installation of QM, the shared memory is created by the QMSvc service. This service must be running for QM to be usable.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">USB installations of QM use the QMUsbSrvr program in place of QMSvc for network access. QMConsole sessions on these systems do not require that this program is running.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QMSvc can be started and stopped from the QM Network Control program group item. In addition, QMSvc can be started, stopped or restarted from the Windows Control Panel Services screen or by use of the commands shown below from a Command Prompt window when logged in to Windows with administrator rights.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">qmsvc -start</span></p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">qmsvc -stop</span></p>
+<p class="p_CodeSingleLine" style="margin: 6px 0 0 30px;"><span class="f_CodeSingleLine">qmsvc -restart</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This assumes that the bin subdirectory of the QMSYS account is in the program search path. If not, the full pathname of the qmsvc executable must be used. These three commands normally pause briefly to allow time for the status message to be read. This pause can be eliminated, perhaps for use in a script, by an additional command line option:</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">qmsvc -start -nowait</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Shutting down the QMSvc service will automatically logout all QM users.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Other Platforms</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On other platforms, the QM shared memory must be explicitly loaded before users can enter QM. It may be manually discarded if required.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On some platforms, the installation process will add system startup and shutdown scripts to start QM when the system is booted and to take it down gracefully when the system is shutdown. &nbsp;On other platforms, it may be necessary to do this manually, if desired. QM may be started, stopped or restarted at any time by typing the commands shown below from the operating system shell.</p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; qm -start</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; qm -stop</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; qm -restart</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If you are not logged in as root, you may need to prefix these commands with sudo.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">Executing a Startup Script</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;">Sometimes it is useful to execute a paragraph or other command script when QM starts. This can be achieved using the <a href="configparams.htm#startup" class="topiclink">STARTUP</a> configuration parameter to specify the command to be executed. Multiple STARTUP parameters may be present, each command running as a separate QM process..</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On Windows, the command is run when QMSvc starts. On other platforms, the command is run when the qm -start command is used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The STARTUP parameter has two formats:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">STARTUP=</span><span class="f_CodeSingleLine" style="font-style: italic;">command</span></p>
+<p>This command will be run as the SYSTEM (Windows) or root (Linux) user in the QMSYS account and would typically be the name of a VOC paragraph. The command may not include double quotes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Because the SYSTEM and root users have privilege levels that may be higher than is appropriate for the tasks performed by processes initiated by the STARTUP configuration parameter, these processes can use the <span style="font-weight: bold;"><a href="authenticate.htm" class="topiclink">AUTHENTICATE</a></span> command to authenticate user credentials and reduce the privilege level to that of some other user known to the operating system.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Alternatively, the parameter may include an account name, user name and password</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">STARTUP=</span><span class="f_CodeSingleLine" style="font-style: italic;">command</span><span class="f_CodeSingleLine">;</span><span class="f_CodeSingleLine" style="font-style: italic;">account username password</span></p>
+<p>This command will be run using the specified user name and account. Again, the command may not include double quotes. Because the configuration parameter file is readable by all users, it is useful to encrypt the password using the <span style="font-weight: bold;">AUTHKEY</span> command (described with <span style="font-weight: bold;"><a href="authenticate.htm" class="topiclink">AUTHENTICATE</a></span>). In this case the encrypted password is prefixed by &quot;ENCR:&quot;, for example</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">STARTUP=PHANTOM MAILSERVER</span><span class="f_CodeSingleLine">;MAIL GSMITH ENCR:2CB51EFC17832221</span></p>
+<p style="margin: 10px 0 0 0;">A startup process will run the MASTER.LOGIN and LOGIN paragraphs in the same way as any other QM session. A QM process can recognise that it is a startup command by testing the value of the <a href="at_variables.htm#tty" class="topiclink">@TTY</a> variable which will contain &quot;startup&quot;. Phantoms started from the startup process will have this variable set to &quot;phantom&quot;.</p>
+
+</td></tr></table>
+
+</body>
+</html>

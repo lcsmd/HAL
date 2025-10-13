@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Locks</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Locks" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "locks.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Locks</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="fmt_spec.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="selectlists.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In order to prevent undesirable interaction between processes, QM provides a system of locks. Consider, for example, a process that reads a record, decrements a value in that record and writes it back to the file. There is no problem here if only one process is operating. If, however, there is a second process performing a similar operation on the file, there is a danger that both processes read the record, then both write back an updated copy. Only one of the updates will actually occur as they both started from an identical version of the original data, unaware that there was another process updating the record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Three types of lock are available on files; file locks, read locks and update locks. Each has a different role and care should be taken to use them correctly.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A <span style="font-weight: bold;">file lock</span> applies to the entire file and prevents any other user from obtaining any sort of lock on the file or the records therein. File locks are usually only needed during operations that must handle the file in a consistent &quot;snap shot&quot; manner when, for example, summing the values of some field from all records. A process can only acquire a file lock if no other process has any locks on the file or its records. Conversely, no other process can obtain any other sort of lock within the file while the file lock is active. Use of file locks can have a severe effect on performance and hence they should only be used where absolutely necessary.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A file lock is obtained by the <span style="font-weight: bold;"><a href="qmb_filelock.htm" class="topiclink">FILELOCK</a></span> statement and is released by the <span style="font-weight: bold;"><a href="qmb_fileunlock.htm" class="topiclink">FILEUNLOCK</a></span><span style="font-family: Arial,Helvetica,sans-serif;"> </span>or <span style="font-weight: bold;"><a href="qmb_release.htm" class="topiclink">RELEASE</a></span> statements, or on closing the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A <span style="font-weight: bold;">read lock</span> (sometimes called a <span style="font-weight: bold;">shared lock</span>) applies to an individual record and prevents other processes from obtaining the file lock or an update lock on the same record. Any number of processes may acquire read locks on the same record at the same time. An attempt to obtain a read lock will fail if another process has the file locked or has an update lock on the record. Read locks can be used to ensure that a program sees a consistent view of a set of records, without the risk that some other process has changed any of these records.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An <span style="font-weight: bold;">update lock</span> also applies to an individual record and prevents other processes from obtaining the file lock or either type of record lock on the same record. Only one process may acquire an update lock on any individual record at a time. An attempt to obtain an update lock will fail if another process has the file is locked or has a read or update lock on the record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A read or update lock may be acquired on a record that does not exist in the file. This provides a means of locking a record that is about to be written for the first time.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Read and update locks are obtained by the <span style="font-weight: bold;"><a href="qmb_readl.htm" class="topiclink">READL</a></span> or <span style="font-weight: bold;"><a href="qmb_readu.htm" class="topiclink">READU</a></span> statements (and others). These locks are released on closing the file, by the <span style="font-weight: bold;"><a href="qmb_release.htm" class="topiclink">RELEASE</a></span> statement or on return to the command prompt. Additionally, read and update locks are normally released by writing or deleting the locked record, however, the <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITEU</a></span> and <span style="font-weight: bold;"><a href="qmb_delete.htm" class="topiclink">DELETEU</a></span> statements provide a means of writing or deleting without releasing the lock.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Although it is possible to hold very many record locks at a time, this tends to indicate poor application design and may have an adverse effect on performance. The system wide limit on the number of concurrent locks is determined by the <a href="configparams.htm#numlocks" class="topiclink">NUMLOCKS</a> configuration parameter. If this limit is reached, the program will behave as though the record is locked by another user, taking the <span style="font-weight: bold;">LOCKED</span> clause of the relevant QMBasic statement with a <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value of 0 or, if no <span style="font-weight: bold;">LOCKED</span> clause is present, waiting for space to become available. A message will be written to the <a href="errorlogging.htm" class="topiclink">system error log file</a>. The <a href="configparams.htm#maxrlock" class="topiclink">MAXRLOCKS</a> configuration parameter limits the number of record locks that a single process may hold at one time. Use of this optional limit can prevent run-away processes filling the internal lock tables.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where an attempt to obtain a lock fails, the QMBasic language provides two methods of handling the situation. A program may either wait automatically for the lock to be released or it may regain control and take some action of its own (see the <span style="font-weight: bold;">LOCKED</span> clause of the QMBasic file handling statements). For compatibility with some other multivalue database products, the LOCK.BEEP mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command can be used to cause the system to emit a beep at the terminal once per second while waiting for a record lock or file lock.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A process is not affected by its own locks. Thus it is possible to take a record lock on a record from a file for which the file lock is held or, conversely, to take the file lock while holding one or more record locks. Taking a read lock on a record for which an update lock is held or vice versa will convert the lock type.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Locks are associated with the underlying operating system file, not the VOC reference to the file. QM will correctly track locks relating to the same file however it was opened, including when a file uses soft links on Linux and has multiple pathnames. Where a file has been opened more than once simultaneously by a single process, the locks are released on the final close of the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Locks are also associated with the particular file variable referenced when they are acquired. Thus, if an application opens the same file more than once, closing one of the file references will automatically release any locks acquired using that file variable but leave other locks in place. Similarly, use of the form of the <span style="font-weight: bold;"><a href="qmb_release.htm" class="topiclink">RELEASE</a></span> statement that takes only a file variable will release locks associated with that file variable. This mechanism ensures that developers do not need to be aware of how other modules within the application operate.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The COMMAND.LEVEL.LOCKS setting of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command changes the behaviour of record locks. Without this option, a program that calls a subroutine that opens a file using a local file variable and locks a record will release that lock on exit from the subroutine because the file variable is discarded. With this option set, the lock is retained until the program returns to the command processor, either on completion of the main program or on return from an EXECUTE layer.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Lock Rule Enforcement</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The lock handling operations of QMBasic only operate with correctly structured applications. The non-locking versions of the <span style="font-weight: bold;"><a href="qmb_read.htm" class="topiclink">READ</a></span> and <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> operations, etc, take no part in the locking system and hence can access a file regardless of its lock state. The individual statement descriptions give more information.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A correctly written application never writes or deletes a record without locking it first, however, for compatibility with other multivalue database products, this is not enforced by default except within <a href="transactions.htm" class="topiclink">transactions</a>. A poorly written program that uses <span style="font-weight: bold;"><a href="qmb_read.htm" class="topiclink">READ</a></span> in place of <span style="font-weight: bold;"><a href="qmb_readu.htm" class="topiclink">READU</a></span> and then writes the record could overwrite a record that is locked by another user. The <a href="configparams.htm#mustlock" class="topiclink">MUSTLOCK</a> configuration parameter can be used to enforce tight control of locks, eliminating this potential problem. This parameter has four possible values: 0 to disable all lock checks, 1 to abort a program that attempts to write or delete without a lock, 2 to log the event in the error log file but continue with the potentially dangerous action, or 3 which is similar to mode 2 but only logs the event if the file uses indices.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Enabling lock rule enforcement may not be easy when porting existing applications to QM. Because multivalue systems have not enforced these rules in the past, programmers sometimes omitted use of locks in situations where there would never be contention. For example, overnight processing might not use locks because the developer knew that it is run at a time when there are no other users on the system. Programs that write a record that is known not to exist also appear not to need locks. Both of these examples actually represent bad programming practice as the assumption made by the developer may subsequently turn out not to be true due to changes in business operation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">It is essential that locks are used correctly when updating a file that uses alternate key indices.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Deadlocks</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A deadlock occurs when two processes are each waiting for a lock held by the other process. For example, process 1 locks record A and process 2 locks record B. Process 1 then goes on to lock record B, causing it to wait for the lock to be released by process 2. If at this stage process 2 tries to lock record A, the two processes are waiting for each other. Deadlocks can be more complex, involving multiple processes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Deadlocks are totally avoidable by careful application design. If in the above example a rule had been adopted such that record A must always be locked before record B, a deadlock cannot occur. Setting a sequence in which locks must be acquired (e.g. order, customer, part) is gives a simple solution but may not always be practical. An order entry system in which locks on the part records are maintained until entry of the order is complete will expose the system to deadlocks if, for example, one customer orders parts 101 and 102 at the same time as another customer orders parts 102 and 101. In this case, the best solution is to devise a scheme where part records do not remain locked.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default behaviour of QM is to allow deadlocks to happen, leaving it to the developer to analyse and resolve the cause. Setting the <a href="configparams.htm#deadlock" class="topiclink">DEADLOCK</a> configuration parameter to a non-zero value causes QM to check whether a deadlock would occur if the process waited for a record lock that is held by another process. If a deadlock would occur, the process attempting to get the lock is aborted. A diagnostic messages showing the locks involved is displayed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Setting the <a href="configparams.htm#deadlock" class="topiclink">DEADLOCK</a> configuration parameter to 2 extends the diagnostics by recording the state of the locking system in an item named deadlock.<span style="font-style: italic;">n</span> in the temp subdirectory of the QMSYS account where <span style="font-style: italic;">n</span> is the QM user number. The information written has four lines for each lock and a blank line between locks. Line 1 has the QM user number and user name. Line 2 has the internal file number and its pathname. Line 3 has the lock type and, for a record lock, the record id. On an ECS mode system, the record id is encoded to UTF-8 form. Line 4 shows the date/time at which the lock was acquired.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that resolution of a deadlock by aborting a process carries a risk of data integrity errors if the process was performing a related series of updates some of which had already been written when the deadlock occurred. Use of <a href="transactions.htm" class="topiclink">transaction</a> programming would ensure that the entire update sequence could be rolled back at the abort.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Task Locks</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM also provides <span style="font-weight: bold;">task locks</span>, sometimes known as <span style="font-weight: bold;">process synchronisation locks</span>, that are not related to any particular file and are typically used to ensure that some task cannot be performed by two users simultaneously.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A task lock is simply a numbered entry in a 64 element locking table. A process acquires a task lock using the <span style="font-weight: bold;"><a href="lock.htm" class="topiclink">LOCK</a></span> command or the QMBasic  <span style="font-weight: bold;"><a href="qmb_lock.htm" class="topiclink">LOCK</a></span> statement. If the lock is already owned by another user, the process either waits for it to be released or handles the situation for itself. On completion of the task, the process can release the lock using the <span style="font-weight: bold;"><a href="clear_locks.htm" class="topiclink">CLEAR.LOCKS</a></span> command or the QMBasic <span style="font-weight: bold;"><a href="qmb_unlock.htm" class="topiclink">UNLOCK</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Task locks can be difficult to use because the lock is not related to a file, record, etc and the application designer must choose one that is not also used for some other purpose. Because task locks are shared across all accounts, this implies a possible unwanted interaction between different unrelated applications.</p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+COMMAND_STRING = 'CURL -X POST -H "Content-Type: application/json" -H "Authorization: Bearer YOUR_API_KEY" -d "{\"model\":\"text-davinci-003\",\"prompt\":\"Hello, how are you?\",\"max_tokens\":50}" https://api.openai.com/v1/completions'
+
+EXECUTE COMMAND_STRING CAPTURING response
+
+EXECUTE "echo '" : response : "' | jq -r '.choices[0].text'" CAPTURING generatedText
+PRINT generatedText
+
+END

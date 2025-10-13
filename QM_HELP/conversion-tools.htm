@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Conversion Tools</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Conversion Tools,D3CONV,MVCONV,UDCONV,UVCONV" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conversion-tools.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Conversion Tools</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="option-and-mode-shortcuts.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="user-exits.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Four tools are available to assist in conversion of programs imported from other multivalue systems:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">D3CONV</td><td style="border:none;padding:0">Migration from D3</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">MVCONV</td><td style="border:none;padding:0">Migration from mvBase</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">UDCONV</td><td style="border:none;padding:0">Migration from Unidata</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:122px">UVCONV</td><td style="border:none;padding:0">Migration from UniVerse</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The command syntax and general operation of these tools are identical except as explicitly described below.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The conversion tools take a file containing program source code from the originating system and process this to produce a file of the equivalent QM program source code. Although the conversion tools can make many source changes automatically, there are situations where there is a need for manual intervention. These are reported on the screen and also tagged in the QM source text with an easily searchable tag (!!) and a description of the issue.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Using D3CONV as an example, the command syntax is</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">D3CONV </span><span class="f_CodeSingleLine" style="font-style: italic;">source.name</span><span class="f_CodeSingleLine"> </span><span class="f_CodeSingleLine" style="font-style: italic;">target.name</span><span class="f_CodeSingleLine"> {</span><span class="f_CodeSingleLine" style="font-style: italic;">program.name</span><span class="f_CodeSingleLine">} {</span><span class="f_CodeSingleLine" style="font-style: italic;">options</span><span class="f_CodeSingleLine">}</span></p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:118px"><span style="font-style: italic;">source.name</span></td><td style="border:none;padding:0">is the name of the QM file holding the original programs.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:118px"><span style="font-style: italic;">target.name</span></td><td style="border:none;padding:0">is the name of the QM file to receive the converted source code.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:118px"><span style="font-style: italic;">program.name</span></td><td style="border:none;padding:0">is one or more names of the programs to be converted. Using an asterisk as the program name converts all programs in the source file. If no program name is given, the default select list is used.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:118px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">are chosen from:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 169px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:118px">BRIEF</td><td style="border:none;padding:0">Minimal reporting, showing only modules with errors.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 4px 0 0 169px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:118px">DELETING</td><td style="border:none;padding:0">Delete source program after successful conversion.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In addition, UVCONV has an option that specifies the UniVerse flavour of the origin system as IDEAL, INFORMATION, PICK, PIOPEN or REALITY. For example,</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">UVCONV UVBP QMBP * IDEAL</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">UDCONV has a BASICTYPE option that specifies the compiler language variant for which the program was written (P or U). This defaults to U if not specified. For example,</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">UDCONV UDBP QMBP * BASICTYPE P</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The convertor performs just enough syntax analysis to be able to determine the role of each source element. It is assumed that the input program is structurally correct and there is minimal attempt to trap program errors. Very incorrect syntax such as misplaced use of a THEN clause may pass through unreported.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The conversion process performs several automated substitutions but does not attempt to rewrite code in any way. Some of the actions performed are:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Replacement of SYSTEM() function key values with token names that are defined in the SYSCOM KEYS.H include record. By using token names rather than simply changing the key values where the QM key is different from that on the originating system, the code is more readable and could still be compiled on the original system if an alternative include record was constructed. SYSTEM() functions for which no direct equivalent exists in QM will be tagged for manual inspection.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The negative mode values in the @() function are replaced by token names that are defined in the SYSCOM KEYS.H include record. Unrecognised @() function mode values are tagged for manual inspection.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Some @-variable names may be changed to their QM equivalents.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 4px 0 0 25px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Some statements and functions may have minor changes to their syntax applied.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Users encountering migration issues that are not resolved by the conversion tools are encouraged to report the details as a work-around may be available.</p>
+
+</td></tr></table>
+
+</body>
+</html>

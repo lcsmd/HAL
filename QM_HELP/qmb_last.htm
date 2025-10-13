@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LAST()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LAST(),LASTS()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_last.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LAST()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_keytrap.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_left.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LAST()</span> function returns the final element of a string delimited by a specified character. The <span style="font-weight: bold;">LASTS()</span> function is similar to <span style="font-weight: bold;">LAST()</span> but operates on a multivalued <span style="font-style: italic;">string</span>, returning a similarly structured dynamic array of results.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LAST(</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">delimiter</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is the string from which the final substring is to be extracted.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">delimiter</span></td><td style="border:none;padding:0">evaluates to the delimiter character.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Multivalue applications frequently need to extract the final element of a delimited string. Traditionally, this is done using the <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a> </span>and <span style="font-weight: bold;"><a href="qmb_dcount.htm" class="topiclink">DCOUNT()</a></span> functions:</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">ITEM = FIELD(STR, '*', DCOUNT(STR, '*'))</span></p>
+<p>The <span style="font-weight: bold;">LAST()</span> function in QM allows this to be done in a simpler and more efficient manner.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_col1.htm" class="topiclink">COL1()</a></span> and <span style="font-weight: bold;"><a href="qmb_col2.htm" class="topiclink">COL2()</a></span> functions can be used to find the character positions of the extracted substring, returning the positions of the character immediately before and after the extracted item respectively. The <span style="font-weight: bold;"><a href="qmb_col2.htm" class="topiclink">COL2()</a></span> value will always be one greater than the string length except when processing a null string in which case both <span style="font-weight: bold;"><a href="qmb_col1.htm" class="topiclink">COL1()</a></span> and <span style="font-weight: bold;"><a href="qmb_col2.htm" class="topiclink">COL2()</a></span> return zero. When using the <span style="font-weight: bold;">LASTS()</span> function, the values returned by the <span style="font-weight: bold;"><a href="qmb_col1.htm" class="topiclink">COL1()</a></span> and <span style="font-weight: bold;"><a href="qmb_col2.htm" class="topiclink">COL2()</a></span> functions relate to the final extracted item.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of the <a href="qmbd_mode.htm" class="topiclink">$MODE NOCASE.STRINGS</a> compiler directive makes the <span style="font-style: italic;">delimiter</span> case insensitive.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = &quot;1*2*3*4*5&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = LAST(A, '*')</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment assigns the string &quot;5&quot; to variable S.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">A = &quot;1*2*3*4*5&quot; : @VM : &quot;A*B*C&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = LASTS(A, '*')</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment assigns the string &quot;5<span style="font-size: 6pt;">VM</span>C&quot; to variable S.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_col1.htm" class="topiclink">COL1()</a></span>, <span style="font-weight: bold;"><a href="qmb_col2.htm" class="topiclink">COL2()</a></span>, <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span>, <span style="font-weight: bold;"><a href="qmb_fieldstore.htm" class="topiclink">FIELDSTORE()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

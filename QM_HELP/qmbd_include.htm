@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>$INCLUDE compiler directive</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="$INCLUDE,$INSERT,INCLUDE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbd_include.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">$INCLUDE Compiler Directive</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbd_ifdef.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbd_list.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">$INCLUDE</span> directive is used to direct the compiler to include text from another record. Include records may be in either directory or hashed files.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+<span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">$INCLUDE</span> { <span style="font-style: italic;">filename</span> }  <span style="font-style: italic;">record.id</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with some other systems, <span style="font-weight: bold;">$INSERT</span> may be used as a synonym for <span style="font-weight: bold;">$INCLUDE</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">$INCLUDE SYSCOM ERR.H</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">$INCLUDE MYKEYS.H</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first example includes record ERR.H from the SYSCOM file. The second example, which has no file name specified, includes MYKEYS.H from the same file as the source program.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of a .H suffix is recommended on include records as these will be skipped automatically by the compiler when using a select list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The file name in the first <span style="font-weight: bold;">$INCLUDE</span> in this example is not strictly necessary as the default behaviour of the compiler is always to look in SYSCOM if no file name is given and the include record is not found in the same file as the source program. The sequence of locations searched for the include record when no <span style="font-style: italic;">filename</span> is specified can be modified by use of the <span style="font-weight: bold;">SEARCH</span> directive in the <a href="basic.htm#basic.options" class="topiclink">$BASIC.OPTIONS</a> record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Because directory files on non-Windows platforms have case sensitive record names, the compiler will look for the record name as entered and then, if it has not been found, in uppercase. Thus programs may be written in either upper or lowercase if the records are always stored with uppercase name. The standard include records in the SYSCOM file follow this rule.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Include files may be nested (one included from within another) though this can lead to difficulties when maintaining complex programs and is discouraged.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For compatibility with other multivalue databases, the <span style="font-weight: bold;">$INCLUDE</span> directive can also be written without the $ prefix. Used in this way, it must be the only statement on the source line and the <span style="font-style: italic;">filename</span> and <span style="font-style: italic;">record.id</span> must not correspond to tokens that have been defined using <span style="font-weight: bold;"><a href="qmbd_define.htm" class="topiclink">$DEFINE</a></span> or <span style="font-weight: bold;"><a href="qmb_equate.htm" class="topiclink">EQUATE</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The SYSCOM file, visible from all accounts, contains many useful include records. In particular, the KEYS.H record defines names for action keys and other language features. Use of the names instead of their numeric values improves readability of application programs. For example,</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">IF SYSTEM(SYS$IS.WINDOWS) THEN ...</span></p>
+<p class="p_Normal">is more readable than</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">IF SYSTEM(91) THEN ...</span></p>
+<p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

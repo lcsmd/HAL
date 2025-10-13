@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Data Encryption</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Data Encryption,Encryption" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "encryption.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Data Encryption</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="constraints.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="transactions.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM supports three data encryption methods:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Ad hoc encryption</span> is provided by three QMBasic functions, <span style="font-weight: bold;"><a href="qmb_encrypt.htm" class="topiclink">ENCRYPT()</a></span>, <span style="font-weight: bold;"><a href="qmb_encrypt.htm" class="topiclink">ENCRYPTX()</a></span> and <span style="font-weight: bold;"><a href="qmb_decrypt.htm" class="topiclink">DECRYPT()</a></span>. These take two arguments; the string to be processed and the encryption key (not the name of a key defined with <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.KEY</a></span> as discussed below). Internally, these use the AES 128 bit encryption algorithm but the encrypted data is further processed to ensure that it can never contain the mark characters or ASCII C0 control characters and can, therefore, be stored as a field within a data record or in a text file. The <span style="font-weight: bold;"><a href="qmb_encrypt.htm" class="topiclink">ENCRYPT()</a></span> function uses a fixed <span style="font-style: italic;">initialisation vector</span> whereas <span style="font-weight: bold;"><a href="qmb_encrypt.htm" class="topiclink">ENCRYPTX()</a></span> uses a random initialisation vector for improved security but returns a slightly longer result. The <span style="font-weight: bold;"><a href="qmb_decrypt.htm" class="topiclink">DECRYPT()</a></span> function handles both forms automatically.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because encryption is a byte level operation, on an ECS mode system, the data to be encrypted must first be transformed to a byte string using the <span style="font-weight: bold;"><a href="conv_bs.htm" class="topiclink">BS</a></span> conversion code if it may contain ECS characters. Conversely, the decrypted data must be transformed back to ECS form using the same conversion code. It is, therefore, necessary for an ECS capable application to know whether the ECS to byte string transformation has been done. An important point about this process is that the encrypted form of data is identical on ECS mode and non-ECS mode systems so long as the plain text form contains only data from the 8-bit character set.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">It is the user's responsibility to provide a mechanism to prevent disclosure of the key string. The key provided by the user can be of any length and may contain any characters. QM will automatically transform this into a form that is valid for use with the AES algorithm. For best security, avoid very short encryption keys which could be determined by repeated attempts to decrypt the data.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because ad hoc encryption is performed outside of QM's control, it is unlikely to be practical to build alternate key indices on encrypted data.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Record level encryption</span> encrypts an entire record using a single, user defined key and the AES 128, 192 or 256 bit encryption algorithm. Because this encryption occurs deep inside the QM file system, it is possible to have alternate key indices on fields within a file that uses record level encryption. Note, however, that unless the index file itself is also encrypted, indexed fields are partially exposed outside of the encryption system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Field level encryption</span> allows users to encrypt specific fields within a file, possibly using different keys or algorithms for each encrypted field. It is not possible to build an alternate key index on an encrypted field mainly because not all users might have access to the field and hence the index cannot be maintained. An index built on a non-encrypted field may itself be encrypted. Field level encryption results in a slight increase in record size because of a transformation performed to ensure that the encryption process can never produce data that contains the mark characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">With either level of encryption, an application may use many different encryption keys and each key can be made accessible to a selected set of users. A user cannot open a file that uses record level encryption unless they have access to the key. When using field level encryption, read operations will return null strings for fields to which the user has no access and write operations will preserve the previous content of these fields when updating an existing record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The encryption system is managed by a user (or multiple users) known as the <span style="font-weight: bold;">security administrator</span>. This user is responsible for management of the <span style="font-weight: bold;">key vault</span>, a file that defines the names and actual values of all encryption keys used on the system. The key vault is itself encrypted using the <span style="font-weight: bold;">master key</span> which should be known only by the security administrator. &nbsp;This key value is entered when the key vault is created by first use of <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.KEY</a></span>. If the key vault is moved to another system or a new licence is applied, the master key must be re-entered either via the licence entry screen or by use of the <span style="font-weight: bold;"><a href="reset_master_key.htm" class="topiclink">RESET.MASTER.KEY</a></span> command. Note that there is no way to recover the master key or the data keys if they are lost. <span style="font-weight: bold;">Always keep a written copy of these keys in a secure off-site location.</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because QM uses key names rather than the actual keys in operations such as creating files or setting encryption rules, there is no need to restrict knowledge of the key names. The security administrator sets the actual encryption key value when the key is entered into the key vault and this can subsequently be applied to data files without knowing what encryption is being used. For example, the security administrator might define a key named CARDNO for use on fields containing credit card numbers. Developers can freely apply this without knowing the encryption key. To ensure that data is not lost in the event of a major system failure, the master key and details of each key name / key value pair should be stored securely off-site in some way. All security administrator commands require entry of the master key though this is remembered for the duration of the user's session.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A new encryption key is created using the <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.KEY</a></span> command, available only to users with administrative rights in the QMSYS account. This command assigns the actual encryption key and the algorithm to be associated with the key name. The AES 128, 192 and 256 bit algorithms require a key length of 16, 24 or 32 bytes respectively, however, to enable administrators to use convenient keys of any length up to 64 characters, QM will transform the key entered by the user into a form that is valid for the AES algorithms. Specifying a key that is approximately the required internal length or a multiple thereof gives best security.</p>
+<p class="p_Normal">Key names are case insensitive but the encryption key itself is case sensitive.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Defining a key name makes it accessible to the user that defined it. To make it accessible to other users, the security administrator uses the <span style="font-weight: bold;"><a href="grant_key.htm" class="topiclink">GRANT.KEY</a></span> command, specifying the key name and the login names of the users or user groups (not Windows) to whom access is to be granted. Access to a key can subsequently be removed using the <span style="font-weight: bold;"><a href="revoke_key.htm" class="topiclink">REVOKE.KEY</a></span> command. If a key is no longer used, it can be removed from the key vault using <span style="font-weight: bold;"><a href="delete_key.htm" class="topiclink">DELETE.KEY</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Keys created using the <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.SECURE.KEY</a></span> command can only be accessed after entry of the associated password. This can be done using the <span style="font-weight: bold;"><a href="enable_key.htm" class="topiclink">ENABLE.KEY</a></span> command or the corresponding <span style="font-weight: bold;"><a href="qmb_enable_key.htm" class="topiclink">ENABLE.KEY</a></span> QMBasic statement. If required, access can be denied again by use of the <span style="font-weight: bold;"><a href="disable_key.htm" class="topiclink">DISABLE.KEY</a></span> command or the corresponding <span style="font-weight: bold;"><a href="qmb_disable_key.htm" class="topiclink">DISABLE.KEY</a></span> QMBasic statement. A user with administrative rights can update the password by use of the <span style="font-weight: bold;"><a href="change_key_password.htm" class="topiclink">CHANGE.KEY.PASSWORD</a></span> command. Note that files using password protected encryption keys cannot be accessed via QMNet or used as replication targets.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The security administrator can use the <span style="font-weight: bold;"><a href="list_keys.htm" class="topiclink">LIST.KEYS</a></span> command to report the name, algorithm and access rights of each encryption key in the key vault. There is no way to report the key string associated with the key. This same command can be used with a filename to report the encryption key names used by the file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The actual encryption process uses the key string defined in the key vault. If a file that uses encryption is moved to another system, the data in that file will be accessible if the encryption key names used by the file are added to the new system's key vault with the same encryption algorithm and key string.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The master key is used only to encrypt the key vault. The master key must be re-entered if the key vault is moved to another system or possibly as a result of relicensing the system. This is an automatic part of the QM licensing process and helps to ensure security if, for example, a backup tape of the system is stolen. If the master key is forgotten, there is no way to retrieve it from the key vault and hence the vault and all encrypted files would become inaccessible. It is therefore essential that a paper copy of the encryption keys is stored securely.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A file is created for record level encryption by use of the <span style="font-weight: bold;">ENCRYPT</span> keyword to the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command, specifying the name of the encryption key to be used. This style of encryption is supported for hashed files and directory files but note that when applied to directory files, the data cannot be read from outside of QM and any record written from outside will be meaningless within a QM session as the system will attempt to decrypt an unencrypted record. Also, encryption and replication cannot be used together on a directory file. The $ENCR X-type VOC record can be used to apply record level encryption automatically when creating a hashed file. See <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> for more details.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For field level encryption, the developer creates the file, populates the dictionary and then uses the <span style="font-weight: bold;"><a href="encrypt_file.htm" class="topiclink">ENCRYPT.FILE</a></span> command to specify the names of each field to be encrypted and the name of the key to be applied. Field level encryption is supported only for hashed files. If the file is not empty, the newly defined encryption is applied to the data. This command can also be used to apply record level encryption to an existing file or to many files in a single operation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM also provides optional protection that makes the data inaccessible even if the entire system is stolen - a situation that is more likely with portable computers than with corporate servers. This optional feature requires that the master key is entered every time that QM is started (not for each user entry into the system). Whilst potentially inconvenient, this mode of operation gives the highest level of security and is recommended for portable systems. The process of creating the master key includes a prompt asking if it must be entered to unlock the key vault after system restart. When this mode is enabled, any user with administrator rights can use the <span style="font-weight: bold;"><a href="unlock_key_vault.htm" class="topiclink">UNLOCK.KEY.VAULT</a></span> command to enable access to encrypted files. Until access is unlocked, files using either field or record level encryption cannot be opened. The need for use of <span style="font-weight: bold;"><a href="unlock_key_vault.htm" class="topiclink">UNLOCK.KEY.VAULT</a></span> can be enabled or disabled at any time by using <span style="font-weight: bold;"><a href="reset_master_key.htm" class="topiclink">RESET.MASTER.KEY</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To allow files to be moved to systems where the encryption key name clashes with a name already defined on that system, the <span style="font-weight: bold;"><a href="set_encryption_key_name.htm" class="topiclink">SET.ENCRYPTION.KEY.NAME</a></span> command can be used to update the key name index stored in the encrypted data file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When used with QMClient or QMNet, access to encrypted data is based on the access rights of the user name under which the process connects to the server system. Because QMClient is a general library that can be used in various programming environments, it is not possible to apply the encryption at the client side. Although the data will be decrypted on the remote system (assuming that the user has access to it), the actual network traffic of QMClient and QMNet uses its own separate encryption.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;"><a href="account_save.htm" class="topiclink">ACCOUNT.SAVE</a></span>, <span style="font-weight: bold;"><a href="file_save.htm" class="topiclink">FILE.SAVE</a></span> and <span style="font-weight: bold;"><a href="t_dump.htm" class="topiclink">T.DUMP</a></span> operate within the security rules imposed by use of QM's encryption features. Files that use record level encryption will not be saved if the user performing the save does not have access to the encryption key. The data saved for files that use field level encryption will have all fields for which the user is denied access set to null strings. All saved data is recorded in decrypted form and hence storage of media created using these tools may reduce system security. The media format is an industry standard that does not provide a way to record details of data encryption. Restoring a save in which encrypted fields have been omitted is unlikely to yield a usable file. Backup of accounts that include encrypted data should be performed using operating system level tools.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Encryption can be removed from a file or specific field by use of the <span style="font-weight: bold;"><a href="decrypt_file.htm" class="topiclink">DECRYPT.FILE</a></span> command. This requires that the user has access to the data to be decrypted and also prompts for the master key for improved security.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Disaster Recovery with Encryption</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If it is necessary to move a QM system that uses encryption to a different system, the following steps are required:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Copy the data files to the new system, probably restoring them from a backup.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Then do one of the following:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin-left: 0;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>If the new system does not already use encryption, copy/restore the $VAULT subdirectory of the QMSYS account to the new system. Then use the <span style="font-weight: bold;"><a href="reset_master_key.htm" class="topiclink">RESET.MASTER.KEY</a></span> to update the key vault.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin-left: 0;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>If the new system already uses encryption but not with the same key names use <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.KEY</a></span> to create keys to match those of the original system..</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin-left: 0;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>If the new system already uses encryption but has the same key names referencing different encryption details, use <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.KEY</a></span> to create replacements for the original encryption keys and use <span style="font-weight: bold;"><a href="set_encryption_key_name.htm" class="topiclink">SET.ENCRYPTION.KEY.NAME</a></span> to amend the key name details stored in each affected file.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In all cases, it may be necessary to use <span style="font-weight: bold;"><a href="grant_key.htm" class="topiclink">GRANT.KEY</a></span> to amend access rights to encryption keys if the user names or groups on the new system do not match those of the original system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Recovery from Loss of the Key Vault</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the key vault is accidentally deleted or damaged in some way, it can be reconstructed as follows:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 24px; margin: 0 0 0 24px;"><span class="f_Normal" style="display:inline-block;width:24px;margin-left:-24px">1.</span>Shut down QM.</p><p class="p_Normal" style="text-indent: 0; padding-left: 24px; margin: 0 0 0 24px;"><span class="f_Normal" style="display:inline-block;width:24px;margin-left:-24px">2.</span>Delete the $VAULT directory from the QMSYS account directory.</p><p class="p_Normal" style="text-indent: 0; padding-left: 24px; margin: 0 0 0 24px;"><span class="f_Normal" style="display:inline-block;width:24px;margin-left:-24px">3.</span>Restart QM.</p><p class="p_Normal" style="text-indent: 0; padding-left: 24px; margin: 0 0 0 24px;"><span class="f_Normal" style="display:inline-block;width:24px;margin-left:-24px">4.</span>Use the CREATE.KEY command to re-enter the data keys using the same key names, encryption modes and key strings as before the failure. When entering the first key, you will be prompted to set the master key. This does not have to be the same as before the failure.</p><p class="p_Normal">&nbsp;</p>
+
+</td></tr></table>
+
+</body>
+</html>

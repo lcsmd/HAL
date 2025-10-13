@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FIND.PROGRAM</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FIND.PROGRAM" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "find_program.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FIND.PROGRAM</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="find_file.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="format.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FIND.PROGRAM</span> command reports the catalogue mode of a catalogued program.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FIND.PROGRAM </span><span style="font-style: italic;">name</span> {<span style="font-weight: bold;">DETAIL</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the name of the catalogued program to be located.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FIND.PROGRAM</span> command examines the local, private and global catalogue areas to locate the program catalogued as <span style="font-style: italic;">name</span>. If found, it reports the catalogue mode, compilation date/time and program type. If the program is in more than one catalogue area, they are each reported separately in the same search order as is used when loading programs into memory.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FIND.PROGRAM</span> command can be useful in diagnosing problems where the system appears to be running the wrong version of a program as a result of it being catalogued in multiple locations.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DETAIL</span> option extends the output to show the compiler version, object code size, source pathname (where available) and <a href="qmbd_comment.htm" class="topiclink">embedded comments</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">:FIND.PROGRAM DTMOD</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;">Program is in private catalogue</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; Compiled 20 Jan 09 &nbsp;16:24:16</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; Subroutine with 3 arguments</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">: FIND.PROGRAM MYTRIG DETAIL</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;">Program is in global catalogue</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; Compiled 07 Nov 11 10:36:50 using 2.12-6</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; Subroutine with 5 arguments, 492 bytes</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; Source pathname: /home/sales/BP/mytrig</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; Comments:</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; &nbsp; Trigger function for sales data files</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody" style="font-style: italic;"> &nbsp; &nbsp; Copyright 2011</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="catalogue.htm" class="topiclink">CATALOGUE</a></span>,<span style="font-weight: bold;"> <a href="qmbs_findprog.htm" class="topiclink">!FINDPROG()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

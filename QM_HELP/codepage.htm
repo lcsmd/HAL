@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Windows Code Pages</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Code pages,CODEPAGE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "codepage.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Windows Code Pages</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmtic.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="application_level_security.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This section does not apply to the ECS mode version of QM.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Within Windows QMConsole sessions, single-byte characters are displayed as defined by the current <span style="font-weight: bold;">codepage</span><span style="font-style: italic;">.</span> The default page is set by Windows based on your regional settings but it can be changed at any time from the QM command prompt, within a paragraph, or by <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span> within a Basic program by updating the <a href="configparams.htm#codepage" class="topiclink">CODEPAGE</a> private configuration parameter or by use of the <span style="font-weight: bold;"><a href="pterm.htm" class="topiclink">PTERM</a></span> command. </p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of code pages allows language localisation. Single-byte characters in the range 127 to 255 are mapped to accented letters (such as é and õ), special characters (such as ç &nbsp;and ß), and symbols (such as the Euro and Trademark signs). There are not enough single-byte characters for all the languages of the world, so different mappings have been set up for different regions. Microsoft calls these mappings code pages.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Word processing software packages such as Notepad handle the choice of code page through the choice of font. Fonts have been built for many languages, some provided with Windows, others available for download from Internet sites. Choose the correct font, and the special characters will display as needed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This method cannot be used by software such as QM which runs as a Windows console process either directly or via the Windows command prompt. Within processes run in this way, there is just one font (Lucida console) available for use with multiple languages. The characters displayed are determined by which code page has been made current. Any given installation of Windows has a default code page, and several other code pages available. More information can be found on Internet sites that specialise in language issues.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that selection of a codepage controls character display within QM – how characters appear at the command prompt, in LIST output, within ED and SED, etc. A file written by a QM program, when viewed in a Windows application such as Notepad or Excel, will show the characters as seen by that Windows application. </p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Code pages are identified by numbers, usually of 3 or 4 digits. The codepage used by QM can be controlled by use of the <a href="configparams.htm#codepage" class="topiclink">CODEPAGE</a> configuration parameter. Setting a value for this parameter in the QM configuration file will determine the default page used. This can be changed within a session by use of <span style="font-weight: bold;"><a href="config.htm" class="topiclink">CONFIG</a></span> or <span style="font-weight: bold;"><a href="pterm.htm" class="topiclink">PTERM</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Some of the pages that may be available in a Windows system include:</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">850</td><td style="border:none;padding:0">&quot;Multilingual (Latin-1)&quot; (Western European languages) </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">852</td><td style="border:none;padding:0">&quot;Slavic (Latin-2)&quot; (Eastern European languages) </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">855</td><td style="border:none;padding:0">Cyrillic </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">857</td><td style="border:none;padding:0">Turkish</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">1250</td><td style="border:none;padding:0">East European Latin </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">1252</td><td style="border:none;padding:0">West European Latin </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">1253</td><td style="border:none;padding:0">Greek </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">1257</td><td style="border:none;padding:0">Baltic </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">1258</td><td style="border:none;padding:0">Vietnamese</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To find out whether your copy of Windows has a particular code page available, go into the command prompt and enter “chcp <span style="font-style: italic;">codepage</span>”. This will return an error message if <span style="font-style: italic;">codepage</span> is not available.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To view the page in use by a QM session, execute either of the following commands:</p>
+<p class="p_Normal" style="margin: 5px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PTERM DISPLAY</span></p>
+<p class="p_Normal" style="margin: 5px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PTERM CODEPAGE</span></p>
+<p class="p_Normal" style="margin: 5px 0 0 30px;">&nbsp;</p>
+<p class="p_Normal">To change the code page in a QM session, execute either of the following commands:</p>
+<p class="p_Normal" style="margin: 5px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CONFIG CODEPAGE </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">page</span></p>
+<p class="p_Normal" style="margin: 5px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">PTERM CODEPAGE </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">page</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of some code pages may also require the <a href="configparams.htm#txchar" class="topiclink">TXCHAR</a> configuration parameter to be set appropriately. This parameter controls whether QM uses the OEM character translation modes of Windows. It defaults to 1 (use translation) but can be turned off for the current process using the <span style="font-weight: bold;"><a href="config.htm" class="topiclink">CONFIG</a></span> command or for all processes by setting parameter to zero in the configuration file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If there is a need to display special characters that are not supported by any of the available code pages, it is possible to modify the Lucida Console font to display them. This can be done by the following steps:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 16px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:16px;margin-left:-16px">&#8226;</span>Obtain a font editor (e.g. FontCreator) from a supplier who specializes in font support. The font editor needs to have the ability to associate the graphic form of a character - called its &quot;glyph&quot; - with the byte that is to represent that character - called its &quot;mapping&quot;.</p><p class="p_Normal" style="text-indent: 0; padding-left: 16px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:16px;margin-left:-16px">&#8226;</span>Find the existing Lucida Console font, which a file, probably named &quot;lucon.ttf&quot;, located in the Fonts folder. The font name is one of the data items within the font file, so is distinct from the name of the file. Windows can see the file as Lucida Console, even though it may have been given another file name.</p><p class="p_Normal" style="text-indent: 0; padding-left: 16px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:16px;margin-left:-16px">&#8226;</span>Copy the original file to another folder, to keep a backup in case something goes wrong with any of the rest of these stops. Then copy it to another file name, such as &quot;myfont.ttf&quot;.</p><p class="p_Normal" style="text-indent: 0; padding-left: 16px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:16px;margin-left:-16px">&#8226;</span>Look in the character mapping of &quot;myfont.ttf&quot; for characters that are not needed. The &quot;per thousands&quot; sign, dagger, and double dagger are possible examples.</p><p class="p_Normal" style="text-indent: 0; padding-left: 16px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:16px;margin-left:-16px">&#8226;</span>Using the font editor, replace the glyphs of the characters that are not needed with the glyphs of the characters that are needed.</p><p class="p_Normal" style="text-indent: 0; padding-left: 16px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:16px;margin-left:-16px">&#8226;</span>Test &quot;myfont.ttf&quot; by copying it into the Fonts folder. Then go into QM Console, do LIST, ED, etc, to confirm that characters display correctly. Any Windows software that gives a choice of fonts should display the same way when Lucida Console is specified. This would include Notepad, word processing, and spreadsheet products.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Like any other software, the font needs to be carefully backed up, and shared with whatever users may need it. Fonts are subject to copyright, so property rights must be respected. It may be necessary to get legal advice.</p>
+
+</td></tr></table>
+
+</body>
+</html>

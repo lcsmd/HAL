@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>REBUILD.ALL.INDICES</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="REBUILD.ALL.INDICES" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "rebuild_all_indices.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">REBUILD.ALL.INDICES</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="quit.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="redo.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The<span style="font-weight: bold;"> REBUILD.ALL.INDICES</span> command rebuilds the <a href="ak.htm" class="topiclink">alternate key index</a> on all files in the account.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">REBUILD.ALL.INDICES</span> &nbsp;{<span style="font-weight: bold;">CONCURRENT</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">REBUILD.ALL.INDICES</span> command scans the vocabulary file of the account in which it is executed and identifies all of the F-type items that reference files that have alternate key indices. These indices are then rebuilt. If a file is referenced by more than one VOC entry, the indices are only built once.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Except when executed in the QMSYS account, the command ignores files in the QMSYS account (e.g. system files).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Under normal circumstances, it should not be necessary to rebuild indices as they should be correctly maintained in step with updates applied to the associated data files. <span style="font-weight: bold;">REBUILD.ALL.INDICES</span> may be useful after restoring a backup for which indices were omitted or to ensure system integrity after a power failure.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Except when used with the <span style="font-weight: bold;">CONCURRENT</span> keyword, the <span style="font-weight: bold;">REBUILD.ALL.INDICES</span> command requires exclusive access to each file that it processes. It is therefore best executed at quiet times.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CONCURRENT</span> keyword allows indices to be built while the files are in use. There is a small performance overhead for this and the QMBasic <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span>,  <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT</a></span> and <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span> statements may stall waiting for the build to complete.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="build_index.htm" class="topiclink">BUILD.INDEX</a></span>, <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span>, <span style="font-weight: bold;"><a href="delete_index.htm" class="topiclink">DELETE.INDEX</a></span>, <span style="font-weight: bold;"><a href="disable_index.htm" class="topiclink">DISABLE.INDEX</a></span>, <span style="font-weight: bold;"><a href="list_index.htm" class="topiclink">LIST.INDEX</a></span>, <span style="font-weight: bold;"><a href="make_index.htm" class="topiclink">MAKE.INDEX</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ABSENT.NULL</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ABSENT.NULL" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "absent_null.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ABSENT.NULL</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="absent_ignore.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="all_match.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ABSENT.NULL</span> keyword treats an absent record as a null item rather than an error.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ABSENT.NULL</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are situations where two or more related files share a common (or related) record id but some ids may not appear in all of the files. The <span style="font-weight: bold;">ABSENT.NULL</span> keyword, normally used with a select list, allows reports to be constructed that draw data from the complete set of files, returning a null record for any item that is not present in the main file processed by the query. A dictionary I-type entry can then be used to retrieve data from the related files.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>FILE1 contains records 1 and 2. FILE2 contains records 2 and 3.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The dictionary for FILE1 contains an I-type entry, F2REF, that is a simple <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> using the record id of FILE1 to access the same record in FILE2, returning data from this file.</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">TRANS(FILE2, @ID, FIELD.NAME, 'X')</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If we have a select list containing 1, 2 and 3,</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST FILE1 F1 F2REF</span></p>
+<p>would report records 1 and 2 but give an error for record 3.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Adding the <span style="font-weight: bold;">ABSENT.NULL</span> option,</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST FILE1 F1 F2REF ABSENT.NULL</span></p>
+<p>will process records 1, 2, and 3 from both files, using a null record for the absent records (3 in FILE1 and 1 in FILE2).</p>
+
+</td></tr></table>
+
+</body>
+</html>

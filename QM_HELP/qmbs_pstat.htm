@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>!PSTAT()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="!PSTAT()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmbs_pstat.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">!PSTAT()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmbs_picklist.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmbs_qmclient.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!PSTAT()</span> subroutine returns information about a QM process.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CALL !PSTAT(</span><span style="font-style: italic;">data</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">userno</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">data</span></td><td style="border:none;padding:0">is the variable to receive the result.</td></tr></table></div><p style="text-indent: -210px; margin: 0 0 0 360px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">userno</span></td><td style="border:none;padding:0">is the user number of the QM process to be analysed.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">!PSTAT()</span> subroutine returns a dynamic array containing process status data similar to that used by the <span style="font-weight: bold;"><a href="pstat.htm" class="topiclink">PSTAT</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0; border-collapse:collapse;">
+<tr>
+<td style="vertical-align:top; width:58px; height:87px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 1</p>
+</td>
+<td style="vertical-align:top; width:597px; height:87px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Process information:</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V1 = User number</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V2 = Process id</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V3 = Process type</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V4 = User name</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V5 = Client IP address for network connection</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V6 = Opcode</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V7 = Process wait cause</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:58px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 2</p>
+</td>
+<td style="vertical-align:top; width:597px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Last command executed</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:58px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 3</p>
+</td>
+<td style="vertical-align:top; width:597px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Program stack. Each value corresponds to a program/subroutine in the call history. Each value is further divided into subvalues. The first subvalue holds the program name. Remaining subvalues contain the program offset and line number separated by a text mark, repeated for each internal subroutine layer (GOSUB). The line number is -1 if not known.</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:58px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 4</p>
+</td>
+<td style="vertical-align:top; width:597px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">If waiting for a lock:</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V1 = User number of process owning lock</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V2 = File pathname</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V3 = id &nbsp; (null if waiting for a file lock)</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V4 = Time started waiting as an epoch value</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:58px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 5</p>
+</td>
+<td style="vertical-align:top; width:597px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Account name</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:58px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 6</p>
+</td>
+<td style="vertical-align:top; width:597px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">QMNet client id data (if this is a QMNet server process)</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V1 = User name</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V2 = User number</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">V3 = Process id</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:58px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 7</p>
+</td>
+<td style="vertical-align:top; width:597px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">QMNet server data for open connections. One value per connection, each with five subvalues:</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">SV1 = Server name</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">SV2 = Number of open files</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">SV3 = User name</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">SV4 = User number</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">SV5 = Process id</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:58px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 8</p>
+</td>
+<td style="vertical-align:top; width:597px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Transaction data. Value per active transaction, each with three subvalues:</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">SV1 = Transaction id</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">SV2 = Start time as epoch value</p>
+<p class="p_Normal" style="margin: 4px 0 0 0;">SV3 = Command processor level</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:58px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">Field 9</p>
+</td>
+<td style="vertical-align:top; width:597px; padding:4px; border:solid thin #000000;"><p class="p_Normal" style="margin: 4px 0 0 0;">@PSTAT</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

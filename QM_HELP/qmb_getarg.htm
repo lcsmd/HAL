@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>GET(ARG.)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="GET(ARG.)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_getarg.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">GET(ARG.)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_get.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_get_messages.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="page-break-after: avoid; margin: 0 0 5px 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">GET(ARG.)</span> statement fetches command line arguments.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">GET(ARG. </span>{, <span style="font-style: italic;">argno</span>}<span style="font-weight: bold;">)</span> <span style="font-style: italic;">var</span> &nbsp;{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>} {<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">GET(ARG.)</span> statement allows a program to retrieve command line arguments. This statement is provided for compatibility with other systems. The <span style="font-weight: bold;"><a href="qmbs_parser.htm" class="topiclink">!PARSER()</a></span> subroutine provides a more powerful way to process command arguments.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command line is considered to be formed from a number of tokens separated by spaces. Spaces within quoted strings are treated as part of the string. The <span style="font-weight: bold;">GET(ARG.)</span> statement, used without the <span style="font-style: italic;">argno</span> element or with <span style="font-style: italic;">argno</span> less than one, returns the value of the next command line argument in <span style="font-style: italic;">var</span>. Specifying a positive and non-zero value for <span style="font-style: italic;">argno</span> retrieves the specified argument.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses are both optional. If present, the <span style="font-weight: bold;">THEN</span> clause will be executed if the argument is retrieved successfully. The <span style="font-weight: bold;">ELSE</span> clause is executed if the argument was not present in the command line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the program is started using the <span style="font-weight: bold;"><a href="run.htm" class="topiclink">RUN</a></span> or <span style="font-weight: bold;"><a href="debug.htm" class="topiclink">DEBUG</a></span> commands, the argument data is each argument following the program record name. If the program is started by reference to its name within the catalogue, the argument data is everything after the catalogue name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command arguments and the current position within them are stacked on a per-command processor level basis.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">PROGRAM TEST</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; GET(ARG.) A</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; GET(ARG.) B</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; GET(ARG.) C</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY A</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY B</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY C</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the above program is executed using the command</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">RUN TEST PPP &quot;QQQ RRR&quot; SSS</span></p>
+<p>the output would be</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">PPP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">QQQ RRR</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">SSS</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The same output would be produced by</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">RUN BP TEST PPP &quot;QQQ RRR&quot; SSS</span></p>
+<p>or, if the program was catalogued,</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">TEST PPP &quot;QQQ RRR&quot; SSS</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Changing the program to be</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">PROGRAM TEST</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; GET(ARG., 2) A</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; GET(ARG.) B</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY A</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY B</span></p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">END</span></p>
+<p>any of the commands above would display</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">QQQ RRR</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">SSS</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of a construct such as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">GET(ARG., 4) ELSE DISPLAY &quot;Insufficient command arguments&quot;</span></p>
+<p>allows a program to check how may arguments have been supplied.</p>
+
+</td></tr></table>
+
+</body>
+</html>

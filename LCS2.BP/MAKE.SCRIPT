@@ -1,0 +1,48 @@
+      OPEN 'LCS.SCRIPT' TO LCS.SCRIPT ELSE PRINT 'LCS.SCRIPTS';STOP
+      OPEN 'LCS.SCRIPT.DEF' TO LCS.SCRIPT.DEF ELSE PRINT 'LCS.SCRIPT.DEF';STOP
+      SCRIPT.NAME = TRIM(FIELD(@SENTENCE," ",2))
+      CT=0
+      COMMANDS = ""
+      READ SBUFF FROM LCS.SCRIPT.DEF,SCRIPT.NAME THEN
+         TEMPLATE = SBUFF<1>
+         SOURCE.FILE = SBUFF<2>
+         FILTER = SBUFF<3>
+         OPEN "DICT",SOURCE.FILE TO D.SOURCE.FILE ELSE PRINT "DICT ":SOURCE.FILE;STOP
+         OPEN SOURCE.FILE TO F.SOURCE.FILE ELSE PRINT SOURCE.FILE;STOP
+         PARMS = SBUFF<4>
+         ATT.NAMES = SBUFF<5>
+         SELECT.STR = "SELECT ":SOURCE.FILE
+         IF FILTER THEN SELECT.STR := " ":FILTER
+         EXECUTE SELECT.STR CAPTURING CAP
+         READLIST KEYS THEN
+            K.CT = DCOUNT(KEYS,@FM)
+            FOR K.X = 1 TO K.CT
+               KEY = KEYS<K.X>
+               CMD = TEMPLATE
+               PARM.CT = DCOUNT(PARMS,@VM)
+               FOR P.X = 1 TO PARM.CT
+                  PARM = PARMS<1,P.X>
+                  ATT.NAME = ATT.NAMES<1,P.X>
+                  IF ATT.NAME = "@ID" THEN
+                     VALUE = KEY
+                  END ELSE
+                     READV ATT.NUM FROM D.SOURCE.FILE,ATT.NAME,2 THEN
+                        READV VALUE FROM F.SOURCE.FILE,KEY,ATT.NUM ELSE VALUE = ""
+                     END ELSE VALUE = ""
+                  END
+                  CMD = CHANGE(CMD,PARM,VALUE)
+               NEXT P.X
+               PRINT "EXECUTING COMMAND:":CMD
+               CT+=1
+               COMMANDS<CT> = CMD
+             NEXT K.X
+         END
+      END
+      WRITE COMMANDS ON LCS.SCRIPT,SCRIPT.NAME:".PS1"
+      EXECUTE "PSHELL E:\ACCOUNTS\DDI\LCS.SCRIPT\":SCRIPT.NAME:".PS1"
+      PRINT "FINISHED"
+      PRINT CT:" COMMANDS EXECUTED"
+      STOP
+
+
+

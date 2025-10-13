@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>RESTORE.ACCOUNTS</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="RESTORE.ACCOUNTS" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "restore_accounts.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">RESTORE.ACCOUNTS</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="reset_master_key.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="revoke_key.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RESTORE.ACCOUNTS</span> command restores all accounts from a Pick style FILE.SAVE tape.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">RESTORE.ACCOUNTS </span><span style="font-style: italic;">target</span> {<span style="font-style: italic;">options</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">target</span></td><td style="border:none;padding:0">is the parent directory under which the restored accounts are to be placed. If omitted, the pathname specified in the $ACCOUNT.ROOT.DIR VOC entry is used or, if this record does not exist, the user is prompted for the directory pathname.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-style: italic;">options &nbsp; &nbsp; &nbsp; &nbsp;</span>is any combination of the following:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">BINARY</span></td><td style="border:none;padding:0">Suppresses translation of field marks to newlines when restoring directory files. Use this option when restoring binary data.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">DET.SUP</span></td><td style="border:none;padding:0">Suppresses display of the name of each file as it is restored.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">NO.CASE</span></td><td style="border:none;padding:0">Causes new files to be created with case insensitive record ids. Existing files are not reconfigured.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">NO.INDEX</span></td><td style="border:none;padding:0">Do not create alternate key indices.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">NO.OBJECT</span></td><td style="border:none;padding:0">Omits restore of object code. This is particularly useful when migrating to QM from other environments.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">POSITIONED</span></td><td style="border:none;padding:0">Assumes that the tape is already positioned at the start of the data to be restored.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">RESTORE.ACCOUNTS </span>command processes a Pick style FILE.SAVE tape or pseudo tape and restores data from it into a QM system. It can also restore from a tape containing multiple ACCOUNT.SAVEs.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The tape to be restored must first be opened to the process using the <span style="font-weight: bold;"><a href="set_device.htm" class="topiclink">SET.DEVICE</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>All accounts found on the tape are restored unless there is already an account of the same name or the target account directory already exists. In these cases, the account is skipped.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For more details of the tape processing applied during restore, see the <span style="font-weight: bold;"><a href="account_restore.htm" class="topiclink">ACCOUNT.RESTORE</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="account_restore.htm" class="topiclink">ACCOUNT.RESTORE</a></span>, <span style="font-weight: bold;"><a href="account_save.htm" class="topiclink">ACCOUNT.SAVE</a></span>, <span style="font-weight: bold;"><a href="file_save.htm" class="topiclink">FILE.SAVE</a></span>, <span style="font-weight: bold;"><a href="find_account.htm" class="topiclink">FIND.ACCOUNT</a></span>, <span style="font-weight: bold;"><a href="datatransfer.htm" class="topiclink">QMSAVE</a></span>, <span style="font-weight: bold;"><a href="sel_restore.htm" class="topiclink">SEL.RESTORE</a></span>, <span style="font-weight: bold;"><a href="set_device.htm" class="topiclink">SET.DEVICE</a></span>, <span style="font-weight: bold;"><a href="set_device.htm" class="topiclink">T.ATT</a></span>, <span style="font-weight: bold;"><a href="t_dump.htm" class="topiclink">T.DUMP</a></span>, <span style="font-weight: bold;"><a href="t_load.htm" class="topiclink">T.LOAD</a></span>, <span style="font-weight: bold;"><a href="t_xxx.htm" class="topiclink">T.xxx</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

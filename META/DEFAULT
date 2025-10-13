@@ -1,0 +1,54 @@
+CREATEFILE  NAME:YT ABB:yt ID:{V}INT6 ASSOCIATIONS: VIEWS:@ DELIM:TAB 
+ID TYPE:D POS:0 DESC: CONV: FORM:7L ASSOC: MS:S
+YTQ.ID
+ADD.DT
+YT.ID DESC:The YouTube video ID FORM:11L :X
+VIDEO.LOC
+VID.AUTHOR
+VID.CAT
+RATING.1
+RATING.9
+RATING.0
+VIDEO.DT
+MIN.CT
+WORD.CT
+COMMENTS
+[END]
+
+
+
+
+write a program in qm basic that will take a directory file name and text file name as input parameters, will read the text file that is within the directory file and read its contents.   It will interpret the first line of the text file to determine how to process the file.   The first word will be a verb and for now the only verb it needs to be able to process is
+
+ CREATEFILE the next word after rest of the words on the 
+ 
+ first line will be parameters instructing how to create this new file.  
+ 
+ the parameters will be specified on the first line of the file and the parameters will include 
+ 
+ NAME: ABB: ID: ASSOCIATIONS: VIEWS: DELIM: 
+Each parameter will be followed by the parameters value or values.  if the parameter has multiple values they will be separated by spaces. 
+
+ The following lines will have one line for each field name that is to be created in the new database file.  the first word on each line will be the
+ 
+  FIELDNAME followed by the properties of that field in the following order 
+  
+  TYPE: POS: DESC: CONV: FORM: ASSOC: MS: and X:
+  
+    the properties may be in the form PROPERTY1:<value1> PROPERTY2:<value2> or may be presumed by order <value1>,<value2>,<value3> This will be followed by a blank line and then the word [END].   The scricpt must then:
+
+1) create a new database file of the DYNAMIC type named to match the value of the NAME: parameter.  This can be accomplished with the CREATE FILE <name> DYNAMIC command.   
+
+2) Create a DICT for each field listed should then be created and each field should be created with the properties specified above for each field.  For any field that has DATE or .DT or _DT in it the CONV: property should be set to D4- if not otherwise specified.  the FORM: for these fields should be R10 if not specified.  The other PROPERTIES if not specified should defult to the following DESC:<blank> CONV:<blsnk> FORM:L15 ASSOC:<blank> MS:S
+the POS parameter must always have a unique value for each field in the file and must be an integer and the POS value for the Field named ID: should be 0 and the other fields must have a POS value of 1 for the first field, 2 for the second, 3 for the third and so on.   An additional Dictionary item should be created with the field name of @ and the field type of PH and then the POS should be a list of all the fieldnames in the file except for the ID: field with each fieldname separated by a single space.  
+
+3) Create an INCLUDE file for the file
+after a dictionary item is created for each field an INCLUDE file must be created for the file and this file will be a text file with the name that matches the FILE name but with the suffix .INC.    The include file will consist of a comment line starting with ****** then followed by the words "This file describes the FILENAME file and its fields and waas created: <current date> <currenttime> followed by a blank line then followed by one line for each field in the file which will be formattted as follows:
+EQU statments for eqch of the fields except for the ID field in the file.   each line will have two EQU statments and will follow this format:
+EQU abb.fieldname TO abb.b<POS>, abb.fieldname.h TO POS
+where abb will be the value specified by the ABB: parameter for the file, fieldname will be specified by the FIELDNAME for each fieldname listed and POS will be the value of POS as specified for each field in the file.
+
+4) Create the entry for this file in the SCHEMA file.  The Schema file is a dynamic file where the ID: has the value of the filename and the following fields FIELD.CT: ABB: FIELD.NAMES: 
+where the FIELD.CT will have an integer value to specify the number of fields in the file, FIELD.NAMES: will be a multivalued list of all the fieldsnames contained in the file.  The field names should be delimited by value marks @VM.
+
+tHE PRESENCE OF :x ON THE FIELD LINE INDICATES AN INDEX WILL BE CREATED.  ALL FIELDS ENDING IN .ID OR .DT OR .CAT OR START WITH RATING ARE INDEXED.

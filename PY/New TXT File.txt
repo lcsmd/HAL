@@ -1,0 +1,12 @@
+// ... existing code ...
+export async function listModels(): Promise<OllamaModel[]> {
+  try {
+    const response = await fetch(`${OLLAMA_HOST}/api/tags`);
+    const data = await response.json();
+    return data.models;
+  } catch (error) {
+    console.error('Error fetching models:', error);
+    return [];
+  }
+}
+// ... existing code ..

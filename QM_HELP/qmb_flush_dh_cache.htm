@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FLUSH.DH.CACHE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FLUSH.DH.CACHE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_flush_dh_cache.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FLUSH.DH.CACHE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_flush.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_fmt.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">FLUSH.DH.CACHE</span> statement flushes the dynamic file cache.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FLUSH.DH.CACHE</span> {<span style="font-weight: bold;">LOCAL</span> | <span style="font-weight: bold;">NO.WAIT</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>To improve performance of applications that repeatedly open and close the same files, closing a dynamic hashed file does not immediately close it at the operating system level. Instead, the file is moved into a cache of recently closed files from where it can be reopened at the application level very quickly. The size of this cache is determined by the <a href="configparams.htm#dhcache" class="topiclink">DHCACHE</a> configuration parameter. On reaching this limit, the oldest file in the cache is closed at the operating system level.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Sometimes an application may do something that will fail if the file is still open in the cache, perhaps in another process. Built-in QM operations such as using <span style="font-weight: bold;"><a href="qmb_osdelete.htm" class="topiclink">OSDELETE</a></span> to delete a file will automatically flush the cache in all QM processes. Where the operation is not a built-in part of QM, the <span style="font-weight: bold;">FLUSH.DH.CACHE</span> statement can be used to cause all QM processes to close files that are in their cache.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that this action is asynchronous and it may take a few seconds for the request to be handled in all other QM processes. The <span style="font-weight: bold;">FLUSH.DH.CACHE</span> statement will wait for other processes to acknowledge that they have seen the request, with a timeout after four seconds. The <span style="font-weight: bold;">NO.WAIT</span> qualifier causes the program to continue without waiting.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When used with the <span style="font-weight: bold;">LOCAL</span> option, only the file cache of the process in which this statement appears is flushed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Excessive use of the <span style="font-weight: bold;">FLUSH.DH.CACHE</span> statement can have a detrimental effect on performance.</p>
+
+</td></tr></table>
+
+</body>
+</html>

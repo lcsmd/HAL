@@ -1,0 +1,42 @@
+      PROGRAM YT.ADD
+      DEFFUN ADD.TO.Q(VIDS)
+      YTURL = "https://youtu.be/"
+      YTURL2="https://www.youtube.com/watch?v="
+      UYTURL = UPCASE(YTURL)
+      UYTURL2 = UPCASE(YTURL2)
+      CMD="yt.add"
+      UCMD = UPCASE(CMD)
+      SENTENCE=CHANGE(@SENTENCE,CMD,"")
+      SENTENCE=CHANGE(SENTENCE,UCMD,"")
+      SENTENCE=CHANGE(@SENTENCE,YTURL,"")
+      SENTENCE=CHANGE(SENTENCE,UYTURL,"")
+      SENTENCE=CHANGE(@SENTENCE,YTURL2,"")
+      SENTENCE=CHANGE(SENTENCE,UYTURL2,"")
+      FINAL.VIDS = ""
+      SENTENCE=TRIM(SENTENCE)
+
+      VIDS = SENTENCE
+      PRINT "SENTENCE:":SENTENCE
+      IF NOT(VIDS)THEN
+         OPEN "LCS.TXT" TO F.LCS ELSE PRINT "LCS.TXT";STOP
+         READ VIDS FROM F.LCS,"YT.Q" THEN
+            VIDS = CHANGE(VIDS,@FM,@VM)
+         END ELSE
+            PRINT "NO VIDS FOUND TO PROCESS"
+         END
+      END ELSE
+         VIDS = CHANGE(VIDS," ",@VM)
+      END
+      VID.CT = DCOUNT(VIDS,@VM)
+      VIDS = CHANGE(VIDS,YTURL,"")
+      VIDS = CHANGE(VIDS,YTURL2,"")
+      FOR VID.X = 1 TO VID.CT
+         VID = VIDS<1,VID.X>
+         IF LEN(VID) = 11 THEN
+            FINAL.VIDS<1,-1> = VID
+         END
+      NEXT VID.X
+      QID = ADD.TO.Q(FINAL.VIDS)
+      PRINT DCOUNT(FINAL.VIDS,@VM):" VIDS ADDED TO QUEUE ":QID
+      END
+

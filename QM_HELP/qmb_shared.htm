@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SHARED</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SHARED" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_shared.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SHARED</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_setrem.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_shift.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p style="page-break-after: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SHARED</span> statement declares persistent variables to be shared across all instances of a QMBasic <a href="qmbasic_objects.htm" class="topiclink">class module</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SHARED</span> {<span style="font-weight: bold;">PRIVATE</span> | <span style="font-weight: bold;">PUBLIC</span>} {<span style="font-style: italic;">var1</span> {<span style="font-weight: bold;">,</span><span style="font-style: italic;">var2</span>...}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:91px"><span style="font-style: italic;">var1</span>, etc</td><td style="border:none;padding:0">are variable names</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SHARED</span> statement is used to define variables in class modules that are to be visible to all instances of the same class within a QM process. The variables are discarded when the last instance of the class is destroyed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The variable names may extend over multiple lines by splitting the statement after a comma. For example</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SHARED PUBLIC VAR1, VAR2,</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VAR3, VAR4</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The same variables could be defined as</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SHARED PUBLIC VAR1</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SHARED PUBLIC VAR2</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SHARED PUBLIC VAR3</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SHARED PUBLIC VAR4</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The compiler assumes that definitions of variables in each <span style="font-weight: bold;">SHARED</span> statement are a continuation of any previous definitions in the same class module.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Shared variables are initially unassigned and may be defined as either private or public. The SHARED statement does not support use of initialisation values. Where shared variables are to be initialised in the CREATE.OBJECT subroutine on creation of just the first instance of the class, this can be achieved by testing whether one shared variable is unassigned using a construct of the form</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">IF UNASSIGNED(variable.name) THEN</span></p>
+<p class="p_CodeBody"><span style="font-style: italic;"> </span><span class="f_CodeBody" style="font-style: italic;"> &nbsp;...do initialisation...</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p>Shared variable definitions may include matrices. These are defined by including the row and column bounds in the <span style="font-weight: bold;">SHARED</span> statement, for example</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">SHARED MAT1(5,3)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM supports two styles of matrix with different characteristics. The PICK.MATRIX setting of the <a href="qmbd_mode.htm" class="topiclink">$MODE</a> compiler directive can be used to select Pick style matrices.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default style of matrix includes a zero element and is resizeable. A shared variable list declared as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">SHARED A,B(3),C</span></p>
+<p class="p_Normal">has three variables, one of which is a matrix:</p>
+<p class="p_Normal"><img alt="common1" width="375" height="112" style="margin:0;width:375px;height:112px;border:none" src="common1_zoom75.png"/></p>
+<p class="p_Normal">&nbsp;</p>
+<p>A matrix of this type can be re-dimensioned by a later <span style="font-weight: bold;"><a href="qmb_dim.htm" class="topiclink">DIM</a></span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pick style matrices do not have a zero element and cannot be resized. A matrix of this type is equivalent to a series of simple variables:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><img alt="common2" width="456" height="47" style="margin:0;width:456px;height:47px;border:none" src="common2_zoom75.png"/></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="qmb_private.htm" class="topiclink">PRIVATE</a></span>, <span style="font-weight: bold;"><a href="qmb_public.htm" class="topiclink">PUBLIC</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Pattern Matching</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Matching templates,Pattern matching" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "patterns.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Pattern Matching</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="inlineprompts.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="printing.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pattern matching is a way to test whether data has a particular structure. It can be used for data validation and as a means to extract the part of a data item that matches against a specified element of the pattern. The pattern matching operations are the query processor <span style="font-weight: bold;"><a href="like.htm" class="topiclink">LIKE</a></span><span style="font-family: Arial,Helvetica,sans-serif;"> </span>and <span style="font-weight: bold;"><a href="unlike.htm" class="topiclink">UNLIKE</a></span> keywords, the QMBasic <span style="font-weight: bold;"><a href="qmbasic_expressionsandoperators.htm" class="topiclink">MATCHES</a></span> operator, <span style="font-weight: bold;"><a href="qmb_matchfield.htm" class="topiclink">MATCHFIELD()</a></span> and <span style="font-weight: bold;"><a href="qmb_matchess.htm" class="topiclink">MATCHESS()</a></span> functions, and the <span style="font-weight: bold;">M</span> search of <span style="font-weight: bold;"><a href="ed.htm" class="topiclink">ED</a></span>. All of these compare a character string with a pattern template.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pattern matching breaks the character set into three classes of character, each represented by a character type code:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:45px">A</td><td style="border:none;padding:0">Alphabetic, upper and lowercase A - Z</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:45px">N</td><td style="border:none;padding:0">Numeric, digits 0 - 9</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:45px">X</td><td style="border:none;padding:0">Any character, including alphanumerics</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">On ECS mode systems, determination of character class is based on the character map in use.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are also three ways to specify how many characters are present:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:44px">4</td><td style="border:none;padding:0">Exactly 4 characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:44px">2-7</td><td style="border:none;padding:0">Between 2 and 7 characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:44px">0</td><td style="border:none;padding:0">Any number of characters, including none</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">template</span> consists of up to a maximum of 30 concatenated elements formed from pairs of lengths and character type:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0X</td><td style="border:none;padding:0">Zero or more characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>X</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>X</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> characters of any type</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0A</td><td style="border:none;padding:0">Zero or more alphabetic characters </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>A</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> alphabetic characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>A</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> alphabetic characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">0N</td><td style="border:none;padding:0">Zero or more numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>N</td><td style="border:none;padding:0">Exactly <span style="font-style: italic;">n</span> numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>N</td><td style="border:none;padding:0">Between <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> numeric characters</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">&quot;<span style="font-style: italic;">string</span>&quot;</td><td style="border:none;padding:0">A literal string which must match exactly. Either single or double quotation marks may be used. Use of the $MODE NOCASE.STRINGS compiler directive makes the comparison case insensitive.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The values <span style="font-style: italic;">n</span> and <span style="font-style: italic;">m</span> are integers with any number of digits. <span style="font-style: italic;">m</span> must be greater than or equal to <span style="font-style: italic;">n</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 0;">The 0X code is a wildcard that matches against anything. It has a commonly used synonym:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px">...</td><td style="border:none;padding:0">Zero or more characters of any type</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0A, <span style="font-style: italic;">n</span>A, 0N, <span style="font-style: italic;">n</span>N and &quot;<span style="font-style: italic;">string</span>&quot; patterns may be preceded by a tilde (~) to invert the match condition. For example, ~4N matches four non-numeric characters such as ABCD (not a string which is not four numeric characters such as 12C4).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A null string matches patterns ..., 0A, 0X, 0N, their inverses (~0A, etc) and &quot;&quot;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0X and <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>X patterns match against as few characters as necessary before control passes to the next pattern. For example, the string ABC123DEF matched against the pattern 0X2N0X matches the pattern components as ABC, 12 and 3DEF.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The 0N, <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>N, 0A, and <span style="font-style: italic;">n</span>-<span style="font-style: italic;">m</span>A patterns match against as many characters as possible. For example, the string ABC123DEF matched against the pattern 0X2-3N0X matches the pattern components as ABC, 123 and DEF.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A pattern may contain unquoted literal elements so long as they do not cause ambiguity. Note that each character will be treated as a separate literal element such that a pattern</p>
+<p class="p_Normal" style="margin: 0 0 0 29px;">3AXYZ3A</p>
+<p class="p_Normal">has five elements and will match a string that is formed from three letters followed by the three literal characters X, Y, Z and a further three letters. The significance of the literal characters being treated as separate elements comes with <span style="font-weight: bold;"><a href="qmb_matchfield.htm" class="topiclink">MATCHFIELD()</a></span> and <span style="font-weight: bold;"><a href="qmb_parse.htm" class="topiclink">PARSE()</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-style: italic;">template</span> string may contain alternative patterns separated by value marks. The source data will match the overall pattern if any of the pattern values match. If a match is found, the <span style="font-weight: bold;"><a href="qmb_inmat.htm" class="topiclink">INMAT()</a></span> function can be used to retrieve the value position within the pattern that matched.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_matchess.htm" class="topiclink">MATCHESS()</a></span> function can be used to compare each element of a dynamic array with a pattern, returning a equivalently structured dynamic array of True/False values. Note the spelling &nbsp;of this function with the trailing S to &quot;pluralise&quot; the name in the same way as other multivalue function names.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>&quot;A123BCD&quot; would match successfully against patterns of</p>
+<p style="margin: 0 0 0 29px;">1A3N3A</p>
+<p style="margin: 0 0 0 29px;">1A1-3N3A</p>
+<p style="margin: 0 0 0 29px;">'A'1-3N3A</p>
+<p style="margin: 0 0 0 29px;">0A0N0A</p>
+<p style="margin: 0 0 0 29px;">1A...3A</p>
+<p style="margin: 0 0 0 29px;">1A~3A3A</p>
+<p style="margin: 0 0 0 29px;">and many more</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>It is often acceptable to omit the quotes around literal components. The above example would also match</p>
+<p style="margin: 6px 0 6px 30px;">A1-3N3A</p>
+<p>There is no confusion between the leading A as a literal or as a character type as it is not preceded by a length value. It is, however, recommended that the quotes should be included. Omitting the quotes in a pattern used in the <span style="font-weight: bold;"><a href="qmb_matchfield.htm" class="topiclink">MATCHFIELD()</a></span> function may affect the function's behaviour as each character of the literal will be counted as a separate component of the pattern.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A program might need to test whether data entered by a user is a non-negative integer (whole number) value. The QMBasic <span style="font-weight: bold;"><a href="qmb_num.htm" class="topiclink">NUM()</a></span> function can be used to test for numeric data but this would allow fractional or negative values. Testing against a pattern of &quot;1-4N&quot; would allow only integer values in the range 0 to 9999. To remove the upper limit, a pattern of 1N0N tests for one digit followed by any number of further digits, including none.</p>
+
+</td></tr></table>
+
+</body>
+</html>

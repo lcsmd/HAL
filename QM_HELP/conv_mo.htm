@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Radix Conversion (MB, MO, MX)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Radix conversions (MB, MX)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_mo.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Radix Conversion (MB, MO, MX)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_mk.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_mcdx.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The radix conversion codes convert a number to/from binary (MB), octal (MO) or hexadecimal (MX).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Input Conversion</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The MB, MO and MX conversions take a number represented by a character string of binary, octal or hexadecimal digits and converts it to an internal integer value. The Z suffix described below for output conversion is ignored on input conversion.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Addition of the 0C suffix to these codes (MB0C, MO0C, MX0C) takes a character string holding a series of binary, octal or hexadecimal digits and translates each group of 8, 3 or 2 digits to the corresponding ASCII character. If the source data is not an exact multiple of 8, 3 or 2 digits in length, as appropriate to the conversion type, implied leading zeros are added.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The MBUC, MOUC and MXUC conversion codes are similar to MB0C, MO0C and MX0C but take a character string holding a series of binary, octal or hexadecimal digits and translates each group of 16, 6 or 4 digits to the corresponding character. If used on a non-ECS mode system, attempting to convert data that would yield characters outside the 8 bit set will fail.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Output Conversion</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The MB, MO and MX conversions convert a number to binary, octal or hexadecimal form as a character string. Non-integer values are truncated towards zero. Negative values are treated as unsigned 32 bit values. Leading zeros are suppressed by default. If the Z suffix is added to the conversion code (e.g. MXZ) leading zeros are added to form a 32 bit value or, if the source data is over 32 bits, a 64 bit value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The addition of the 0C suffix to any of these conversion codes treats the source data as a character string and converts each character to its eight digit binary, three digit octal or two digit hexadecimal representation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The MBUC, MOUC and MXUC conversion codes are similar to MB0C, MO0C and MX0C but return the data for each character as a sixteen digit binary, six digit octal or four digit hexadecimal value. Although supported on all versions of QM, these are of particular use of ECS mode systems where MB0C, MO0C and MX0C will not produce the correct result for characters outside the 8 bit set.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td colspan="3"  style="vertical-align:top; padding:4px; border:none"><p><span style="font-weight: bold;">Input conversion:</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p><span style="font-weight: bold;">Source data</span></p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p><span style="font-weight: bold;">Conversion</span></p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>1110</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MB</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>14</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>37777777762</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MO</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>-14</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>97AB</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MX</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>38827</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>010000010100001001000011</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MB0C</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>ABC</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>101102103</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MO0C</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>ABC</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>414243</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MX0C</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>ABC</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td colspan="3"  style="vertical-align:top; padding:4px; border:none"><p style="page-break-after: avoid;"><span style="font-weight: bold;">Output conversion:</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p style="page-break-after: avoid;"><span style="font-weight: bold;">Source data</span></p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p style="page-break-after: avoid;"><span style="font-weight: bold;">Conversion</span></p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p style="page-break-after: avoid;"><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>19</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MB</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>10011</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>19</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MO</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>23</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>19</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MX</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>13</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>19</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MBZ</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>00000000000000000000000000010011</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>19</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MOZ</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>00000000023</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>19</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MXZ</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>00000013</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>ABC</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MB0C</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>010000010100001001000011</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>ABC</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MO0C</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>101102103</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>ABC</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MX0C</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>414243</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>AB</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MBUC</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>00000000010000010000000001000010</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>AB</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MOUC</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>000101000102</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>AB</p>
+</td>
+<td style="vertical-align:top; width:120px; padding:4px; border:none"><p>MXUC</p>
+</td>
+<td style="vertical-align:top; width:459px; padding:4px; border:none"><p>00410042</p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+</body>
+</html>

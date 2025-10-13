@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>FORMCSV()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="FORMCSV()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_formcsv.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">FORMCSV()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_for.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_formlist.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">FORMCSV()</span> function transforms a string to a CSV standard compliant item.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">FORMCSV(</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">is the string to be transformed</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">FORMCSV()</span> function converts the supplied <span style="font-style: italic;">string</span> to comma separated variable format, treating each field as a separate item.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Three modes of conversion are supported:</p>
+<p style="text-indent: 0; padding-left: 20px; margin: 6px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">1.</span>Output conforms to the CSV format specification (RFC 4180). Items containing double quotes or the delimiter character are enclosed in double quotes with embedded double quotes replace by two adjacent double quotes. </p><p style="text-indent: 0; padding-left: 20px; margin: 6px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">2.</span>Encloses all non-null values in double quotes except for numeric items that do not contain a comma. Embedded double quotes are replaced by two adjacent double quotes.</p><p style="text-indent: 0; padding-left: 20px; margin: 6px 0 0 30px;"><span class="f_Normal" style="display:inline-block;width:20px;margin-left:-20px">3.</span>Encloses all values in double quotes. Embedded double quotes are replaced by two adjacent double quotes.</p><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Mode 1 is used by default. This can be changed by use of the CSV.MODE statement. Any change persists through subroutine calls but the mode is reset to 1 in a new command processor level from use of <span style="font-weight: bold;"><a href="qmb_execute.htm" class="topiclink">EXECUTE</a></span>, restoring the previous mode on return from the executed command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_csv_mode.htm" class="topiclink">CSV.MODE</a></span>, <span style="font-weight: bold;"><a href="qmb_csvdq.htm" class="topiclink">CSVDQ()</a></span>, <span style="font-weight: bold;"><a href="qmb_dparse.htm" class="topiclink">DPARSE.CSV</a></span>,<span style="font-weight: bold;"> </span><span style="font-weight: bold;"><a href="qmb_readcsv.htm" class="topiclink">READCSV</a></span>, <span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

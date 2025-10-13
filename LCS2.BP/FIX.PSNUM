@@ -1,0 +1,22 @@
+OPEN 'Product' to product else print 'prodct';stop
+
+OPEN 'i2.Product' to i2.product else print 'i2.product';stop
+
+select PRODUCT 
+CT=0
+loop
+while readnext pno do
+     read buff from product,pno then
+          if len(pno)=10 then
+               psnum=pno[2,9]
+               read lib.b from i2.product,psnum then
+                    gosub update.prod update.prod(pno,psnum,lib.b,buff)
+                    if buff <> buff.o then write buff on product,pno
+               end
+         end
+    end
+    if not(mod(ct,100)) then print ct
+repeat
+
+update.prod:
+   

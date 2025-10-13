@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>BREAK.ON</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="BREAK.ON,BREAK-ON" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "break_on.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">BREAK.ON</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="boxed.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="break_sup.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">BREAK.ON</span> field qualifier keyword causes the query processor to display the named field, generating a breakpoint whenever the field value changes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">BREAK.ON</span> &nbsp;{ <span style="font-weight: bold;">&quot;</span><span style="font-style: italic;">options</span><span style="font-weight: bold;">&quot;</span> }  <span style="font-style: italic;">field</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">controls the appearance of the breakpoint.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">field</span></td><td style="border:none;padding:0">is the field name or evaluated expression to be reported.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">BREAK.ON</span> keyword appears before the field name and causes the query processor to generate a breakpoint whenever the field value changes. The field is also printed as part of the report. Queries using breakpoints should also sort on the breakpoint field(s).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The action taken at the breakpoint depends on the optional <span style="font-style: italic;">options</span> component and whether any field value accumulations (<span style="font-weight: bold;"><a href="average.htm" class="topiclink">AVERAGE</a></span>, <span style="font-weight: bold;"><a href="calc.htm" class="topiclink">CALC</a></span>, <span style="font-weight: bold;"><a href="max.htm" class="topiclink">MAX</a></span>, <span style="font-weight: bold;"><a href="min.htm" class="topiclink">MIN</a></span>, <span style="font-weight: bold;"><a href="percentage.htm" class="topiclink">PERCENTAGE</a> </span>or <span style="font-weight: bold;"><a href="total.htm" class="topiclink">TOTAL</a></span>) are in use.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A breakpoint with no <span style="font-style: italic;">options</span> and no field accumulations prints a line with two asterisks in the column for the field causing the breakpoint followed by a blank line. If field accumulations are present, subtotals are also printed for each accumulated column. A line of hyphens may appear above the subtotals depending on the use of the U breakpoint control code.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">options</span> text will be used in place of the default two asterisks when a breakpoint occurs. This text may also contain control codes enclosed in single quotes. The available control codes are:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">B{<span style="font-style: italic;">n</span>}</td><td style="border:none;padding:0">Start a new page, retaining the value of the breakpoint field for inclusion in the page heading/footing by use of the B heading text option. The optional single digit qualifier, <span style="font-style: italic;">n</span>, allows collection of values from multiple breakpoints for inclusion in a composite heading. If omitted, the value of <span style="font-style: italic;">n</span> defaults to zero. Thus use of B alone is equivalent to use of B0.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">D</td><td style="border:none;padding:0">Omit the subtotal line if there is only one line of detail for this breakpoint.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">L</td><td style="border:none;padding:0">Emit a blank line in place of the breakpoint. Any text in the <span style="font-style: italic;">options</span> string will be ignored.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">N</td><td style="border:none;padding:0">Resets page number to one at each breakpoint. This implies the P option if not used with B or P.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">O</td><td style="border:none;padding:0">Only show the value of the breakpoint field on the first detail line within the breakpoint.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">P</td><td style="border:none;padding:0">Start a new page.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">U</td><td style="border:none;padding:0">The default behaviour of QM is to insert a line of hyphens above any subtotals, etc. The U breakpoint option suppresses this action. Enabling the PICK.BREAKPOINT.U mode of the  <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command inverts this mode such that the line of hyphens appears only if the U breakpoint option is present.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">V</td><td style="border:none;padding:0">Print the breakpoint field value in place of the default two asterisks. The V control code can be embedded in text into which the value will be inserted.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">X</td><td style="border:none;padding:0">Save previous value of breakpoint field in @BPV.</td></tr></table></div><p>Combinations of control codes may be used together.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Pick Syntax</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the PICK.BREAKPOINT mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command is in effect, the <span style="font-style: italic;">options</span> element of the <span style="font-weight: bold;">BREAK.ON</span> appears after the <span style="font-style: italic;">field</span> rather than before.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST SALES BY REGION BREAK.ON REGION SALESMAN TOTAL ORDER.VALUE</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>might produce a display such as that below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">LIST SALES BY REGION BREAK.ON REGION SALESMAN TOTAL ORDER.VALUE &nbsp; &nbsp; &nbsp; Page 1</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">SALES..... REGION &nbsp;SALESMAN &nbsp;ORDER VALUE</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19887 &nbsp; &nbsp; &nbsp; North &nbsp; Roberts &nbsp; &nbsp; &nbsp; &nbsp;279.40</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19859 &nbsp; &nbsp; &nbsp; North &nbsp; Sharp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;384.43</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19858 &nbsp; &nbsp; &nbsp; North &nbsp; Sharp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;845.50</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19845 &nbsp; &nbsp; &nbsp; North &nbsp; Harris &nbsp; &nbsp; &nbsp; &nbsp; 234.53</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;** &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-----------</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;North &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1743.86</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19866 &nbsp; &nbsp; &nbsp; South &nbsp; Abbott &nbsp; &nbsp; &nbsp; &nbsp; 465.31</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19886 &nbsp; &nbsp; &nbsp; South &nbsp; Abbott &nbsp; &nbsp; &nbsp; &nbsp; 397.23</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19830 &nbsp; &nbsp; &nbsp; South &nbsp; Smith &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;324.39</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;** &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-----------</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;South &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1186.93</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;===========</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2930.79</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">7 records listed</span><span style="font-family: 'Courier New',Courier,monospace;">.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: Courier,monospace;">For this same data, the command</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST SALES BY REGION BREAK.ON &quot;Total'O'&quot; REGION SALESMAN TOTAL ORDER.VALUE</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: Courier,monospace;">would produce</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">LIST SALES BY REGION BREAK.ON &quot;Total&quot;O&quot;&quot; REGION SALESMAN TOTAL ORDER.V &nbsp;Page 1</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">SALES..... REGION &nbsp;SALESMAN &nbsp;ORDER VALUE</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19887 &nbsp; &nbsp; &nbsp; North &nbsp; Roberts &nbsp; &nbsp; &nbsp; &nbsp;279.40</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19859 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sharp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;384.43</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19858 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sharp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;845.50</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19845 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Harris &nbsp; &nbsp; &nbsp; &nbsp; 234.53</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Total &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -----------</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;North &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1743.86</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19866 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Abbott &nbsp; &nbsp; &nbsp; &nbsp; 465.31</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19886 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Abbott &nbsp; &nbsp; &nbsp; &nbsp; 397.23</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">19830 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Smith &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;324.39</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Total &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -----------</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;South &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1186.93</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;===========</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2930.79</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 9pt; font-family: 'Courier New',Courier,monospace;">7 records listed.</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;">See also:</span></p>
+<p style="page-break-inside: avoid;"><span style="font-weight: bold;"><a href="break_sup.htm" class="topiclink">BREAK.SUP</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

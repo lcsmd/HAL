@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Application Profiling</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "profiling.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Application Profiling</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="mvconnect.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="commandparsing.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM includes a number of tools for gathering data relating to application performance. Collectively these allow detailed analysis of an application's performance, a process referred to as Application Profiling. This section summarises the profiling tools.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">FSTAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="fstat.htm" class="topiclink">FSTAT</a></span> command gathers data on file activity (opens, reads, writes, etc) either on a global basis or on selected files. When used in the latter manner, data collected is stored in the file and will persist across application shutdowns until cleared.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As a profiling tool, <span style="font-weight: bold;">FSTAT</span> gives an overall perception of file activity but does not identify where that activity is occurring.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GLOBAL FILE STATISTICS &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 12:44:21</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ........System &nbsp;.........Total &nbsp;.............. &nbsp;.......Average</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .........Total &nbsp;......this run &nbsp;.......Per sec &nbsp;.......per sec</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Period &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 94:05:27 &nbsp; &nbsp; &nbsp; &nbsp;00:00:04</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Opens &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4239 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 552 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 482 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 138.0</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Reads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1856177 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 18505 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 16919 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4626.3</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Writes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1488262 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 939 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 145 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 234.8</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Deletes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 95775 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 231 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 184 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;57.8</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Clears &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 80 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 8 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2.0</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Selects &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1220 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 190 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 171 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;47.5</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Splits &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1304 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;11 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2.8</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Merges &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0.0</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">AK Reads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3606 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 730 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;54 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 182.5</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">AK Writes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4801 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 758 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 113 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 189.5</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">AK Deletes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 72 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;24 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6.0</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 9pt;">Cache Hits &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0.0</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">HSM</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: Calibri,Vectora,'Droid Sans','Open Sans',Frutiger,sans-serif;">The Hot Spot Monitor (</span><span style="font-family: Calibri,Vectora,'Droid Sans','Open Sans',Frutiger,sans-serif; font-weight: bold;"><a href="hsm.htm" class="topiclink">HSM</a></span><span style="font-family: Calibri,Vectora,'Droid Sans','Open Sans',Frutiger,sans-serif;">) can be enabled on individual processes to accumulate data that helps in identifying where an application spends most of its time and hence the places worth attention when seeking to improve performance.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">Calls &nbsp; &nbsp;CP time &nbsp; Opens &nbsp; &nbsp; &nbsp;Reads &nbsp; &nbsp; Writes &nbsp; &nbsp;Deletes Program</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp;0.000 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 $INLINE</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp;0.031 &nbsp; &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;6 &nbsp; &nbsp; &nbsp; &nbsp;265 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2 CONTROL</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp;0.000 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2 $DELCAT</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp;0.000 &nbsp; &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 VFS</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; 152 &nbsp; &nbsp; &nbsp;0.953 &nbsp; &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp;536 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 $BCOMP</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp;0.000 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 !TRIMS</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp;0.031 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp;129 &nbsp; &nbsp; &nbsp; &nbsp; 43 &nbsp; &nbsp; &nbsp; &nbsp; 43 *UVSUBS</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 3 &nbsp; &nbsp; &nbsp;0.078 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp;233 &nbsp; &nbsp; &nbsp; &nbsp;109 &nbsp; &nbsp; &nbsp; &nbsp;218 $BASIC</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp;0.000 &nbsp; &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 QMCLIENT</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 2 &nbsp; &nbsp; &nbsp;0.000 &nbsp; &nbsp; &nbsp; 4 &nbsp; &nbsp; &nbsp; &nbsp; 68 &nbsp; &nbsp; &nbsp; &nbsp; 31 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 $COPY</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp;0.031 &nbsp; &nbsp; &nbsp; 5 &nbsp; &nbsp; &nbsp; &nbsp;174 &nbsp; &nbsp; &nbsp; &nbsp; 41 &nbsp; &nbsp; &nbsp; &nbsp;171 QUERY</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; 129 &nbsp; &nbsp; &nbsp;0.000 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 !SMUL</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;25 &nbsp; &nbsp; &nbsp;0.000 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 !SSUB</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp; 220 &nbsp; &nbsp; &nbsp;0.375 &nbsp; &nbsp; 451 &nbsp; &nbsp; &nbsp;13087 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 $QPROC</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> &nbsp;3791 &nbsp; &nbsp; &nbsp;0.015 &nbsp; &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;9 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 $QDISP</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Command Logger</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <a href="command_logging.htm" class="topiclink">Command Logger</a> generates a log of every command executed, including those from within Procs, paragraphs, menus, programs, etc. It can be applied on a system wide basis or within specific QM processes.</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">1569326162 &nbsp; &nbsp; &nbsp; &nbsp;44 &nbsp; &nbsp; &nbsp; &nbsp;DEV &nbsp; &nbsp; &nbsp; &nbsp;User &nbsp; &nbsp; &nbsp; &nbsp;start compile</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">1569326162 &nbsp; &nbsp; &nbsp; &nbsp;44 &nbsp; &nbsp; &nbsp; &nbsp;DEV &nbsp; &nbsp; &nbsp; &nbsp;PA start@2 &nbsp; &nbsp; &nbsp; &nbsp;CLEAR.FILE $COMO</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">1569326162 &nbsp; &nbsp; &nbsp; &nbsp;44 &nbsp; &nbsp; &nbsp; &nbsp;DEV &nbsp; &nbsp; &nbsp; &nbsp;PA start@3 &nbsp; &nbsp; &nbsp; &nbsp;IF &quot;&lt;&lt;U,C2&gt;&gt;&quot; = &quot;COMPILE&quot; THEN BASIC BP * NO.PAGE</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">1569326162 &nbsp; &nbsp; &nbsp; &nbsp;44 &nbsp; &nbsp; &nbsp; &nbsp;DEV &nbsp; &nbsp; &nbsp; &nbsp;PA start@3 &nbsp; &nbsp; &nbsp; &nbsp;IF &quot;COMPILE&quot; = &quot;COMPILE&quot; THEN BASIC BP * NO.PAGE</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">1569326162 &nbsp; &nbsp; &nbsp; &nbsp;44 &nbsp; &nbsp; &nbsp; &nbsp;DEV &nbsp; &nbsp; &nbsp; &nbsp;PA start@3 &nbsp; &nbsp; &nbsp; &nbsp;BASIC BP * NO.PAGE</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">1569326162 &nbsp; &nbsp; &nbsp; &nbsp;44 &nbsp; &nbsp; &nbsp; &nbsp;DEV &nbsp; &nbsp; &nbsp; &nbsp;Exec $BASIC@351 &nbsp; &nbsp; &nbsp; &nbsp;CATALOGUE BP CTEST.CLS CTEST.CLS</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">1569326163 &nbsp; &nbsp; &nbsp; &nbsp;44 &nbsp; &nbsp; &nbsp; &nbsp;DEV &nbsp; &nbsp; &nbsp; &nbsp;PA start@4 &nbsp; &nbsp; &nbsp; &nbsp;RUN START</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">1569326163 &nbsp; &nbsp; &nbsp; &nbsp;44 &nbsp; &nbsp; &nbsp; &nbsp;DEV &nbsp; &nbsp; &nbsp; &nbsp;Chain &nbsp; &nbsp; &nbsp; &nbsp;RUN CONTROL</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The columns of the example report extract above are:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Timestamp (as an epoch value)</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>User number</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>User name</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Command origin</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 24px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Command</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that in this example, the IF command near the top of the report generates three log lines; firstly as it appears in the paragraph with the inline prompt in place, then again with the prompt expanded and finally, because the condition was true, as the actual command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">PSTAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Not strictly a profiling tool, the <span style="font-weight: bold;"><a href="pstat.htm" class="topiclink">PSTAT</a></span> (Process Status) command shows what a QM process is currently doing. It can be used to produce a report of all logged in QM users or just one specific user. Different reporting levels allow selection of what data will be shown.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;">User Detail</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; 5 Account: QM, Username: MARTIN, Pid: 4044</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; &nbsp; Command: pstat</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; &nbsp; $PSTAT 193 (20A1, EVENTS)</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; 6 Account: QM, Username: MARTIN, Pid: 3352</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; &nbsp; Command: PTERM BREAK OFF</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; &nbsp; Waiting user input</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; &nbsp; $SED 5407 (5D3A, KEYIN)</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; 7 Account: QM, Username: MARTIN, Pid: 13820</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; &nbsp; Command: bell off</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; &nbsp; TCL prompt waiting input</span></p>
+<p class="p_CodeBody" style="page-break-inside: avoid;"><span class="f_CodeBody" style="font-size: 8pt;"> &nbsp; &nbsp; KEYCODE (398, KEYINTV)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In this example, user 6 is in the SED editor at line 5407. The hexadecimal program offset and internal opcode name are of little use to an application developer but are included for diagnostics. Where a process is waiting for external activity such as keyboard input, the <span style="font-weight: bold;">PSTAT</span> command will show this.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Lock Tracing</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <a href="lock_tracer.htm" class="topiclink">Lock Tracer</a> records every lock action across all users of the system. The gathered data is then processed by an interactive reporting tool that produces a (lengthy) report similar to the brief extract below.</p>
+<p class="p_Normal">&nbsp;</p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">Lock Trace</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">Time.... User Path.................. Id............ Action Program... Offset Line.</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">25 Sep</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">12:24:41 &nbsp; 13 C:\DEV\QMSYS\$IPC &nbsp; &nbsp; &nbsp;M13 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Rel RX $CPROC &nbsp; &nbsp; &nbsp;000D20 &nbsp;1134</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">12:24:54 &nbsp; 12 c:\temp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;~QMSCRL.12 &nbsp; &nbsp;Get RU $QDISP &nbsp; &nbsp; &nbsp;0004AB &nbsp; 389</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">12:24:56 &nbsp; 12 c:\temp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;~QMSCRL.12 &nbsp; &nbsp;Rel RX $QDISP &nbsp; &nbsp; &nbsp;0016A7 &nbsp;1109</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">12:24:56 &nbsp; 12 C:\DEV\QMSYS\$IPC &nbsp; &nbsp; &nbsp;M12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Get RU $CPROC &nbsp; &nbsp; &nbsp;000CD2 &nbsp;1125</span></p>
+<p style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">12:24:56 &nbsp; 12 C:\DEV\QMSYS\$IPC &nbsp; &nbsp; &nbsp;M12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Rel RX $CPROC &nbsp; &nbsp; &nbsp;000D20 &nbsp;1134</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Event Profiling</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="profiler.htm" class="topiclink">PROFILER</a></span> command controls recording and display of application events that are often significant contributors to performance issues. The profiler report is an interactive display that allows the user to drill down starting with a list of logged event types and going down to subsequent screens that show qualifying information for a selected event type (e.g. file name in an OPEN), the program that generated the event and finally, so long as the program is compiled in debug mode, the line numbers within the programs. At each level, the count of events is shown alongside the other information. The brief extract below shows the names of subroutines called by the application and the number of times each was called.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">Subroutine call counts</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> Counts &nbsp; Subroutine Name</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;">&gt;1 &nbsp; &nbsp; &nbsp; &nbsp;BARRED.COUNTRY</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 1 &nbsp; &nbsp; &nbsp; &nbsp;BARRED.IP</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 1 &nbsp; &nbsp; &nbsp; &nbsp;DIARY</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 7 &nbsp; &nbsp; &nbsp; &nbsp;DISPLAY.MENU</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 1 &nbsp; &nbsp; &nbsp; &nbsp;INIT.COMMON</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 1 &nbsp; &nbsp; &nbsp; &nbsp;IP.LOOKUP</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 1 &nbsp; &nbsp; &nbsp; &nbsp;LBSWEB</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 150 &nbsp; &nbsp; &nbsp;LINK</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 1 &nbsp; &nbsp; &nbsp; &nbsp;OPEN.FILES</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 1 &nbsp; &nbsp; &nbsp; &nbsp;S.LOGIN</span></p>
+<p class="p_Normal" style="page-break-inside: avoid;"><span style="font-size: 8pt; font-family: 'Courier New',Courier,monospace;"> 4 &nbsp; &nbsp; &nbsp; &nbsp;SHOW.HTML</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

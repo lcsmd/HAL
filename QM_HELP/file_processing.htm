@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>File Processing</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="File processing" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "file_processing.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">File Processing</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="multivalue_functions.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="matrix_file_io.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QMBasic programs usually need to access database files. This section discusses the various techniques available. Further information can be found by following the links to detailed sections.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QM file system supports two distinct types of file:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span><span style="font-weight: bold;">Hashed files</span> use a mathematical approach to locate data such that, when correctly configured, it should be possible to read any record with just one disk access regardless of the number of records in the file. For more information on the creation and configuration of these files see the section on <a href="dynamicfiles.htm" class="topiclink">dynamic files</a>.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 29px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span><span style="font-weight: bold;">Directory files</span> do not offer the high performance of hashed files but allow access to their data from outside of the QM environment. For this reason, they are typically used for data interchange between applications. They are also ideal for storing extremely large records. For more information on the creation of these files, see the section on <a href="directoryfiles.htm" class="topiclink">directory files</a>.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Directory files also allow data to be processed in a line by line manner or as a simple byte stream. There are also special program operations to simplify reading and writing comma separated data as used, for example, by some spreadsheet packages. For more information on this style of access, see <a href="sequential_file_io.htm" class="topiclink">sequential file i/o</a>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Opening Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Before a file can be processed, it must be opened. This is normally done using the <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> statement, identifying the file by referencing the name of the corresponding <a href="voc_f.htm" class="topiclink">F-type</a> VOC record. By having this level of indirection, the physical location of the file can be changed without affecting the application; all that is necessary is to edit the VOC record to reference the new file location. There are three special file name syntaxes available to reference files in other accounts without needing a <a href="voc_q.htm" class="topiclink">Q-type</a> VOC record:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">Implicit Q-pointer</td><td style="border:none;padding:0"><span style="font-style: italic;">account</span>:<span style="font-style: italic;">file</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">Implicit QMNet pointer</td><td style="border:none;padding:0"><span style="font-style: italic;">server</span>:<span style="font-style: italic;">account</span>:<span style="font-style: italic;">file</span></td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 5px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:210px">Pathname</td><td style="border:none;padding:0">PATH:<span style="font-style: italic;">pathname</span></td></tr></table></div><p style="margin: 5px 0 0 0;">Because these syntaxes potentially weaken the security provided by the VOC indirection, their availability is determined by a system configuration parameter, <span style="font-weight: bold;"><a href="configparams.htm#filerule" class="topiclink">FILERULE</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>It is also possible for an application to open files directly by pathname using the <span style="font-weight: bold;"><a href="qmb_openpath.htm" class="topiclink">OPENPATH</a></span> statement. This should only be used where the normal VOC indirection is not appropriate.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A typical application may open many files simultaneously and it is therefore necessary to have a way to determine which file is being referenced by subsequent data transfer operations. This link is provided by the <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> and <span style="font-weight: bold;"><a href="qmb_openpath.htm" class="topiclink">OPENPATH</a></span> statements setting up a <span style="font-weight: bold;">file variable</span> which is then used in other operations on the same file. The file remains open so long as the file variable remains in place. Overwriting the file variable will implicitly close the file that it referenced. Exit from the program will discard local variables and hence close the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Most applications adopt a convention for the names of variables. Many examples in this documentation use a convention where the file name is contracted to three or four characters and a suffix of .F is added to form the file variable name. Thus a file named ORDERS might be referenced via a file variable named ORD.F. It is common to continue the convention into other variables so that, for example, ORDERS file record ids might be stored in ORD.ID and records could be read from the file into the ORD.REC variable. These are examples only. There is no restriction on naming imposed by QM itself.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A file variable may be copied, just like any other variable. In this case, the file remains open until the last file variable referencing it is discarded or overwritten.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are two factors that limit the number of files that can be open at one time. Firstly, QM has an internal file table that contains a reference to every distinct file open on the system by all QM processes. The size of this table is set by the <span style="font-weight: bold;"><a href="configparams.htm#numfiles" class="topiclink">NUMFILES</a></span> configuration parameter. If several users all open the same file, that only requires one entry in the table. If a program attempts to open a file when the table is full, the operation will fail, taking the <span style="font-weight: bold;">ELSE</span> clause to allow the program to report an error. The <span style="font-weight: bold;"><a href="list_files.htm" class="topiclink">LIST.FILES</a></span> command can be used to monitor how close a system is to reaching this configuration limit.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The second limit is imposed by the operating system. On some systems this may be configurable, on others it is fixed. QM tries to hide this limit by implementing a mechanism whereby, if the limit is reached, the file that has not been accessed for longest is closed internally to make room for the new file. Subsequent access to the file that has been closed will automatically reopen it, probably closing something else to make space. Although this mechanism is totally automatic and gives the developer the illusion that there is no limit, the impact on performance can be quite serious. It is strongly recommended that any configurable limit imposed by the operating system is set to an appropriate value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Opening a file is a complex process. Although QM maintains a file cache to improve the situation, developers should avoid continually re-opening the same file. One useful way to achieve this is to place the file variable in a <a href="qmb_common.htm" class="topiclink">common block</a> so that is not discarded when the program or subroutine exits. By using this technique it is possible for a program to open all of its main data files as it starts up and to keep them open for the entire life of the application. Keeping large numbers of files open will require careful configuration of NUMFILES and possibly the corresponding operating system parameters.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Reading, Writing and Deleting Data</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Programs read data using the QMBasic <span style="font-weight: bold;"><a href="qmb_read.htm" class="topiclink">READ</a></span> statement. With a hashed file, the internal processing of this statement applies the hashing process to read just the group that would contain the requested record and then locates the record within that group. If it is not found, it is not in the file and there is no need to look elsewhere. This process ensures that hashed files give best performance. For a directory file, QM uses operating system functions to locate and read the requested item. This will not give the performance of hashed files as it requires a scan of the directory to locate the item.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_read.htm" class="topiclink">READ</a></span> statement returns a variable that contains a dynamic array representing the data of the requested record. The program can then use the various dynamic array operations such as field extraction to access the data in the record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the record is to be updated by the application, it is essential to ensure that other processes cannot update the record at the same time. This protection is provided by QM's <a href="locking.htm" class="topiclink">locking</a> mechanisms and corresponding QMBasic statements, most importantly <span style="font-weight: bold;"><a href="qmb_readu.htm" class="topiclink">READU</a></span>. <span style="font-weight: bold;">A program should </span><span style="font-weight: bold; text-decoration: underline;">never</span><span style="font-weight: bold;"> write or delete a record unless it owns a lock to protect it.</span> There is a configuration parameter, <span style="font-weight: bold;"><a href="configparams.htm#mustlock" class="topiclink">MUSTLOCK</a></span>, that allows administrators to enforce strong locking rules. Unfortunately, this cannot be made the default behaviour as there is much software which does not use locking because the developer knew that there could never be an interaction with other processes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A data record is written to the file using the QMBasic <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span> statement. If the record already exists in the file, the new version replaces the previous one. If the record does not already exist, the write operation adds it to the file. The record lock is automatically released when the write completes though there is an alternative statement, <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITEU</a></span>, that retains the lock..</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A data record is deleted &nbsp;from the file using the QMBasic <span style="font-weight: bold;"><a href="qmb_delete.htm" class="topiclink">DELETE</a></span> statement. The record lock is automatically released after the record has been deleted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The QMBasic statements named above work with dynamic arrays. There is an alternative style of file i/o that uses dimensioned matrices. For details, see <a href="matrix_file_io.htm" class="topiclink">Matrix File I/O</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Select Lists and Alternate Key Indices</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmb_read.htm" class="topiclink">READ</a></span> statement requires that the program knows the id of the record it needs to read. To process a file sequentially or to process only records that meet a specific condition, programs use a <a href="selectlists.htm" class="topiclink">select list</a>. This list may be generated by executing a query processor <span style="font-weight: bold;"><a href="select.htm" class="topiclink">SELECT</a></span> operation or by use of the QMBasic <span style="font-weight: bold;"><a href="qmb_select.htm" class="topiclink">SELECT</a></span> statement. Whichever method is used, the program then reads items from the list using the <span style="font-weight: bold;"><a href="qmb_readnext.htm" class="topiclink">READNEXT</a></span> statement, typically in a loop that then uses <span style="font-weight: bold;"><a href="qmb_read.htm" class="topiclink">READ</a></span> or one of its locking variants to process each record from the list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Building a select list requires the system to traverse the entire file, examining every record. For situations where only a small proportion of records are to be selected, an <a href="ak.htm" class="topiclink">alternate key index</a> can give substantial performance improvements. Effectively, this is a set of pre-built select lists based on the content of a specific field or the result of evaluating an <a href="dict_i.htm" class="topiclink">I-type</a> expression. The index is automatically updated whenever a change is made to the file. For well chosen indexed fields, the cost of this additional update on write is usually significantly outweighed by the performance improvement of being able to go directly to the desired set of records.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">The ON ERROR Clause</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Most of the QMBasic file handling statements have an optional <span style="font-weight: bold;">ON ERROR</span> clause. This is rarely needed by applications but allows a program to trap an error that would otherwise cause QM to abort the program. If an <span style="font-weight: bold;">ON ERROR</span> clause is present, the program can take its own recovery action or display alternative diagnostic messages. Developers should avoid using the <span style="font-weight: bold;">ON ERROR</span> clause simply to condition an <span style="font-weight: bold;"><a href="qmb_abort.htm" class="topiclink">ABORT</a></span> statement as this will usually give less diagnostic information than would have appeared if no <span style="font-weight: bold;">ON ERROR</span> clause had been present.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OPEN 'CLIENTS' TO CLI.F ELSE STOP 'Cannot open CLIENTS'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY 'Enter client number: ' :</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INPUT CLI.ID</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">UNTIL CLI.ID = ''</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READ CLI.REC FROM CLI.F, CLI.ID THEN</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DISPLAY CLI.REC&lt;2&gt;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END ELSE</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DISPLAY 'Client not found'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This short program opens the CLIENTS file and then enters a loop in which it prompts for a client number, reads the client record and displays the content of field 2. The loop continues until the user enters a blank client number.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This example shows why direct use of field numbers in programs is a bad idea. Anyone reading this program has no idea what information about the client is being displayed. A better approach is to use the <span style="font-weight: bold;"><a href="qmb_equate.htm" class="topiclink">EQUATE</a></span> statement to define names for each field (typically in an <a href="qmbd_include.htm" class="topiclink">include record</a>). The data display statement might then become</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DISPLAY CLI.REC&lt;CLI.NAME&gt;</span></p>
+<p class="p_Normal">which suggests to anyone reading the program that it is displaying the client's name. The <span style="font-weight: bold;"><a href="generate.htm" class="topiclink">GENERATE</a></span> command can be used to construct an include record of field names from the file dictionary rather than having to maintain two separate descriptions of the data.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">SELECT @VOC TO 1</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READNEXT ID FROM 1 ELSE EXIT</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READ VOC.REC FROM @VOC, ID THEN</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;IF VOC.REC[1,1] = 'F' THEN</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; OPEN ID TO TEST.F ELSE</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DISPLAY 'File ' : ID : ' cannot be opened'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This program uses the system defined file variable @VOC to reference the VOC instead of opening it explicitly. The <span style="font-weight: bold;"><a href="qmb_select.htm" class="topiclink">SELECT</a></span> statement builds a list of all records in the file into select list 1 which is then processed in the loop. For each item in the list, the record is read from the VOC and, if it is an F-type record, the program attempts to open the file. If it cannot be opened, an error message is displayed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note the use of <span style="font-weight: bold;"><a href="qmb_exit.htm" class="topiclink">EXIT</a></span> to exit from the loop when the list is exhausted. Some multivalue environments do not support this statement and require developers to devise alternative exit schemes that are generally not as efficient.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note also that the file opened to variable TEST.F is not explicitly closed. Each <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> will implicitly close the previous file as the file variable is overwritten. The final file opened will remain open until the program terminates.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This program has needed to include a test to process only F-type VOC records. Alternatively, the program could use the query processor to build a list of F-type records and then process all records in this list:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">EXECUTE &quot;SELECT VOC WITH TYPE = 'F' TO 1&quot;</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READNEXT ID FROM 1 ELSE EXIT</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READ VOC.REC FROM @VOC, ID THEN</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;OPEN ID TO TEST.F ELSE</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY 'File ' : ID : ' cannot be opened'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Although this approach may look simpler and does not require the unwanted records to be read, it is actually less efficient than the first method as the query processor will need to read every record and the loop then re-reads the records of interest. In the previous example, use of the QMBasic <span style="font-weight: bold;"><a href="qmb_select.htm" class="topiclink">SELECT</a></span> actually only sets a pointer to the start of the file and the subsequent <span style="font-weight: bold;"><a href="qmb_readnext.htm" class="topiclink">READNEXT</a></span> reads each group when it needs to process the first record from the group, effectively reading the file only once. This exposes an interesting problem that is highlighted in the next example.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OPEN 'CLIENTS' TO CLI.F ELSE STOP 'Cannot open CLIENTS'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">SELECT CLI.F TO 1</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READNEXT CLI.ID FROM 1 ELSE EXIT</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READU CLI.REC FROM CLI.F, CLI.ID THEN</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;RECORDLOCKU CLI.F, '0':CLI.ID</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;WRITE CLI.REC TO CLI.F, '0':CLI.ID</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DELETE CLI.F, CLI.ID</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above program might be used to convert a CLIENTS file to add a zero on the front of each record id, perhaps to allow more clients on a system where the application requires fixed length ids. Because it is the <span style="font-weight: bold;"><a href="qmb_readnext.htm" class="topiclink">READNEXT</a></span> that actually traverses the file rather than the <span style="font-weight: bold;"><a href="qmb_select.htm" class="topiclink">SELECT</a></span> statement, new records written to higher numbered groups would be seen by a later <span style="font-weight: bold;"><a href="qmb_readnext.htm" class="topiclink">READNEXT</a></span> and get processed for a second time. For example, if the record for client number 1234 was in group 6 and the new version of this record with id 01234 hashed to group 10, it would appear in the list constructed when processing reaches group 10 and the record would be renamed once more to become 001234.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Although programs that might suffer from this problem are rare, we need to force completion of the record selection before entering the loop. One way to do this would be to use the query processor <span style="font-weight: bold;"><a href="select.htm" class="topiclink">SELECT</a></span> instead of the QMBasic equivalent:</p>
+<p class="p_Normal" style="margin: 6px 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">EXECUTE 'SELECT CLIENTS TO 1'</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note the use of <span style="font-weight: bold;"><a href="qmb_recordlockl.htm" class="topiclink">RECORDLOCKU</a></span> to set an update lock on the record to be added to the file. Although this is probably strictly unnecessary in this example because the new record will not already exist, it does ensure compliance with the locking rules.</p>
+
+</td></tr></table>
+
+</body>
+</html>

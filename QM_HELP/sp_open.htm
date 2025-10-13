@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SP.OPEN, SP.CLOSE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SP.OPEN,SP.CLOSE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sp_open.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SP.OPEN, SP.CLOSE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="sp_assign.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sp_view.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SP.OPEN</span> command sets the &quot;keep open&quot; flag on the default printer, merging multiple print requests into a single print job. The <span style="font-weight: bold;">SP.CLOSE</span> command resets this option.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SP.OPEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SP.CLOSE</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SP.OPEN</span> command is equivalent to use of the O option of the <span style="font-weight: bold;"><a href="sp_assign.htm" class="topiclink">SP.ASSIGN</a></span> command or the KEEP.OPEN option of the <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When this mode is set, output directed to the default printer (print unit 0) from successive commands or programs is merged into a single print job. The job is terminated and queued for printing by use of <span style="font-weight: bold;">SP.CLOSE</span> or <span style="font-weight: bold;"><a href="printer.htm" class="topiclink">PRINTER CLOSE</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Example</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">SP.OPEN</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST CUSTOMERS,NORTH LPTR</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST CUSTOMERS,SOUTH LPTR</span></p>
+<p style="margin: 0 0 0 29px;"><span style="font-family: 'Courier New',Courier,monospace;">SP.CLOSE</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above sequence of commands lists records from two elements of the CUSTOMERS multifile as a single print job.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span>, <span style="font-weight: bold;"><a href="sp_assign.htm" class="topiclink">SP.ASSIGN</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

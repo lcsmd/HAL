@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>The qmconv Utility</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="*fixpath,qmconv" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmconv.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">The qmconv Utility</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmidx.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="tools.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM hashed files and QMBasic object code are sensitive to the byte ordering of the system on which they are used. If a file, program or ECS character map is moved from a system with one byte ordering to a system of the opposite byte ordering, the qmconv utility can be used to update the file or program.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This tool is run from the operating system command prompt. The command line is</p>
+<p style="margin: 10px 0 10px 30px;">qmconv  <span style="font-style: italic;">options pathname(s)</span></p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">are case insensitive option codes from the following set:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">-B</td><td style="border:none;padding:0">Convert to &quot;big-endian&quot; format.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px">-L</td><td style="border:none;padding:0">Convert to &quot;little-endian&quot; format.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">pathname</span></td><td style="border:none;padding:0">is the pathname of the file to be processed. Multiple pathnames may be given and wildcards may be used. qmconv will ignore names that do not correspond to QM files. </td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If neither mode option is given, the file is converted to the byte ordering of the system on which the command is run.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Hashed files must be converted when moving to a system with different byte ordering. Conversion is optional for QMBasic object code as programs will be converted automatically on loading into memory, if needed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In addition to use of qmconv, moving from Windows to Unix/Linux based systems or vice versa requires that pathnames in the VOC are converted to use the appropriate directory delimiter character. This can be achieved by typing</p>
+<p style="margin: 6px 0 6px 30px;">*fixpath</p>
+<p>at the QM command prompt in the relevant account. Alternatively, an account name or pathname may be given</p>
+<p style="margin: 6px 0 0 30px;">*fixpath <span style="font-style: italic;">acc.name</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

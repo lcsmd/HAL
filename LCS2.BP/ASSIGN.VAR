@@ -1,0 +1,384 @@
+!BP ASSIGN.VAR                            >ASSIGN VAR INCLUDE PROGRAM
+!
+!CREATED BY> LEON SHOYKHETBROD       DATE >11/23/92
+!CHANGED BY>
+!CLIENT    >                              >
+!
+!COMMENTS  >Use this program as an INCLUDE STATEMENT in
+!           each BASIC PROGRAM.
+!
+!---
+      PROMPT ''
+!    
+!    
+      OPEN '','TERMINAL.TYPE' TO TERM.F ELSE ABORT 201,'TERMINAL.TYPE'
+!
+      LOCALPATH = @PATH
+!
+      WHO = OCONV(0,'U50BB')
+      PORT = CHANGE(FIELD(WHO,' ',1),'-','')
+      SYS.ACCOUNT = FIELD(WHO,' ',2)
+!
+! DETERMINE OPERATING SYSTEM TYPE & PROGRAM CALLS FOR:
+! 1 - RAW CHARACTER INPUT PROGRAM
+! 2 - CHECK THE INPUT BUFFER
+!
+      OPERSYSTEM = 'UNKNOWN'
+      SERVERNAME = 'UNKNOWN'
+      IF SYSTEM(100) = 0 THEN
+         OPERSYSTEM = 'UniVerse Windows NT'
+         SERVERNAME = OCONV('SERVERNAME','TMASTER;X;1;1')
+         IF SERVERNAME = '' THEN
+            EXECUTE 'WHO' CAPTURING OUTPUT
+            SERVERNAME = OCONV(OUTPUT,'G3 1')
+            SERVERNAME = OCONV(SERVERNAME,'G\1')
+            SERVERNAME = SERVERNAME:'01'
+         END
+         IRP.PGM = 'INPUT.RAW.UV'
+         IBP.PGM = 'INBUFF.UV'
+      END ELSE
+         IF INDEX(SYSTEM(100),'AIX',1) THEN
+            OPERSYSTEM = 'AP (AIX) RS-6000'
+         END ELSE IF INDEX(SYSTEM(100),'DOS',1) THEN
+            OPERSYSTEM = 'AP DOS'
+         END ELSE IF INDEX(SYSTEM(100),'64',1) THEN
+            OPERSYSTEM = 'AlphaMicro 64+'
+         END ELSE IF INDEX(SYSTEM(100),'AP',1) THEN
+            OPERSYSTEM = 'AP'
+         END
+         IRP.PGM = 'INPUT.RAW.PICK'
+         IBP.PGM = 'INBUFF.PICK'
+      END
+!
+      READ TERM.TYPE FROM TERM.F, PORT ELSE TERM.TYPE = 'UNKNOWN'
+!
+      EQU TRUE TO 1, FALSE TO 0, JUNK TO '!@#$%^&*()'
+!
+      EQU ISVM TO CHAR(252)
+      EQU IVM TO CHAR(253)
+      EQU IAMC TO CHAR(254)
+      EQU BELL TO CHAR(7)
+      EQU BS TO CHAR(8)
+      EQU TAB TO CHAR(9)
+      EQU ESC TO CHAR(27)
+      EQU ESC.KEY TO CHAR(251)
+      EQU CRLF TO CHAR(13):CHAR(10)
+      PCCMD = ESC:CHAR(8) ; ENDCMD = CHAR(0)
+!
+      CLS = @(-1)
+      EOS = @(-3)
+      EOL = @(-4)
+      PRON = @(-7) ; PROFF = @(-8)
+      PREXE = @(-11):@(-102):@(-12)
+      IF TERM.TYPE<1> # 'WYSE' THEN PREXE = ''
+      C21 = @(0,21):EOL
+      C22 = @(0,22):EOL
+      C23 = @(0,23):EOL
+!
+! DEFAULT ALL VARIABLES
+!
+      STATUS.LINE = @(33,0)
+      LON = @(-13) ; LOFF = @(-14) ; DLON = LON ; DLOFF = LOFF
+      LULON = LON ; LULOFF = LOFF ; DLULON = LON ; DLULOFF = LOFF
+      DMON = '' ; DMOFF = '' ; FON = '' ; FOFF = ''
+      FLON = '' ; FLOFF = '' ; ULON = '' ; ULOFF = '' ; VAOFF = ''
+      WIDE = '' ; DHSWTOP = '' ; DHSWBOT = '' ; DHDWTOP = '' ; DHDWBOT = ''
+      ULA = '+' ; DULA = '+' ; LLA = '+' ; DLLA = '+' ; URA = '+'
+      LRA = '+' ; DURA = '+' ; DLRA = '+' ; DVERTLN = '|' ; VERTLN = '|'
+      HORZLN = '-' ; DHORZLN = '-' ; UPT = '+' ; DNT = '+' ; CINT = '+'
+      RINT = '+' ; LINT = '+' ; DCINT = '+' ; DRINT = '+' ; DLINT = '+'
+      DUPT = '+' ; DDNT = '+'
+      SDRINT = '+' ; DSRINT = '+' ; SDURA = '+' ; DSURA = '+'
+      SDLRA = '+' ; DSLRA = '+' ; SDLINT= '+' ; DSLINT= '+'
+      SDUPT = '+' ; DSUPT = '+' ; DSDNT = '+' ; SDDNT = '+'
+      DSLLA = '+' ; SDLLA = '+' ; SDULA = '+' ; DSULA = '+'
+      DSINT = '+' ; SDINT = '+' ; DSCINT = '+' ; SDCINT = '+'
+      FILL1 = LON:' ':LOFF
+      FILL2 = LON:'x':LOFF
+      FILL3 = LON:'.':LOFF
+!
+! DETERMINE TERMINAL EMULATION
+!
+      IF TERM.TYPE<1> = 'WYSE' ! TERM.TYPE<1> = 'VIEWPOINT' THEN
+         PRON = ESC:"`A":ESC:")" ; PROFF = ESC:"("
+         PREXE = ESC:"&":ESC:";":ESC:"'"
+         IF TERM.TYPE<3> = 'Y' THEN
+            IF TERM.TYPE<4> = 'Y' THEN GOSUB ASCII.GRAPHIC ELSE
+               IF TERM.TYPE<5> = 'Y' THEN GOSUB WYSE.GRAPHIC
+            END
+         END
+         IF TERM.TYPE<6> = 'Y' THEN GOSUB WYSE.WIDE
+         IF TERM.TYPE<10> = 'Y' THEN
+            IF TERM.TYPE<1> = 'VIEWPOINT' THEN GOSUB VIEWPOINT.VIDEO.ATTR ELSE
+               IF TERM.TYPE<11> = 'Y' THEN GOSUB SYSTEM.VIDEO.ATTR ELSE
+                  IF TERM.TYPE<12> = 'Y' THEN GOSUB WYSE.VIDEO.ATTR
+               END
+            END
+         END
+      END ELSE IF TERM.TYPE<1> = 'ADDS' THEN
+         GOSUB ADDS.EMULATION
+      END ELSE IF TERM.TYPE<1>[1,2] = 'VT' THEN
+         GOSUB VT.EMULATION
+      END ELSE IF OCONV(TERM.TYPE<1>,'MCU') = 'IBM' THEN
+         IF TERM.TYPE<2> = 3151 THEN
+            GOSUB IBM3151.GRAPHIC
+            GOSUB IBM3151.VIDEO.ATTR
+         END ELSE
+            IF TERM.TYPE<3> = 'Y' THEN GOSUB ASCII.GRAPHIC
+            IF TERM.TYPE<21> = 'COLOR' THEN GOSUB COLOR.VIDEO.ATTR ELSE
+               IF TERM.TYPE<11>= 'Y' THEN GOSUB SYSTEM.VIDEO.ATTR
+            END
+         END
+      END
+!
+      BCK = ', Hit <RTN>':STR(BS,3)
+!
+      CAPS.ON = ESC:"e&"
+      CAPS.OFF = ESC:"e'"
+!
+      FERRORS = 'The Following file(s) Cant be Opened!'
+      FILE.ERRORS = C22:BELL:LON:'ERROR':LOFF
+      FILE.ERRORS = FILE.ERRORS:': The following File(s)'
+      FILE.ERRORS = FILE.ERRORS:' Cant be Opened ! - '
+!
+      ERROR.LINE = C22:BELL:LON:'ERROR':LOFF
+      ATTEN.LINE = C22:BELL:LON:'ATTENTION':LOFF
+!
+! END OF ASSIGN.VAR
+!
+      GO END.OF.ASSIGNMENT
+!
+! ASCII GRAPHIC
+!
+ASCII.GRAPHIC:*
+      ULA = CHAR(218) ; DULA = CHAR(201)
+      LLA = CHAR(192) ; DLLA = CHAR(200)
+      URA = CHAR(191) ; DURA = CHAR(187)
+      LRA = CHAR(217) ; DLRA = CHAR(188)
+      VERTLN = CHAR(179) ; HORZLN = CHAR(196)
+      DVERTLN= CHAR(186) ; DHORZLN= CHAR(205)
+      UPT = CHAR(193) ; LINT = CHAR(195) ; CINT = CHAR(197)
+      RINT= CHAR(180) ; DNT = CHAR(194)
+      DUPT = CHAR(202) ; DDNT = CHAR(203)
+      DRINT= CHAR(185) ; DLINT= CHAR(204) ; DCINT = CHAR(206)
+      SDRINT=CHAR(181) ; DSRINT=CHAR(182) ; SDURA = CHAR(183) ; DSURA = CHAR(184)
+      SDLRA =CHAR(189) ; DSLRA =CHAR(190) ; SDLINT= CHAR(198) ; DSLINT= CHAR(199)
+      SDUPT =CHAR(207) ; DSUPT =CHAR(208) ; DSDNT = CHAR(209) ; SDDNT = CHAR(210)
+      DSLLA =CHAR(211) ; SDLLA =CHAR(212) ; SDULA = CHAR(213) ; DSULA = CHAR(214)
+      DSCINT=CHAR(215) ; SDCINT=CHAR(216)
+      FILL1 = CHAR(219)
+      FILL2 = CHAR(176)
+      FILL3 = CHAR(178)
+*L*      FILL4 = CHAR(177)
+      RETURN
+!
+! WYSE GRAPHIC
+!
+WYSE.GRAPHIC:*
+      ULA = ESC:"H2" ; DULA = ESC:"H2"
+      LLA = ESC:"H1" ; DLLA = ESC:"H1"
+      URA = ESC:"H3" ; DURA = ESC:"H3"
+      LRA = ESC:"H5" ; DLRA = ESC:"H5"
+      VERTLN = ESC:"H6" ; HORZLN = ESC:"H:"
+      DVERTLN= ESC:"H6" ; DHORZLN= ESC:"H:"
+      UPT = ESC:"H]" ; LINT = ESC:"H4" ; CINT = ESC:"H8"
+      RINT = ESC:"H9" ; DNT = ESC:"HP"
+      DUPT= ESC:"H]" ; DLINT= ESC:"H4" ; DCINT= ESC:"H8"
+      DRINT= ESC:"H9" ; DDNT = ESC:"HP"
+      SDRINT= RINT ; DSRINT = RINT ; SDURA = URA ; DSURA = URA
+      SDLRA = LRA ; DSLRA = LRA ; SDLINT= LINT ; DSLINT= LINT
+      SDUPT = UPT ; DSUPT = UPT ; DSDNT = DNT ; SDDNT = DNT
+      DSLLA = LLA ; SDLLA = LLA ; SDULA = ULA ; DSULA = ULA
+      DSCINT= CINT ; SDCINT = CINT
+      FILL1 = ESC:"H7"
+      FILL2 = "_"
+      FILL3 = '.'
+*L*      FILL2 = ESC:"H?"
+*L*      FILL3 = ESC:"H["
+      RETURN
+!
+! WYSE VIDEO ATTRIBUTES
+!
+WYSE.VIDEO.ATTR:*
+      LON = @(-13) ; LOFF = @(-14)
+      ULON = ESC:"G8" ; ULOFF = ESC:"G0"
+      FON = ESC:"G2" ; FOFF = ESC:"G0"
+      FLON = ESC:"G6" ; FLOFF = ESC:"G0"
+      DLON = ESC:"Gt" ; DLOFF = ESC:"G0"
+      DMON = ESC:"Gp" ; DMOFF = ESC:"G0"
+      LULON = ESC:"G<" ; LULOFF = ESC:"G0"
+      DLULON = ESC:"G|" ; DLULOFF = ESC:"G0"
+      VAOFF = LOFF:ESC:"G0"
+      STATUS.LINE = ESC:"F"
+      RETURN
+!
+! IBM 3151 GRAPHIC
+!
+IBM3151.GRAPHIC:*
+      ULA = CHAR(236) ; DULA = CHAR(236)
+      LLA = CHAR(237) ; DLLA = CHAR(237)
+      URA = CHAR(235) ; DURA = CHAR(235)
+      LRA = CHAR(234) ; DLRA = CHAR(234)
+      VERTLN = CHAR(248) ; HORZLN = CHAR(241)
+      DVERTLN = CHAR(248) ; DHORZLN = CHAR(241)
+      UPT = CHAR(246) ; LINT = CHAR(244) ; CINT = CHAR(238)
+      RINT = CHAR(245) ; DNT = CHAR(247)
+      DUPT = CHAR(246) ; DLINT = CHAR(244) ; DCINT = CHAR(238)
+      DRINT = CHAR(245) ; DDNT = CHAR(247)
+      SDRINT= RINT ; DSRINT = RINT ; SDURA = URA ; DSURA = URA
+      SDLRA = LRA ; DSLRA = LRA ; SDLINT= LINT ; DSLINT= LINT
+      SDUPT = UPT ; DSUPT = UPT ; DSDNT = DNT ; SDDNT = DNT
+      DSLLA = LLA ; SDLLA = LLA ; SDULA = ULA ; DSULA = ULA
+      DSCINT= CINT ; SDCINT = CINT
+      RETURN
+!
+! IBM 3151 VIDEO ATTRIBUTES
+!
+IBM3151.VIDEO.ATTR:*
+      LON = ESC:"4I" ; LOFF = ESC:"4H"
+      ULON = ESC:"4J" ; ULOFF = ESC:"4H"
+      FON = ESC:"4L" ; FOFF = ESC:"4H"
+      FLON = ESC:"4M" ; FLOFF = ESC:"4H"
+      DLON = ESC:"4A" ; DLOFF = ESC:"4H"
+      DMON = ESC:"4@" ; DMOFF = ESC:"4H"
+      LULON = ESC:"4K" ; LULOFF = ESC:"4H"
+      DLULON = ESC:"4C" ; DLULOFF = ESC:"4H"
+      VAOFF = ESC:"4H"
+      PRON = '' ; PROFF = ''
+      RETURN
+!
+! VIEWPOINT VIDEO ATTRIBUTES
+!
+VIEWPOINT.VIDEO.ATTR:*
+      PRON = '' ; PROFF = '' ; PREXE = ''
+      IF TERM.TYPE<2> = 'ADDS/4000' THEN
+         LON = ESC:'g4' ; LOFF = ESC:'g0'
+         ULON= ESC:'g8' ; ULOFF= ESC:'g0'
+         FON = ESC:'g2' ; FOFF = ESC:'g0'
+         FLON= ESC:'g6' ; FLOFF= ESC:'g0'
+         DLON= ESC:'gD' ; DLOFF= ESC:'g0'
+         DMON= ESC:'g@' ; DMOFF= ESC:'g0'
+         LULON = ESC:'g<' ; LULOFF = ESC:'g0'
+         DLULON = ESC:'gL' ; DLULOFF = ESC:'g0'
+         VAOFF = ESC:'g0'
+      END ELSE
+         LON = @(-13) ; LOFF = @(-14)
+         ULON = LON ; ULOFF = LOFF
+         FON = '' ; FOFF = LOFF
+         FLON = @(-13) ; FLOFF = LOFF
+         DLON = LON ; DLOFF = LOFF
+         DMON = '' ; DMOFF = LOFF
+         LULON = LON ; LULOFF = LOFF
+         DLULON = LON ; DLULOFF = LOFF
+         VAOFF = LOFF
+      END
+      STATUS.LINE = ESC:"F"
+      RETURN
+!
+! WYSE WIDE CHARATER SET
+!
+WYSE.WIDE:*
+      WIDE = ESC:"e1":ESC:"GA":ESC:"e1"
+      DHSWTOP = ESC:"e1":ESC:"GB":ESC:"e1"
+      DHSWBOT = ESC:"e1":ESC:"GC":ESC:"e1"
+      DHDWTOP = ESC:"e1":ESC:"GD":ESC:"e1"
+      DHDWBOT = ESC:"e1":ESC:"GE":ESC:"e1"
+      RETURN
+!
+! SYSTEM VIDEO ATTRIBUTES
+!
+SYSTEM.VIDEO.ATTR:*
+      LON = @(-13)
+      LOFF = @(-14)
+      ULON = @(-15)
+      ULOFF= @(-16)
+      FON = @(-5)
+      FOFF = @(-6)
+      FLON = @(-5):@(-7)
+      FLOFF= @(-6):@(-8)
+      DLON = @(-7):@(-100)
+      DLOFF= @(-14):@(-8)
+      DMON = @(-100) ; DMOFF = @(-101)
+      LULON = LON ; LULOFF = LOFF
+      DLULON = LON ; DLULOFF = LOFF
+      VAOFF = LOFF:DMOFF:ULOFF:DLOFF:FOFF:FLOFF:LULOFF:DLULOFF
+      RETURN
+!
+! ADDS EMULATION
+!
+ADDS.EMULATION:*
+      LON = CHAR(14):ESC:0:"P"
+      LOFF= CHAR(15)
+      DLON = LON ; DLOFF = LOFF
+      VAOFF = LOFF
+      RETURN
+!
+! VT EMULATION
+!
+VT.EMULATION:*
+      VTG.ON = ESC:'(0'; VTG.OFF = ESC:'(B'
+      ULA = VTG.ON:CHAR(108):VTG.OFF; DULA = ULA
+      LLA = VTG.ON:CHAR(109):VTG.OFF; DLLA = LLA
+      URA = VTG.ON:CHAR(107):VTG.OFF; DURA = URA
+      LRA = VTG.ON:CHAR(106):VTG.OFF; DLRA = LRA
+      VERTLN = VTG.ON:CHAR(120):VTG.OFF; DVERTLN = VERTLN
+      HORZLN = VTG.ON:CHAR(113):VTG.OFF; DHORZLN = HORZLN
+      UPT = VTG.ON:CHAR(119):VTG.OFF; DUPT = UPT
+      LINT = VTG.ON:CHAR(116):VTG.OFF; DLINT = LINT
+      CINT = VTG.ON:CHAR(110):VTG.OFF; DCINT = CINT
+      RINT = VTG.ON:CHAR(117):VTG.OFF; DRINT = RINT
+      DNT = VTG.ON:CHAR(118):VTG.OFF; DDNT = DNT
+      SDRINT= RINT ; DSRINT = RINT ; SDURA = URA ; DSURA = URA
+      SDLRA = LRA ; DSLRA = LRA ; SDLINT= LINT ; DSLINT= LINT
+      SDUPT = UPT ; DSUPT = UPT ; DSDNT = DNT ; SDDNT = DNT
+      DSLLA = LLA ; SDLLA = LLA ; SDULA = ULA ; DSULA = ULA
+      DSCINT= CINT ; SDCINT = CINT
+      LON = ESC:'[7m'; LOFF = ESC:'[m'
+      ULON = ESC:'[4m'; ULOFF = LOFF
+      FON = ESC:'[5m'; FOFF = LOFF
+      FLON = LON:FLON; FLOFF = LOFF
+      DMON = ESC:'[1m'; DMOFF = LOFF
+      DLON = LON:DMON; DLOFF = LOFF
+      LULON = ULON:LON; LULOFF = LOFF
+      DLULON = DMON:ULON:LON; DLULOFF = LOFF
+      VAOFF = LOFF
+      RETURN
+!
+! COLOR VIDEO ATTRIBUTES
+!
+COLOR.VIDEO.ATTR:*
+      READ COLOR.B FROM TERM.F, 'COLORS' ELSE COLOR.B = ''
+      VATTR = 1 ; GOSUB SET.COLOR.ATTR ; LON = COLOR.ATTR
+      VATTR = 2 ; GOSUB SET.COLOR.ATTR ; LOFF= COLOR.ATTR
+      VATTR = 3 ; GOSUB SET.COLOR.ATTR ; DLON= COLOR.ATTR
+      VATTR = 4 ; GOSUB SET.COLOR.ATTR ; DLOFF=COLOR.ATTR
+      VATTR = 5 ; GOSUB SET.COLOR.ATTR ; FON = COLOR.ATTR
+      VATTR = 6 ; GOSUB SET.COLOR.ATTR ; FOFF= COLOR.ATTR
+      VATTR = 7 ; GOSUB SET.COLOR.ATTR ; DMON= COLOR.ATTR
+      VATTR = 8 ; GOSUB SET.COLOR.ATTR ; DMOFF=COLOR.ATTR
+      VATTR = 9 ; GOSUB SET.COLOR.ATTR ; FLON= COLOR.ATTR
+      VATTR =10 ; GOSUB SET.COLOR.ATTR ; FLOFF=COLOR.ATTR
+      VATTR =11 ; GOSUB SET.COLOR.ATTR ; ULON= COLOR.ATTR
+      VATTR =12 ; GOSUB SET.COLOR.ATTR ; ULOFF=COLOR.ATTR
+      VATTR =13 ; GOSUB SET.COLOR.ATTR ; VAOFF=COLOR.ATTR
+      VATTR =14 ; GOSUB SET.COLOR.ATTR ; LULON=COLOR.ATTR
+      VATTR =15 ; GOSUB SET.COLOR.ATTR ; LULOFF=COLOR.ATTR
+      VATTR =16 ; GOSUB SET.COLOR.ATTR ; DLULON=COLOR.ATTR
+      VATTR =17 ; GOSUB SET.COLOR.ATTR ; DLULOFF=COLOR.ATTR
+      RETURN
+!
+! SET COLOR ATTRIBUTES
+!
+SET.COLOR.ATTR:*
+      NMV = 1 ; COLOR.ATTR = ''
+      LOOP
+         NMV = NMV + 1
+         VSET= COLOR.B<VATTR,NMV>
+      WHILE VSET # '' DO
+         COLOR.ATTR = COLOR.ATTR:@(VSET)
+      REPEAT
+      RETURN
+!
+! END OF ASSIGNMENT
+!
+END.OF.ASSIGNMENT:*

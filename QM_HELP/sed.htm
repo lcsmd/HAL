@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SED</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SED" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sed.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SED &nbsp;- &nbsp;The Screen Based Editor</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="security.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sed_recordsbuffersandwindows.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SED</span> command is a screen based editor based on the principles of the EMACS editor, widely used on Unix/Linux systems. It is particularly useful for editing QMBasic source programs where many lines (fields) can be seen at once.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SED</span> {{<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span> {<span style="font-style: italic;">record.id</span> ... | <span style="font-weight: bold;">CREATING.SEQKEY</span>}}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">DICT</span></td><td style="border:none;padding:0">indicates that records from the dictionary portion of the file are to be edited.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">file.name</span></td><td style="border:none;padding:0">is the name of the file holding the record(s) to be edited.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">record.id</span></td><td style="border:none;padding:0">is the name of the record to be edited. Multiple record names may be specified.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If no <span style="font-style: italic;">file.name</span> is specified, <span style="font-weight: bold;">SED</span> will prompt for this name. The response may include a prefix of <span style="font-weight: bold;">DICT</span> to select the dictionary portion of the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If no <span style="font-style: italic;">record.id</span> is specified and the default select list is active, this list is used to identify the records to be edited. If no <span style="font-style: italic;">record.id</span> is specified and the default select list is not active, <span style="font-weight: bold;">SED</span> prompts for the <span style="font-style: italic;">record.id</span>. Use of <span style="font-weight: bold;">CREATING.SEQKEY</span> instead of a record id automatically generates the next sequential key for the file.</p>
+<p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An asterisk (*) either on the command line or as the first <span style="font-style: italic;">record.id</span> entered in response to the prompt will cause <span style="font-weight: bold;">SED</span> to select all records of the file and edit each in turn.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A question mark (?) as the first record.id entered in response to the prompt (not on the command line) causes direct entry in explore mode, displaying a list of records in the file. The ? character may be followed by a single space and a <span style="font-weight: bold;">selection template</span> as described under the <span style="font-weight: bold;">list records</span> function to produce a filtered list of records.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The editor maintains an update lock on the record(s) being edited.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When editing a compiled dictionary item (C-type, I-type, or A/S type with a correlative), <span style="font-weight: bold;">SED</span> removes the compiled code thus forcing recompilation when the modified item is first referenced in a query.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">To allow <span style="font-weight: bold;">SED</span> to be used internally from within applications without reducing system security, if the editor is started from a V-type VOC item that has E in field 4, the user is restricted to editing records specified on the command line and also cannot execute QM commands from within the editor.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">SED Topics</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_recordsbuffersandwindows.htm" class="topiclink">Records, Buffers and Windows</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_standardkeybindings.htm" class="topiclink">Standard key bindings</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_cursormovementfunctions.htm" class="topiclink">Cursor movement and search functions</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_datainsertion.htm" class="topiclink">Data insertion</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_copyingdeletingandrestoringdata.htm" class="topiclink">Copying, deleting and restoring data</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_multivalueddata.htm" class="topiclink">Working with multivalued data</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_functionsthatoperateonablockofdata.htm" class="topiclink">Functions that operate on a block of data</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_changingtext.htm" class="topiclink">Changing text</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_macros.htm" class="topiclink">Macros</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_filehandling.htm" class="topiclink">File Handling</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_repeatingfunctions.htm" class="topiclink">Repeating functions</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_miscellaneousfunctions.htm" class="topiclink">Miscellaneous functions</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_commands.htm" class="topiclink">Commands</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_settingupdefaultmodes.htm" class="topiclink">Setting up default modes</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_sourcecontrol.htm" class="topiclink">Source control</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_dynamickeybindings.htm" class="topiclink">Dynamic key bindings</a></p>
+<p style="margin: 0 0 10px 0;"><a href="sed_extensionprogramming.htm" class="topiclink">Extension programming</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

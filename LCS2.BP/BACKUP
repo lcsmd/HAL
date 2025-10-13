@@ -1,0 +1,7 @@
+TDATE = OCONV(DATE(),"D4-")
+TITLE = '"Backup of all UniVerse Accounts for ':TDATE:'"'
+DOS.CMD1 = "'C:\U2\UV\bin\uvbackup -cmdfil C:\U2\UV\backcmd1428476270174 -b 8192 -f -v -l '"
+DOS.CMD2 = '" > E:\Back\backup-all-':TDATE:'"'
+NAME = '"Backup-':TDATE:'"'
+DOS.CMD = DOS.CMD1:TITLE:DOS.CMD2:NAME
+PRINT "DOS /C ":DOS.CMD

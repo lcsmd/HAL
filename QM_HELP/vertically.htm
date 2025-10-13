@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>VERTICALLY</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="VERT,VERTICALLY" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "vertically.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">VERTICALLY, VERT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="using.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="when.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">VERTICALLY</span> display option keyword causes a vertical format report to be produced. The synonym <span style="font-weight: bold;">VERT</span> may be used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">VERTICALLY</span> {<span style="font-weight: bold;">FMT {&quot;</span><span style="font-style: italic;">name.format</span><span style="font-weight: bold;">&quot;} {, &quot;</span><span style="font-style: italic;">data.format</span><span style="font-weight: bold;">&quot;}</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-style: italic;">name.format</span></td><td style="border:none;padding:0">is an alternative format to be applied to the field heading text.</td></tr></table></div><p style="text-indent: -121px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:121px"><span style="font-style: italic;">data.format</span></td><td style="border:none;padding:0">is a default format to be applied to all data items except those that are defined in the dictionary as being right justified. If <span style="font-style: italic;">data.format</span> is specified but <span style="font-style: italic;">name.format</span> is omitted. the comma is still required.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="list.htm" class="topiclink">LIST</a></span> and <span style="font-weight: bold;"><a href="list.htm" class="topiclink">SORT</a></span> commands normally produce a tabular report unless the total width of the data to be reported exceeds that of the display or printer to which it is directed. The <span style="font-weight: bold;">VERTICALLY</span> keyword forces a vertical format report regardless of display width. A blank line is produced between each record in the report.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In the absence of any of the overrides discussed here, the default action of the query processor is to show the field heading text (display name) as a left justified 12 character wide column, effectively using a format code of &quot;.L#12&quot;. The optional <span style="font-weight: bold;">FMT</span> qualifier to the <span style="font-weight: bold;">VERTICAL</span> keyword can be used to change this. Note that the default code uses a mask rather than &quot;12.L&quot; which would insert text marks if the name was longer than 12 characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">These defaults can be overridden by including a record named $VLIST in the dictionary of the file being processed. This must have a type code of X in field 1. If field 2 is not blank, the content is used as the default name format. If field 3 is not blank, the content is used as the default data format. This will impact all vertical mode reports from the data file(s) that use this dictionary. Placing the $VLIST record in the VOC will apply the revised format codes to queries against all files except those for which there is a $VLIST record in the dictionary.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For either use of the $VLIST record or the <span style="font-weight: bold;">FMT</span> qualifier, specifying the <span style="font-style: italic;">name.format</span> as the word FIT (case insensitive) will apply a name format that exactly fits the longest field display name in the report.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-weight: bold;">FMT</span> qualifier also allows a default format to be applied to all data items included in report with the exception of those that are defined in the dictionary as being right justified. Thus, for example, a field defined in the dictionary as having a format of &quot;20T&quot; may be good for tabular reports but introduce unwanted line breaks in a vertical report. Use of the <span style="font-style: italic;">data.format</span> element of the <span style="font-weight: bold;">FMT</span> qualifier to the <span style="font-weight: bold;">VERTICALLY</span> keyword &nbsp;allows a more appropriate field width to be used. Any display clause element that itself includes a <span style="font-weight: bold;">FMT</span> qualifier will override the <span style="font-style: italic;">data.format</span> default for that one field.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES VALUE CUSTOMER.NAME WITH NO AMT.PAID</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>would produce a display such as that below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES VALUE CUSTOMER.NAME WITH NO AMT.PAID</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Invoice &nbsp;...Value &nbsp;Customer...................</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">74529 &nbsp; &nbsp;£1712.43 &nbsp;J McTavish</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">74273 &nbsp; &nbsp; &nbsp;£95.23 &nbsp;County Newspapers</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">63940 &nbsp; &nbsp; £141.00 &nbsp;R Bryant</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">3 records listed.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Including the <span style="font-weight: bold;">VERTICALLY</span> keyword would modify the display format to become</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES VERTICALLY VALUE CUSTOMER.NAME WITH NO AMT.PAID</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Invoice... : 74529</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Value..... : £1712.43</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Customer.. : J McTavish</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Invoice... : 74273</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Value..... : £95.23</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Customer.. : County Newspapers</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Invoice... : 63940</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Value..... : £141.00</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Customer.. : R Bryant</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">3 records listed.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Adding a format code to the <span style="font-weight: bold;">VERTICALLY</span> keyword reduces the name width as below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST INVOICES VERTICALLY FMT &quot;8.L&quot; VALUE CUSTOMER.NAME WITH NO AMT.PAID</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Invoice. : 74529</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Value... : £1712.43</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Customer : J McTavish</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Invoice. : 74273</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Value... : &nbsp;£95.23</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Customer : County Newspapers</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Invoice. : 63940</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Value... : &nbsp;£141.00</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">Customer : R Bryant</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">3 records listed.</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In this second example, the same effect could be achieved with <span style="font-family: 'Courier New',Courier,monospace;">VERTICALLY FMT &quot;FIT</span>&quot;.</p>
+
+</td></tr></table>
+
+</body>
+</html>

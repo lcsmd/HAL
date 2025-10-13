@@ -1,0 +1,17 @@
+      SEARCH.CMD=@SENTENCE
+      cmd="SELECT MD LIKE ....BP"
+      EXECUTE CMD
+      READLIST BP.FILES THEN
+         BP.CT = DCOUNT(BP.FILES,@FM)
+         PRINT "SEARCHING ":BP.CT:" FILES"
+         FOR X = 1 TO BP.CT
+            BP.FILE = BP.FILES<X>
+            PRINT "    SEARCHING ":BP.FILE
+            SEARCH.CMD2 = CHANGE(SEARCH.CMD,".BP"," ":BP.FILE)
+            EXECUTE SEARCH.CMD2
+         NEXT X
+      END ELSE
+         PRINT "NO BP'S FOUND"
+      END
+      END
+

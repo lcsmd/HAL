@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Sequential File I/O</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Sequential file i/o" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "sequential_file_io.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Sequential File I/O</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="matrix_file_io.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="default_file_variable.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><a href="directoryfiles.htm" class="topiclink">Directory files</a> are so called because they are represented by an operating system directory. The records in these files are represented by operating system files in the directory. These files do not give the high performance of hashed files but they allow access to the data from outside of QM. They are therefore particularly useful for data interchange.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Records in directory files are sometimes very large and may consist of a number of lines of textual information with a fixed layout. In such cases, it may be useful to process the data line by line. QM provides statements to perform sequential reading or writing of text data. These can only be used with directory files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An item is opened for sequential processing using the <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> statement. This has two forms, one that opens a record in a directory file by name:</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPENSEQ </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">file</span><span style="font-family: 'Courier New',Courier,monospace;">, </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">id</span><span style="font-family: 'Courier New',Courier,monospace;"> TO </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">filevar</span></p>
+<p class="p_Normal">the other opens a file by pathname:</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">OPENSEQ </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">pathname</span><span style="font-family: 'Courier New',Courier,monospace;"> TO </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">filevar</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In both forms, the statement takes the optional <span style="font-weight: bold;">ON ERROR</span>, <span style="font-weight: bold;">LOCKED</span>, <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses. At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present. Because the <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> operation is effectively opening a record, it applies a lock to this record to prevent other users overwriting it.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> statement will take the ELSE clause for three reasons:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The file does not exist.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The file exists but is not a directory file.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 0 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>The file exists as a directory file but the record does not exist.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The last of these three situations would be an error in a program that is intending to read the item but is usually not an error in a program that will write to the item. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function can be used to determine which of the above three conditions exist as discussed in the detailed <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ </a></span>statement description.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> also has options to open the item in read-only mode, append to an existing item, or overwrite an existing item.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QMBasic statements that can be used to access the sequential item are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_readseq.htm" class="topiclink">READSEQ</a></span></td><td style="border:none;padding:0">Read text line by line</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_readblk.htm" class="topiclink">READBLK</a></span></td><td style="border:none;padding:0">Read a given number of bytes</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span></td><td style="border:none;padding:0">Write text line by line</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQF</a></span></td><td style="border:none;padding:0">Write text line by line, flushing to disk before continuing</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a></span></td><td style="border:none;padding:0">Write a given number of bytes</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_readcsv.htm" class="topiclink">READCSV</a></span></td><td style="border:none;padding:0">Read comma separated variable (CSV) format data</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a></span></td><td style="border:none;padding:0">Write comma separated variable format data</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_seek.htm" class="topiclink">SEEK</a></span></td><td style="border:none;padding:0">Position within the sequential item</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_nobuf.htm" class="topiclink">NOBUF</a></span></td><td style="border:none;padding:0">Suppress buffering</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_weofseq.htm" class="topiclink">WEOFSEQ</a></span></td><td style="border:none;padding:0">Write end of file (truncate the item)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 28px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:152px"><span style="font-weight: bold;"><a href="qmb_closeseq.htm" class="topiclink">CLOSESEQ</a></span></td><td style="border:none;padding:0">Close the sequential item, flushing buffers and releasing the lock. </td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OPENSEQ 'C:\PRICES' TO SEQ.F ELSE STOP 'Cannot open price data'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OPEN 'STOCK' TO STK.F ELSE STOP 'Cannot open STOCK'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READSEQ TEXT FROM SEQ.F ELSE EXIT</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; STK.ID = TEXT[1,5]</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READU STK.REC FROM STK.F, STK.ID THEN</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;STK.REC&lt;STK.PRICE&gt; = ICONV(TEXT[6,8], 'MD2')</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;WRITE STK.REC TO STK.F, STK.ID</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END ELSE</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;RELEASE STK.F, STK.ID</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DISPLAY 'Stock item ' : STK.ID : ' not found'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This short program reads lines from a text file, C:\PRICES. Each line within this file has a stock part number in the first five characters and a new price in external format in the next eight characters. For each line, the program reads the corresponding STOCK file record and updates field STK.PRICE to contain the internal form of the price value. The token STK.PRICE would typically be defined in an include record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OPENSEQ 'C:\IMPORT.CSV' TO SEQ.F ELSE STOP 'Cannot open import file'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OPEN 'STOCK' TO STK.F ELSE STOP 'Cannot open STOCK'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READCSV FROM SEQ.F TO STK.ID, PRICE ELSE EXIT</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READU STK.REC FROM STK.F, STK.ID THEN</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;STK.REC&lt;STK.PRICE&gt; = ICONV(PRICE, 'MD2')</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;WRITE STK.REC TO STK.F, STK.ID</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END ELSE</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;RELEASE STK.F, STK.ID</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DISPLAY 'Stock item ' : STK.ID : ' not found'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This program is a variation on the first example where the import data contains comma separated items as might have been written by a spreadsheet tool such as Excel. The <span style="font-weight: bold;"><a href="qmb_readcsv.htm" class="topiclink">READCSV</a></span> statement reads the first two comma separated items in each line of text into STK.ID and PRICE. Any additional values on the line are discarded.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OPENSEQ 'C:\EXPORT.CSV' OVERWRITE TO SEQ.F ELSE</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IF STATUS() THEN STOP 'Cannot open export file'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OPEN 'STOCK' TO STK.F ELSE STOP 'Cannot open STOCK'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">SELECT STK.F TO 1</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READNEXT STK.ID FROM 1 ELSE EXIT</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READ STK.REC FROM STK.F, STK.ID THEN</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;WRITECSV STK.ID, OCONV(STK.REC&lt;STK.PRICE&gt;, 'MD2'),</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STK.REC&lt;STK.QOH&gt; TO SEQ.F ELSE</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; STOP 'Write error'</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;END </span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This program creates a text item in C:\EXPORT.CSV where each line contains the stock part number, the price and the quantity on hand as a comma separated list suitable for import into spreadsheets such as Excel.</p>
+
+</td></tr></table>
+
+</body>
+</html>

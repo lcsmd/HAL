@@ -1,0 +1,20 @@
+* DOS /c 'C:\U2\UV\bin\uvbackup -cmdfil C:\U2\UV\backcmd1428479440972 -b 8192 -f -v > E:\Back\backup-all-2015-04-8'
+TDATE = OCONV(DATE(),"D4-")
+BOPTIONS = " -b 8192 -v"
+TYPE = 'all-UniVerse-Accounts-monthly'
+BTYPE = ' -M'
+NAME = 'Backup-':TYPE:'-for-':TDATE
+PATH = "E:\ACCOUNTS\DDI"
+BFILES = ' -walk ':PATH
+LOGNAME = ' -s e:\backup\backup-log-':TDATE
+LABEL = ' -l "Monthly backup of DDI on ':TDATE:'"'
+CMD = "'C:\U2\UV\bin\uvbackup "
+BOPTIONS := BTYPE
+BOPTIONS := LOGNAME
+BOPTIONS := LABEL
+BOPTIONS := BFILES
+BACKUP.FILE = ' > E:\Back\':NAME
+DOS.CMD = CMD:BOPTIONS:BACKUP.FILE:"'"
+DOS.CMD = "DOS /C ":DOS.CMD
+PRINT DOS.CMD
+EXECUTE DOS.CMD

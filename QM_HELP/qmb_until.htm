@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>UNTIL</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="UNTIL" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_until.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">UNTIL</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_unlock.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_upcase.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">UNTIL</span> statement is used in conjunction with the <span style="font-weight: bold;">FOR</span> / <span style="font-weight: bold;">NEXT</span> or <span style="font-weight: bold;">LOOP</span> / <span style="font-weight: bold;">REPEAT</span> constructs to determine whether execution of the loop should continue.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">UNTIL</span> <span style="font-style: italic;">expr</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:61px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">evaluates to a Boolean value</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">UNTIL</span> statement causes execution of the innermost <span style="font-weight: bold;"><a href="qmb_for.htm" class="topiclink">FOR/NEXT</a></span> or <span style="font-weight: bold;"><a href="qmb_loop.htm" class="topiclink">LOOP/REPEAT</a></span> construct to terminate if the value of <span style="font-style: italic;">expr</span> is True. It is equivalent to a statement such as</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">expr</span><span style="font-family: 'Courier New',Courier,monospace;"> # 0 THEN EXIT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the CONDITIONAL.STATEMENTS option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive is active, <span style="font-style: italic;">expr</span> may be one of the following statements that in its normal form has a <span style="font-weight: bold;">THEN</span>/<span style="font-weight: bold;">ELSE</span> clause:</p>
+<p style="margin: 0 0 0 30px;"><a href="qmb_filelock.htm" class="topiclink">FILELOCK</a>, <a href="qmb_fileunlock.htm" class="topiclink">FILEUNLOCK</a>, <a href="qmb_find.htm" class="topiclink">FIND</a>, <a href="qmb_findstr.htm" class="topiclink">FINDSTR</a>, <a href="qmb_flush.htm" class="topiclink">FLUSH</a>, <a href="qmb_getlist.htm" class="topiclink">GETLIST</a>, <a href="qmb_locate.htm" class="topiclink">LOCATE</a>, <a href="qmb_matread.htm" class="topiclink">MATREAD</a>, <a href="qmb_matreadcsv.htm" class="topiclink">MATREADCSV</a>, <a href="qmb_matread.htm" class="topiclink">MATREADL</a>, <a href="qmb_matread.htm" class="topiclink">MATREADU</a>, <a href="qmb_open.htm" class="topiclink">OPEN</a>, <a href="qmb_openpath.htm" class="topiclink">OPENPATH</a>, <a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a>, <a href="qmb_osread.htm" class="topiclink">OSREAD</a>, <a href="qmb_read.htm" class="topiclink">READ</a>, <a href="qmb_readblk.htm" class="topiclink">READBLK</a>, <a href="qmb_readcsv.htm" class="topiclink">READCSV</a>, <a href="qmb_readl.htm" class="topiclink">READL</a>, <a href="qmb_readlist.htm" class="topiclink">READLIST</a>, <a href="qmb_readnext.htm" class="topiclink">READNEXT</a>, <a href="qmb_readseq.htm" class="topiclink">READSEQ</a>, <a href="qmb_readu.htm" class="topiclink">READU</a>, <a href="qmb_readv.htm" class="topiclink">READV</a>, <a href="qmb_readvl.htm" class="topiclink">READVL</a>, <a href="qmb_readvl.htm" class="topiclink">READVU</a>, <a href="qmb_seek.htm" class="topiclink">SEEK</a>, <a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a>, <a href="qmb_writecsv.htm" class="topiclink">WRITECSV</a>, <a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When used in this way, the LOCKED or ON ERROR clauses normally associated with some of these statements are not available.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">FOR I = 1 TO 20</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">UNTIL A(I) &lt; 0</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; DISPLAY A(I)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">NEXT I</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment displays elements of matrix A. The loop terminates if an element is found with a negative value.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">UNTIL OSREAD 'C:\FAX.DATA'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; SLEEP 300</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">REPEAT</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program fragment, which requires the CONDITIONAL.STATEMENTS option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive to be active, repeatedly attempts to read the C:\FAX.DATA file at five minute intervals. When successful, the loop exits.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_exit.htm" class="topiclink">EXIT</a>, <a href="qmb_while.htm" class="topiclink">WHILE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

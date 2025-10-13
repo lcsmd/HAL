@@ -1,0 +1,113 @@
+! Program: POPULATE_FILES
+! Description: Populates files with initial data.
+! Author: Lawrence C Sullivan MD
+! Date:11-18-2024 
+
+PROGRAM POPULATE_FILES
+
+    CRT 'Populating files with initial data...'
+
+    * Open PROMPTS_PARAMETERS file
+    OPEN 'PROMPTS_PARAMETERS' TO PARAMS.FILE ELSE
+        CRT 'Cannot open PROMPTS_PARAMETERS file.'
+        STOP
+    END
+
+    * Read and process parameters from the ###PARAMETERS### section
+    GOSUB LOAD_PARAMETERS
+
+    CRT 'PROMPTS_PARAMETERS populated successfully.'
+
+    * Add the template to PROMPTS_TEMPLATE
+    OPEN 'PROMPTS_TEMPLATE' TO TEMPLATE.FILE ELSE
+        CRT 'Cannot open PROMPTS_TEMPLATE directory file.'
+        STOP
+    END
+
+    TEMPLATE_NAME = 'synology_coder.pt'
+    GOSUB LOAD_TEMPLATE
+
+    * Delete existing template if it exists
+    DELETE TEMPLATE.FILE, TEMPLATE_NAME
+
+    WRITE TEMPLATE_TEXT ON TEMPLATE.FILE, TEMPLATE_NAME
+    CRT 'Template ' : TEMPLATE_NAME : ' added to PROMPTS_TEMPLATE.'
+
+    * Populate PROMPTS_PARAMETER_SET
+    OPEN 'PROMPTS_PARAMETER_SET' TO PARAM_SET.FILE ELSE
+        CRT 'Cannot open PROMPTS_PARAMETER_SET directory file.'
+        STOP
+    END
+
+    PARAM_SET_NAME = 'synology_coder-create_reverse_proxy.pps'
+    GOSUB LOAD_PARAMETER_SET
+
+    * Delete existing parameter set if it exists
+    DELETE PARAM_SET.FILE, PARAM_SET_NAME
+
+    WRITE PARAM_SET_DATA ON PARAM_SET.FILE, PARAM_SET_NAME
+    CRT 'Parameter set ' : PARAM_SET_NAME : ' added to PROMPTS_PARAMETER_SET.'
+
+    STOP
+
+*-----------------------------------------
+LOAD_PARAMETERS:
+    CRT 'Loading parameters...'
+
+    PARAM_DATA = ''
+
+    * Add your parameter data here based on the ###PARAMETERS### section
+    * [Include the parameter data as before]
+
+    * Loop through each parameter and write to the PROMPTS_PARAMETERS file
+    FOR I = 1 TO DCOUNT(PARAM_DATA, @AM)
+        LINE = PARAM_DATA<I>
+        * Extract parameter name
+        PARAM_NAME = FIELD(LINE, ']', 1)
+        PARAM_NAME = FIELD(PARAM_NAME, '[', 2)
+        PARAM_NAME = TRIM(PARAM_NAME)
+        PARAM_NAME_KEY = CONVERT(' ', '_', PARAM_NAME)
+        PARAM_VALUE = FIELD(LINE, ']', 2)
+        PARAM_VALUE = TRIM(PARAM_VALUE)
+        IF INDEX(PARAM_NAME, '*', 1) THEN
+            * Remove '*' from parameter name
+            PARAM_NAME_KEY = TRIM(PARAM_NAME_KEY, '*')
+            * Store '*' to indicate value to be specified later
+            PARAM_CONTENT = '*'
+        END ELSE
+            * Replace '|' with @VM for multivalued fields
+            PARAM_CONTENT = CONVERT('|', @VM, PARAM_VALUE)
+        END
+
+        * Delete existing parameter if it exists
+        DELETE PARAMS.FILE, PARAM_NAME_KEY
+
+        * Write parameter
+        WRITE PARAM_CONTENT ON PARAMS.FILE, PARAM_NAME_KEY
+        CRT 'Parameter ' : PARAM_NAME : ' added.'
+    NEXT I
+
+RETURN
+
+*-----------------------------------------
+LOAD_TEMPLATE:
+    CRT 'Loading template...'
+
+    TEMPLATE_TEXT = ''
+
+    * [Include the template text as before]
+
+RETURN
+
+*-----------------------------------------
+LOAD_PARAMETER_SET:
+    CRT 'Loading parameter set...'
+
+    PARAM_SET_DATA = ''
+
+    * [The rest of the code remains the same]
+
+RETURN
+
+END
+

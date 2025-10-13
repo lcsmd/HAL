@@ -1,0 +1,43 @@
+     SUBROUTINE LCS.OPEN.FILES (ERRORS, XMISC)
+     !
+     ! COMMON CELL BLOCK
+     
+      INCLUDE UTLSBP ASSIGN.VAR
+      INCLUDE LCS.BPQ LCS.SET.FILES
+
+     !
+     MAT F.FILES = ''
+     !
+     OPEN 'LCS.CONTROL' TO F.LCS.CONTROL ELSE
+          ERRORS = FERRORS:CRLF:'LCS.CONTROL'
+          RETURN
+     END
+     !
+     READ FILES FROM F.LCS.CONTROL, 'LCS.FILES' ELSE
+          ERRORS = 'CONTROL LCS.FILES Record Missing!'
+          RETURN
+     END
+     !
+     CTR = 0; ERRORS = ''
+     LOOP
+          CTR = CTR + 1
+     WHILE CTR LE NBR.OF.FILES DO
+          IF FILENAME[1,1] = '$' THEN
+               FILE1 = FILENAME[2,99]
+               FILE2 = FIELD(FILE1,',',2)
+               FILE1 = FIELD(FILE1,',',1)
+               OPENSEQ FILE1,FILE2 TO F.FILES(CTR) ELSE
+                    ERRORS = ERRORS:CRLF:FILENAME
+               END
+          END ELSE
+               FILENAME = ALLFILES<1,CTR>
+               OPEN FILENAME TO F.FILES(CTR) ELSE
+                    ERRORS = ERRORS:CRLF:FILENAME
+               END
+          END
+     REPEAT
+     IF ERRORS # '' THEN ERRORS = FERRORS:ERRORS
+     !
+     ! RETURN TO CALLING PROGRAM
+     !
+     RETURN

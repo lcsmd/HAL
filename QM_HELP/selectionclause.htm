@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>The Selection Clause</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Selection clause" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "selectionclause.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">The Selection Clause</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="queryintro.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="sortclause.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A <span style="font-weight: bold;">selection clause</span> may be provided to specify criteria governing which records are processed by the command. If omitted, all records are processed. Selection clauses can be used with all query processor verbs</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The selection clause is described in detail under the <span style="font-weight: bold;"><a href="with.htm" class="topiclink">WITH</a></span> and <span style="font-weight: bold;"><a href="when.htm" class="topiclink">WHEN</a> </span>keywords. The records to be processed by a query can also be specified by use of a select list. The <span style="font-weight: bold;"><a href="from.htm" class="topiclink">FROM</a></span> keyword can be used to specify the list to be used. If this is not present and the default list (list zero) is active, this is used automatically.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The performance of queries against large files can be improved dramatically by use of alternate key indices. These are index files that relate a particular value of a data field or virtual attribute to the ids of records that have that value. Alternate key indices are created in a two step operation using the <span style="font-weight: bold;"><a href="create_index.htm" class="topiclink">CREATE.INDEX</a></span> &nbsp;and <span style="font-weight: bold;"><a href="build_index.htm" class="topiclink">BUILD.INDEX</a></span> commands. Once an index has been built, it is maintained automatically by QM and is used by the query processor whenever it is advantageous to do so.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Ranges of values can also be satisfied using indices if the upper and lower limits are defined in the first two conditional elements. For example,</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST STOCK WITH QOH &gt; 3 AND QOH &lt; 10 AND SUPPLIER = 27</span></p>
+<p>will use an index on the QOH field to access the data whereas</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST STOCK WITH QOH &gt; 3 AND SUPPLIER = 27 AND QOH &lt; 10</span></p>
+<p>will not. Use of unnecessary brackets may also defeat the indexing system. For example,</p>
+<p style="margin: 10px 0 10px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST STOCK WITH QOH &gt; 3 AND (QOH &lt; 10 AND SUPPLIER = 27)</span></p>
+<p>will not use the index as the second conditional element is not a simple item.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Selection clause comparisons are case sensitive by default. Case insensitivity can be applied by including the <span style="font-weight: bold;">NO.CASE</span> qualifier after the relational operator or by use of the QUERY.NO.CASE mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command. See <a href="ak.htm" class="topiclink">Alternate Key Indices</a> for a discussion of why a case sensitive index cannot be used to resolve a case insensitive selection clause element or vice versa.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The PICK.IMPLIED.EQ mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command can be used to select Pick style behaviour where a field name followed by a literal value enclosed in double quotes has an implied equals operator. Thus</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST CLIENTS WITH CUST.NO &quot;1234&quot; &quot;5678&quot;</span></p>
+<p>is equivalent to</p>
+<p style="margin: 6px 0 6px 29px;"><span style="font-family: 'Courier New',Courier,monospace;">LIST CLIENTS WITH CUST.NO = &quot;1234&quot; &quot;5678&quot;</span></p>
+<p>Without this option, the semantics of the query are such that the two literal values are treated as record ids and the selection element restricts processing to records in which the CUST.NO field is not empty.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="displayclause.htm" class="topiclink">Qualified display clauses</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

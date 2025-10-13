@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>ARG.COUNT()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="ARG.COUNT()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_arg_count.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">ARG.COUNT()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_arg.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_arg_present.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">ARG.COUNT()</span> function returns the number of arguments passed into the current subroutine. It is intended for use with subroutines declared with the <a href="qmb_subroutine.htm" class="topiclink">VAR.ARGS</a> option.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">ARG.COUNT()</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When a program calls a subroutine that has been declared with the <a href="qmb_subroutine.htm" class="topiclink">VAR.ARGS</a> option, the actual number of arguments passed may be fewer than the number of argument variables in the subroutine definition. The unused argument variables will be left unassigned. The <span style="font-weight: bold;">ARG.COUNT()</span> function allows a subroutine to determine the number of arguments that have been passed. See the <span style="font-weight: bold;"><a href="qmb_arg.htm" class="topiclink">ARG()</a></span> function for a way to access arguments by their position in the argument list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When used in a function, the value returned by <span style="font-weight: bold;">ARG.COUNT()</span> excludes the hidden return argument. </p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that the <span style="font-weight: bold;">ARG.COUNT()</span> function relates to the arguments passed into a <span style="font-weight: bold;">SUBROUTINE</span>, <span style="font-weight: bold;">FUNCTION</span> or <span style="font-weight: bold;">CLASS</span> module and does not reflect the number of arguments passed into a local subroutine or function.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">FUNCTION AVG(A,B,C,D,E) VAR.ARGS</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; TOTAL = 0</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; FOR I = 1 TO ARG.COUNT()</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;TOTAL += ARG(I)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; NEXT I</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RETURN TOTAL / ARG.COUNT()</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above function returns the average of the supplied arguments. Because this function is declared with the VAR.ARGS option, the <span style="font-weight: bold;">ARG.COUNT()</span> function is used to determine the actual number of arguments and the <span style="font-weight: bold;"><a href="qmb_arg.htm" class="topiclink">ARG()</a></span> function is used to access each argument by its position.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_arg.htm" class="topiclink">ARG()</a></span>,<span style="font-weight: bold;"> <a href="qmb_arg_present.htm" class="topiclink">ARG.PRESENT()</a>, <a href="qmb_set_arg.htm" class="topiclink">SET.ARG</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

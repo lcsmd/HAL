@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>COL1()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="COL1()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_col1.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">COL1()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_closeseq.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_col2.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COL1()</span> function returns the character position immediately preceding the substring extracted by the last <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span> or <span style="font-weight: bold;"><a href="qmb_last.htm" class="topiclink">LAST()</a></span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">COL1()</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COL1()</span> function is used after a <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span> or <span style="font-weight: bold;"><a href="qmb_last.htm" class="topiclink">LAST()</a></span> function to find the character position of the character immediately preceding the extracted substring.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The value of the <span style="font-weight: bold;">COL1()</span> function is maintained on a per-program basis. If an external subroutine is called between extracting the data and use of the <span style="font-weight: bold;">COL1()</span> function, the positional data is not lost by any use of the  <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span> or <span style="font-weight: bold;"><a href="qmb_last.htm" class="topiclink">LAST()</a></span> function in the subroutine.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">COL1()</span> returns zero if</p>
+<p style="margin: 10px 0 0 30px;">No <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span> or <span style="font-weight: bold;"><a href="qmb_last.htm" class="topiclink">LAST()</a></span> function has been executed by this program</p>
+<p style="margin: 10px 0 0 30px;">The last field extracted was at the start of the string</p>
+<p style="margin: 10px 0 0 30px;">The delimiter to the last <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span> function was a null string</p>
+<p style="margin: 10px 0 0 30px;">The field number of the last <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span> function was beyond the end of the string</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">S = &quot;A*BB*CCC*DDDD*EEEEE&quot;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">X = FIELD(S, &quot;*&quot;, 3, 2)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">N = COL1()</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment extracts the string &quot;CCC*DDDD&quot; to variable X. The <span style="font-weight: bold;">COL1()</span> function returns 5 and assigns this to N.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_col2.htm" class="topiclink">COL2()</a></span>, <span style="font-weight: bold;"><a href="qmb_field.htm" class="topiclink">FIELD()</a></span>, <span style="font-weight: bold;"><a href="qmb_last.htm" class="topiclink">LAST()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Process Dump Files</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Process dump files" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "processdumpfile.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Process Dump Files</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_debugger.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="errors.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM includes the option to generate a process dump file containing a detailed report of the state of the process. There are five ways to generate a process dump:</p>
+<p style="margin: 10px 0 0 30px;">A process dump will be created automatically if the DUMP.ON.ERROR mode of the <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION</a></span> command is active and the process aborts either due to an error detected by QM or from use of the <span style="font-weight: bold;"><a href="qmb_abort.htm" class="topiclink">ABORT</a></span> statement in a QMBasic program.</p>
+<p style="margin: 10px 0 0 30px;">Use of the DUMPING option in the <span style="font-weight: bold;">CATCH</span> clause of a <span style="font-weight: bold;"><a href="qmb_try.htm" class="topiclink">TRY/CATCH</a></span> block.</p>
+<p style="margin: 10px 0 0 30px;">Selection of the P option following use of the break key.</p>
+<p style="margin: 10px 0 0 30px;">Use of the QMBasic <span style="font-weight: bold;"><a href="qmb_pdump.htm" class="topiclink">PDUMP</a></span> statement.</p>
+<p style="margin: 10px 0 0 30px;">Use of the <span style="font-weight: bold;"><a href="pdump.htm" class="topiclink">PDUMP</a></span> command. This can be used to generate a dump of a different process such as a phantom or a QMClient process.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By default, the process dump is directed to an operating system level file named qmdump.<span style="font-style: italic;">n</span> in the QMSYS account directory where <span style="font-style: italic;">n</span> is the QM user number. The directory to receive the dump file can be changed using the <a href="configparams.htm#dumpdir" class="topiclink">DUMPDIR</a> configuration parameter. Because use of <span style="font-weight: bold;"><a href="pdump.htm" class="topiclink">PDUMP</a></span> potentially allows a user to view data from another user's session, reducing system security, the <a href="configparams.htm#pdump" class="topiclink">PDUMP</a> configuration parameter can be used to restrict the command to dumping other processes running under the same user name.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The file consists of a number of sections detailing the current state of the user process at the time of the error.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>1. Environment data</p>
+<p style="margin: 5px 0 0 30px;">QM version number</p>
+<p style="margin: 5px 0 0 30px;">Licence number and site name</p>
+<p style="margin: 5px 0 0 30px;">User number</p>
+<p style="margin: 5px 0 0 30px;">Process id</p>
+<p style="margin: 5px 0 0 30px;">Parent user number (zero except in phantom processes)</p>
+<p style="margin: 5px 0 0 30px;">User and account names</p>
+<p style="margin: 5px 0 0 30px;">Terminal type</p>
+<p style="margin: 5px 0 0 30px;">OPTION settings</p>
+<p style="margin: 5px 0 0 30px;">Values of STATUS(), OS.ERROR() and INMAT()</p>
+<p style="margin: 5px 0 0 30px;">Values of critical configuration parameters NUMFILES and NUMLOCKS together with the peak usage counts</p>
+<p style="margin: 5px 0 0 30px;">Transaction id, command processor level and start time (only if in a transaction)</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>2. @-variables</p>
+<p style="margin: 5px 0 0 30px;">@-variables that are likely to be useful in determining the cause of an error.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>3. Active numbered select lists</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>4. Locks</p>
+<p style="margin: 5px 0 0 30px;">The report shows all task locks, file locks and record locks owned by the process.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>5. Program stack</p>
+<p style="margin: 5px 0 0 30px;">This contains an entry for each program, working backwards from the program in which the error occurred.</p>
+<p style="margin: 5px 0 0 30px;">For each program, the dump shows</p>
+<p style="margin: 5px 0 0 60px;">Program number (used in some cross-references within the dump)</p>
+<p style="margin: 5px 0 0 60px;">Program name, instruction address and line number. Line numbers cannot be shown if the program was compiled with no cross reference tables or these were removed when the program was catalogued.</p>
+<p style="margin: 5px 0 0 60px;">Program status flags showing various special program states.</p>
+<p style="margin: 5px 0 0 60px;">Precision setting and COL1(), COL2() values.</p>
+<p style="margin: 5px 0 0 60px;">GOSUB return stack, if not empty.</p>
+<p style="margin: 5px 0 0 60px;">Variables. Local variables are sorted alphabetically. Elements of a common block are shown in memory order and are only dumped on the first program that references the block. Non-printing characters in strings are replaced by \<span style="font-style: italic;">nn</span> where <span style="font-style: italic;">nn</span> is the hexadecimal character value. Backslash characters are shown as \\. Character string data is not line wrapped to simplify exploration of the data using tools such as the <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> editor.</p>
+<p style="margin: 5px 0 0 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 5px 0 0 0;">6. Environment variables.</p>
+<p style="margin: 5px 0 0 0;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 5px 0 0 0;">7. Printer definitions.</p>
+
+</td></tr></table>
+
+</body>
+</html>

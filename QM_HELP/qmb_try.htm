@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>TRY / CATCH</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CATCH,Exception handling,TRY" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_try.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">TRY / CATCH</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_trimw.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_ttyget.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">TRY/CATCH</span> construct allows creation of exception handlers in a manner broadly similar to that of some other programming languages.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">TRY</span> {<span style="font-style: italic;">statement</span>}</p>
+<p class="p_Normal" style="margin: 0 0 0 59px;">{<span style="font-style: italic;">statements</span>}</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CATCH</span> <span style="font-style: italic;">exception</span> {<span style="font-style: italic;">qualifiers</span>}{, <span style="font-style: italic;">exception </span>{<span style="font-style: italic;">qualifiers</span>}...}</p>
+<p class="p_Normal" style="margin: 0 0 0 59px;">{<span style="font-style: italic;">statements</span>}</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CATCH</span> <span style="font-style: italic;">exception</span> {<span style="font-style: italic;">qualifiers</span>}{, <span style="font-style: italic;">exception </span>{<span style="font-style: italic;">qualifiers</span>}...}</p>
+<p class="p_Normal" style="margin: 0 0 0 59px;">{<span style="font-style: italic;">statements</span>}</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are any executable QMBasic statements.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">exception</span></td><td style="border:none;padding:0">is an exception name. The name may optionally be enclosed in quotes. If unquoted, the name must comply with QMBasic name format rules.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">qualifiers</span></td><td style="border:none;padding:0">are chosen from:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:181px"><span style="font-weight: bold;">DUMPING</span></td><td style="border:none;padding:0">Generates a <a href="processdumpfile.htm" class="topiclink">process dump file</a> when the exception is thrown.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 179px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:181px"><span style="font-weight: bold;">SAVING.STACK</span></td><td style="border:none;padding:0">Sets <a href="at_variables.htm#exception.stack" class="topiclink">@EXCEPTION.STACK</a> to contain the stack history in the same form as use of the <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key 1002 (SYS$CALL.STACK). This can also be set by default by use of the EXCEPTION.SAVE.STACK option of the <a href="qmbd_mode.htm" class="topiclink">$MODE</a> compiler directive.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A single <span style="font-weight: bold;">TRY</span> construct may have multiple <span style="font-weight: bold;">CATCH</span> clauses.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An <span style="font-weight: bold;">exception</span> is a named event, typically an error, raised within an application by use of the <span style="font-weight: bold;"><a href="qmb_throw.htm" class="topiclink">THROW</a></span> statement. The actual name has no significance to QM but should ideally relate to the situation that the exception handles. Exception names are case insensitive and may be up to 63 characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A <span style="font-weight: bold;">TRY</span>/<span style="font-weight: bold;">CATCH</span> construct executes the statement(s) in the <span style="font-weight: bold;">TRY</span> clause, monitoring for named exceptions being thrown.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On throwing an exception, the application exits from all lower level programs, subroutines, etc and continues execution in the <span style="font-weight: bold;">CATCH</span> clause that handles this exception. Where an object oriented programming object is discarded by an exception, the DESTROY.OBJECT subroutine will be executed in the normal way.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Whilst execution of subroutines that return is acceptable within the <span style="font-weight: bold;">TRY</span> clause, it is essential that programs do not jump into or out of this clause. Failure to follow this rule may have undesirable results.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A single <span style="font-weight: bold;">CATCH</span> clause may catch multiple exception names. On arrival in the <span style="font-weight: bold;">CATCH</span> clause, the <a href="at_variables.htm#exception" class="topiclink">@EXCEPTION</a> variable will contain the name of the exception that has been caught and the <a href="at_variables.htm#exception.data" class="topiclink">@EXCEPTION.DATA</a> variable will contain any data associated with this exception. The <a href="at_variables.htm#exception.origin" class="topiclink">@EXCEPTION.ORIGIN</a> variable is set to a dynamic array in which field 1 holds the program name from which the exception was thrown and field 2 holds the line number in that program. If the program has no cross-reference tables, the line number will be -1.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the exception name in the <span style="font-weight: bold;">CATCH</span> clause is followed by the <span style="font-weight: bold;">DUMPING</span> or <span style="font-weight: bold;">SAVING.STACK</span> options, the additional diagnostic data is generated when the exception is thrown, before unwinding the call stack to the exception handler.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOOP</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; READNEXT ACC.ID ELSE EXIT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; TRY</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;CALL PROCESS.ACCOUNT</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; CATCH ACCOUNT.INVALID</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;DISPLAY 'Account ' : ACC.ID : ' is invalid'</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REPEAT</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above rather simple example shows a program fragment that processes successive items from a select list. If the PROCESS.ACCOUNT subroutine, or any lower level action called from it, throws an ACCOUNT.INVALID exception, the program will continue execution at the DISPLAY statement.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">TRY</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; CALL MYSUB</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">CATCH TERMINATE DUMPING</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY 'Process status dumped'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The above example establishes an exception handler around a call to MYSUB. If the user defined TERMINATE exception occurs, a process dump file will be created prior to arrival in the CATCH clause.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A useful report of the call stack can be produced with the code fragment below executed from the CATCH clause. This is also available as a standard catalogued QMBasic subroutine named !EXC.STACK.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">IF @EXCEPTION.STACK # '' THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; DISPLAY ' &nbsp; &nbsp; Program name.................. &nbsp;Addr.. &nbsp;Line'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; LEVEL = 1</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; FOR EACH PROG IN @EXCEPTION.STACK DELIMITER @FM</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;NAME = FMT(PROG&lt;1,1&gt;, '30L')</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;DISPLAY FMT(LEVEL, 'R%3 &nbsp;') :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;SUBDATA = FIELD(PROG&lt;1&gt;, @VM , 2, *)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;SUBADDR = VSLICE(SUBDATA, 0, 1)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;SUBLINE = VSLICE(SUBDATA, 0, 2)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;LOOP</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY FMT(REMOVE(NAME, MORE.NAME), '30L') : ' &nbsp;' :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY DTX(REMOVE(SUBADDR, MORE.ADDR), 6) : ' &nbsp;' :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY REMOVE(SUBLINE, MORE.LINE)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;WHILE MORE.NAME OR MORE.ADDR OR MORE.LINE</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; DISPLAY ' &nbsp; &nbsp; ' :</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;REPEAT</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;LEVEL += 1</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; NEXT PROG</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="exception_handling.htm" class="topiclink">Exception handling</a>, <span style="font-weight: bold;"><a href="qmb_caught.htm" class="topiclink">CAUGHT()</a></span>, <span style="font-weight: bold;"><a href="qmbs_exc_stack.htm" class="topiclink">!EXC.STACK</a></span>, <span style="font-weight: bold;"><a href="qmb_throw.htm" class="topiclink">THROW</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

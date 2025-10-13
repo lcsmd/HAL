@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>VARTYPE()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="VARTYPE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_vartype.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">VARTYPE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_validate.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_vocpath.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">VARTYPE()</span> function returns a value indicating the data type associated with a variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">VARTYPE(</span><span style="font-style: italic;">variable</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">variable</span></td><td style="border:none;padding:0">is the variable to be tested.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QM stores data internally in a type variant manner. The actual data type associated with a variable may change as new data is stored. The <span style="font-weight: bold;">VARTYPE()</span> function allows a program to determine the internal data type being used. It returns one of the following values. The symbolic names shown are defined in the SYSCOM KEYS.H include record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">0</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$UNASSIGNED</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Unassigned</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">1</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$BOOLEAN</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Boolean value</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">2</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$INTEGER</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Integer value</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">3</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$FLOATNUM</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Floating point value</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">4</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$SUBR</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Subroutine reference</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">5</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$STRING</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">String variable</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">6</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$FILE.REF</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">File variable</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">7</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$NULLVALUE</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">SQL style null value</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">8</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$COLLECTION</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Data collection</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">9</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$IMAGE</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Screen image from <span style="font-weight: bold;"><a href="qmb_save_screen.htm" class="topiclink">SAVE.SCREEN()</a></span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">10</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$ARRAY</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Array in data collection</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">11</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$SELLIST</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Select list</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">13</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$SOCK</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Socket variable</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">15</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$OBJ</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Object instance of class module</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">18</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$FILEWAIT</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Monitor variable from <span style="font-weight: bold;"><a href="qmb_file_event.htm" class="topiclink">FILE.EVENT()</a></span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:69px; padding:4px; border:none"><p class="p_Normal">20</p>
+</td>
+<td style="vertical-align:top; width:337px; padding:4px; border:none"><p class="p_Normal">VT$SORT</p>
+</td>
+<td style="vertical-align:top; width:524px; padding:4px; border:none"><p class="p_Normal">Sort data from <span style="font-weight: bold;"><a href="qmb_sort.htm" class="topiclink">SORT()</a></span></p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">IF VARTYPE(FVAR) = VT$FILE.REF THEN</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; CLOSE(FVAR)</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment tests whether FVAR references an open file and, if so, closes the file. The same effect could have been achieved using the FL$OPEN mode of the <span style="font-weight: bold;"><a href="qmb_fileinfo.htm" class="topiclink">FILEINFO()</a></span> function.</p>
+
+</td></tr></table>
+
+</body>
+</html>

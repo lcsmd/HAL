@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Distributed Files</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Distributed files" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "distributed_files.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Distributed Files</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="data_collection_files.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmnet.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A <span style="font-weight: bold;">distributed file</span> holds no data. Instead it is simply a reference to a set of separate <a href="dynamicfiles.htm" class="topiclink">dynamic files</a> that may be treated by an application as though they were a single file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Distributed files allow an application to break a large data set into smaller pieces and reconstruct it in various ways to optimise performance. For example, a sales processing system might store orders for each month as a separate file (ORDERS-JAN09, ORDERS-FEB09, ORDERS-MAR09, etc). Reports of orders in the current month now only require the query to be run using the file that holds this month's orders. A report based on all orders ever received would require all the separate orders files to be processed. Rather than running multiple separate queries and merging the results in some way, this is achieved by creating a distributed file that references all of the monthly order files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A distributed file gives the application the ability to access data in all of its component <span style="font-weight: bold;">part files</span> without any special logic in the application itself. When a record is to be accessed, QM will work out which part file would contain the record by applying the <span style="font-weight: bold;">partitioning algorithm</span> that defines the distributed file structure. This algorithm is supplied by the user and is effectively a higher level of hashing that translates a record id to a file <span style="font-weight: bold;">part number</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There is no reason why multiple distributed files cannot reference the same part files in different combinations. As well as having a distributed file that combines all of the monthly orders files in the example above, we could also have distributed files to bring together all orders for a quarter or for a year.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 29px;"><img alt="DistributedFiles" width="800" height="150" style="margin:0;width:800px;height:150px;border:none" src="distributedfiles.png"/></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The underlying requirements for a distributed file are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 6px 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">1.</td><td style="border:none;padding:0">The record ids must be unique across the entire set of part files. In the example above, the ids would probably be order numbers.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 6px 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">2.</td><td style="border:none;padding:0">Given a record id, it must be possible for the partitioning algorithm to determine which part file the record would be in. This transformation may be as simple or as complex as the application design requires. In our order processing example, having the date as part of the record id would make the process very simple. On the other hand, the partitioning algorithm could use a list of order number ranges for each month.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 6px 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">3.</td><td style="border:none;padding:0">The part files would normally hold records with the same structure and a single dictionary would be used for all parts as well as for the distributed file itself.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 6px 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">4.</td><td style="border:none;padding:0">The part files may not be data collection files.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">The Partitioning Algorithm</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The partitioning algorithm is written as an I-type expression in the dictionary that defines the part files. This calculation must be based only on examination of the record id, not the data in the record, because the data is not available when identifying the part that will contain the record for a read operation. It is possible for the expression to use <span style="font-weight: bold;"><a href="qmb_trans.htm" class="topiclink">TRANS()</a></span> functions to reference other files but the performance impact of this could be very severe as the expression will be evaluated for every read, write or delete.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The partitioning algorithm must return an integer part number. This must be in the range 0 to 2147483647 and does not need to be a simple sequential number. Our order file example might use the year and month as a four digit number (0811, 0812, 0901, 0902, etc).</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where a file uses case insensitive record ids, the result of the partitioning algorithm must not be affected by the casing of the supplied id. This is because case insensitivity is a property of the part file and is therefore unknown when the expression is evaluated.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Because an application can update the individual part files independently of the distributed file, it is essential that records written in this way are placed into the correct part file. Failure to ensure this may lead to all manner of strange results such as a record appearing in a select list but not being found by a read operation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Attempting to access a distributed file where the partitioning algorithm returns a value that does not correspond to any of the file parts will cause the operation to take the ON ERROR clause. If this clause is omitted, the program will abort. The last part number returned by the partitioning algorithm, including errors, can be determined using key FL$LAST.PART in the <span style="font-weight: bold;"><a href="qmb_fileinfo.htm" class="topiclink">FILEINFO()</a></span> function.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Distributed File Related Commands</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A distributed file is created using the <span style="font-weight: bold;"><a href="add_df.htm" class="topiclink">ADD.DF</a></span> command:</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;"><span style="font-weight: bold;">ADD.DF</span> <span style="font-style: italic;">dist.file</span>  <span style="font-style: italic;">part.file</span>  <span style="font-style: italic;">part.no</span>  <span style="font-style: italic;">algorithm</span> {<span style="font-weight: bold;">RELATIVE</span>}</p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">dist.file</span></td><td style="border:none;padding:0">is the name of the distributed file.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">part.file</span></td><td style="border:none;padding:0">is the name of the part file to be added.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">part.no</span></td><td style="border:none;padding:0">is the part number associated with this part file.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">algorithm</span></td><td style="border:none;padding:0">is the name of the partitioning algorithm in the dictionary of <span style="font-style: italic;">part.file</span>.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">First use of the command will create the distributed file, compiling the partitioning algorithm and adding the named part file. The newly created distributed file will share the dictionary of the first part file. Subsequent use of the ADD.DF command will add further part files. The <span style="font-style: italic;">algorithm</span> need not be specified for the second and subsequent parts and will be ignored if present.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that the partitioning algorithm is copied into the distributed file. Changing the expression in the dictionary will not have any effect. It will be necessary to reconstruct the distributed file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A new part may be added to a distributed file at any time though QM processes that already have the file open will not see the new part until the file is closed and reopened.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A part file can be removed from a distributed file using the <span style="font-weight: bold;"><a href="remove_df.htm" class="topiclink">REMOVE.DF</a></span> command:</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;"><span style="font-weight: bold;">REMOVE.DF</span> <span style="font-style: italic;">dist.file</span>  <span style="font-style: italic;">part.file</span></p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">dist.file</span></td><td style="border:none;padding:0">is the name of the distributed file.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">part.file</span></td><td style="border:none;padding:0">is the name of the part file to be removed. The part number can be used instead of the name. Use of the keyword <span style="font-weight: bold;">ALL</span> in place of <span style="font-style: italic;">part.file</span> deletes the entire distributed file.</td></tr></table></div><p class="p_Normal" style="text-indent: -94px; margin: 6px 0 0 123px;">&nbsp;</p>
+<p class="p_Normal">Removing the final part also deletes the distributed file. A part may be removed at any time though QM processes that already have the file open will continue to use the part until the file is closed and reopened</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The components of a distributed file can be listed using the <span style="font-weight: bold;"><a href="list_df.htm" class="topiclink">LIST.DF</a></span> command;</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;"><span style="font-weight: bold;">LIST.DF</span> <span style="font-style: italic;">dist.file</span></p>
+<p class="p_Normal">where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:94px"><span style="font-style: italic;">dist.file</span></td><td style="border:none;padding:0">is the name of the distributed file.</td></tr></table></div><p class="p_Normal" style="text-indent: -94px; margin: 6px 0 0 123px;">&nbsp;</p>
+<p class="p_Normal">This command shows a list of the part file pathnames and their associated part numbers.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Alternate Key Indices in Distributed Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Alternate key indices can be used with distributed files but are defined on the part files in the usual way, not on the distributed file. When a distributed file is opened, QM determines which index names are defined in <span style="text-decoration: underline;">all</span> of the part files and only these indices are available when referencing the distributed file. Note that this process is based only on the index name. If two part files have indices of the same name that are defined differently, the effects are undefined.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">QMBasic Programming with Distributed Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A QMBasic program that opens a distributed file can access the data in this file in exactly the same way as for any other file. The partitioning algorithm will be applied internally by QM for all record level operations to determine which part file should be accessed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Locks are maintained at the part file level. Locking a record via an operation that references the distributed file will apply the lock to the part file in which that record would reside based on the partitioning algorithm.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Obtaining a file lock on a distributed file will acquire the file lock on all of the component part files. Because a process is never blocked by its own locks, a program can obtain the file lock on an individual part file that has been opened separately and then go on to obtain the file lock on the distributed file. Releasing the file lock on the distributed file would effectively also release the file lock on the individual part file. Conversely, releasing the file lock on the individual part file would mean that the file lock on the distributed file was no longer complete. Given the probable inappropriateness of file locks in distributed files, it is unlikely that this situation is of concern to application developers.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_fileinfo.htm" class="topiclink">FILEINFO()</a></span> function will return a file type code of FL$TYPE.DIST (7). The FL$PARTS key value of <span style="font-weight: bold;"><a href="qmb_fileinfo.htm" class="topiclink">FILEINFO()</a></span> will return a field mark delimited list of the part numbers of each part file. Many of the other key values of this function are inappropriate to distributed files but can be applied to an individual part by using the <span style="font-weight: bold;"><a href="qmb_dfpart.htm" class="topiclink">DFPART()</a></span> function to reference the part file.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_indices.htm" class="topiclink">INDICES()</a></span> function will return data for indices that are common to all part files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_selectindex.htm" class="topiclink">SELECTINDEX</a></span> statement will return composite data constructed from the indices of all part files. The index scan position pointer normally set by this operation is irrelevant to distributed files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The index scanning functions provided by <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETLEFT</a></span>, <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span>, <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTLEFT</a></span> and <span style="font-weight: bold;"><a href="qmb_selectleft.htm" class="topiclink">SELECTRIGHT</a></span> are not available with distributed files.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Other Uses of Distributed Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Distributed files can also be used to:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">1.</td><td style="border:none;padding:0">Spread a large file over multiple disks for load balancing.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">2.</td><td style="border:none;padding:0">Overcome operating system file size limits.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">3.</td><td style="border:none;padding:0">Store a file that is larger than a single available disk drive.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">4.</td><td style="border:none;padding:0">Physically split a file over multiple servers using QMNet.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">System Administration Issues</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of distributed files with a large number of part files requires the system administrator to think carefully about the setting of the <a href="configparams.htm#numfiles" class="topiclink">NUMFILES</a> configuration parameter as each part file will be opened internally as a separate file.</p>
+
+</td></tr></table>
+
+</body>
+</html>

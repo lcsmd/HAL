@@ -1,0 +1,103 @@
+     OPEN 'PRODUCT' TO PRODUCT ELSE PRINT 'PRODUCT';STOP
+     OPEN 'PSVNO' TO F.PSVNO ELSE PRINT 'PSVNO';STOP
+     OPEN 'UPC.PRODUCT.XREF' TO UPC.PRODUCT.XREF ELSE PRINT 'UPC.PRODUCT.XREF';STOP
+     OPEN 'I2.PRODUCT' TO I2.PRODUCT ELSE PRINT 'I2.PRODUCT';STOP
+     OPENSEQ  "LCS.LOGS","FIX.I2.LOG" TO LOG ELSE CREATE LOG ELSE PRINT "UNABLE TO OPEN LOG";STOP
+     LM = 1
+     CT=0
+     ERR = "!"
+     *EXECUTE "CLEAR-FILE DATA I2.PRODUCT"
+     *EXECUTE "CLEAR-FILE DATA UPC.PRODUCT.XREF"
+     SELECT I2.PRODUCT
+     LOOP
+          CT+=1
+          STATUS = ""
+          IF NOT(MOD(CT,100)) THEN PRINT CT "L#10"
+     WHILE READNEXT PSNUM DO
+          STATUS := PSNUM:" "
+          READV UPC FROM I2.PRODUCT,PSNUM,99 THEN
+               UPC = UPC[1,11]
+               WRITEV PSNUM ON UPC.PRODUCT.XREF,UPC,2
+               *STATUS := " ---> ":UPC:" IN UPC.XREF "
+          END
+          *WRITESEQ STATUS ON LOG ELSE PRINT "LOG WRITE FAILURE";STOP
+          *IF LM THEN PRINT STATUS
+     REPEAT
+     *
+     *
+     SELECT PRODUCT
+     CT=0
+     LOOP
+          CT+=1
+          STATUS = ""
+          UPC = ""
+          UPC2 = ""
+          PSNUM = ""
+          PSNUM2 = ""
+          IF NOT(MOD(CT,100)) THEN PRINT CT "L#10"
+     WHILE READNEXT PNO DO
+          STATUS := PNO:" "
+          READ BUFF FROM PRODUCT,PNO THEN
+               BUFF.O = BUFF
+               PSNUM = BUFF<61>
+               UPC = BUFF<18>[1,11]
+               IF PSNUM THEN
+                    GOSUB READ.PSVNO:
+               END ELSE
+                    IF UPC THEN GOSUB READ.UPC:
+                    IF PSNUM2 THEN
+                         PSNUM = PSNUM2
+                         GOSUB READ.PSVNO:
+                         IF UPC2 <> UPC THEN
+                              STATUS := PNO:"    **MISMATCH**  PSNUM:":PSNUM:" REPLACING UPC:":UPC:" WITH UPC2:":UPC2
+                              BUFF<17> = UPC
+                              UPC = UPC2
+                         END
+                    END
+               END
+               IF PSNUM > "" THEN
+                    READ PSVNO.B FROM F.PSVNO,PSNUM ELSE PSVNO.B = ""
+                    PSVNO.B.O = PSVNO.B
+                    PSVNO.B<1> = PNO
+                    PSVNO.B<2> = UPC
+                    IF PSVNO.B <> PSVNO.B.O THEN
+                         WRITE PSVNO.B ON F.PSVNO,PSNUM
+                    END
+               END
+               IF UPC THEN READ UPC.B FROM UPC.PRODUCT.XREF,UPC THEN
+                    UPC.B<1> = PNO
+                    UPC.B<2> = PSNUM
+                    IF UPC.B.O <> UPC.B THEN
+                         WRITE UPC.B ON UPC.PRODUCT.XREF,UPC
+                    END
+               END
+               BUFF<18> = UPC
+               BUFF<61> = PSNUM
+               IF BUFF AND  BUFF <> BUFF.O THEN
+                    WRITE BUFF ON PRODUCT,PNO
+               END
+               IF (PSNUM AND PNO) THEN
+                    WRITEV PNO ON I2.PRODUCT,PSNUM,9
+               END
+          END
+     REPEAT
+     CLOSESEQ LOG
+     PRINT "FINISHED"
+     STOP
+
+READ.PSVNO:
+     READ LIB.B FROM I2.PRODUCT,PSNUM THEN
+          LIB.B.O = LIB.B
+          UPC2 = (LIB.B<4>:LIB.B<5>)[1,11]
+     END ELSE
+          UPC2 = ""
+          PSNUM2=""
+     END
+     RETURN
+
+READ.UPC:
+     READ UPC.B FROM UPC.PRODUCT.XREF,UPC ELSE UPC.B = ""
+     UPC.B.O = UPC.B
+     UPC3 = UPC.B<1,1>
+     PSNUM2 = UPC.B<2,1>
+     RETURN

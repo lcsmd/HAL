@@ -1,0 +1,26 @@
+     OPEN 'WORDS.LCS' TO F.WORDS ELSE PRINT 'WORDS';STOP
+     OPEN 'TRANS' TO F.TRANS ELSE PRINT 'TRANS';STOP
+     EXECUTE "CLEAR.FILE DATA WORDS.LCS"
+     EXECUTE "SELECT TRANS WITHOUT RULE"
+     LOOP
+     WHILE READNEXT TRANS.ID DO
+          READ TR.BUFF FROM F.TRANS,TRANS.ID THEN
+               INPUT.TEXT = TR.BUFF<4>:" ":TR.BUFF<5>
+               WORDS = CHANGE(INPUT.TEXT,"-"," ")
+               WORDS = CHANGE(WORDS," ",@FM)
+               W.CT = DCOUNT(WORDS,@FM)
+               FOR W = 1 TO W.CT
+                    WORD = WORDS<W>
+                    IF LEN(WORD) > 4 THEN
+                         IF NOT(NUM(WORD)) THEN
+                              READ WBUFF FROM F.WORDS,WORD ELSE WBUFF = ""
+                              LOCATE TRANS.ID IN WBUFF<1> BY 'AL' SETTING POS ELSE
+                                   WBUFF<1,POS> = TRANS.ID
+                                   WBUFF<2> = WBUFF<2>+1
+                                   WRITE WBUFF ON F.WORDS,WORD
+                              END
+                         END
+                    END
+               NEXT W
+          END
+     REPEAT

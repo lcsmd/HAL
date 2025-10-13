@@ -1,0 +1,32 @@
+      content_type = "Content-Type: application/json"
+      url = "https://api.openai.com/v1/completions"
+      OPENAI_API_KEY = "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"
+
+      auth = "Authorization: Bearer ":OPENAI_API_KEY
+      model = "text-davinci-003"
+      max_tokens = 50
+      prompt = "Hi, how are you?"
+
+      GOSUB ASK_OPENAI:
+
+      STOP
+
+ASK_OPENAI:
+      max_tokens = STR(max_tokens)
+      payload = '{"model":"':model:'","prompt":"':prompt:'","max_tokens":':max_tokens:'}'
+      COMMAND_STRING = "!CURL -X POST -H '":content_type:"' -H '":auth:"' -d '":payload:"' ":url
+
+      PRINT payload
+      PRINT COMMAND_STRING
+
+      EXECUTE COMMAND_STRING CAPTURING response
+
+      PRINT response
+
+      EXECUTE "!echo '":response:"' | jq -r '.choices[0].text'" CAPTURING generatedText
+
+      PRINT generatedText
+
+      RETURN
+
+      END

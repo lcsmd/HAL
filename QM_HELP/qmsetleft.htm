@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMSetLeft() and QMSetRight()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="QMSetLeft,QMSetRight" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmsetleft.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMSetLeft(), QMSetRight()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmset.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmsetsession.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMSetLeft()</span> and <span style="font-weight: bold;">QMSetRight() </span>functions set the scanning position of an alternate key index at the extreme left or right of the data. They are analogous to the QMBasic <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETLEFT</a></span> and <span style="font-weight: bold;"><a href="qmb_setleft.htm" class="topiclink">SETRIGHT</a></span> statements.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The function arguments are:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">FileNo</span></td><td style="border:none;padding:0">is the file number returned by a previous <span style="font-weight: bold;"><a href="qmopen.htm" class="topiclink">QMOpen()</a></span> call.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">IndexName</span></td><td style="border:none;padding:0">is the name of the alternate key index to be used.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">QMSetLeft</span> and <span style="font-weight: bold;">QMSetRight</span> functions are used with <span style="font-weight: bold;"><a href="qmselectleft.htm" class="topiclink">QMSelectLeft()</a></span> and <span style="font-weight: bold;"><a href="qmselectleft.htm" class="topiclink">QMSelectRight()</a></span> to set the scan position to the first or last entry in an alternate key index.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="qmstatus.htm" class="topiclink">QMStatus()</a></span> function returns zero if the operation is successful, non-zero if it fails because the index does not exist.</p>
+<p>The example program fragments below use <span style="font-weight: bold;">QMSetLeft()</span> to set the scan position for an index on the CODE field to the leftmost item and walk through successive entries, processing each record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A1_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A1','TOGGLE0186A1_ICON')">C</a></span></td></tr></table></div><div id="TOGGLE0186A1" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">void QMSetLeft(int </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, char * </span><span style="font-style: italic;">IndexName</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">void QMSetRight(int </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, char * </span><span style="font-style: italic;">IndexName</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMSetLeft(fData, &quot;CODE&quot;);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;Key = QMSelectRight(fData, &quot;CODE&quot;, 1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;if (QMStatus() != 0) break;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;while((Id = QMReadNext(1)) != NULL)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if (Id == NULL) break;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Rec = QMRead(fData, Id, &amp;Err);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if (Err == 0)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;  </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">...process record...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;QMFree(Rec);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; } </span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;QMFree(Id);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; }</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;QMFree(Key);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> }</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The returned pointers from several functions in this example reference dynamically allocated memory areas that must be released using <span style="font-weight: bold;"><a href="qmfree.htm" class="topiclink">QMFree()</a></span> when no longer needed.</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A2_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A2','TOGGLE0186A2_ICON')">VB.Net</a></span></td></tr></table></div><div id="TOGGLE0186A2" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMSetLeft(ByVal </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;"> as Integer, ByVal </span><span style="font-style: italic;">IndexName</span> <span style="font-weight: bold;">as String)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">QMSetRight(ByVal </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;"> as Integer, ByVal </span><span style="font-style: italic;">IndexName</span> <span style="font-weight: bold;">as String)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">QMSetLeft(fData, &quot;CODE&quot;)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Do</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;Key = QMSelectRight(fData, &quot;CODE&quot;, 1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;If QMStatus() &lt;&gt; 0 Then Exit Do</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;Do</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; Id = QMReadNext(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; If Id = Nothing Then Exit Do</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; Rec = QMRead(fData, Id, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; If Err = 0 Then</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;  </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">...process record...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; End If</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;Loop</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">Loop</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A3_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A3','TOGGLE0186A3_ICON')">QMBasic</a> Class Module</span></td></tr></table></div><div id="TOGGLE0186A3" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">SetLeft(</span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">IndexName</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">SetRight(</span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">IndexName</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">session-&gt;SetLeft(fData, &quot;CODE&quot;)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">loop</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; Key = session-&gt;SelectRight(fData, &quot;CODE&quot;, 1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">until session-&gt;ServerStatus</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; loop</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;Id = session-&gt;ReadNext(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; until Id = &quot;&quot;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; Rec = session-&gt;Read(fData, Id, Err)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; if Err = 0 then</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;  </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">...process record...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; end</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; repeat</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">repeat</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A4_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A4','TOGGLE0186A4_ICON')">Java</a></span></td></tr></table></div><div id="TOGGLE0186A4" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">void SelectLeft(int </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, String </span><span style="font-style: italic;">IndexName</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">void SelectRight(int </span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, String </span><span style="font-style: italic;">IndexName</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">qm.SetLeft(fData, &quot;CODE&quot;);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while(true)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;Key = qm.SelectRight(fData, &quot;CODE&quot;, 1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;if (qm.ServerStatus != 0) break;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp;while(true)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Id = qm.ReadNext(1);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if (qm.ServerError != SV$OK) break;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;Rec = qm.Read(fData, Id);</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;if (qm.ServerError == 0)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; {</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp;  </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">...process record...</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; } </span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; }</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> }</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="text-indent: -18px; margin: 0 0 0 18px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; border-color: #000000; border-style: solid; border-width: thin; background: #99ccff; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:18px"><img id="TOGGLE0186A5_ICON" class="dropdown-toggle-icon" alt="hmtoggle_plus1" width="9" height="9" style="margin:0;width:9px;height:9px;border:none" src="hmtoggle_plus1.gif"/></td><td style="border:none;padding:0"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif;"><a class="dropdown-toggle" style="font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;" href="javascript:HMToggle('toggle','TOGGLE0186A5','TOGGLE0186A5_ICON')">Python</a></span></td></tr></table></div><div id="TOGGLE0186A5" class="dropdown-toggle-body" style="text-align: left; padding: 0 0 0 0; margin: 0 0 0 18px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; padding:0; border:none"><p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">SetLeft(</span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">IndexName</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-weight: bold;">SetRight(</span><span style="font-style: italic;">FileNo</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">IndexName</span><span style="font-weight: bold;">)</span></p>
+<p style="margin: 10px 0 0 0;"><span style="font-family: 'Courier New',Courier,monospace;">qm.SetLeft(fData, &quot;CODE&quot;)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">while True:</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; Key = qm.SelectRight(fData, &quot;CODE&quot;, 1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; if qm.Status() != 0: break</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; while True:</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;Id = qm.ReadNext(1)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;if Id = &quot;&quot;: break</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;Rec, Err == qm.Read(fData, Id)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;if Err == 0:</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">...process record...</span></p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+<script type="text/javascript">
+HMInitToggle('TOGGLE0186A1_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A1\',\'TOGGLE0186A1_ICON\')');
+HMInitToggle('TOGGLE0186A1','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A2_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A2\',\'TOGGLE0186A2_ICON\')');
+HMInitToggle('TOGGLE0186A2','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A3_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A3\',\'TOGGLE0186A3_ICON\')');
+HMInitToggle('TOGGLE0186A3','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A4_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A4\',\'TOGGLE0186A4_ICON\')');
+HMInitToggle('TOGGLE0186A4','hm.type','dropdown','hm.state','0');
+HMInitToggle('TOGGLE0186A5_ICON','hm.type','dropdown','hm.state','0','hm.src0','hmtoggle_plus0.gif','hm.src1','hmtoggle_plus1.gif','onclick','HMToggle(\'toggle\',\'TOGGLE0186A5\',\'TOGGLE0186A5_ICON\')');
+HMInitToggle('TOGGLE0186A5','hm.type','dropdown','hm.state','0');
+</script>
+</body>
+</html>

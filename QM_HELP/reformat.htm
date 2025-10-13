@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>REFORMAT and SREFORMAT</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="REFORMAT,SREFORMAT" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "reformat.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">REFORMAT and SREFORMAT</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="list_label.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="count.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">REFORMAT</span> verb constructs a new file from data in the source file. It is of use, for example, when constructing intermediate files in complex reporting processes.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">REFORMAT</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span></p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">USING</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;">field.name</span> {<span style="font-style: italic;">field.qualifier</span>} ...}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;"><a href="selectionclause.htm" class="topiclink">selection.clause</a></span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;"><a href="sortclause.htm" class="topiclink">sort.clause</a></span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;"><a href="displayclause.htm" class="topiclink">display.clause</a></span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-style: italic;">record.id...</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">select.list.no</span>}</p>
+<p style="margin: 0 0 0 60px;">{<span style="font-weight: bold;">TO</span> <span style="font-style: italic;">new.file.name</span> | <span style="font-weight: bold;">TO DATA</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">REFORMAT</span> behaves like <span style="font-weight: bold;">LIST</span> except that the data identified by the display clause is used to populate a new file instead of being displayed or printed. The first item in the data is used as the record id for the item in the new file. The remaining items form the fields within the record. <span style="font-weight: bold;">REFORMAT</span> does not automatically prefix the display clause with @ID.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SREFORMAT</span> command is identical to <span style="font-weight: bold;">REFORMAT</span> except that it sorts by record id after any other sorting has been applied.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">TO</span> clause can be used to name the target file on the command line. If this clause is not present, a prompt is displayed for the file name. The file must already exist.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of <span style="font-weight: bold;">TO DATA</span> causes the query processor to create a dynamic array containing the output and placing this in the <a href="at_variables.htm#data" class="topiclink">@DATA</a> variable. Each &quot;record&quot; in this array is separated by an item mark character (char 255) and the fields within the item correspond to the display clause elements in the <span style="font-weight: bold;">REFORMAT</span> command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of @RECORD as the final element of the display clause appends the entire data record with no conversion or formatting applied. This is most useful with <span style="font-weight: bold;">TO DATA</span> to construct views of the data record for further processing.</p>
+<p class="p_Normal">&nbsp;</p>
+<p>When used with breakpoints, data from the detail and total lines is directed to the output file but the grand total is omitted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">REFORMAT CUSTOMERS ZIP.CODE CUST.NO NAME TO CUST.BY.ZIP</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command constructs a new file, CUST.BY.ZIP, keyed by zip code and containing two data fields, the customer number and name. Note that if two or more customers share the same zip code, the record will be overwritten by the second and subsequent items.</p>
+
+</td></tr></table>
+
+</body>
+</html>

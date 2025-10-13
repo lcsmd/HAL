@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>UPDATE.RECORD visual mode</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="UPDATE.RECORD visual mode" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "ur_visual.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">UPDATE.RECORD &nbsp;- &nbsp;Visual Mode</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="ur_batch.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="verify_constraints.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">UPDATE.RECORD</span> runs in visual mode if the command line contains no <span style="font-style: italic;">field/value </span>specifications.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Visual mode presents a full screen display of the external (converted) form of fields from a data record. Changes are made by moving the cursor to the desired position and entering or deleting characters. Modified lines are converted back into their internal form within <span style="font-weight: bold;">UPDATE.RECORD</span> when the cursor is moved to a new line or when the data is to be written back to the file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">&nbsp;1:&nbsp;NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Site&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Acme&nbsp;Software&nbsp;Limited</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">&nbsp;2:&nbsp;ADDRESS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;42&nbsp;High&nbsp;Street,&nbsp;Anytown</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">&nbsp;3:&nbsp;POSTCODE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Postcode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;AN11&nbsp;1XX</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">&nbsp;6:&nbsp;DATE.PAID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Date&nbsp;Paid&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;12&nbsp;Feb&nbsp;98ý17&nbsp;Mar&nbsp;98</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">&nbsp;7:&nbsp;INVOICES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Invoices&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;001763ý001966</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">&nbsp;8:&nbsp;LICENCES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Licences&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;907881792ý1907881802ý1907881808</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">&nbsp;9:&nbsp;EXPIRED.LICENCES:&nbsp;Expired&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">10:&nbsp;COUNTRY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Country&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">11:&nbsp;CLASS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;3</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">12:&nbsp;DEALER.SALES&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Sales&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">13:&nbsp;CALLBACK.DATE&nbsp;&nbsp;&nbsp;:&nbsp;Callback&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;01&nbsp;Jul&nbsp;98</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">14:&nbsp;CALLBACK.TEXT&nbsp;&nbsp;&nbsp;:&nbsp;Callback&nbsp;note:&nbsp;Interested&nbsp;in&nbsp;new&nbsp;product&nbsp;range</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">15:&nbsp;VAT.NO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;VAT&nbsp;no&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;614&nbsp;1210&nbsp;25</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">16:&nbsp;SITE.TEXT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Site&nbsp;text&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Acme&nbsp;Software</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">17:&nbsp;CONTACT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Contact&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Anne&nbsp;McIntosh</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">18:&nbsp;POSITION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Position&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">19:&nbsp;TEL.NO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Tel&nbsp;no&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;01234-56789ý01234-64526</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">20:&nbsp;FAX.NO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Fax&nbsp;no&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;01234-21767</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">21:&nbsp;MOBILE.NO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Mobile&nbsp;no&nbsp;&nbsp;&nbsp;&nbsp;:</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">22:&nbsp;EMAIL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;E-mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;acme@mailer.com</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">23:&nbsp;SALES.TOTAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Sales&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;£12783.33</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace;">24:&nbsp;NOTES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Notes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace; font-weight: bold;">*CLIENTS&nbsp;00106</span></p>
+<p style="line-height: 1.0; white-space: nowrap; page-break-inside: avoid; margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: 'Courier New',Courier,monospace; font-weight: bold;">&lt;6,1,1&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;D2DMYL[,A3]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;9R&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;PAYDATE&nbsp;&nbsp;&nbsp;|&nbsp;S&nbsp;|</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>By default, the display shows all fields for which a D-type dictionary entry or an A/S=type entry with no correlative exists. A specific subset of fields can be displayed by creating a dictionary phrase named @UPDATE.RECORD which lists the required fields (and possibly keywords).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For each field, the display shows:</p>
+<p style="margin: 0 0 0 30px;">The field number</p>
+<p style="margin: 0 0 0 30px;">The field name (unless suppressed by use of <span style="font-weight: bold;">ID.SUP</span>)</p>
+<p style="margin: 0 0 0 30px;">The display name (unless suppressed by <span style="font-weight: bold;">COL.SUP</span>)</p>
+<p style="margin: 0 0 0 30px;">The data in its external form</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The last two lines of the screen are used as a status area. The upper status line displays the file name and record id. An asterisk is shown at the start of this line if the data has been changed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The lower status line shows the field, value and subvalue in which the cursor is positioned and the dictionary conversion code, format code, association name and single/multivalue flag for the field. The final field of this status line shows a letter O if <span style="font-weight: bold;">UPDATE.RECORD</span> is in overlay mode (see below).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">UPDATE.RECORD</span> uses a subset of the default key bindings of the <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> full screen editor. These all consist of keystrokes which are</p>
+<p style="margin: 0 0 0 30px;">Control shift + key</p>
+<p style="margin: 0 0 0 30px;">ESCape followed by another key</p>
+<p style="margin: 0 0 0 30px;">Ctrl-X followed by another key</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The table below summarises the key bindings. All other keystrokes except for unused control shift codes cause the character to be inserted into the record text at the current cursor position.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Ctrl-</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Esc-</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><p>Ctrl-X -</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">A</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Home</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">B</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Cursor left</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">C</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Repeat</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><p>Quit</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">D</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Delete char</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">E</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>End</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">F</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Cursor right</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">G</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Cancel</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Goto</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">H</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Backspace</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">I</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">J</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>(Return)</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">K</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Kill line</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">L</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Refresh</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">M</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>(Return)</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">N</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Cursor down</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">O</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Overlay</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><p>Overlay</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">P</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Cursor up</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">Q</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Quote char</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Quote char</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">R</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">S</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><p>Save</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">T</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">U</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Repeat</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">V</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Page down</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Page up</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">W</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Cut</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><p>Copy</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">X</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Ctrl-X prefix</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Command</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">Y</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Paste</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Paste</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">Z</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Cursor up</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p>.</p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Mark</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">=</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><p>Expand char</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">&lt;</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Top</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p><span style="font-weight: bold;">&gt;</span></p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><p>Bottom</p>
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p>Bkspc</p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Backspace</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p>Del</p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Delete char</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:79px; padding:4px; border:none"><p>Return</p>
+</td>
+<td style="vertical-align:top; width:133px; padding:4px; border:none"><p>Cursor down</p>
+</td>
+<td style="vertical-align:top; width:143px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:135px; padding:4px; border:none"><br />
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">UPDATE.RECORD</span> also recognises the following terminal control keys:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 0;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Home</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>End</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Cursor left</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Cursor right</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Cursor up</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Cursor down</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Insert (Overlay)</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Delete</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Page up</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><p>Page down</p>
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><br />
+</td>
+<td style="vertical-align:top; width:238px; padding:4px; border:none"><br />
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Some functions are available using alternative key sequences. Such alternatives are shown above and in the descriptions that follow.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">repeat</span> function (Ctrl-C or Ctrl-U) repeats the previous function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">cancel</span> function (Ctrl-G) can be used to abort partially entered incorrect key sequences and to terminate certain functions as described below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Cursor Movement Functions</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Note:</span> &nbsp;A confirmation prompt appears if the cursor is moved from a line that contains a data conversion error.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Home</span> (Ctrl-A or Home)</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: Arial,Helvetica,sans-serif;">Moves the cursor to the start of the current line.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">End</span> (Ctrl-E or End)</p>
+<p style="margin: 0 0 0 30px;">Moves the cursor to the position after the last character in the current line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Top</span> (Esc-&lt;)</p>
+<p style="margin: 0 0 0 30px;">Moves to the start of the first displayed field.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Bottom (Esc- &gt;)</span></p>
+<p style="margin: 0 0 0 30px;">Moves to the start of the last displayed field.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Cursor down</span> (Ctrl-N or Ctrl-P or Cursor down)</p>
+<p style="margin: 0 0 0 30px;">Moves the cursor vertically down one line. If this position is beyond the end of the data in the new line, the cursor is displayed immediately to the right of the final character. <span style="font-weight: bold;">UPDATE.RECORD</span> remembers the column position from which the cursor was moved so that a further vertical movement will continue to place the cursor at the lesser of its original column position and the end of the current line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Cursor up</span> (Ctrl-P or Ctrl-Z or Cursor up)</p>
+<p style="margin: 0 0 0 30px;">Moves the cursor vertically up one line. The same process is used for determining the column position as for the <span style="font-weight: bold;">cursor down</span> operation described above.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Cursor right</span> (Ctrl-F or Cursor right)</p>
+<p style="margin: 0 0 0 30px;">Moves the cursor right.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Cursor left</span> (Ctrl-B or Cursor left)</p>
+<p style="margin: 0 0 0 30px;">Moves the cursor left.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Page down</span> (Ctrl-V or Page down)</p>
+<p style="margin: 0 0 0 30px;">Moves the cursor down by one screen or to the last line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Page up</span> (Esc-V or Page up)</p>
+<p style="margin: 0 0 0 30px;">Moves the cursor up by one screen or to the first line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Goto</span> (Esc-G)</p>
+<p style="margin: 0 0 0 30px;">Prompts for a field, value and subvalue position and moves the cursor to that position. The position may be specified as:</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field</span></td><td style="border:none;padding:0">go to specified field, value 1, subvalue 1</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field, value</span></td><td style="border:none;padding:0">go to specified field and value, subvalue 1</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field, value, subvalue</span> </td><td style="border:none;padding:0">go to specified field, value and subvalue</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Fields may be specified by number or name. Omitted <span style="font-style: italic;">field</span> or <span style="font-style: italic;">value</span> components mean &quot; within the current field/value&quot; unless a higher level component is specified in which case the default is 1. For example:</p>
+<p style="text-indent: -150px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">,<span style="font-style: italic;">value</span></td><td style="border:none;padding:0">go to specified value in current field</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">,<span style="font-style: italic;">value</span>,<span style="font-style: italic;">subvalue</span></td><td style="border:none;padding:0">go to specified value/subvalue in current field</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">,,<span style="font-style: italic;">subvalue</span></td><td style="border:none;padding:0">go to specified subvalue in current field/value</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field</span>,,<span style="font-style: italic;">subvalue</span></td><td style="border:none;padding:0">go to specified field, value 1, specified subvalue</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 60px;">An asterisk can be use to imply &quot;no change&quot;. This is useful when processing associated multivalued fields. For example:</p>
+<p style="text-indent: -150px; margin: 0 0 0 210px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px">*,<span style="font-style: italic;">value</span></td><td style="border:none;padding:0">go to specified value in current field</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field</span>,*</td><td style="border:none;padding:0">go to current value position in specified field</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field</span>,*,*</td><td style="border:none;padding:0">go to current value and subvalue in specified field</td></tr></table></div><p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">If the specified value or subvalue does not exists, <span style="font-weight: bold;">UPDATE.RECORD</span> will offer to create it.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Data Insertion</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Data is inserted at the current cursor position. If overlay mode is set the new data overwrites any existing data at this position, otherwise it is inserted before the character under the cursor. Overlay mode may be toggled using the <span style="font-weight: bold;">overlay</span> function (Ctrl-O or Ctrl-X O or Insert).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Any character other than a field mark or item mark may be inserted. The <span style="font-weight: bold;">quote character</span> function (Ctrl-Q or Esc-Q) allows insertion of non-printing characters. It may be used in four ways:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Followed by a number of up to three digits, it inserts the character with that decimal ASCII sequence.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Followed by X and a hexadecimal number, it inserts the character with that ASCII or Unicode sequence. The number of digits is limited to 2 on non-ECS systems, 4 on ECS systems.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Followed by V, S or T, it inserts a value mark, subvalue mark or text mark respectively.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">Followed by any other character, usually a non-printing character, it will insert that character.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Copying, Deleting and Restoring Data</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Delete char</span> (Ctrl-D or Del, Delete)</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">The character at the current cursor position is deleted.</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;">&nbsp;</p>
+<p><span style="font-weight: bold;">Backspace</span> (Backspace or Ctrl-H)</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">backspace</span> function removes the character to the left of the cursor.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Kill line</span> (Ctrl-K)</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">kill line</span> function deletes all characters following the cursor.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Copy</span> (Esc-W)</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">copy</span> copies part of a field to the clipboard buffer. The required sequence of actions is:</p>
+<p style="margin: 0 0 0 60px;">Position the cursor on the first character to be copied.</p>
+<p style="margin: 0 0 0 60px;">Execute the <span style="font-weight: bold;">mark</span> function (Esc-.).</p>
+<p style="margin: 0 0 0 60px;">Position the cursor after the last character to be copied. Where the terminal device allows, the selected characters will be highlighted.</p>
+<p style="margin: 0 0 0 60px;">Press the <span style="font-weight: bold;">copy</span> key.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">copy</span> function can be cancelled using the <span style="font-weight: bold;">cancel</span> function (Ctrl-G).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Cut</span> (Ctrl-W)</p>
+<p style="margin: 0 0 0 22px;">The <span style="font-weight: bold;">cut</span> function cuts (deletes) part of a field, placing a copy of the deleted text in the clipboard buffer. The required sequence of actions is:</p>
+<p style="margin: 0 0 0 60px;">Position the cursor on the first character to be cut.</p>
+<p style="margin: 0 0 0 60px;">Execute the <span style="font-weight: bold;">mark</span> function (Esc-.).</p>
+<p style="margin: 0 0 0 60px;">Position the cursor after the last character to be cut. Where the terminal device allows, the selected characters will be highlighted.</p>
+<p style="margin: 0 0 0 60px;">Press the <span style="font-weight: bold;">cut</span> key.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">cut</span> function can be cancelled using the <span style="font-weight: bold;">cancel</span> function (Ctrl-G).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Paste</span> (Ctrl-Y or Esc-Y)</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">paste</span> function inserts a copy of the clipboard buffer as set using <span style="font-weight: bold;">copy</span> or <span style="font-weight: bold;">cut</span> at the current cursor position.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Miscellaneous Functions</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Save</span> (Ctrl-X S or Ctrl-X Ctrl-S)</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">save</span> function saves the modified data record. <span style="font-weight: bold;">UPDATE.RECORD</span> remains in the current record allowing further changes if required.</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">save</span> function cannot be executed if the current line contains a data conversion error.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Quit</span> (Ctrl-X C or Ctrl-X Ctrl-C)</p>
+<p style="margin: 0 0 0 30px;">The <span style="font-weight: bold;">quit</span> function moves to the next record to be processed (if any). A confirmation prompt is displayed if the current record has been modified and not saved.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Expand char</span> (Ctrl-X =)</p>
+<p style="margin: 0 0 0 30px;">Certain control characters (e.g. tab, form feed) are represented on the screen by question marks. The <span style="font-weight: bold;">expand char</span> function displays the character sequence number for the character at the cursor position on the lower status line.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Command</span> (Esc-X)</p>
+<p style="margin: 0 0 0 30px;">The command function allows executing of any valid QM command from within <span style="font-weight: bold;">UPDATE.RECORD</span>. In addition, it supports the following built-in commands:</p>
+<p style="text-indent: -120px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">SPOOL</span></td><td style="border:none;padding:0">Used without any following file name etc.<span style="font-weight: bold;"> </span>, this command spools a copy of the record to the default printer.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 60px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-weight: bold;">QUIT</span></td><td style="border:none;padding:0">Terminates processing of the current record and exits <span style="font-weight: bold;">UPDATE.RECORD</span>, abandoning any further records specified for processing.</td></tr></table></div>
+</td></tr></table>
+
+</body>
+</html>

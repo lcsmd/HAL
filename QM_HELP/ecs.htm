@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Extended Character Set Support</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Character maps,ECS,Extended Character Set" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "ecs.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Extended Character Set Support</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="connection_pooling.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="character_encodings.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">For many years, computer systems mostly used an 8-bit value (a <span style="font-weight: bold;">byte</span>) to represent a character. This allows 256 possible values which is adequate for most Western languages. The way in which these values relate to the characters that they represent is a matter of choice and two main standards exist, ASCII and EBCDIC, though the latter is largely redundant and is not considered further here.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Strictly, the ASCII character set defines only the first half of the available character values though the term is often misused to reference the entire 256 character set, known in QM as the <span style="font-weight: bold;">8-bit</span> character set. Within this, the first 32 characters are defined to be the <span style="font-weight: bold;">control characters</span> such as backspace or linefeed. The next 96 characters are the letters, digits, punctuation, etc. The upper half of the 8-bit character set was originally not defined but subsequently became used in a number of different ways to provide accented letters, symbols and various graphical items. Because the actual characters represented by values 128 to 255 vary, it is important to know which character set is in use. In Windows systems, this is determined by the <span style="font-weight: bold;">code page</span> setting.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In today's business world, there is a need to be able to represent more than 256 different characters. Various schemes exist to do this but the underlying concept for most of these is the definition of the <span style="font-weight: bold;">Unicode</span> character set in which each character from a large range of languages is represented by a unique numeric value, the <span style="font-weight: bold;">code point</span>, conventionally written as a hexadecimal value in the form U+1234. Although the full definition of Unicode provides for more, the common usage of this (the Basic Multilingual Plane or BMP), allows 65536 character values which are stored internally as a 16-bit value (two bytes). The characters that lie outside this range are not usually required in business computer systems, however, if they are required, it is usually possible to move the ones that are needed into an area of the BMP that is reserved for application specific use (the Private Use Area, U+E000 to U+F8FF). QM reserves characters U+F880 to U+F8FF for internal use and developers should not map other characters into this area.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The standard version of QM works with 8-bit characters internally and is therefore limited to use of only the characters defined in this set with the appropriate interpretation of the upper half of the range. By default, sorting sequences data based on the character value which may not necessarily match local language conventions, especially regarding the placement of accented letters, and case conversion handles only the upper and lower case letters from the lower half of the character set and hence does not convert accented letters. Most of what follows relates to the Unicode version of QM but see below for details of the 8-bit character map feature.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The extended character set (ECS) version of QM uses 16-bit characters internally and provides support for the Unicode BMP with the exception of moving the five characters that are replaced on multivalue systems by the mark characters (251 to 255 or, in Unicode form, U+00FB to U+00FF) to an alternative location (U+F8FB to U+F8FF) in a part of the BMP that Unicode defines as the Private Use Area (PUA). This is done because many applications use, for example, CHAR(253) to reference a value mark and hence these characters must remain in their traditional locations.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Note that the term Extended Character Set in the context of QM is taken at its literal meaning of extending the character set beyond 8 bits. In other contexts, this term is sometimes used to refer to the upper half of the 8-bit character set.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The sorting sequence and case conversion rules are determined by a <span style="font-weight: bold;">character map</span> that can be selected to match local language conventions. Because these maps are set up to allow for the relocation of the five characters displaced by the marks, the only time an application developer needs to be concerned with this relocation is in the unlikely situation of needing to work directly with the code point value. For example, CHAR(252) refers to a subvalue mark. The German u-umlaut that has been displaced by this character can be programmatically created as ECHAR(63740) or, using hexadecimal notation, ECHAR(0xF8FB). There is also a QMBasic function, <span style="font-weight: bold;"><a href="qmb_swapmarks.htm" class="topiclink">SWAPMARKS()</a></span>, that can be used to interchange the two groups of characters in an application though this should not usually be required as all relevant external interfaces provide an option to exchange the relocated characters with their Unicode positions for compatibility with other software.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Outside of QM, most data storage and transmission systems are byte orientated and hence Unicode characters must be encoded in some way. QM provides a set of <a href="character_encodings.htm" class="topiclink">character encodings</a> that can be applied to external interfaces such as directory files, socket connections, etc to transform the internal 16-bit characters to a form that is suitable for external use. All processing inside QM is performed with the 16-bit ECS representation.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The diagram below shows how ECS and encodings work. Everything inside the circle works with data in ECS 16-bit form, though hashed files will compact data to 8-bit form where possible. All the external interfaces shown outside the circle tend to use 8-bit data and require encoding if characters outside the 8-bit set are to be used. As described below, in some cases this encoding is automatic; in others it is up to the application to provide this encoding using conversion codes and other QM functions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 59px;"><img alt="ecs" width="462" height="217" style="margin:0;width:462px;height:217px;border:none" src="ecs_zoom51.png"/></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Characters and Bytes</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In most cases, an application need not be concerned with the internal representation of characters. Programs that operate on the 8-bit version of QM will continue to operate unchanged on the ECS version. The QMBasic character manipulation functions that work with 8-bit characters in non-ECS systems simply work in exactly the same way with 16-bit characters in ECS systems.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Binary data such as images or data read using <span style="font-weight: bold;"><a href="qmb_osread.htm" class="topiclink">OSREAD</a></span> will be manipulated within an application as a series of 16 bit characters that have values in the range 0 to 255. From the application's viewpoint, nothing is different. The fact that internally each byte of the original data is stored internally as two bytes is irrelevant. QM refers to data stored in this form as a <span style="font-weight: bold;">byte string</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QMBasic <span style="font-weight: bold;"><a href="qmb_char.htm" class="topiclink">CHAR()</a></span> function is defined to work only for character values in the range 0 to 255. In QM and many other multivalue systems, only the low order eight bits of values outside this range are used. To allow creation of characters in the full ECS range, the <span style="font-weight: bold;"><a href="qmb_echar.htm" class="topiclink">ECHAR()</a></span> function can be used. On a non-ECS system, this behaves exactly like <span style="font-weight: bold;"><a href="qmb_char.htm" class="topiclink">CHAR()</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span class="f_BoldSubheading">Special Key Codes for Terminal Input</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In a Windows console session, the QMBasic <span style="font-weight: bold;"><a href="qmb_keyin.htm" class="topiclink">KEYIN()</a></span> function recognises special keys such as the cursor keys and function keys and for each of these returns a character from the upper half of the 8-bit character set to represent that key. The <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODE()</a></span> function uses the terminfo database to provide similar functionality, extended to include recognition of special characters when using a terminal emulator. In a non-ECS mode system with 8-bit characters, there is no alternative to the character positions used for these special keys clashing with other characters. The larger character set available in ECS mode allows the special characters to be moved into the BMP Private Use Area in positions that do not clash with other characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">In order to maintain compatibility with non-ECS applications and also to allow applications compiled on ECS mode systems to be run on non-ECS mode systems, the <span style="font-weight: bold;"><a href="qmb_keyin.htm" class="topiclink">KEYIN()</a></span> and <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODE()</a></span> functions retain their non-ECS behaviour but are therefore unable to distinguish between the special keys and the characters that they replace. As an alternative, the <span style="font-weight: bold;"><a href="qmb_keyinv.htm" class="topiclink">KEYINV()</a></span> and <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODEV()</a></span> functions return a key value (character number) rather than the actual character. The special keys return values which, when considered as code points in the Unicode BMP, lie in the Private Use Area.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">These functions are available on non-ECS mode systems but the returned values for the special keys cannot be encoded as a single character whereas on an ECS system they can. Also, they are likely to cause an application to behave incorrectly if one of the data characters replaced by the special keys is entered at the keyboard. It is, therefore, beneficial to modify programs that use <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODE()</a></span> to use <span style="font-weight: bold;"><a href="qmb_keycode.htm" class="topiclink">KEYCODEV()</a></span> and the corresponding alternative set of character token names. This should not be a major task. Essentially, if a program contains something like</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">C = KEYCODE()</span></p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">N = SEQ(C)</span></p>
+<p class="p_Normal">this becomes</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">N = KEYCODEV()</span></p>
+<p class="p_CodeBottomLine"><span class="f_CodeBottomLine">C = ECHAR(N)</span></p>
+<p class="p_Normal">and all use of the key value tokens defined in the KEYIN.H include record with names prefixed by K$ change to use prefix KV$. Any use of <span style="font-weight: bold;"><a href="qmb_bindkey.htm" class="topiclink">BINDKEY()</a></span> in the same programs should also be modified to use the KV$ token names.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The value returned via the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function after an <span style="font-weight: bold;"><a href="qmb_inputfield.htm" class="topiclink">INPUTFIELD</a></span> operation terminates on an unrecognised control character is not affected by ECS and always lies in the range 128 to 227. The <span style="font-weight: bold;"><a href="qmb_inputfield.htm" class="topiclink">INPUTFIELDV</a></span> statement is identical but returns the Unicode code point value for the special keys.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">What Must Be 8-Bit Data?</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The following items must be formed only from the 8-bit character set:</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Configuration parameter data</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Pathnames and hence directory file record ids</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">User names and passwords</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Account names</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Shell commands in <span style="font-weight: bold;"><a href="sh.htm" class="topiclink">SH</a></span> or <span style="font-weight: bold;"><a href="qmb_os_execute.htm" class="topiclink">OS.EXECUTE</a></span></p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">QMBasic program source text with the exception of character constants.</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">QMBasic subroutine call names and common block names</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Object oriented programming property and function names</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Encryption key names</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">QMNet server names</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Data records in directory files unless an encoding is used. This includes system files such as $SAVEDLISTS and $COMO.</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Compiler output files</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">What Can Be 16-Bit Data?</span></p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Dictionary item names and content</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Alternate key index names</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Character strings manipulated by QMBasic programs</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">String constants in QMBasic programs and dictionary items</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Record ids and data in ECS mode hashed files</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">Encryption key values (though only the bottom 8 bits of each character will be used)</p>
+<p class="p_Normal" style="margin: 5px 0 0 29px;">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Character Maps</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM uses a <span style="font-weight: bold;">character mapping table</span> to define properties of the 65536 characters that can be represented internally by 16-bit data. For each character, this table identifies the upper and lower case equivalents, the sort weight, and the character attributes such as whether it is a letter. An application can use the <span style="font-weight: bold;"><a href="qmb_is_chartype.htm" class="topiclink">IS.ALNUM()</a></span>, <span style="font-weight: bold;"><a href="qmb_is_chartype.htm" class="topiclink">IS.ALPHA()</a></span>, <span style="font-weight: bold;"><a href="qmb_is_chartype.htm" class="topiclink">IS.DIGIT()</a></span>, <span style="font-weight: bold;"><a href="qmb_is_chartype.htm" class="topiclink">IS.GRAPH()</a></span>, <span style="font-weight: bold;"><a href="qmb_is_chartype.htm" class="topiclink">IS.MARK()</a></span>, <span style="font-weight: bold;"><a href="qmb_is_chartype.htm" class="topiclink">IS.SPACE()</a></span>, <span style="font-weight: bold;"><a href="qmb_is_chartype.htm" class="topiclink">IS.USER.CHAR()</a></span> and<span style="font-weight: bold;"> <a href="qmb_is_chartype.htm" class="topiclink">IS.WIDE()</a></span> functions to test the attributes of a character. The character maps also control the behaviour of the MCL, MCT and MCU conversion codes and the related <span style="font-weight: bold;"><a href="qmb_downcase.htm" class="topiclink">UPCASE()</a></span> and <span style="font-weight: bold;"><a href="qmb_downcase.htm" class="topiclink">DOWNCASE()</a></span> functions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For characters defined as being digits, the mapping table also identifies the decimal value of the digit. Clearly, the Arabic numerals 0 to 9 should be assigned the numeric values zero to nine but the ability to assign other characters as digits and to set their numeric value allows characters that represent numbers in other forms to be used. For example, the Arabic-Indic digits zero to nine are assigned Unicode code point values U+0660 to U+0669. The QMBasic character string to numeric conversions will accept as input any character defined as a digit in the mapping tables and use its associated numeric value. The QMBasic numeric to character string conversions always produce numbers formed from the Arabic numerals.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The character maps include a user definable attribute that can be used in any way that an application designer finds useful.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A range of standard character maps are available for download from the QM web site and should be saved in the ecs-maps subdirectory of the QMSYS account. The BASE map is always present. A developer can use the <span style="font-weight: bold;"><a href="edit_map.htm" class="topiclink">EDIT.MAP</a></span> command to modify an existing map or to create a new map. Map names are case insensitive.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A QM system can load up to eight mapping tables defined by the <a href="configparams.htm#ecsmap" class="topiclink">ECSMAP</a> configuration parameter into shared memory allowing, for example, different sorting rules depending on the local conventions for users in different countries. Additional mapping tables can be loaded into the private memory of a QM process if the required table is not in shared memory. Because the tables are over half a megabyte in size, there is considerable advantage in loading the most commonly used tables in shared memory.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A QM process will use the first map loaded as the default <span style="font-weight: bold;">base map</span> but this can be changed by use of the <span style="font-weight: bold;"><a href="ecs_map.htm" class="topiclink">ECS.MAP</a></span> command, typically from within the <a href="command_scripts.htm" class="topiclink">LOGIN script</a>, or by use of the <span style="font-weight: bold;"><a href="qmb_set_ecs_map.htm" class="topiclink">SET.ECS.MAP()</a></span> function in a QMBasic program.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Where a hashed file has indices, the map used to sequence the indices internally can be specified when creating the file. The sort rules in this map will be used during all index operations for all users of the file but may be different from the map in use for other activity of each user's process such as sorting displayed output. An ECS mode file with alternate key indices cannot be opened unless the relevant character map is available. Modifying a map in a manner that changes the sort order may cause files that use that map to behave incorrectly. The safest approach is to rebuild the indices after modifying the map.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The base map is included in the standard QM download. Character maps for specific regional variations can be obtained via the downloads page of the openqm.com web site. The downloaded map should be saved with an uppercase name in the ecs-maps subdirectory of the QMSYS account. Downloaded maps should be treated as templates that should be reviewed before use to verify that they meet local requirements. Users who find a need to modify a map in a manner that might be of interest to other users are encouraged to send a brief description of the change to the OpenQM support email address.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading" style="page-break-after: avoid;"><span class="f_BoldSubheading">Double Width Characters</span></p>
+<p class="p_Normal" style="page-break-after: avoid;">&nbsp;</p>
+<p class="p_Normal">Unicode defines some characters as being &quot;wide&quot; to indicate that they will occupy two columns on a display or printer. The character maps include a wide attribute that will be set on such characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The presence of wide characters has an implication on format codes, headings/footings, and on several QMBasic statements. The display width functions described below are supported in non-ECS systems but behave exactly as their standard single width character equivalents since no characters have the double width attribute in the 8-bit character set.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_fmtdw.htm" class="topiclink">FMTDW()</a></span> and <span style="font-weight: bold;"><a href="qmb_fmtdw.htm" class="topiclink">FMTDWS()</a></span> functions apply format codes in a similar way to <span style="font-weight: bold;"><a href="qmb_fmt.htm" class="topiclink">FMT()</a></span> but the width is specified in terms of the display width instead of the number of characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_folddw.htm" class="topiclink">FOLDDW()</a></span> and <span style="font-weight: bold;"><a href="qmb_folddw.htm" class="topiclink">FOLDDWS()</a></span> are similar to <span style="font-weight: bold;"><a href="qmb_fold.htm" class="topiclink">FOLD()</a></span> but base the width of each string fragment on the display width rather than the number of characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_input.htm" class="topiclink">INPUTDW</a></span> statement is similar to <span style="font-weight: bold;"><a href="qmb_input.htm" class="topiclink">INPUT</a></span> but the length limit is based on display width.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="qmb_substrdw.htm" class="topiclink">SUBSTRDW()</a></span> performs substring extraction based on the display width of the extracted data.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Conversion Codes</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are three conversion codes that relate to transformation of data between its internal ECS form and various external forms:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="conv_bs.htm" class="topiclink">BS</a></span> conversion code used as an output conversion transforms a character string to a byte string where each ECS character becomes two characters with values in the range 0 to 255. Most applications should not need to use this conversion except as described below. Used as an input conversion, byte pairs are combined to form an ECS character. The default behaviour of the <span style="font-weight: bold;">BS</span> conversion code is that the character pair representation of the data is in the byte ordering used by the hardware of the computer system on which the conversion is performed. Two variations, <span style="font-weight: bold;">BSL</span> and <span style="font-weight: bold;">BSH</span>, provide a low byte first and high byte first ordering respectively.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Although primarily intended for use on ECS mode systems, the <span style="font-weight: bold;">BS</span> conversion is also available on non-ECS systems. In this case, use as an input conversion with data that lies outside the 8 bit character range will return the low order 8 bits of each character and set a <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value of 3.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="conv_mo.htm" class="topiclink">MXUC</a></span> conversion is similar to MX0C in that it translates character values to or from hexadecimal but the hexadecimal values are four digits, high byte first. The <span style="font-weight: bold;">MBUC</span> and <span style="font-weight: bold;">MOUC</span> conversions provide similar capabilities for binary (16 digits per character) and octal (6 digits per character) respectively.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Again, these codes are available in non-ECS systems. Performing an input conversion with data that would result in characters outside the 8 bit range will return a null string and a <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value of 1.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">X</span><span style="font-style: italic;">name</span> conversion code applies a <a href="character_encodings.htm" class="topiclink">character encoding</a>, translating between ECS data and an external representation such as UTF-8. The <span style="font-style: italic;">name</span> may be followed by a period and one or more case insensitive character qualifiers that control the behaviour of the conversion. Used as an output conversion, data is converted from ECS to the specified form. Used as an input conversion, data is converted from its external form to ECS. This code is available on non-ECS systems but will be limited to the 8-bit character set. Invalid input data will result in the replacement character (U+FFFD) on ECS systems or a question mark on non-ECS systems and a <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value of 1. </p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Users can add their own translation codes as described with the <a href="conv_x.htm" class="topiclink">Xname</a> conversion code.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Encryption</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The ad hoc data encryption function, <span style="font-weight: bold;"><a href="qmb_encrypt.htm" class="topiclink">ENCRYPT()</a></span>, encrypts a series of bytes. So long as the data passed to it contains no characters outside of the 8-bit set, no special action is needed by the programmer and the resultant encrypted string is fully compatible with the non-ECS version of QM. If data that may contain ECS characters is to be encrypted, it must first be converted to a byte string using the <span style="font-weight: bold;">BS</span> conversion code. Conversely, the <span style="font-weight: bold;"><a href="qmb_decrypt.htm" class="topiclink">DECRYPT()</a></span> function decrypts data to a byte string which must be converted back to characters with the <span style="font-weight: bold;">BS</span> conversion code if the original data was encrypted in this way. Note that an application that decrypts data must know how it was encrypted. Note also that byte ordering may become significant if this differs between the system where the data is encrypted and that on which it is decrypted. The <span style="font-weight: bold;">BS</span> conversion code has options to force a specific byte ordering.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Field and record level encryption within QM data files is unaffected by ECS and encrypted data in non-ECS mode files is compatible between both system types.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Special Encodings</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The Base64 and MD5 encodings provided by the <span style="font-weight: bold;"><a href="conv_b64.htm" class="topiclink">B64</a></span> conversion code and the <span style="font-weight: bold;"><a href="qmb_md5.htm" class="topiclink">MD5()</a></span> function operate on byte sequences and hence may require use of the <span style="font-weight: bold;"><a href="conv_bs.htm" class="topiclink">BS</a></span> conversion code as described above for encryption.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Transliteration</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The ECS character maps include the ability to define a transliteration character or character pair for each codepoint. These are used by the QMBasic <span style="font-weight: bold;"><a href="qmb_transliterate.htm" class="topiclink">TRANSLITERATE()</a></span> function to construct a representation of an ECS string using only characters from the 8 bit character set. This function maps each ECS character to one or two 8 bit characters. If it is necessary to perform more complex replacements, a QMBasic subroutine should be used, possibly as a user written conversion code.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Hashed Files and Indices</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Files that are to store ECS data must be created with the <span style="font-weight: bold;">ECS</span> keyword to the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command. Existing non-ECS files can be converted to ECS mode using <span style="font-weight: bold;"><a href="configure_file.htm" class="topiclink">CONFIGURE.FILE</a></span>. Files that are not in this mode, including those created by earlier versions of QM can be accessed by the ECS version of QM but cannot store ECS data characters. Any attempt to write a record containing such characters to a non-ECS file will fail.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Creating a file in ECS mode does not result in a file twice as large as its non-ECS equivalent. Each record is stored in either 8-bit or ECS mode depending on the data in the record. The record ids are similarly held in whichever format is required. The only exception to this is that ECS mode files that use field level encryption always store the records in ECS format. This is necessary in order to correctly maintain the data in fields to which the user is denied access when updating a record.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Alternate key indices for ECS mode files behave similarly, storing the index data in ECS form only if it contains extended characters. The indexed values are always stored in ECS form for best performance.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Directory Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Encoding rules can be specified for directory files using the same names as in the X<span style="font-style: italic;">name</span> conversion code outlined above. The encoding name can be specified in field 7 of the <a href="voc_f.htm" class="topiclink">F-type</a> VOC entry that defines the file. This can be overridden by use of the <span style="font-weight: bold;">ENCODING</span> clause to the QMBasic <span style="font-weight: bold;"><a href="qmb_open.htm" class="topiclink">OPEN</a></span> or <span style="font-weight: bold;"><a href="qmb_openpath.htm" class="topiclink">OPENPATH</a></span> statements and this in turn can be overridden by use of the <span style="font-weight: bold;">ENCODING</span> clause in a read or write operation. If no encoding is specified or it is overridden by use of ENCODING &quot;NULL&quot;, the data is treated as a byte stream, writing only the low order byte from each character and returning a <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> value of ER_ECS_DATA if this includes characters outside the 8 bit range. Note that use of a null string as the encoding name in any QMBasic statement that supports the <span style="font-weight: bold;">ENCODING</span> clause is equivalent to not having the <span style="font-weight: bold;">ENCODING</span> clause.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using a directory file, the application developer must determine how the mark characters are to be handled. If the data in the file uses characters 251 to 255 in their Unicode definition to represent the accented characters found in European languages, the encoding option to swap the mark characters into the private use area must be enabled. Alternatively, if these characters are to be treated as the multivalue marks, this option must not be enabled.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Encoding can be used on the non-ECS version of QM but will be restricted to the 8-bit character set.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Sequential File I/O, including devices such as serial ports</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Encoding rules can be specified for sequential files in a similar way to directory files, via the VOC <a href="voc_f.htm" class="topiclink">F-type</a> item or by use of the <span style="font-weight: bold;">ENCODING</span> clause to <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_readseq.htm" class="topiclink">READSEQ</a></span> and <span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span>. Note that <span style="font-weight: bold;"><a href="qmb_readblk.htm" class="topiclink">READBLK</a></span> and <span style="font-weight: bold;"><a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a></span> are byte string operations and are not affected by encoding settings.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Select Lists</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Select lists in memory (numbered lists or Pick style select list variables) may contain ECS characters. When saving a select list to disk, the target file must either be an ECS mode hashed file or a directory file with an encoding defined.</p>
+<p class="p_Normal"><span style="width:48px;display:inline-block">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Terminal I/O</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When using a QMConsole session on Windows systems, the font must be set to Lucida Console if characters outside the 8-bit set are to be shown correctly. Encodings set by the <span style="font-weight: bold;"><a href="pterm.htm" class="topiclink">PTERM</a></span> command are accepted but ignored.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For direct telnet or serial port connections to QM or entry from the operating system shell other than on Windows, the terminal connection normally operates in 8-bit mode but can be switched to UTF-8 by use of the <span style="font-weight: bold;"><a href="pterm.htm" class="topiclink">PTERM</a></span> command or by entering QM with the <a href="qm_command_options.htm" class="topiclink">-utf8</a> command line option.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Except when the connection is set to operate in binary mode, QM will relocate characters 251 to 255 in the input data to code points U+F8FB to U+F8FF. These are the accented characters common in European languages that are displaced by the conventional definition of the mark characters. The opposite transformation will occur on output to the terminal. Thus a user entering, for example, a u-umlaut (ü) will see this character reflected back to their screen correctly even though internally it has been transformed to be the character with code point value U+F8FC. In cases where a user needs to be able to enter the field mark, value mark or subvalue mark from the keyboard, these can be entered using Ctrl-^, Ctrl-] or Ctrl-\ respectively if this feature is enabled (see the <span style="font-weight: bold;"><a href="pterm.htm" class="topiclink">PTERM</a></span> command).</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Sockets</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Socket connections opened using <span style="font-weight: bold;"><a href="qmb_open_socket.htm" class="topiclink">OPEN.SOCKET</a></span> or <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION</a></span> are byte string interfaces. Data written to a socket should, where necessary, be encoded into an appropriate format for transmission such as UTF-8 using, for example, <span style="font-weight: bold;"><a href="qmb_oconv.htm" class="topiclink">OCONV()</a></span>. Writing data with characters outside the 8-bit range will transmit the least significant 8 bits of the character value. Similarly, incoming data may need to be converted from its transmission format.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Printing</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;"><a href="setptr.htm" class="topiclink">SETPTR</a></span> command includes an <span style="font-weight: bold;">ENCODING</span> option to set the character encoding to be used for output to individual print units. If no encoding is specified, only the low order 8 bits of each character are output. The encoding can also be set with the QMBasic <span style="font-weight: bold;"><a href="qmb_setpu.htm" class="topiclink">SETPU</a></span> statement. Printer encoding is available on non-ECS systems but restricted to the 8 bit character set.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Data Editing</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The ^<span style="font-style: italic;">nnn</span> notation of the <span style="font-weight: bold;"><a href="ed.htm" class="topiclink">ED</a></span> editor and <span style="font-weight: bold;"><a href="modify.htm" class="topiclink">MODIFY</a></span> is extended to allow ^X<span style="font-style: italic;">nnnn</span> to enter a four hexadecimal digit character value.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The &quot;quote char&quot; function of the <span style="font-weight: bold;"><a href="sed.htm" class="topiclink">SED</a></span> editor is extended to allow X<span style="font-style: italic;">nnnn</span> to enter a four hexadecimal digit character value.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">QMBasic</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QMBasic program source code must be written in the 8-bit character set. The only exception is that string constants may contain characters from the extended character set. This will require that the source file is created or encoded in a manner that supports ECS characters.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Programs compiled on the non-ECS version of QM will run unchanged on the ECS version. Programs compiled on the ECS version will run on the non-ECS version so long as they do not attempt to use any ECS specific features.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">QMNet</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QMNet is unaffected by ECS except that a non-ECS mode system cannot open an ECS mode file on the remote server.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">QMClient</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <a href="qmclient.htm" class="topiclink">QMClient</a> C API includes a set of wide character functions that can accept or return ECS data. Connections are compatible between ECS mode and non-ECS mode systems with the exception that an ECS mode file cannot be opened by a non-ECS mode client. Data returned from an ECS mode server for subroutine calls and executed commands initiated from a non-ECS mode client must not contain characters outside the 8-bit set.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Replication</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The data replication system can replicate ECS files so long as the target file on the subscriber system is either an ECS mode hashed file or a directory file with an encoding.</p>
+<p class="p_Normal"><span style="width:48px;display:inline-block">&nbsp;</span></p>
+<p class="p_Normal">When replicating directory files, the state of the mark mapping mode is taken into account such that the write on the subscriber is performed with the same mark mapping state as the corresponding write on the publisher. Replicating a hashed file to a directory file target will perform the write on the subscriber with mark mapping enabled.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Writes performed to directory files on the subscriber always use any encoding set in the VOC entry for the file on the subscriber system. Encodings specified for the publisher write are independent of how the data is written on the subscriber.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Related Settings</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Alternative day and month names can be set for non-English languages by use of the <span style="font-weight: bold;">SET.LANGUAGE</span> command. This requires at a minimum that messages 1500 to 1502 (month names, day names, ordinal dates) have been translated to the relevant language. See <a href="language.htm" class="topiclink">Multi-language applications</a> for more details.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Alternative national language currency and numeric format options can be set by use of the <span style="font-weight: bold;"><a href="nls.htm" class="topiclink">NLS</a></span> command.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><a id="ascii.char.maps" class="hmanchor"></a><span class="f_BoldSubheading">Character Maps on Non-ECS Mode Systems</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Non-ECS mode QM systems support minimal character mapping functionality, allowing developers to change the uppercase/lowercase pairing, sort order and character attributes. This is particularly relevant to applications that need to support the accented characters found in European languages but do not need the full capabilities of ECS mode.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When a QM process starts, the map specified by the <a href="configparams.htm#charmap" class="topiclink">CHARMAP</a> configuration parameter is loaded or, if this parameter is not set, a default map is loaded. The <span style="font-weight: bold;"><a href="char_map.htm" class="topiclink">CHAR.MAP</a></span> command can be used to load an alternative map dynamically but users should beware that, because non-ECS systems have only a single active character map this might invalidate alternate key indices that were created or updated using a different map. Indices may have to be rebuilt. As a general rule, an application should use just one character map.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default character map treats only upper and lower case A to Z as letters and sorts based on the 8-bit character value. The <span style="font-weight: bold;"><a href="edit_map.htm" class="topiclink">EDIT.MAP</a></span> command can be used to create or modify a character map. The map will be stored in the ascii-maps subdirectory of the QMSYS account.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As an example, an application using Windows code page 1252 and needing to use the Spanish Ñ and ñ characters could use create a map in which these characters are given the correct uppercase/lowercase pairing, marked as being letters and placed in the correct sort order.</p>
+
+</td></tr></table>
+
+</body>
+</html>

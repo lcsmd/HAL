@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Base 64 Conversion (B64)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Base 64 conversion (B64)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_b64.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Base 64 Conversion (B64)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_b.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_bs.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The base64 conversion code translates data to or from a format widely used for transmission over the internet.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The full format of this conversion code is</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">B64</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Used with <span style="font-weight: bold;"><a href="qmb_oconv.htm" class="topiclink">OCONV()</a></span> for output conversion, this operation converts data to base64 format. The data is returned as a continuous sequence of encoded characters. In common use, this data would then be divided into lines of manageable length, typically 72 characters. This can be achieved with the <span style="font-weight: bold;"><a href="qmb_fold.htm" class="topiclink">FOLD()</a></span> function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Used with <span style="font-weight: bold;"><a href="qmb_iconv.htm" class="topiclink">ICONV()</a></span> for input conversion, this operation converts base64 data back to its original form. Newlines and other filler characters are ignored.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Base 64 encoding is a byte level operation. On an ECS system, it would be necessary to transform data that may contain ECS characters to a byte oriented form. This might be, for example, an encoding such as UTF-8 or a simple byte string from the <span style="font-weight: bold;"><a href="conv_bs.htm" class="topiclink">BS</a></span> conversion code. The transformation applied will depend on how the data is being used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">OPENPATH '$HOLD' TO FVAR ELSE STOP 'Cannot open file'</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">MARK.MAPPING FVAR, OFF</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">READ TEXT FROM FVAR, 'REPORT.PDF' ELSE STOP 'Cannot read data'</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">MARK.MAPPING FVAR, ON</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">B64 = OCONV(TEXT, 'B64')</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">WRITE FOLD(B64, 72) TO FVAR, 'REPORT.B64'</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above program opens the $HOLD file. It then suppresses the normal directory file translation of newlines to field marks because the item to be read contains binary data (a PDF document). Having read this record, mark translation is re-enabled. The B64 conversion is used to translate the PDF to its base64 encoded equivalent. Finally, the <span style="font-weight: bold;">FOLD()</span> function is used to wrap the encoded data into 72 character lines. Because the target file is a directory file and mark translation has been re-enabled, the field marks in the data returned by the <span style="font-weight: bold;">FOLD() </span>function get replaced by newlines.</p>
+
+</td></tr></table>
+
+</body>
+</html>

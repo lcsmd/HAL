@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>MESSAGE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="MESSAGE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "message.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">MESSAGE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="merge_list.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="modify.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MESSAGE</span> command sends a message to selected other users.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">MESSAGE</span> <span style="font-style: italic;">user  </span>{<span style="font-weight: bold;">IMMEDIATE</span>} {<span style="font-style: italic;">message.text</span>}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">MESSAGE</span> <span style="font-weight: bold;">OFF</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">MESSAGE</span> <span style="font-weight: bold;">ON</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">user</span></td><td style="border:none;padding:0">identifies the user(s) to receive the message. This may be a user number, a case insensitive user name, or the keyword <span style="font-weight: bold;">ALL</span>. Messages cannot be sent to phantom or QMClient processes.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-weight: bold;">IMMEDIATE</span></td><td style="border:none;padding:0">causes immediate display of the message as described below.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">message.text</span></td><td style="border:none;padding:0">is the text of the message to be sent. If omitted from the command line, the user is prompted to enter the text. With the <span style="font-weight: bold;">IMMEDIATE</span> keyword, messages that are wider than the screen are truncated on terminals that support immediate message display.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Where a specific user number is given, the <span style="font-weight: bold;">MESSAGE</span> command checks that this user is logged in and is not a phantom process. The <span style="font-weight: bold;">ALL</span> keyword sends the message to all non-phantom users (except the user sending the message).</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Messages are normally displayed when the user next arrives at the command prompt. If the <span style="font-weight: bold;">IMMEDIATE</span> keyword is used and the destination process is using a terminal that supports screen save and restore (QMConsole on Windows, QMTerm, AccuTerm), the message is displayed immediately and the screen is restored when the user acknowledges the message.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MESSAGE OFF</span> command disables receipt of messages. Messages sent while message reception is disabled are not queued for later display and will never be seen. Use of the <span style="font-weight: bold;">MESSAGE</span> command with a user number will report an error if the target user has message reception disabled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">MESSAGE ON</span> command enables receipt of messages. This is the default state.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> is set to zero for success or to a negative error code.</p>
+
+</td></tr></table>
+
+</body>
+</html>

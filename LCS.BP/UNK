@@ -1,0 +1,33 @@
+*---> Recovered document: TENANT.INV
+      PROMPT
+      FILES="TENANTS, PROPETIES, LEASES"
+      CALL OPEN.FILES(FILES)
+      INCLUDE.EQU
+      INCLUDE
+      PRINT @(-1):
+      PRINT SPACE (30):"SEND GENERAGE TO TENNQNT FOR OTHERWISE
+      COMMon FILES(50), Tenants, Properties, leses
+      LOOP
+         input "wHO IS THE TENANT OR PROPERTY THAT NEES A STATEMENT?":;INPUT TENANT.SEARCH
+         WHIILE NOT FOUND IF TENANT.SEARCH <> "Q" THEN
+            CALL SEArch TENANT.SEARCH,found)
+            if found then exiT
+            IF TENANT.ID THEN
+               SELECT PROPERTY WITH TENANT
+            END ELSE
+               IF PROPERTY.ID THEN
+                  SELECT TENANT WITH PROPERTY
+               END
+               READ LEASE
+               GOSUB PRINT INVOICE
+            END
+         REPEAT
+
+
+         PRINT INVOICE:
+         PRINT LOGO
+         LIST CHARGES
+         PRINT TOTA
+SEND.MAIL:
+END
+

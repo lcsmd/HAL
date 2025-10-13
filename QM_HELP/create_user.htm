@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>CREATE.USER</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CREATE.ADMIN.USER,CREATE.USER" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "create_user.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">CREATE.USER, CREATE.ADMIN.USER</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="create_key.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="ct.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CREATE.USER</span> and <span style="font-weight: bold;">CREATE.ADMIN.USER</span> commands creates a new user name in the register of users for security checks.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CREATE.USER</span> &nbsp;{<span style="font-style: italic;">username</span> &nbsp;{<span style="font-style: italic;">account</span>}}</p>
+<p style="margin: 4px 0 0 30px;"><span style="font-weight: bold;">CREATE.ADMIN.USER</span> &nbsp;{<span style="font-style: italic;">username</span> &nbsp;{<span style="font-style: italic;">account</span>}}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">username</span></td><td style="border:none;padding:0">is the name of the user to be created. User names may be up to 32 character in length. On Windows systems the name is case insensitive. If omitted, a prompt is displayed for the user name.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">account</span></td><td style="border:none;padding:0">is the name of the account to be entered when this user logs in except QMClient processes. If not specified, an account name prompt will be issued when the user logs in. By default, the forced account also does not apply to phantoms but this can be altered using <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span>.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For the <span style="font-weight: bold;">CREATE.USER</span> command, the new user will not have administrator rights and all options controlling user rights will be disabled. The <span style="font-weight: bold;">CREATE.ADMIN.USER</span> command is identical except that the new user will have administrator rights. See the <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> command for a more powerful method of managing user names.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On Windows USB and in user mode installations on Linux/Unix, the new QM user is created with no password. Either the <span style="font-weight: bold;"><a href="password.htm" class="topiclink">PASSWORD</a></span> command should be used to apply a password or the user should be encouraged to set a password on first login.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command does not affect the underlying operating system user name database. If QM's security system is enabled (see the <span style="font-weight: bold;"><a href="security.htm" class="topiclink">SECURITY</a></span> command), users attempting to enter QM who do not appear in the user register will be rejected.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span>, <span style="font-weight: bold;"><a href="delete_user.htm" class="topiclink">DELETE.USER</a></span>, <span style="font-weight: bold;"><a href="list_users.htm" class="topiclink">LIST.USERS</a></span>, <span style="font-weight: bold;"><a href="password.htm" class="topiclink">PASSWORD</a></span>, <span style="font-weight: bold;"><a href="security.htm" class="topiclink">SECURITY</a></span>, <a href="application_level_security.htm" class="topiclink">Application Level Security</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

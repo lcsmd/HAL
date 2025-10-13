@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>PUBLISH</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="PUBLISH" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "publish.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">PUBLISH</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="pterm.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="publish_account.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">PUBLISH</span> command sets up a file in the current account for <a href="replication.htm" class="topiclink">replication</a>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">PUBLISH</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">src.file</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">server</span><span style="font-weight: bold;">:</span><span style="font-style: italic;">account</span><span style="font-weight: bold;">:</span><span style="font-style: italic;">tgt.file</span> ...</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">PUBLISH</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">src.file</span> <span style="font-weight: bold;">CANCEL</span> <span style="font-style: italic;">server</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">PUBLISH</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">src.file</span> <span style="font-weight: bold;">CANCEL ALL</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">PUBLISH</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">src.file</span> <span style="font-weight: bold;">QUERY</span></p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">PUBLISH</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-weight: bold;">ALL</span> <span style="font-weight: bold;">QUERY</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">src.file</span></td><td style="border:none;padding:0">is the file to be published. This must be a reference to a VOC <a href="voc_f.htm" class="topiclink">F-type</a> record that defines a hashed file.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">server</span></td><td style="border:none;padding:0">is the name of the server to which the file is to be exported. This must have been defined using <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> so that <span style="font-weight: bold;">PUBLISH</span> can validate the target file reference.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">account</span></td><td style="border:none;padding:0">is the name of the account on <span style="font-style: italic;">server</span> to which the file is to be exported.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:120px"><span style="font-style: italic;">tgt.file</span></td><td style="border:none;padding:0">is the name of the target file within <span style="font-style: italic;">account</span> to which the file is to be exported.</td></tr></table></div><p style="text-indent: -120px; margin: 0 0 0 150px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first form of the <span style="font-weight: bold;">PUBLISH </span>command marks the specified file as being exported to the specified target. Multiple targets may be specified in a single command or each target can be specified separately. Following successful execution of this command, all updates to the file will be logged for export.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The two forms with the <span style="font-weight: bold;">CANCEL</span> keyword terminate publication of the specified file. With a server name, publication to the specified <span style="font-style: italic;">server</span> is terminated. With the <span style="font-weight: bold;">ALL</span> keyword, all publication of this file is terminated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The two forms with the <span style="font-weight: bold;">QUERY</span> keyword show a list of replication targets, either for the specified file or for all files.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Adding or cancelling replication targets is restricted to users with administrator rights.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="replication.htm" class="topiclink">Replication</a>, <span style="font-weight: bold;"><a href="disable_publishing.htm" class="topiclink">DISABLE.PUBLISHING</a></span>, <span style="font-weight: bold;"><a href="enable_publishing.htm" class="topiclink">ENABLE.PUBLISHING</a></span>, <span style="font-weight: bold;"><a href="list_replicated.htm" class="topiclink">LIST.REPLICATED</a></span>,  <span style="font-weight: bold;"><a href="publish_account.htm" class="topiclink">PUBLISH.ACCOUNT</a></span>, <span style="font-weight: bold;"><a href="subscribe.htm" class="topiclink">SUBSCRIBE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

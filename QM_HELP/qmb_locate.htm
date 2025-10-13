@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LOCATE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LOCATE,LOCATE()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_locate.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LOCATE, LOCATE()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_local.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_lock.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LOCATE</span> statement searches a dynamic array for a given field, value or subvalue. The <span style="font-weight: bold;">LOCATE()</span> function provides similar capabilities and is particularly suited to use in dictionary I-type items.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement has three different syntaxes / semantics for compatibility with other systems.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Default style</p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LOCATE</span> <span style="font-style: italic;">string</span> <span style="font-weight: bold;">IN</span> <span style="font-style: italic;">dyn.array</span><span style="font-weight: bold;">&lt;</span><span style="font-style: italic;">field</span> {<span style="font-weight: bold;">,</span><span style="font-style: italic;">value</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">subvalue</span>}}<span style="font-weight: bold;">&gt;</span> {<span style="font-weight: bold;">BY</span> <span style="font-style: italic;">order</span>} {<span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">var</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>UniVerse style (enabled by use of $MODE UV.LOCATE)</p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LOCATE</span> <span style="font-style: italic;">string</span> <span style="font-weight: bold;">IN</span> <span style="font-style: italic;">dyn.array{</span><span style="font-weight: bold;">&lt;</span><span style="font-style: italic;">field</span> {<span style="font-weight: bold;">,</span><span style="font-style: italic;">value</span> }<span style="font-weight: bold;">&gt;</span>} {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">start</span>} &nbsp;{<span style="font-weight: bold;">BY</span> <span style="font-style: italic;">order</span>} <span style="font-weight: bold;">SETTING</span> <span style="font-style: italic;">var</span></p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pick style</p>
+<p style="text-indent: -570px; margin: 0 0 0 600px;"><span style="font-weight: bold;">LOCATE(</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">dyn.array</span>{<span style="font-weight: bold;">, </span><span style="font-style: italic;">field</span> {<span style="font-weight: bold;">, </span><span style="font-style: italic;">value</span> {<span style="font-weight: bold;">, </span><span style="font-style: italic;">start</span> }}}<span style="font-weight: bold;">;</span> <span style="font-style: italic;">var</span> {<span style="font-weight: bold;">;</span> <span style="font-style: italic;">order</span>}<span style="font-weight: bold;">)</span></p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">THEN</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;">{<span style="font-weight: bold;">ELSE</span> <span style="font-style: italic;">statement(s)</span>}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Function style (returns position as function value)</p>
+<p style="text-indent: -570px; margin: 0 0 0 600px;"><span style="font-weight: bold;">LOCATE(</span><span style="font-style: italic;">string</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">dyn.array</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">field</span> {<span style="font-weight: bold;">,</span><span style="font-style: italic;">value</span> {<span style="font-weight: bold;">, </span><span style="font-style: italic;">subvalue</span> }} {<span style="font-weight: bold;">;</span> <span style="font-style: italic;">order</span>}<span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">string</span></td><td style="border:none;padding:0">evaluates to the item to be located.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">dyn.array</span></td><td style="border:none;padding:0">is the dynamic array in which searching is to occur.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">field</span></td><td style="border:none;padding:0">is the field at which searching is to commence.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">value</span></td><td style="border:none;padding:0">is the value at which searching is to commence. If omitted or zero, searching occurs at the field level.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">subvalue</span></td><td style="border:none;padding:0">is the subvalue at which searching is to commence. If omitted or zero, searching occurs at the value level.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">order</span></td><td style="border:none;padding:0">evaluates to the ordering string as described below. If omitted, no ordering is assumed.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">var</span></td><td style="border:none;padding:0">is the variable to receive the position value.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">statement(s)</span></td><td style="border:none;padding:0">are statements to be executed depending on the outcome of the <span style="font-weight: bold;">LOCATE</span> action.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>At least one of the <span style="font-weight: bold;">THEN</span> and <span style="font-weight: bold;">ELSE</span> clauses must be present.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LOCATE</span> statement searches for fields, values or subvalues within a dynamic array. The semantics of this operation depend on the style selected as described below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Default Style</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default style &nbsp;of <span style="font-weight: bold;">LOCATE</span> is as found in products such as Prime Information, PI/open and with certain mode settings in UniVerse and Unidata.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If only <span style="font-style: italic;">field</span> is specified, <span style="font-weight: bold;">LOCATE</span> searches for a field that matches <span style="font-style: italic;">string</span>. If <span style="font-style: italic;">field</span> and <span style="font-style: italic;">value</span> are specified but <span style="font-style: italic;">subvalue</span> is omitted, <span style="font-weight: bold;">LOCATE</span> searches for a value within the specified field that matches <span style="font-style: italic;">string</span>. If <span style="font-style: italic;">field</span>, <span style="font-style: italic;">value</span> and <span style="font-style: italic;">subvalue</span> are specified, <span style="font-weight: bold;">LOCATE</span> searches for a subvalue within the specified field and value that matches <span style="font-style: italic;">string</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Searching commences at the starting position defined in the <span style="font-weight: bold;">IN</span> clause. If a match is found, <span style="font-style: italic;">var</span> is set to its field, value or subvalue position as appropriate to the level of the search. If no match is found, <span style="font-style: italic;">var</span> is set to the position at which a new item should be inserted. For an unordered <span style="font-weight: bold;">LOCATE</span> this will be such that it would be appended.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">Note that the syntax actually reads incorrectly. A <span style="font-weight: bold;">LOCATE</span> statement such as</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOCATE DT IN DATES&lt;1&gt; SETTING POS THEN ...</span></p>
+<p class="p_Normal">is not searching <span style="text-decoration: underline;">in</span> DATES&lt;1&gt; at all. It is searching <span style="text-decoration: underline;">starting at</span> DATES&lt;1&gt;.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">UniVerse Style</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Pick and Reality systems and the UniVerse database running in Ideal, Pick, Reality or IN2 flavour uses the <span style="font-weight: bold;">IN</span> clause to identify the item to be searched, not the starting position. The starting position is assumed to be the first item in the data but may specified explicitly in the command by including the <span style="font-style: italic;">start</span> item.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This format of <span style="font-weight: bold;">LOCATE</span> can be selected by including a line</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">$MODE UV.LOCATE</span></p>
+<p>in the program on a line preceding the <span style="font-weight: bold;">LOCATE</span> statement.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Pick Style</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The original Pick database used a very different syntax which can be used in QM without any special mode settings. Note that despite the presence of brackets, this is a statement and should not be confused with the <span style="font-weight: bold;">LOCATE()</span> function described below.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In all three styles, the <span style="font-weight: bold;">THEN</span> clause is executed if the <span style="font-style: italic;">string</span> is found in <span style="font-style: italic;">dyn.array</span>. The <span style="font-weight: bold;">ELSE</span> clause is found if the <span style="font-style: italic;">string</span> is not found.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>In QMBasic, unlike other multivalue environments, the <span style="font-weight: bold;">SETTING</span> clause is optional. If omitted, the <span style="font-weight: bold;">THEN</span> or <span style="font-weight: bold;">ELSE</span> clause is executed as described above but no positional information is returned.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Note that this syntax, as found in Information style multivalue products, is actually illogical. The <span style="font-weight: bold;">IN</span> clause does not specify the data within which to search. Instead it specifies the start position for the search. The alternative syntax enabled by the UV.LOCATE compiler mode and described below is more logical. This syntax is found in Pick, Reality and some flavours of UniVerse.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The optional <span style="font-weight: bold;">BY</span> clause allows selection of an ordering rule specified as a series of case insensitive letters. These are:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-weight: bold;">A</span> or <span style="font-weight: bold;">D</span></td><td style="border:none;padding:0">Ascending or descending sort order. On non-ECS mode systems, the sort weight of each character is determined by its ASCII character value. On ECS mode systems, the sort weights are taken from the currently active character map. If neither code is present, no sorting is used.</td></tr></table></div><p style="text-indent: -60px; margin: 0 0 0 90px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-weight: bold;">L</span> or <span style="font-weight: bold;">R</span></td><td style="border:none;padding:0">Left or right aligned sort. These codes are ignored if no sort mode is specified. A left aligned sort compares characters from left to right and determines the sort order when the first difference is encountered. In a right aligned sort, if the item being examined is not of the same length as the <span style="font-style: italic;">string</span> being located, leading spaces are added to the shorter item prior to a left to right comparison. Unless the STRING.LOCATE setting of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive is enabled, integer numeric data that can be represented as a 64 bit value, including a negative value, is treated as a special case in a right aligned sort and is sorted into correct numeric sequence. In the Pick style syntax, fractional values are also allowed in numeric sorting.</td></tr></table></div><p style="text-indent: -89px; margin: 0 0 0 119px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:89px"><span style="font-weight: bold;">C</span> or <span style="font-weight: bold;">N</span></td><td style="border:none;padding:0">Overrides default case sensitivity of the program. C forces case sensitivity and N forces non-case sensitivity. If neither code is present, case sensitivity is applied unless the <a href="qmbd_mode.htm" class="topiclink">$MODE NOCASE.STRINGS</a> compiler directive has been used to make string comparisons case insensitive.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Left aligned ordering is faster than right aligned and should be used for textual data. Right aligned ordering is useful for numeric data such as internal format dates where the left aligned ordering would lead to sequencing problems (for example, 17 May 1995 is day 9999, 18 May 1995 is day 10000. Use of a left aligned ordering would place these dates out of calendar order).</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The <span style="font-weight: bold;">LOCATE()</span> function works like the Information style described above but returns the position at which the item was found as its result value, zero if it was not found. Although the order argument can be used to specify the expected ordering and has the impact described above for numeric data, this function does not provide a way to identify where an item should be inserted if it is not found. The <span style="font-weight: bold;">LOCATE()</span> function is particularly suited to use in dictionary I-type items.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The result of a <span style="font-weight: bold;">LOCATE</span> statement or <span style="font-weight: bold;">LOCATE()</span> function with a specific ordering when applied to a dynamic array which does not conform to that ordering is undefined and likely to lead to misbehaviour of the program at run time.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Default style:</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOCATE PART.NO IN PARTS&lt;1&gt; BY &quot;AL&quot; SETTING I ELSE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INS PART.NO BEFORE PARTS&lt;I&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This program fragment locates PART.NO in a sorted list PARTS and, if it is not already present, inserts it.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>UniVerse style:</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOCATE PART.NO IN PARTS BY &quot;AL&quot; SETTING I ELSE</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; INS PART.NO BEFORE PARTS&lt;I&gt;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This is the same as the first example but reworked to use UniVerse style.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Function style:</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">I = LOCATE(PART.NO, PARTS, 1; &quot;AL&quot;)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This statement performs the same search as the previous example but can only be used to find the position of an existing item, not to determine where a new item should be inserted to maintain the correct sort order.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_del.htm" class="topiclink">DEL</a></span>, <span style="font-weight: bold;"><a href="qmb_del.htm" class="topiclink">DELETE()</a></span>, <span style="font-weight: bold;"><a href="qmb_extract.htm" class="topiclink">EXTRACT()</a></span>, <span style="font-weight: bold;"><a href="qmb_find.htm" class="topiclink">FIND</a></span>, <span style="font-weight: bold;"><a href="qmb_findstr.htm" class="topiclink">FINDSTR</a></span>, <span style="font-weight: bold;"><a href="qmb_ins.htm" class="topiclink">INS</a></span>, <span style="font-weight: bold;"><a href="qmb_ins.htm" class="topiclink">INSERT()</a></span>, <span style="font-weight: bold;"><a href="qmb_listindex.htm" class="topiclink">LISTINDEX()</a></span>, <span style="font-weight: bold;"><a href="qmb_replace.htm" class="topiclink">REPLACE()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

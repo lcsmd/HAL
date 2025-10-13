@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>INPUTTRAP</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="INPUTTRAP" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_inputtrap.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">INPUTTRAP</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_inputnull.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_ins.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">INPUTTRAP </span>statement defines special actions for <span style="font-weight: bold;"><a href="qmb_input_at.htm" class="topiclink">INPUT @</a></span> and <span style="font-weight: bold;"><a href="qmb_inputfield.htm" class="topiclink">INPUTFIELD</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">INPUTTRAP</span> <span style="font-style: italic;">expr</span> <span style="font-weight: bold;">GOTO</span> <span style="font-style: italic;">label1 </span>{<span style="font-weight: bold;">,</span> <span style="font-style: italic;">label2</span>...}</p>
+<p style="margin: 10px 0 0 30px;"><span style="font-weight: bold;">INPUTTRAP</span> <span style="font-style: italic;">expr</span> <span style="font-weight: bold;">GOSUB</span> <span style="font-style: italic;">label1 </span>{<span style="font-weight: bold;">,</span> <span style="font-style: italic;">label2</span>...}</p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">evaluates to a string containing the characters to be trapped.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">label1</span>...</td><td style="border:none;padding:0">are labels within the current program module.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">INPUTTRAP</span> statement defines a set of characters that to be handled as special cases if used as a single character string entered for <span style="font-weight: bold;"><a href="qmb_input_at.htm" class="topiclink">INPUT @</a></span> or <span style="font-weight: bold;"><a href="qmb_inputfield.htm" class="topiclink">INPUTFIELD</a></span>. When the typed string is one of the characters defined in <span style="font-style: italic;">expr</span>, the program performs a <span style="font-weight: bold;">GOTO</span> or <span style="font-weight: bold;">GOSUB</span> to the corresponding label from the list supplied in the <span style="font-weight: bold;">INPUTTRAP</span> statement. The variable into which input was being performed will be set to a null string.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the number of characters in <span style="font-style: italic;">expr</span> exceeds the number of labels, detection of a trapped character for which there is no corresponding label will jump to the last label in the list.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Specifying <span style="font-style: italic;">expr</span> as a null string cancels any currently active <span style="font-weight: bold;">INPUTTRAP</span> action. Used in this way the syntax is unchanged and hence there must be at least one label present even though it will never be used.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When using the <span style="font-weight: bold;">GOSUB</span> form, returning from the subroutine will continue execution at the statement following the <span style="font-weight: bold;">INPUTTRAP</span>, not the statement following the <span style="font-weight: bold;"><a href="qmb_input_at.htm" class="topiclink">INPUT @</a></span> or <span style="font-weight: bold;"><a href="qmb_inputfield.htm" class="topiclink">INPUTFIELD</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If both <span style="font-weight: bold;">INPUTTRAP</span> and <span style="font-weight: bold;"><a href="qmb_inputnull.htm" class="topiclink">INPUTNULL</a></span> are used for the same character, <span style="font-weight: bold;"><a href="qmb_inputnull.htm" class="topiclink">INPUTNULL</a></span> has precedence.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="page-break-after: avoid;"><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="qmb_input_at.htm" class="topiclink">INPUT@</a></span>, <span style="font-weight: bold;"><a href="qmb_inputfield.htm" class="topiclink">INPUTFIELD</a></span><a href="qmb_inputfield.htm" class="topiclink">,</a> <span style="font-weight: bold;"><a href="qmb_inputnull.htm" class="topiclink">INPUTNULL</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

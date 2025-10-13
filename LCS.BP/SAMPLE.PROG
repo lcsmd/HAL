@@ -1,0 +1,26 @@
+      $INCLUDE INCLUDES/cus.inc
+      $INCLUDE INCLUDES/ord.inc
+      $INCLUDE INCLUDES/pro.inc
+
+      PROGRAM RetrieveDataDemo
+      INCLUDE QM.INC
+
+      DECLARE FUNCTION GetRec, GetDic, NextRec
+
+      cus.id = "CUS100000001"
+      ord.id = "ORD100000001"
+      pro.id = "PRO100000001"
+
+      * Retrieve entire customer record
+      cus.rec = GetRec(f.cus, cus.id)
+      PRINT "Customer Name: ":cus.Name
+      PRINT "Customer Address: ":cus.Address
+
+      * Retrieve entire order record
+      ord.rec = GetRec(f.ord, ord.id)
+      PRINT "Order ID: ":ord.OrderID
+      PRINT "Customer ID for Order: ":ord.CustomerID
+
+      * Retrieve entire product record
+      pro.rec = GetRec(f.pro, pro.id
+

@@ -1,0 +1,153 @@
+      PROGRAM InitializeFiles
+      $INCLUDE INCLUDES QM.INC
+
+      READ
+      $INCLUDE INCLUDES OPEN,FILES
+      OPEN "SCHEMA" TO F.SCHEMA.FILE ELSE PRINT "Unable to open SCHEMA file";STOP
+
+      VM = @VM
+
+      DIM FILES(50)
+      DIM DICT_FILES(50)
+      DIM NEXT_IDS(50)
+      DIM ALTERNATE_INDEXES(100)
+
+
+      READNEXT Record FROM SCHEMA.FILE ELSE
+         LOOP
+            FileName = Record<1>
+            Abbreviation = Record<2>
+            FileNumber = Record<3>
+
+            * Open the main file and dictionary file
+            OPEN FileName TO FILES(FileNumber) ELSE
+               PRINT "Unable to open file ":FileName
+               STOP
+            END
+
+            OPEN "DICT.":FileName TO DICT_FILES(FileNumber) ELSE
+               PRINT "Unable to open dictionary for file ":FileName
+               STOP
+            END
+
+            * Initialize the next record ID
+            NEXT_IDS(FileNumber) = 100000000
+
+            * Build the include file content
+            inc.rec = ""
+            inc.rec<-1> = "EQU ":Abbreviation:".fn TO ":FileNumber
+            inc.rec<-1> = "EQU f.":Abbreviation:" TO FILE(":FileNumber:")"
+            inc.rec<-1> = "EQU d.":Abbreviation:" TO DICT.FILE(":FileNumber:")"
+
+            * Read the metadata file
+            MetaFileName = FileName:".meta"
+            OPENSEQ MetaFileName TO META.FILE ELSE
+               PRINT "Unable to open metadata file ":MetaFileName
+               STOP
+            END
+
+            AttrNumber = 0
+
+            READSEQ MetaRecord FROM META.FILE THEN
+               * Skip the header line
+               MetaHeader = MetaRecord
+
+               * Read field definitions
+               LOOP
+                  READSEQ MetaRecord FROM META.FILE ELSE EXIT
+                  FieldName = FIELD(MetaRecord, " ", 1)
+
+                  * Set default values
+                  Type = "D"
+                  Description = ""
+                  Conversion = ""
+                  Format = "20L"
+                  S_M_Indicator = "S"
+                  Association = ""
+                  IndexInfo = ""
+
+                  IF FieldName = "@ID" THEN
+                     AttrNumber = 0
+                  END ELSE
+                     AttrNumber += 1
+                  END
+
+                  IF INDEX(FieldName, ".dt", 1) THEN
+                     Conversion = "D4-"
+                     Format = "10R"
+                     IndexInfo = "X"
+                  END
+
+                  IF INDEX(FieldName, ".id", 1) THEN
+                     IndexInfo = "X"
+                  END
+
+                  * Parse meta data overrides
+                  IF INDEX(MetaRecord, "type:", 1) THEN
+                     Type = FIELD(FIELD(MetaRecord, "type:", 2), " ", 1)
+                  END
+
+                  IF INDEX(MetaRecord, "desc:", 1) THEN
+                     Description = FIELD(FIELD(MetaRecord, "desc:", 2), " conv:", 1)
+                  END
+
+                  IF INDEX(MetaRecord, "conv:", 1) THEN
+                     Conversion = FIELD(FIELD(MetaRecord, "conv:", 2), " format:", 1)
+                  END
+
+                  IF INDEX(MetaRecord, "format:", 1) THEN
+                     Format = FIELD(FIELD(MetaRecord, "format:", 2), " assoc:", 1)
+                  END
+
+                  IF INDEX(MetaRecord, "assoc:", 1) THEN
+                     Association = FIELD(FIELD(MetaRecord, "assoc:", 2), " label:", 1)
+                  END
+
+                  IF INDEX(MetaRecord, "an:", 1) THEN
+                     AttrNumber = FIELD(FIELD(MetaRecord, "an:", 2), " ", 1)
+                  END
+
+                  IF INDEX(MetaRecord, "index:", 1) THEN
+                     IndexInfo = FIELD(FIELD(MetaRecord, "index:", 2), " ", 1)
+                  END
+
+                  inc.rec<-1> = "EQU ":Abbreviation:".":FieldName:".a TO ":AttrNumber
+                  inc.rec<-1> = "EQU ":Abbreviation:".":FieldName:" TO ":Abbreviation:".rec<":AttrNumber:">"
+
+                  * Write dictionary entry
+                  DictRec = Type:" ":Description:VM:AttrNumber:VM:Conversion:VM:Format:VM:S_M_Indicator:VM:Association:VM:IndexInfo
+                  WRITE DictRec ON DICT_FILES(FileNumber), FieldName
+
+                  * Collect alternate index info
+                  IF IndexInfo # "" THEN
+                     ALTERNATE_INDEXES(AttrNumber) = FieldName
+                  END
+               REPEAT
+            END
+DONE_META:
+            CLOSESEQ META.FILE
+
+            * Write the include file
+            OPEN "INCLUDE":Abbreviation:".inc" TO F.INCLUDE ELSE PRINT Abbreviation:".inc";STOP
+            WRITE inc.rec ON F.INCLUDE,"QM.INC"
+            CLOSE F.INCLUDE
+
+            * Create alternate indexes
+            FOR i = 1 TO DCOUNT(ALTERNATE_INDEXES(1), @VM)
+               IF ALTERNATE_INDEXES(i) # "" THEN
+                  CREATE_INDEX_CMD = "CREATE.INDEX ":FileName:" ":ALTERNATE_INDEXES(i)
+                  EXECUTE CREATE_INDEX_CMD
+               END
+            NEXT i
+
+            * Build indexes
+            BUILD_INDEX_CMD = "BUILD.INDEX ALL ":FileName
+            EXECUTE BUILD_INDEX_CMD
+
+         REPEAT
+
+
+         PRINT "Files initialized successfully"
+
+      END
+      END

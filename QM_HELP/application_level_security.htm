@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Application Level Security</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Security - application level" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "application_level_security.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Application Level Security</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="codepage.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="permissions.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">User Registration</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM includes an internal security system that imposes restrictions such that a user can only access QM if their user name is registered using the <span style="font-weight: bold;"><a href="create_user.htm" class="topiclink">CREATE.USER</a></span> or <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> command. Users who are system administrators within the underlying operating system are not restricted. When installing a new QM system, the installer will ask whether the security system is to be enabled. This choice may be amended later using the <span style="font-weight: bold;"><a href="security.htm" class="topiclink">SECURITY</a></span> command. </p>
+<p class="p_Normal">&nbsp;</p>
+<p>On Windows USB installations of QM, the QMUSBSrvr process does not have access to an adequate user authentication mechanism. If security is enabled, users entering QM over a direct network connection will be required to enter a valid user name and password that is private to the QM environment and is created using the <span style="font-weight: bold;"><a href="create_user.htm" class="topiclink">CREATE.USER</a></span> or <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> commands. If security is not enabled, network users can connect directly to QM with no authentication. Entry to QM from the operating system command prompt or by use of the QMConsole menu item is unrestricted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On other installation types, users entering QM directly from a network will always be required to enter a valid user name and password known to the operating system. Furthermore, if security is enabled, this user name must also be in QM's own register of user names. If there is no entry in the user register for the user, the system looks for an entry for DEFAULT (case sensitive) and, if found, uses this to define the user's rights. Entry to QM from the operating system command prompt (or the QMConsole menu option on Windows) will be validated against the user name used to log into the operating system. If security is not enabled, any user with a valid operating system user name will be able to enter QM.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A user can be assigned to a QM user group. User groups are much like operating system groups found in Linux but are a totally separate internal system. The group name of a QM process can be found using the <a href="at_variables.htm#qm.group" class="topiclink">@QM.GROUP</a> variable.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The details set for a user via <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> also include options to enable or disabled specific features of QM that may have a bearing on system security. These are:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px">Create/delete accounts</td><td style="border:none;padding:0">Controls use of <span style="font-weight: bold;"><a href="create_account.htm" class="topiclink">CREATE.ACCOUNT</a></span>, <span style="font-weight: bold;"><a href="delete_account.htm" class="topiclink">DELETE.ACCOUNT</a></span> and entering QM in a directory that is not already set up as an account.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px">Define private servers</td><td style="border:none;padding:0">Controls use of <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.PRIVATE.SERVER</a></span>.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:209px">Command prompt access</td><td style="border:none;padding:0">If this option is not set, the user is denied access to the interactive command prompt unless they are an administrator.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The restrictions listed above apply regardless of whether security is enabled. A user register entry will be created automatically for a user entering QM on a system with security disabled who does not already appear in the user register. This entry will have all features controlled by security options enabled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Account Restrictions</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">QM provides the ability for restrictions to be placed on which accounts a user may go into. The <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> command can be used for each defined user name to create a list of accounts that is either those accounts that the user may access or those accounts that the user may not access. This mechanism is only meaningful when user level security is active (see the <span style="font-weight: bold;"><a href="security.htm" class="topiclink">SECURITY</a></span> command). Users with administrator rights are not subject to account restrictions.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Account restrictions affect:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 28px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Use of the <span style="font-weight: bold;"><a href="logto.htm" class="topiclink">LOGTO</a></span> command.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 28px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Use of the -A option to the QM command to select an account.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 28px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Direct entry to QM from the operating system shell within an account directory.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 28px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>QMClient connections.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 28px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Use of Q-pointers to access files in other accounts.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For maximum security:</p>
+<p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Non-administrative users should be denied write access to the ACCOUNTS file in the QMSYS account otherwise they could set up alternative references to restricted accounts.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Restricting write access to the VOC file prevents creation of pointers to files in other accounts. Note, however, that some applications need write access to the VOC. Account barring of Q-pointers should provide effective security.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Ensure that the <a href="configparams.htm#filerule" class="topiclink">FILERULE</a> configuration parameter does not allow the user to construct extended syntax filenames that access files in other accounts. The value of this parameter in the configuration file determines the initial rights but it can be reduced (typically in the <a href="command_scripts.htm" class="topiclink">LOGIN</a> paragraph) for specific users or accounts.</p><p class="p_Normal" style="text-indent: 0; padding-left: 13px; margin: 6px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:13px;margin-left:-13px">&#8226;</span>Use the &quot;Ban account creation&quot; option of the <span style="font-weight: bold;"><a href="admin_user.htm" class="topiclink">ADMIN.USER</a></span> screen to disable creation of new accounts by specific users.</p><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Application Security</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A well designed application never allows an end user to reach a command prompt. This leaves restriction of what a user may do within the control of the application itself. Where it is necessary to provide differing levels of access to different users, QM provides several ways to identify attributes of the current user:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:181px"><a href="at_variables.htm#ip.addr" class="topiclink">@IP.ADDR</a></td><td style="border:none;padding:0">User's IP address for network connections. This is also available in QMBasic by use of the <span style="font-weight: bold;"><a href="qmb_system.htm" class="topiclink">SYSTEM()</a></span> function with key 42 (SYS$CLIENT.IP).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:181px"><a href="at_variables.htm#logname" class="topiclink">@LOGNAME</a></td><td style="border:none;padding:0">User's login name.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:181px"><a href="at_variables.htm#tty" class="topiclink">@TTY</a></td><td style="border:none;padding:0">Terminal device name.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:181px"><a href="qmb_system.htm" class="topiclink">SYSTEM(1017)</a></td><td style="border:none;padding:0">Port number for network connection.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:181px"><a href="qmb_system.htm" class="topiclink">SYSTEM(27 to 30)</a></td><td style="border:none;padding:0">UID, effective UID, GID and effective GID &nbsp;(not Windows)</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A user could potentially escape from the controlled environment provided by the application if the application were to abort. This can be avoided by a combination of the following techniques:</p>
+<p style="margin: 10px 0 0 30px;">Disable the break key. The break key is automatically disabled until completion of the <a href="command_scripts.htm" class="topiclink">LOGIN</a> paragraph unless it is enabled within that paragraph by use of the <span style="font-weight: bold;"><a href="break.htm" class="topiclink">BREAK ON</a></span> command. There should never be a need for use of the break key in a working application. In the unlikely event of needing to re-enable it for a specific user as a result of an application fault, the system administrator can use an extended form of the <span style="font-weight: bold;"><a href="break.htm" class="topiclink">BREAK</a></span> command to do this.</p>
+<p style="margin: 10px 0 0 30px;">Use <span style="font-weight: bold;"><a href="option.htm" class="topiclink">OPTION NO.USER.ABORTS</a></span> to suppress all options through which a user can cause an abort to occur. This removes the A option from the &quot;Press return to continue&quot; prompt, the query processor pagination prompt and the break key options.</p>
+<p style="margin: 10px 0 0 30px;">Implement the <a href="command_scripts.htm" class="topiclink">ON.ABORT</a> paragraph. Despite the above techniques, an application may still abort as a result of a run time error or use of the <span style="font-weight: bold;"><a href="qmb_abort.htm" class="topiclink">ABORT</a></span> statement within the application itself. When an abort occurs, QM discards all programs, menus, paragraphs, etc that are running in the process and returns to the lowest level command processor. Before this displays the command prompt, it checks in the VOC file for an executable item named <a href="command_scripts.htm" class="topiclink">ON.ABORT</a> and, if this is found, executes it. A typical <a href="command_scripts.htm" class="topiclink">ON.ABORT</a> paragraph terminates the user's session after, perhaps, logging the incident.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Some users such as application developers may need to be able to reach a command prompt. In this case, <a href="securitysubroutines.htm" class="topiclink">security subroutines</a> can be attached to R or V-type VOC entries to provide control over what can be done.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="permissions.htm" class="topiclink">Permissions</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

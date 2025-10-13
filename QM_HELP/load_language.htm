@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>LOAD.LANGUAGE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="LOAD.LANGUAGE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "load_language.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">LOAD.LANGUAGE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="listv.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="lock.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">LOAD.LANGUAGE</span> command loads a new set of message definitions into the QM message library.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LOAD.LANGUAGE </span><span style="font-style: italic;">pathname</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">pathname</span></td><td style="border:none;padding:0">identifies the message text file to be loaded.</td></tr></table></div><p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="text-indent: -150px; margin: 0 0 0 180px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">QM includes support for text message output in multiple languages. The standard message library installed with QM contains English messages texts. Additional language libraries may be available for download. Users can also perform their own translations of the source text downloaded from the product web site.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default message text source file is available for download from the openqm.com web site and includes comment lines detailing the rules for successful translation. It is strongly recommended that users should use the two letter international country code as the language identifier in the PREFIX line (e.g. FR for French) but variations are permitted such as, perhaps, CHF for Swiss French.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A set of message texts obtained by download of a pre-translated file or by translation of the default English messages can be installed by executing</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">LOAD.LANGUAGE </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">pathname</span></p>
+<p class="p_Normal">in the QMSYS account where <span style="font-style: italic;">pathname</span> points to the message text file to be installed. A single system may have any number of languages installed and the non-English messages will be preserved at an upgrade.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The message text source file uses UTF-8 encoding for any characters with codepoint values over 127. The <span style="font-weight: bold;">LOAD.LANGUAGE</span> command will read the named file using this encoding. On non-ECS mode systems, all characters in the source text must, after decoding, lie in the 8-bit character set. Any characters outside the 8-bit character set will be written to the message library incorrectly.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Message text are stored in a file named MESSAGES in the QMSYS account. On first installation of QM, this file will be created in either ECS or non-ECS mode depending on the mode of the underlying QM system. Installing an ECS mode version of QM over a non-ECS mode version will automatically reconfigure the messages file to ECS mode. The reverse action, installing a non-ECS mode version of QM over an ECS mode version will delete and recreate the file, populating it only with the standard English messages. Any locally applied alternative messages would need to be reloaded.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="language.htm" class="topiclink">Multi-language applications</a>, <span style="font-weight: bold;"><a href="set_language.htm" class="topiclink">SET.LANGUAGE</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

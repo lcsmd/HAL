@@ -1,0 +1,57 @@
+      * DONATE [YEAR] [AMT]
+      INCLUDE FILE.EQU TRANS.EQ
+      PROMPT ''
+      DEF.PAYEE = "Saint Francis of Asisi Church"
+      DEF.AMT = 250
+      DEF.CLASS = "Personal"
+      DEF.ACCOUNT.ID = ""
+      OPEN 'TRANS' TO TRANS ELSE PRINT 'TRANS';STOP
+      OPEN 'LCS.CONTROL' TO LCS.CONTROL ELSE PRINT 'LCS.CONTROL';STOP
+      READ NEXT.TRANS.ID FROM LCS.CONTROL,'NEXT.TRANS.ID' ELSE NEXT.TRANS.ID = '70000'
+      YEAR = FIELD(@SENTENCE," ",2)
+      AMT = FIELD(@SENTENCE," ",3)
+      PAYEE = FIELD(@SENTENCE," ",3)
+      *IF YEAR = "?" THEN GOSUB HELP:
+      IF YEAR = "" THEN PRINT "ENTER TAX YEAR FOR DONATIONS:":;INPUT YEAR
+      IF AMT = "" THEN PRINT "ENTER THE AMOUNT TO DONATE EACH SUNDAY:":;INPUT AMT
+      IF PAYEE = "" THEN PRINT "PAYEE:":;INPUT PAYEE
+      IF NOT(NUM(YEAR)) THEN PRINT "YEAR MUST BE AN INTEGER";STOP
+      IF NOT(NUM(AMT)) THEN PRINT "AMOUNT MUST BE A NUMBER";STOP
+      IF NOT(PAYEE) THEN PAYEE = "St Francis Assisi"
+      PRINT "Tax year:":YEAR
+      PRINT "Amount:":AMT
+      PRINT "Payee:":PAYEE
+      FIRST.DAY = ICONV("01/01/":YEAR,"D4/")
+      SUN.NUM = 0
+      OFFSET = 0
+      DONATE.TOTAL = 0
+      LOOP WHILE SUN.NUM = 0 DO
+         IF OCONV(FIRST.DAY+OFFSET,"DWA") = 'SUNDAY' THEN
+            SUN.NUM = FIRST.DAY+OFFSET
+         END ELSE
+            OFFSET += 1
+         END
+      REPEAT
+      FOR WEEK = 1 TO 53
+         TR.B = ''
+         DONATE.DATE = SUN.NUM + (WEEK-1)*7
+         IF YEAR = OCONV(DONATE.DATE,'D4 Y') THEN
+            NEXT.TRANS.ID +=1
+            TR.ID = NEXT.TRANS.ID
+            TR.TR.TYPE = "Expense"
+            TR.TR.DATE = DONATE.DATE
+            TR.NAME = PAYEE
+            TR.AMT = ICONV(AMT,'MD2')
+            TR.DEBIT = TR.AMT
+            TR.ACCOUNT.ID = DEF.ACCOUNT.ID
+            TR.CLASS = "Personal"
+            TR.YEAR = YEAR
+            TR.MONTH = OCONV(DONATE.DATE,'D M')
+            TR.PER.ID = TR.YEAR:TR.MONTH
+            TR.SOURCE = "Manual"
+            WRITE TR.B ON TRANS,TR.ID
+            DONATE.TOTAL += AMT
+         END
+      NEXT WEEK
+      PRINT DONATE.TOTAL:" DONATED TO ":PAYEE:" IN TAX YEAR ":YEAR
+      END

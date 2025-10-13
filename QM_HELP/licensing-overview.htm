@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Licensing Overview</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "licensing-overview.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Licensing Overview</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="installation.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="multi-tenanting.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Use of the QM multivalue database software is controlled by licence. This section provides an overview of the licensing policy.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="width:48px;display:inline-block">&nbsp;</span> &nbsp; &nbsp; &nbsp; &nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">What does the licence control?</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">A QM licence is issued to a named company or individual and is normally for use on a specific system identified by a <span style="font-weight: bold;">system id</span> code. The licence sets the maximum number of simultaneous <span style="font-weight: bold;">users</span> of the software, the <span style="font-weight: bold;">platform</span> (Windows, Linux, etc), the <span style="font-weight: bold;">site text</span> that will be displayed on entry to QM, and the availability of optional add-on components. There may also be an expiry date. Use within cloned virtual machine environments requires that each clone is separately licensed.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Each user of a QM system runs as a separate operating system process which falls into one of two broad classifications, <span style="font-weight: bold;">interactive</span> or <span style="font-weight: bold;">phantom</span>. Interactive processes are users connecting to a QM server via a terminal emulator, directly from the operating system command prompt (a <span style="font-weight: bold;">console</span> user), via the QMClient API or other route where the client side is controlling the actions of the server process. Phantom processes are background activity that has no direct interaction with the user. There is a special case of an <span style="font-weight: bold;">interactive phantom</span> (iphantom) which is a phantom process that has a accepted an incoming network connection, effectively becoming an interactive process.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The user limit set by the licence determines the maximum number of interactive processes, including interactive phantoms. Attempting to start a new interactive process when this limit has been reached will fail.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There is also a limit on the number of simultaneous phantom processes. This limit is normally eight plus a further one for each two licensed users after the first four. Some licences may have different rules for determination of the phantom limit. Attempting to start a new phantom process when the limit has been reached will check whether there are spare interactive users available and, if so, borrow one of these.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">QMNet</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The QMNet subsystem that allows access to data on remote QM servers is built on an extension to the QMClient API. Opening a connection creates a QM process on the remote system that handles all QMNet activity for the same QM process on the local system. This consumes one licensed user on the remote system in addition to the licence used by the connecting process on the local system. This process terminates when the last QMNet file is closed although the <a href="configparams.htm#netdelay" class="topiclink">NETDELAY</a> configuration parameter can be used to keep the connection open briefly. Use of QMNet has no additional impact on licensing on the local system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;<br />
+<span class="f_BoldSubheading">Web Services</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Each child processes created by the <span style="font-weight: bold;">WEBSVC</span> command to process incoming web requests consume a licensed user, releasing it on termination.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Device Licensing</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">device licensing</span> option allows multiple interactive connections from the same client device to share a licence. It has no effect on phantom processes. Device licensing is typically used to allow both a terminal emulator connection and a QMClient connection from the same PC. Device licensing is available in sizes of two, four or eight sessions per user. In the two session per user mode, for example, the first two users connecting from the same client device consume only a single licensed user. A third connection from the same device will consume a second licensed user. The system maintains these counters on a per-device basis such that if any one of these three users disconnects, the remaining two processes share the one licensed user.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Device licensing requires support in the client device. It is available with console users, AccuTerm, Winnix, QMClient and the largely obsolete QMTerm. Other terminal emulators will not take part in the device licensing system. Also, the licence terms state that device licensing may not be used with an intermediate layer that effectively makes multiple client devices appear to be just one device.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_BoldSubheading"><span class="f_BoldSubheading">Connection Pooling</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">connection pooling</span> system allows a QMClient or phantom process to go into an idle state, waiting for new work to arrive. Except for non-interactive phantoms, the process continues to consume a licensed user whilst in the idle state. The pool timeout can be used to terminate the idle process if no new work arrives in a set time.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">See also:</span></p>
+<p class="p_Normal"><a href="installation.htm" class="topiclink">Installation</a>, <a href="qmnet.htm" class="topiclink">QMNet</a>, <span style="font-weight: bold;"><a href="websvc.htm" class="topiclink">WEBSVC</a></span>, <a href="connection_pooling.htm" class="topiclink">Connection pooling</a></p>
+
+</td></tr></table>
+
+</body>
+</html>

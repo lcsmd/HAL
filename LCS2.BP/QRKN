@@ -1,0 +1,81 @@
+      **
+      **BASIC
+      **11-22-08 13:03:09
+      **07-27-06
+      **TOM PHILLIPS
+      **WWW.TOM-PHILLIPS.INFO
+      **Copyright 2008 by SQUASH. All rights reserved.
+      *
+      * QRKN - A tool to re-key the names of "Q" programs
+      *         removing the ".txt" and uppercasing the name.
+      *
+      EQU DOT TO '.'
+      EQU MCU TO 'MCU'
+      PROCREAD PROC.RCD THEN PROC.RCD='';TERM.FLG=0 ELSE TERM.FLG=1
+      PROMPT ''
+      *
+      IF (TERM.FLG) THEN PRINT 'Enter the FROM file: ':
+      INPUT FFIL.NAM
+      CALL QEXIT (FFIL.NAM,EXIT.FLG)
+      IF (EXIT.FLG) THEN STOP
+      FFIL.NAM=TRIM(OCONV(FFIL.NAM,MCU))
+      IF FFIL.NAM='' THEN STOP
+      OPEN.ERR=0
+      OPEN '',FFIL.NAM TO FFIL ELSE
+         PRINT \Can't open \:FFIL.NAM;STOP
+      END
+      *
+      IF (TERM.FLG) THEN PRINT 'Enter the  TO  file: ':
+      INPUT TFIL.NAM
+      CALL QEXIT (TFIL.NAM,EXIT.FLG)
+      IF (EXIT.FLG) THEN STOP
+      TFIL.NAM=TRIM(OCONV(TFIL.NAM,MCU))
+      IF TFIL.NAM='' THEN STOP
+      OPEN.ERR=0
+      OPEN '',TFIL.NAM TO TFIL ELSE
+         PRINT \Can't open \:TFIL.NAM;STOP
+      END
+      IF FFIL.NAM=TFIL.NAM THEN
+         PRINT \Won't copy to same file\;STOP
+      END
+      *
+      FILE.CTR=0
+      COPY.CTR=0
+      ITEM.END=0
+      SELECT FFIL
+      LOOP
+         READNEXT FFIL.KEY ELSE ITEM.END=1
+      UNTIL ITEM.END DO
+         FILE.CTR=FILE.CTR+1
+         READ FFIL.RCD FROM FFIL,FFIL.KEY THEN
+            TFIL.KEY=OCONV(FFIL.KEY,MCU)
+            HOLD.KEY=FIELD(TFIL.KEY,DOT,1)
+            IF HOLD.KEY='' THEN
+               HOLD.KEY=TFIL.KEY
+            END
+            TFIL.KEY=HOLD.KEY
+            READU TEST.RCD FROM TFIL,TFIL.KEY THEN
+               RELEASE TFIL,TFIL.KEY
+               DISP.MSG=FFIL.KEY:\ NOT copied. \:TFIL.KEY:\ already on file\
+            END ELSE
+               WRITE FFIL.RCD ON TFIL,TFIL.KEY
+               DISP.MSG=FFIL.KEY:\ copied to \:TFIL.KEY
+               COPY.CTR=COPY.CTR+1
+            END
+            IF (TERM.FLG) THEN
+               PRINT DISP.MSG
+            END
+         END
+      REPEAT
+      *
+      BEGIN CASE
+         CASE NOT(TERM.FLG)
+         CASE FILE.CTR=COPY.CTR
+            PRINT;PRINT 'All items copied'
+         CASE 1
+            PRINT;PRINT FILE.CTR:' read - ':COPY.CTR:' copied'
+      END CASE
+      STOP
+      *
+      END
+

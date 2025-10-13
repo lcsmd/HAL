@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>CNAME</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="CNAME,RENAME" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "cname.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">CNAME, RENAME</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="clr.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="command_logging.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">CNAME</span> command (synonym <span style="font-weight: bold;">RENAME</span>) changes the name of a file or record(s) within a file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">CNAME</span> <span style="font-style: italic;">old.file.name</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">new.file.name</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CNAME</span> <span style="font-style: italic;">old.file.name</span><span style="font-weight: bold;"> TO </span><span style="font-style: italic;">new.file.name</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">old.file.name</span></td><td style="border:none;padding:0">is the current name of the file to be renamed.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">new.file.name</span></td><td style="border:none;padding:0">is the new name of the file to be renamed.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>or</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 10px 30px;"><span style="font-weight: bold;">CNAME</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span> <span style="font-style: italic;">old.record.id</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">new.record.id</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">CNAME</span> {<span style="font-weight: bold;">DICT</span>} <span style="font-style: italic;">file.name</span> <span style="font-style: italic;">old.record.id</span><span style="font-weight: bold;"> TO</span> <span style="font-style: italic;">new.record.id</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">file.name</span></td><td style="border:none;padding:0">is the name of the file containing the record(s) to be renamed. The optional <span style="font-weight: bold;">DICT</span> prefix specifies that the dictionary portion of the file is to be processed.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">old.record.id</span></td><td style="border:none;padding:0">is the current name of the record to be renamed.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:150px"><span style="font-style: italic;">new.record.id</span></td><td style="border:none;padding:0">is the new name for the renamed record.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Used with two file names, the <span style="font-weight: bold;">CNAME</span> command renames <span style="font-style: italic;">old.file.name</span> to <span style="font-style: italic;">new.file.name</span>. The VOC record defining the file is renamed. The underlying operating system directories representing the data file and the dictionary are also renamed if they are the default names and the new names are acceptable operating system directory names. Where the directory names are not the defaults, as would be the case for a file created with the PATHNAME option of the <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span> command, the directory can be renamed separately using operating system commands but the VOC entry must be manually edited to match this change.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Used with a single file name and two record names, the <span style="font-weight: bold;">CNAME</span> command renames a record within the file. In this format, multiple records may be renamed in a single command by repeating the <span style="font-style: italic;">old.record.id</span><span style="font-weight: bold;"> TO</span> <span style="font-style: italic;">new.record.id</span> component of the command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The command</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CNAME VOC OLD.NAME TO NEW.NAME</span></p>
+<p>is equivalent to</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CNAME OLD.NAME TO NEW.NAME</span></p>
+<p>except that the directory will not be renamed at the operating system level.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CNAME CUST.FILE A7194 TO A7149</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command renames record A7194 of file CUST.FILE to A7149.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CNAME STOCK, INVENTORY</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command renames the STOCK file to INVENTORY. The VOC record defining the file is renamed. The underlying operating system directories representing the data file and the dictionary are also renamed if they are the default names and the new names are acceptable operating system directory names.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">CNAME STOCK A8135,A008135 D4923,D004923</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command renames two data records within the STOCK file.</p>
+
+</td></tr></table>
+
+</body>
+</html>

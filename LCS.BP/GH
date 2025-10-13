@@ -1,0 +1,9 @@
+      filename = field(@sentence," ",2)
+      OPENSEQ "QM_HELP",FILENAME:".HTM" TO F.HELP then
+         URL=DOWNCASE("http://qm.lcs.ai/help/":filename:'.HTM')
+      end ELSE
+         URL = DOWNCASE("http://qm.lcs.ai/index.html")
+      END
+      EQU ESC TO CHAR(27), STX TO CHAR(2), CR TO CHAR(13)
+      PRINT ESC:STX:'<':URL:CR:
+      END

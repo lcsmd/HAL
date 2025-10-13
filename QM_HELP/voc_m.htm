@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>VOC M-type records - Menu definitions</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Menu definitions,VOC M-type records" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "voc_m.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">VOC M-Type Records &nbsp;- &nbsp;Menu Definitions</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="voc_k.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="voc_pa.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A VOC menu record defines a menu of numbered options to be displayed to the user when the menu entry is executed. Because menu records may be very large, they are often stored in some other file with a <a href="voc_r.htm" class="topiclink">VOC R-type record</a> as a remote pointer to the actual menu definition.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A menu record has 11 fields:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">1:</td><td style="border:none;padding:0">M &nbsp;{ descriptive text }</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">2:</td><td style="border:none;padding:0">Menu title line to appear at the top of the screen.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">3:</td><td style="border:none;padding:0">Item text. This field is multivalued with one value for each menu entry. Blank entries are allowed to insert spacing in the menu. Each menu entry is numbered except as described under field 4 below.</td></tr></table></div><p style="text-indent: 1px; margin: 0 0 10px 59px;">The descriptions are normally displayed starting on the third line of the screen, left justified. If the menu has more items than will fit in a single column on the screen and the items are all sufficiently short, the menu will be displayed as two columns. Any menu items that will not fit on the screen are lost.</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">4:</td><td style="border:none;padding:0">Action. This field is multivalued with entries corresponding to the text in field 3. If the action is terminated by a semicolon, the menu processor issues a &quot;Press return to continue&quot; prompt when the command is completed. Blank entries cause the field 3 text to be treated as a sub-title and not numbered on the displayed menu.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">5:</td><td style="border:none;padding:0">Help text. A multivalued set of one line help texts corresponding to each menu option in the previous fields.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">6:</td><td style="border:none;padding:0">Access key. An optional multivalued set of access control keys corresponding to the menu items. The access key value is passed to the access control subroutine if this is used.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">7:</td><td style="border:none;padding:0">Hide inaccessible entries. This field may be single valued in which case it applies to all menu entries or it may have one value for each menu item. Each value present is a numeric representation of a Boolean (1 or 0 corresponding to True or False) flag indicating whether inaccessible menu entries should be hidden (not displayed) or shown as unavailable.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">8:</td><td style="border:none;padding:0">Access subroutine. This optional field contains the name of an access control subroutine (see below).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">9:</td><td style="border:none;padding:0">Prompt text. If present, this text replaces the default option prompt.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">10:</td><td style="border:none;padding:0">Exit codes. An optional multivalued list of codes which when entered at the option prompt will exit from the menu. If this field is blank, entering a null response to the menu prompt will exit from the menu. Because exit codes are processed before option numbers, it is possible to include an option that causes an exit by specifying the option number as an exit code.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:29px">11:</td><td style="border:none;padding:0">Stop codes. An optional multivalued list of codes which when entered at the option prompt will generate an abort event, terminating all active processing and returning to the command prompt. If this field is blank, it defaults to Q. Because stop codes are processed before option numbers, it is possible to include an option that causes a stop by specifying the option number as a stop code.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Menus may be constructed and maintained using the menu editor <span style="font-weight: bold;"><a href="med.htm" class="topiclink">MED</a></span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A summary of M-type VOC records may be displayed or printed using <span style="font-weight: bold;"><a href="listm.htm" class="topiclink">LISTM</a></span><span style="font-family: Arial,Helvetica,sans-serif;">.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Access Control</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A menu may include run time selection of which options are to be offered to the user. This is managed by a user written access control subroutine named in field 8 of the menu definition. When the menu is displayed, this subroutine is called for all entries that have an access key defined in field 6 to determine whether the option is to be offered. The subroutine takes three arguments; the returned True/False accessibility flag, the menu name and the access key. Typically, the access key would be a name that refers to a group of users such as ADMIN or SALES. Access control subroutines may be used by multiple menus and, where necessary, can use the menu name in the decision process that controls display. The subroutine should return the first argument as True (or numeric value 1) if the menu item is to be allowed, False (or numeric value 0) if it is to be disabled.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Field 7 of the menu definition contains the &quot;hide&quot; flag which controls the action taken when a menu option is disabled for a user. Setting this to 0 or leaving it blank, displays the option with its option number enclosed in parentheses. Entry of this option number at the menu prompt will be ignored. Setting the hide flag to 1, completely hides the disabled option.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An example of a simple access control subroutine is shown below:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SUBROUTINE ACCESS(OK, MENU.NAME, KEY)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; BEGIN CASE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;CASE KEY = 'ADMIN'</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; OK = (@LOGNAME = 'ADMINISTRATOR')</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;CASE 1</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; OK = @FALSE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; OPEN 'USERS' TO USER.F THEN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;READ USER.REC FROM USER.F, @LOGNAME THEN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; OK = (USER.REC&lt;U.DEPT&gt; = KEY)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;END</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; END</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END CASE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; RETURN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For an access key of ADMIN, this subroutine enables the menu option only if the user is logged in as an administrator. For all other access key values, it reads a user record and checks that the user is in the relevant department. The U.DEPT token used above would be defined in an include record.</p>
+
+</td></tr></table>
+
+</body>
+</html>

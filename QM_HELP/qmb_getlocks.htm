@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>GETLOCKS()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="GETLOCKS()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_getlocks.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">GETLOCKS()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_getlist.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_getnls.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">GETLOCKS()</span> function returns information about file and record locks.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Format</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal" style="margin: 0 0 0 30px;"><span style="font-weight: bold;">GETLOCKS(</span><span style="font-style: italic;">file</span><span style="font-weight: bold;">,</span> <span style="font-style: italic;">user</span><span style="font-weight: bold;">)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:62px"><span style="font-style: italic;">file</span></td><td style="border:none;padding:0">is the file variable referencing the file for which locks are to be reported. All files are reported if this is not a valid file variable.</td></tr></table></div><p class="p_Normal" style="text-indent: -62px; margin: 0 0 0 91px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:62px"><span style="font-style: italic;">user</span></td><td style="border:none;padding:0">is the user number for which locks are to be reported. All users are reported if this is zero.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">GETLOCKS()</span> function returns a string where field 1 contains three values:</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">1 &nbsp; &nbsp; &nbsp; &nbsp;<a href="configparams.htm#numlocks" class="topiclink">NUMLOCKS</a> configuration parameter value</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">2 &nbsp; &nbsp; &nbsp; &nbsp;Current record lock count</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">3 &nbsp; &nbsp; &nbsp; &nbsp;Peak number of record locks</p>
+<p class="p_Normal" style="margin: 6px 0 0 0;">and the remaining fields each describe a record or file lock as seven values:</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">1 &nbsp; &nbsp; &nbsp; &nbsp;Internal file number</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">2 &nbsp; &nbsp; &nbsp; &nbsp;Pathname</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">3 &nbsp; &nbsp; &nbsp; &nbsp;User number</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">4 &nbsp; &nbsp; &nbsp; &nbsp;Lock type as below</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">5 &nbsp; &nbsp; &nbsp; &nbsp;Record id, null for a file lock</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">6 &nbsp; &nbsp; &nbsp; &nbsp;User name of lock owner</p>
+<p class="p_Normal" style="margin: 6px 0 0 30px;">7 &nbsp; &nbsp; &nbsp; &nbsp;Time as an epoch value when the lock was acquired or a blocked process started waiting</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The lock type code is:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:65px">FX</td><td style="border:none;padding:0">File exclusive lock</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:65px">RL</td><td style="border:none;padding:0">Shareable read lock (READL)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:65px">RU</td><td style="border:none;padding:0">Exclusive read lock (READU)</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:65px">SX</td><td style="border:none;padding:0">File lock for CLEARFILE</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 6px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:65px">WAIT</td><td style="border:none;padding:0">Process is waiting for the lock</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">LOCK.INFO = GETLOCKS(0, 0)</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">This statement returns lock information for all files and all users.</p>
+
+</td></tr></table>
+
+</body>
+</html>

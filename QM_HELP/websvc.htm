@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>WEBSVC</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="WEBSVC" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "websvc.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">WEBSVC</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="verify_constraints.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="who.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">WEBSVC </span>command listens for incoming <a href="simple_web_services.htm" class="topiclink">simple web services</a> connections.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">WEBSVC </span><span style="font-style: italic;">subr </span> {<span style="font-style: italic;">options</span>}</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">subr</span></td><td style="border:none;padding:0">Specifies the name of the subroutine to be called to process the incoming requests.</td></tr></table></div><p class="p_Normal" style="text-indent: -180px; margin: 0 0 0 210px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">Any combination of the following:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-weight: bold;">CLOSE</span></td><td style="border:none;padding:0">Always close the connection, ignoring any KEEP-ALIVE in the response header.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-weight: bold;">DEBUGGING</span></td><td style="border:none;padding:0">Causes the child process to write the request header and response header to the phantom log file.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-weight: bold;">FILE</span> <span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Sets the threshold size in kb above which the request body will be passed to the subroutine via a file instead of in memory. If not set, a file is never used.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-weight: bold;">MAX</span> <span style="font-style: italic;">n</span></td><td style="border:none;padding:0">Sets the maximum number of simultaneous child processes. Defaults to 10 if omitted.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-weight: bold;">POOL</span> <span style="font-style: italic;">name</span></td><td style="border:none;padding:0">Specifies the connection pool name to be used for the child processes.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 240px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:119px"><span style="font-weight: bold;">PORT</span> <span style="font-style: italic;">portno</span></td><td style="border:none;padding:0">Is the port number on which to listen for incoming connections. Defaults to 80 if omitted. Linux systems only allow processes running as root to listen on port numbers less than 1024.</td></tr></table></div><p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The <span style="font-weight: bold;">WEBSVC</span> command, typically used in a phantom process, listens for incoming web services connections on the specified port number. When a connection arrives, a phantom process is started to service this request. If the limit on simultaneous connections has been reached, the listener process pauses briefly until some other connection terminates.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The phantom process parses the incoming web request, separating the header from the request body, and calls the catalogued processing subroutine specified in the command line. This subroutine should be declared as</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">SUBROUTINE </span><span class="f_CodeTopLine" style="font-style: italic;">name</span><span class="f_CodeTopLine">(IP.ADDR, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ;* Origin</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ACTION, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;;* Request type (GET, POST, etc)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;URI, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ;* URI</span><br />
+<span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RQST.HEADER, &nbsp; &nbsp; &nbsp; ;* Request header as a data collection...</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RQST.BODY, &nbsp; &nbsp; &nbsp; &nbsp; ;* ...and associated request body</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RESPONSE.HEADER, &nbsp; ;* Response header...</span><br />
+<span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RESPONSE.BODY, &nbsp; &nbsp; ;* ...and associated response body</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;CLOSE.CONNECTION, &nbsp;;* Close connection after sending response?</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;INFO) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;;* Additional information</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The final argument, INFO, was introduced at release 3.4-16 as a data collection containing miscellaneous information that the user supplied subroutine may find useful. This argument is optional and may be omitted. If present, the data collection may contain:</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">pool</td><td style="border:none;padding:0">Pool name if <a href="connection_pooling.htm" class="topiclink">connection pooling</a> is being used.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">port</td><td style="border:none;padding:0">Server port number</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">request.body.path</td><td style="border:none;padding:0">Temporary file pathname when passing the request body via a file. This collection element is absent for requests that are passed in memory. The user supplied subroutine should delete the file when it is no longer needed.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">response.body.path</td><td style="border:none;padding:0">On return from the user supplied subroutine, if this collection element is present, it contains the pathname of a file that holds the response body. </td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 8px 0 0 24px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:168px">delete.response.file</td><td style="border:none;padding:0">On return from the user supplied subroutine, if this collection element is True and the response was returned via a file, the file will be deleted.</td></tr></table></div><p class="p_Normal" style="text-indent: -73px; margin: 8px 0 0 97px;">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">As an example of how the incoming request is processed, consider a simple request submitted via a browser:</p>
+<p class="p_CodeTopLine"><span class="f_CodeTopLine">http://mysite.com/a/b?x&amp;y&amp;z</span></p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:179px">ACTION</td><td style="border:none;padding:0">is the HTTP request type (GET, POST, etc).</td></tr></table></div><p class="p_Normal" style="text-indent: -179px; margin: 0 0 0 209px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:179px">URI</td><td style="border:none;padding:0">is the URI string &quot;/a/b?x&amp;y&amp;z&quot;</td></tr></table></div><p class="p_Normal" style="text-indent: -179px; margin: 0 0 0 209px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:179px">RQST.HEADER</td><td style="border:none;padding:0">is a data collection with an element for each of the name/value pairs in the HTTP request such as</td></tr></table></div><p class="p_Normal" style="margin: 0 0 0 240px;">ACCEPT text/html, application/xhtml+xml, */*</p>
+<p class="p_Normal" style="margin: 0 0 0 240px;">ACCEPT-ENCODING gzip, deflate</p>
+<p class="p_Normal" style="margin: 0 0 0 240px;">ACCEPT-LANGUAGE en-GB</p>
+<p class="p_Normal" style="margin: 0 0 0 240px;">CONNECTION Keep-Alive</p>
+<p class="p_Normal" style="margin: 0 0 0 240px;">HOST mysite.com</p>
+<p class="p_Normal" style="margin: 0 0 0 240px;">USER-AGENT Mozilla/5.0</p>
+<p class="p_Normal" style="text-indent: -179px; margin: 0 0 0 209px;">&nbsp;</p>
+<p class="p_Normal" style="text-indent: -179px; margin: 0 0 0 209px;">RQST.BODY would be a null string in this example.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The subroutine processes this data and constructs the response body as a field mark delimited dynamic array. For example,</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.BODY = '&lt;!DOCTYPE html&gt;'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.BODY&lt;-1&gt; ='&lt;html&gt;'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.BODY&lt;-1&gt; = '&lt;p&gt;Hello ' : IP.ADDR : '&lt;/p&gt;'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.BODY&lt;-1&gt; ='&lt;/html&gt;'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.BODY = CHANGE(RESPONSE.BODY, @FM, CRLF)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_Normal">The final line in the above example is needed from QM release 3.4-15 onwards as the data returned via the subroutine's RESPONSE.BODY argument is treated as binary data and not altered in any way before transmission.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The default values for RESPONSE.HEADER and CLOSE.CONNECTION if not updated by the user supplied subroutine are equivalent to:</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.HEADER = 'HTTP/1.1 200 OK'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.HEADER&lt;-1&gt; = 'Content-Type: text/html'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.HEADER&lt;-1&gt; = 'Server: QM/':change(system(SYS$VERSION), '-', '.')</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.HEADER&lt;-1&gt; = 'Date: ' : OCONV(EPOCH(), 'E4WADMYTSZL[A3,&quot;, &quot;,A3]')</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">RESPONSE.HEADER&lt;-1&gt; = 'Connection: close'</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">CLOSE.CONNECTION = @TRUE</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the response header includes a CONNECTION element, the CLOSE.CONNECTION argument is updated to the corresponding state.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If the POOL command line parameter has been used, the phantom process will go into an idle wait state until either a new connection arrives or the pool timeout is reached. Use of connection pools can improve performance as the process can potentially omit initialisation tasks such as opening files.</p>
+
+</td></tr></table>
+
+</body>
+</html>

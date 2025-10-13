@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Triggers</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Triggers" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "triggers.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Triggers</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="ak.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="constraints.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A <span style="font-weight: bold;">trigger</span> is an optional user written subroutine associated with a QM data file and configured to be executed when certain file operations are performed. Executed before a write or delete, the trigger can be used to apply data validation. Executed after a record is written or deleted, the function can trigger other events such as related file updates. Trigger functions can also be executed after a read and before or after a clear file operation.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The trigger function is simply a catalogued QMBasic subroutine which is automatically executed as part of the file operation. The subroutine is passed a mode flag to indicate the action being performed, the record id, the record data (read or write operations) and a flag indicating whether the QMBasic ON ERROR clause is present. The subroutine may do whatever processing the application designer wishes. If the write or delete is to be disallowed, the pre-write or pre-delete trigger function should set the <a href="at_variables.htm#trigger.return.code" class="topiclink">@TRIGGER.RETURN.CODE</a> variable to a non-zero value such as an error number or an error message text to cause the write or delete to take its ON ERROR clause if present or to abort if omitted. The <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function will return ER$TRIGGER when executed in the program that initiated the file operation. Programs should test <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> rather than testing for <a href="at_variables.htm#trigger.return.code" class="topiclink">@TRIGGER.RETURN.CODE</a> being non-zero to determine whether the trigger function has disallowed the write or delete as <a href="mailto:@TRIGGER.RETURN.CODE" class="weblink">@TRIGGER.RETURN.CODE</a> is only updated when the error status is set.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The trigger function name is limited to 32 characters and is set up using the <span style="font-weight: bold;"><a href="set_trigger.htm" class="topiclink">SET.TRIGGER</a></span> command. After it has been set up, the trigger function is loaded into memory when first needed and is called for all operations defined by the mode settings in the <span style="font-weight: bold;"><a href="set_trigger.htm" class="topiclink">SET.TRIGGER</a></span> command. Setting or removing a trigger function or modifying and re-cataloguing the trigger function will take immediate effect even if the file is open.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A trigger function on a hashed file will be called by all updates to the file in the modes for which the trigger is active. A trigger function on a directory file will be called only by updates from within QM and not for use of sequential file operations (<span style="font-weight: bold;"><a href="qmb_writeseq.htm" class="topiclink">WRITESEQ</a></span>, <span style="font-weight: bold;"><a href="qmb_writeblk.htm" class="topiclink">WRITEBLK</a></span>, etc), <span style="font-weight: bold;"><a href="qmb_oswrite.htm" class="topiclink">OSWRITE</a></span> or <span style="font-weight: bold;"><a href="qmb_osdelete.htm" class="topiclink">OSDELETE</a></span>. Some implications of this are that query processor CSV or delimited reports directed to a file and QMBasic compiler listing files will not call the trigger function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the trigger function is not in the catalogue or has the incorrect number of arguments, no error occurs until the first action that would call the function. Note that the trigger function must be visible to all accounts that may reference the file. Where a file is used by multiple accounts, this can be achieved by using global cataloguing, sharing a private catalogue, or ensuring that the VOC entry for a locally catalogued trigger function is present in each account. Although it would be possible for a shared file to use a different trigger function depending on the account from which it is referenced, this is not recommended.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Important Note:</span> Because information about the trigger is stored in the file, copying the directory that represents a QM file that uses triggers will result in the new file also using the trigger.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p>The interface into a trigger function is:</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;">SUBROUTINE <span style="font-style: italic;">name</span>(<span style="font-style: italic;">mode</span>, <span style="font-style: italic;">id</span>, <span style="font-style: italic;">data</span>, <span style="font-style: italic;">on.error</span>, <span style="font-style: italic;">fvar</span>)</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">name</span></td><td style="border:none;padding:0">is the trigger subroutine name.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">mode</span></td><td style="border:none;padding:0">indicates the point at which the trigger function is being called:</td></tr></table></div><div style="text-align: left; padding: 0 0 0 0; margin: 10px 0 0 120px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:48px; padding:3px; border:none"><p>1</p>
+</td>
+<td style="vertical-align:top; width:70px; padding:3px; border:none"><p>0x01</p>
+</td>
+<td style="vertical-align:top; width:336px; padding:3px; border:none"><p>FL$TRG.PRE.WRITE</p>
+</td>
+<td style="vertical-align:top; width:525px; padding:3px; border:none"><p>before writing a record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:48px; padding:3px; border:none"><p>2</p>
+</td>
+<td style="vertical-align:top; width:70px; padding:3px; border:none"><p>0x02</p>
+</td>
+<td style="vertical-align:top; width:336px; padding:3px; border:none"><p>FL$TRG.PRE.DELETE</p>
+</td>
+<td style="vertical-align:top; width:525px; padding:3px; border:none"><p>before deleting a record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:48px; padding:3px; border:none"><p>4</p>
+</td>
+<td style="vertical-align:top; width:70px; padding:3px; border:none"><p>0x04</p>
+</td>
+<td style="vertical-align:top; width:336px; padding:3px; border:none"><p>FL$TRG.POST.WRITE</p>
+</td>
+<td style="vertical-align:top; width:525px; padding:3px; border:none"><p>after writing a record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:48px; padding:3px; border:none"><p>8</p>
+</td>
+<td style="vertical-align:top; width:70px; padding:3px; border:none"><p>0x08</p>
+</td>
+<td style="vertical-align:top; width:336px; padding:3px; border:none"><p>FL$TRG.POST.DELETE</p>
+</td>
+<td style="vertical-align:top; width:525px; padding:3px; border:none"><p>after deleting a record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:48px; padding:3px; border:none"><p>16</p>
+</td>
+<td style="vertical-align:top; width:70px; padding:3px; border:none"><p>0x10</p>
+</td>
+<td style="vertical-align:top; width:336px; padding:3px; border:none"><p>FL$TRG.READ</p>
+</td>
+<td style="vertical-align:top; width:525px; padding:3px; border:none"><p>after reading a record</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:48px; padding:3px; border:none"><p>32</p>
+</td>
+<td style="vertical-align:top; width:70px; padding:3px; border:none"><p>0x20</p>
+</td>
+<td style="vertical-align:top; width:336px; padding:3px; border:none"><p>FL$TRG.PRE.CLEAR</p>
+</td>
+<td style="vertical-align:top; width:525px; padding:3px; border:none"><p>before clearing the file</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:48px; padding:3px; border:none"><p>64</p>
+</td>
+<td style="vertical-align:top; width:70px; padding:3px; border:none"><p>0x40</p>
+</td>
+<td style="vertical-align:top; width:336px; padding:3px; border:none"><p>FL$TRG.POST.CLEAR</p>
+</td>
+<td style="vertical-align:top; width:525px; padding:3px; border:none"><p>after clearing the file</p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 0 0 0 120px;">Other values may be used in the future. Trigger functions should be written to ignore unrecognised values. Use of the hexadecimal values (e.g. 0x04) makes it easier to form composite <span style="font-style: italic;">mode</span> values as described below.</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">id</span></td><td style="border:none;padding:0">is the id of the record to be written or deleted.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">data</span></td><td style="border:none;padding:0">is the data. This is a null string for a delete or clearfile action. When using triggers on data collection files, the <span style="font-style: italic;">data</span> argument will be a data collection.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">on.error</span></td><td style="border:none;padding:0">indicates whether the program performing the file operation has used the ON ERROR clause to catch aborts.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 10px 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">fvar</span></td><td style="border:none;padding:0">is the file variable that can be used to access the file. Beware that reading, writing or deleting records via this file variable may cause a recursive call to the trigger function. This argument can be omitted for compatibility with earlier releases.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>When writing trigger functions, the original data of the record to be written or deleted can be examined by reading it in the usual way. Trigger functions should not attempt to write the record for which they are called. Neither should they release the update lock on this record as this could cause concurrent update of the record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If a pre-write trigger modifies the value of the <span style="font-style: italic;">data</span> argument, the modified data is written to the file but the variable used in the write operation that fired the trigger is not updated. In a post-read trigger, the <span style="font-style: italic;">data</span> argument on entry to the trigger function contains the data read from the file and any modification made to <span style="font-style: italic;">data</span> will be seen in the data returned from the read operation that fired the trigger. In all modes, changes to the value of <span style="font-style: italic;">id</span> will not affect database updates in any way.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Trigger functions may perform all of the actions available to other QMBasic subroutines including performing updates that may themselves cause trigger functions to be executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-style: italic;">mode</span> values correspond to bit positions in a binary value and hence a condition such as</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">IF MODE = 4 OR MODE = 8 THEN ...</span></p>
+<p>is equivalent to</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">IF BITAND(MODE, 12) THEN ...</span></p>
+<p>which can simplify some trigger functions. Writing this with the <span style="font-style: italic;">mode</span> value in hexadecimal form can make it easier to combine modes.</p>
+<p class="p_CodeSingleLine"><span class="f_CodeSingleLine">IF BITAND(MODE, 0x0C) THEN ...</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The following simple trigger function could be used to capture all writes and deletes, logging the new record data in a &quot;replication log&quot; file which can then be used to maintain a copy of the data on a separate server. The same trigger function can be applied to many files. Whilst this is a valid example of the use of triggers, QM's data replication facilities provide a better solution.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">SUBROUTINE REPTRIGGER(MODE, ID, DATA, ON.ERROR, FVAR)</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">$CATALOGUE GLOBAL</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">$INCLUDE KEYS.H</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; COMMON /REPLOG/RLG.F &nbsp; &nbsp; ;* REPLOG file variable, persistent across calls</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; FN = FILEINFO(FVAR, FL$VOCNAME)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; IF NOT(FILEINFO(RLG.F, FL$OPEN)) THEN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;OPEN 'REPLOG' TO RLG.F ELSE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; LOGMSG 'Unable to open REPLOG'</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; RETURN</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;END</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; BEGIN CASE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;CASE MODE = FL$TRG.PRE.WRITE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; RECORDLOCKU RLG.F, FN:' ':ID</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; WRITE DATA TO RLG.F, FN:' ':ID</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp;CASE MODE = FL$TRG.PRE.DELETE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; RECORDLOCKU RLG.F, FN:' ':ID</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; &nbsp; &nbsp; &nbsp; WRITE '' TO RLG.F, FN:' ':ID</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; END CASE</span></p>
+<p><span style="font-family: 'Courier New',Courier,monospace;">END</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>On first call, this trigger routine will open a file named REPLOG which is used for logging. Because the file variable is stored in a common block, the file will remain open for subsequent calls to the trigger function.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For write operations (mode FL$TRG.PRE.WRITE), the trigger routine writes a copy of the data to a record in REPLOG with its id constructed from the file name and record id of the write that is being replicated.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>For delete operations (mode FL$TRG.PRE.DELETE), the trigger routine writes a null record to REPLOG with its id constructed in the same way.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A separate program, perhaps running via QMNet from another server, could periodically read all records from the REPLOG file and apply the changes to a copy of the original data, deleting the REPLOG entry. Note that the REPLOG is not a sequential audit trail but stores only the last update to any record. Thus a long series of updates will only ever produce a single REPLOG record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>There are two assumptions made by this example. Firstly, the data files being replicated never contain null records. We can, therefore, recognise a delete operation from the presence of a null record in the REPLOG. If this were not a safe assumption, we would need to add an extra field to the REPLOG data to say whether this was a write or a delete.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Secondly, there is an assumption that a file only has a single VOC entry defining it. If this were not the case, a combination of the filename (FN variable) and record id (ID argument) would not be a unique reference to the record. If this assumption was not valid, it would be possible to use FILEINFO() to get the pathname of the file and use this instead.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Use of a THEN/ELSE Clause in WRITE</span>, <span style="font-weight: bold;">MATWRITE </span>or<span style="font-weight: bold;"> DELETE</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For compatibility with the way in which triggers operate in some other multivalue products, the <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span><a href="qmb_write.htm" class="topiclink">,</a> <span style="font-weight: bold;"><a href="qmb_matwrite.htm" class="topiclink">MATWRITE</a></span> and <span style="font-weight: bold;"><a href="qmb_delete.htm" class="topiclink">DELETE</a></span> statements have an optional <span style="font-weight: bold;">THEN/ELSE</span> clause. Because this would otherwise lead to a syntactic ambiguity, compilation of programs that use this clause requires the WRITE.DELETE.THEN.ELSE option of the <span style="font-weight: bold;"><a href="qmbd_mode.htm" class="topiclink">$MODE</a></span> compiler directive to be enabled. Once this is done, the optional <span style="font-weight: bold;">THEN/ELSE</span> clauses can be included in their usual position, after the <span style="font-weight: bold;">ON ERROR</span> clause. The <span style="font-style: italic;">on.error</span> argument to the trigger function will be True if there is either an ON ERROR or THEN/ELSE clause, indicating that trigger errors are handled programmatically.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">When a <span style="font-weight: bold;"><a href="qmb_write.htm" class="topiclink">WRITE</a></span>, <span style="font-weight: bold;"><a href="qmb_matwrite.htm" class="topiclink">MATWRITE</a></span> or <span style="font-weight: bold;"><a href="qmb_delete.htm" class="topiclink">DELETE</a></span> statement has a <span style="font-weight: bold;">THEN/ELSE</span> clause, a failure returned from a trigger function, typically as a result of a pre-write or pre-delete data validation error, will cause the <span style="font-weight: bold;">ELSE</span> clause to be executed instead of the <span style="font-weight: bold;">ON ERROR</span> clause.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">A Further Example</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">Triggers can be a useful tool when trying to track down application errors. The example below checks whether the application is writing or deleting a record for which it does not have a lock.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_CodeBody"><span class="f_CodeBody">SUBROUTINE TEST.TRG(MODE, ID, DATA, ON.ERROR, FVAR)</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">$CATALOG</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; IF BITAND(MODE, 3) THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;IF RECORDLOCKED(FVAR, ID) # 2 THEN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; WHERE = SYSTEM(1002) &nbsp;;* Get call stack</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; LOGMSG 'No lock at line ' : WHERE&lt;2, 2, 2&gt; : ' of ' : WHERE&lt;2, 1&gt;</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;END</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; END</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody"> &nbsp; RETURN</span></p>
+<p class="p_CodeBody"><span class="f_CodeBody">END</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

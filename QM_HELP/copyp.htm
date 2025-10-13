@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>COPYP</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="COPYP" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "copyp.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">COPYP</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="copy_listp.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="create_account.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COPYP</span> command copies selected records from one file to another, or within the same file, using Pick syntax.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">COPYP </span>{<span style="font-weight: bold;">DICT</span> }<span style="font-style: italic;">src.file</span> &nbsp;{<span style="font-style: italic;">id.list</span>} &nbsp;{<span style="font-style: italic;">options</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">src.file</span></td><td style="border:none;padding:0">is the file from which the records are to be copied. The optional <span style="font-weight: bold;">DICT</span> prefix indicates that the dictionary portion of the file is to be used.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">id.list</span></td><td style="border:none;padding:0">is a list of ids of the records to be copied. If specified as an asterisk, all records in the source file are copied. If omitted, an active select list is used.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">is a list of option codes. These must be prefixed by an open parenthesis. The available codes are:</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">A</span></td><td style="border:none;padding:0">Copy data in text mode, translating between field marks and newlines when copying between a hashed file and a directory file in either direction. This option is also needed to override implied binary mode when copying between directory files where the newline representation of the source and target are different (e.g. Windows to Linux).</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">B</span></td><td style="border:none;padding:0">Copy data in binary mode, suppressing translation between field marks and newlines when copying between a hashed file and a directory file in either direction. This mode is implied if both are directory files.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">D</span></td><td style="border:none;padding:0">Deletes the source records after copying.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">I</span></td><td style="border:none;padding:0">Suppresses display of record ids.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">N</span></td><td style="border:none;padding:0">Suppresses pagination when displaying records on the terminal.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">O</span></td><td style="border:none;padding:0">Overwrites existing records in the target file.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">P</span></td><td style="border:none;padding:0">Sends the record data to a printer.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">S</span></td><td style="border:none;padding:0">Suppresses field numbers with P or T.</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px"><span style="font-weight: bold;">T</span></td><td style="border:none;padding:0">Sends the record data to the terminal.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the P or T options are used, the records identified by <span style="font-style: italic;">id.list</span> are sent to the printer or the screen.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If neither the P nor T options are used, the command prompts for a space separated list of destination record ids. If there are more ids in <span style="font-style: italic;">id.list</span> than in the destination list, the source id is used as the destination id for the extra items.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The destination list can begin with a file name prefixed by an open parenthesis to direct output to a different file. The name can optionally be followed by a close parenthesis.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><a href="at_variables.htm#system.return.code" class="topiclink">@SYSTEM.RETURN.CODE</a> is returned as the number of records copied or a negative error code.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;"><a href="alias.htm" class="topiclink">ALIAS</a></span> command can be used to make <span style="font-weight: bold;">COPYP</span> the default for <span style="font-weight: bold;"><a href="copy.htm" class="topiclink">COPY</a></span> without removing the ability for other users or software packages to access the original <span style="font-weight: bold;"><a href="copy.htm" class="topiclink">COPY</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_Normal">The <span style="font-weight: bold;">COPYP</span> command can be used with data collections but if either of the source and target files is a data collection, both must be.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>COPYP ACCOUNTS * (D</p>
+<p><span style="font-style: italic;">To:</span> (SAVED.ACCOUNTS</p>
+<p><span style="font-style: italic;">17 record(s) copied and deleted.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command copies all records from the ACCOUNTS file to the SAVED.ACCOUNTS file, deleting the originals.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>&nbsp;</p>
+<p>COPYP BP PRT.INVOICE</p>
+<p><span style="font-style: italic;">To:</span> PRT.INVOICE2</p>
+<p><span style="font-style: italic;">1 record copied.</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command copies record PRT.INVOICE in the BP file to a record named PRT.INVOICE2 in the same file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="copy.htm" class="topiclink">COPY</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

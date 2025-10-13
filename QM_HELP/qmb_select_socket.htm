@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SELECT.SOCKET()</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="SELECT.SOCKET()" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmb_select_socket.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">SELECT.SOCKET()</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="qmb_select.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="qmb_selecte.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SELECT.SOCKET()</span> function monitors multiple sockets for events.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">SELECT.SOCKET(</span><span style="font-style: italic;">skt.array</span><span style="font-weight: bold;">, </span><span style="font-style: italic;">timeout</span><span style="font-weight: bold;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">skt.array</span></td><td style="border:none;padding:0">is a dimensioned array of socket variables. Any element that is not a reference to an open socket is ignored.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">timeout</span></td><td style="border:none;padding:0">is the time to wait in milliseconds before returning to the program if no events occur. A value of zero causes an immediate return. A negative value waits indefinitely.</td></tr></table></div><p style="text-indent: -210px; margin: 10px 0 0 360px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">SELECT.SOCKET()</span> enables a developer to write a program that can serve multiple socket connections, pausing execution until an event occurs on any socket.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use the SKT$INFO.EVENTS key to the <span style="font-weight: bold;"><a href="qmb_set_socket_mode.htm" class="topiclink">SET.SOCKET.MODE()</a></span> function to set the events to be monitored (read, write, exception) on each socket in the array. Then use <span style="font-weight: bold;">SELECT.SOCKET()</span> to wait for an event to occur.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If an event is detected, the function returns a dynamic array with a field to correspond to each element in <span style="font-style: italic;">skt.array</span>. The content of each field is a combination of uppercase letters R for a read event, W for a write event and E for an exception event. Only events that have been selected for monitoring will appear. Fields for which no event has occurred or where the corresponding element of <span style="font-style: italic;">skt.array</span> is not a socket variable will be blank. Alternatively, the <span style="font-weight: bold;"><a href="qmb_socket_info.htm" class="topiclink">SOCKET.INFO()</a></span> function can be used with key value SKT$INFO.EVENTS against each element of <span style="font-style: italic;">skt.array</span> to check for the socket status.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the function returns as a result of a timeout or an error, the returned value is a null string and the <span style="font-weight: bold;"><a href="qmb_status.htm" class="topiclink">STATUS()</a></span> function can be used to determine the cause. A timeout will return ER$TIMEOUT. All other values are errors.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The events that can be monitored are</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 29px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:39px; padding:0; border:none"><p style="margin: 6px 0 0 0;">1</p>
+</td>
+<td style="vertical-align:top; width:293px; padding:0; border:none"><p style="margin: 6px 0 0 0;">SKT$READ.EVENT</p>
+</td>
+<td style="vertical-align:top; width:576px; padding:0; border:none"><p style="margin: 6px 0 0 0;">Notify availability of a new connection on a server socket</p>
+<p>Notify availability of data that can be read with <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span></p>
+<p>Notify closure of connection</p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:39px; padding:0; border:none"><p style="margin: 6px 0 0 0;">2</p>
+</td>
+<td style="vertical-align:top; width:293px; padding:0; border:none"><p style="margin: 6px 0 0 0;">SKT$WRITE.EVENT</p>
+</td>
+<td style="vertical-align:top; width:576px; padding:0; border:none"><p style="margin: 6px 0 0 0;">Notify when data can be sent with <span style="font-weight: bold;"><a href="qmb_write_socket.htm" class="topiclink">WRITE.SOCKET()</a></span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:39px; padding:0; border:none"><p style="margin: 6px 0 0 0;">4</p>
+</td>
+<td style="vertical-align:top; width:293px; padding:0; border:none"><p style="margin: 6px 0 0 0;">SKT$EXCEPTION.EVENT</p>
+</td>
+<td style="vertical-align:top; width:576px; padding:0; border:none"><p style="margin: 6px 0 0 0;">Notify exceptions</p>
+</td>
+</tr>
+</table>
+</div>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span><br />
+<span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The example below shows the general principles of using socket event notification, monitoring multiple incoming connections on port 9000. A real program would need to include additional error handling.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">$include keys.h</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">dim skt(10)</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">skt(1) = create.server.socket('', 9000, 0)</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">if status() then stop 'Cannot initialise server socket'</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">if not(set.socket.mode(skt(1), SKT$INFO.EVENTS, SKT$READ.EVENT)) then</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; stop 'Error from set.socket.mode()'</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">end</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">&nbsp;</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">loop</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; events = select.socket(skt, 5000)</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; for i = 1 to 10</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;if events&lt;i&gt; then &nbsp;;* Must be a read event</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; if i = 1 then &nbsp; ;* New connection</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* Find an unused table entry</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;for j = 2 to 10</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if not(socket.info(skt(j), SKT$INFO.OPEN)) then</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;skt(j) = accept.socket.connection(skt(1), 0)</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if not(set.socket.mode(skt(j), SKT$INFO.EVENTS, SKT$READ.EVENT)) then</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; stop 'Error from set.socket.mode()'</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;end</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;exit</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; end</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;next j</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; end else</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;str = read.socket(skt(i), 1000, 0, 0)</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if status() then &nbsp;;* Socket closed</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; skt(i) = 0</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;end else</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="f_CodeBody" style="font-style: italic;">...process input...</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;end</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp; &nbsp; end</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; &nbsp; &nbsp;end</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody"> &nbsp; next i</span></p>
+<p class="p_CodeBody" style="margin: 0 0 0 0;"><span class="f_CodeBody">repeat</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="using_socket_connections.htm" class="topiclink">Using Socket Connections</a>, <span style="font-weight: bold;"><a href="qmb_accept_socket_connection.htm" class="topiclink">ACCEPT.SOCKET.CONNECTION</a></span>, <span style="font-weight: bold;"><a href="qmb_close_socket.htm" class="topiclink">CLOSE.SOCKET</a></span>, <span style="font-weight: bold;"><a href="qmb_create_server_socket.htm" class="topiclink">CREATE.SERVER.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_open_socket.htm" class="topiclink">OPEN.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_read_socket.htm" class="topiclink">READ.SOCKET()</a></span>, <span style="font-weight: bold;"><a href="qmb_server_addr.htm" class="topiclink">SERVER.ADDR()</a></span>, <span style="font-weight: bold;"><a href="qmb_set_socket_mode.htm" class="topiclink">SET.SOCKET.MODE()</a></span>, <span style="font-weight: bold;"><a href="qmb_write_socket.htm" class="topiclink">WRITE.SOCKET()</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

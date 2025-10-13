@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>VOC R-type records - Remote pointers</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Remote pointers,VOC R-type records" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "voc_r.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">VOC R-Type Records &nbsp;- &nbsp;Remote Pointers</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="voc_q.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="voc_s.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An R type VOC entry points to a record in another file which is constructed in the same way as an executable (M, PA, R, S or V type) VOC entry.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">1:</td><td style="border:none;padding:0">R &nbsp;{ descriptive text }</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">2:</td><td style="border:none;padding:0">File name</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 10px 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">3:</td><td style="border:none;padding:0">Record name</td></tr></table></div><div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:30px">4:</td><td style="border:none;padding:0">{<a href="securitysubroutines.htm" class="topiclink">Security subroutine name</a>}</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>R-type VOC entries are used to:</p>
+<p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Move large paragraphs and menus out of the VOC as large records degrade the performance of the hashing process.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Reference a common version of a VOC item to be used from multiple accounts.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Add security checks prior to command execution.</p><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The file name in field 2 must correspond to an <a href="voc_f.htm" class="topiclink">F-type</a> or <a href="voc_q.htm" class="topiclink">Q-type</a> entry in the same VOC.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The record name in field 3 is the record in the target file that holds the item to be executed.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>An R-type VOC record can optionally hold the name of a catalogued <a href="securitysubroutines.htm" class="topiclink">security subroutine</a> in field 4. This subroutine can be used to determine whether the user is to be allowed to execute the command pointed to by the R-type record. If the validation fails or the subroutine cannot be found in the catalogue a message is displayed:</p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">This command is restricted (</span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">verb</span><span style="font-family: 'Courier New',Courier,monospace;">)</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A summary of R-type VOC records may be displayed or printed using <span style="font-weight: bold;"><a href="listr.htm" class="topiclink">LISTR</a></span><span style="font-family: Arial,Helvetica,sans-serif;">.</span></p>
+
+</td></tr></table>
+
+</body>
+</html>

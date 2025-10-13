@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>DECRYPT.FILE</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="DECRYPT.FILE" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "decrypt_file.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">DECRYPT.FILE</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="decatalog.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="delete.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">DECRYPT.FILE</span> command removes data encryption for specific fields or the entire record.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">DECRYPT.FILE</span> <span style="font-style: italic;">filename</span></p>
+<p style="margin: 8px 0 0 30px;"><span style="font-weight: bold;">DECRYPT.FILE</span> <span style="font-style: italic;">filename</span> <span style="font-style: italic;">field </span>...</p>
+<p style="margin: 8px 0 0 30px;"><span style="font-weight: bold;">DECRYPT.FILE</span> <span style="font-style: italic;">filename</span> <span style="font-weight: bold;">ALL</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">filename</span></td><td style="border:none;padding:0">is the name of the file in which encryption is to be cancelled.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">field</span></td><td style="border:none;padding:0">is the name or field number of the field for which encryption is to be cancelled.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The first form of the <span style="font-weight: bold;">DECRYPT.FILE</span> command removes record level data encryption.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The second form of the <span style="font-weight: bold;">DECRYPT.FILE</span> command removes field level data encryption for the specified field. Multiple fields may be referenced in a single command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The third form of the <span style="font-weight: bold;">DECRYPT.FILE</span> command removes field level data encryption for all fields.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If the file contains data records when this command is used, the file is processed to remove the encryption. A system failure or other process abort during this update will leave the file in a partially encrypted state and hence render it unusable. <span style="font-weight: bold;">Always back up a file before using this command if the file contains data</span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">For security reasons, the user executing this command must have access to all data fields that will be affected. The command also prompts for the master key and is therefore usually restricted to use by the security administrator.</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Examples</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DECRYPT.FILE CUSTOMERS CCARD</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above command removes data encryption from the CCARD field of the CUSTOMERS file.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">DECRYPT.FILE CUSTOMERS</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The above command removes record level encryption from the CUSTOMERS.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><a href="encryption.htm" class="topiclink">Data encryption</a>, <span style="font-weight: bold;"><a href="change_key_password.htm" class="topiclink">CHANGE.KEY.PASSWORD</a></span>, <span style="font-weight: bold;"><a href="create_file.htm" class="topiclink">CREATE.FILE</a></span>, <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.KEY</a></span>, <span style="font-weight: bold;"><a href="create_key.htm" class="topiclink">CREATE.SECURE.KEY</a></span>, <span style="font-weight: bold;"><a href="decrypt_file.htm" class="topiclink">DECRYPT.FILE</a></span>, <span style="font-weight: bold;"><a href="delete_key.htm" class="topiclink">DELETE.KEY</a></span>, <span style="font-weight: bold;"><a href="disable_key.htm" class="topiclink">DISABLE.KEY</a></span>, <span style="font-weight: bold;"><a href="qmb_disable_key.htm" class="topiclink">DISABLE.KEY (QMBasic)</a></span>, <span style="font-weight: bold;"><a href="enable_key.htm" class="topiclink">ENABLE.KEY</a></span>, <span style="font-weight: bold;"><a href="encrypt_file.htm" class="topiclink">ENCRYPT.FILE</a></span>, <span style="font-weight: bold;"><a href="qmb_enable_key.htm" class="topiclink">ENABLE.KEY (QMBasic)</a></span>, <span style="font-weight: bold;"><a href="grant_key.htm" class="topiclink">GRANT.KEY</a></span>, <span style="font-weight: bold;"><a href="list_keys.htm" class="topiclink">LIST.KEYS</a></span>,<span style="font-weight: bold;"> <a href="reset_master_key.htm" class="topiclink">RESET.MASTER.KEY</a></span>, <span style="font-weight: bold;"><a href="revoke_key.htm" class="topiclink">REVOKE.KEY</a></span>,<span style="font-weight: bold;"> <a href="set_encryption_key_name.htm" class="topiclink">SET.ENCRYPTION.KEY.NAME</a></span>,<span style="font-weight: bold;"> <a href="unlock_key_vault.htm" class="topiclink">UNLOCK.KEY.VAULT</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

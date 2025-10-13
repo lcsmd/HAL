@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>QMNet Network File Access</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="DELETE.SERVER,LIST.SERVERS,Network file access,QMNet,SET.SERVER" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "qmnet.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">QMNet</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="distributed_files.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="virtual_file_system.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMNet uses the <a href="qmclient.htm" class="topiclink">QMClient</a> interface to provide an extension to the QM file system allowing network access to files on another QM system. Unlike use of NFS or mapped network drives, QMNet provides locking of remote records, ensuring that data integrity can be maintained on distributed data. Where both ends of the connection support it, the network traffic is encrypted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Use of QMNet creates a server process on the remote system for each separate QM session that has one or more files open through QMNet. The <a href="configparams.htm#netwait" class="topiclink">NETWAIT</a> configuration parameter can be used to amend the default 10 second timeout that is applied when opening the connection.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The server process will consume a licence except where device licensing allows this to be shared with another connection from the same source. The server process will terminate when the local system closes the final file on that server but the <a href="configparams.htm#netdelay" class="topiclink">NETDELAY</a> configuration parameter can be used to keep the server process alive for a short period to improve performance of applications that repeatedly open files on the same server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>If QM's security system is enabled on the remote system, the user name of the server process as defined using <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> must be registered for access to QM (see <a href="application_level_security.htm" class="topiclink">Application Level Security</a>)</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Two steps are necessary to use QMNet. Firstly, the server must be defined, mapping the server name to a network address, user name and password. Secondly, the remote file must either be defined using a Q-type VOC record or it may be accessed using the <a href="qmfiles.htm" class="topiclink">extended filename syntax</a> <span style="font-style: italic;">server</span>:<span style="font-style: italic;">account</span>:<span style="font-style: italic;">file</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Defining the Server</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>QMNet supports two styles of server definition; <span style="font-weight: bold;">public servers</span> and <span style="font-weight: bold;">private servers</span>.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Public server definitions are available to all users of the system. They are created by a user with administrative rights in the QMSYS account using the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> command and persist until they are explicitly deleted.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Private server definitions are local to the QM session in which they are defined. They are created using the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.PRIVATE.SERVER</a></span> command and take priority over a public server definition of the same name. The <a href="configparams.htm#security" class="topiclink">SECURITY</a> configuration parameter can be used to disallow creation of private server names that are also defined as public servers, preventing a malicious user redirecting a QMNet connection. If QM's security system is enabled, access to this command may be restricted by the system administrator. A private server definition would normally be created dynamically by the application, either supplying the authentication details internally or prompting the user.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Both commands have the same form:</p>
+<p style="margin: 6px 0 6px 30px;"><span style="font-weight: bold;">SET.SERVER</span>  <span style="font-style: italic;">name &nbsp;ip.address &nbsp;user.name &nbsp;password</span></p>
+<p>and prompt for items not provided on the command line. The remote server must have remote access enabled by setting the <a href="configparams.htm#netfiles" class="topiclink">NETFILES</a> configuration parameter to 2.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A server defined with the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> command can be accessed by all users. The <span style="font-weight: bold;">ADMIN.SERVER</span> command can be used to create or modify server definitions to apply restrictions on which users can access the server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Defining the Remote File</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Each remote file is defined by an extended form of the Q-type VOC entry where field 4 contains the name of the server.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>Once the file has been defined, it may be accessed by programs in the same way as a local file. The following restrictions apply to access from QMBasic programs:</p>
+<p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>The <span style="font-weight: bold;"><a href="qmb_openseq.htm" class="topiclink">OPENSEQ</a></span> statement and related sequential file access operations are not supported.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>Access to remote files inside transactions will be non-transactional.</p><p style="text-indent: 0; padding-left: 30px; margin: 10px 0 0 30px;"><span class="f_Normal" style="font-family: Arial,'Lucida Sans Unicode','Lucida Grande','Lucida Sans';display:inline-block;width:30px;margin-left:-30px">&#8226;</span>A maximum of 10 separate servers may be accessed at one time by any one QM process. There is no practical limit to the number of files that may be open on each server.</p><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Listing Server Definitions</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>A list of all defined QMNet servers accessible by the user can be displayed using the <span style="font-weight: bold;"><a href="list_servers.htm" class="topiclink">LIST.SERVERS</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">LIST.SERVERS</span> {<span style="font-weight: bold;">ALL</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The ALL option, available only to users with administrative rights, includes servers to which the user has no access.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Deleting a Server Definition</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The definition for a remote server may be deleted using the <span style="font-weight: bold;"><a href="delete_server.htm" class="topiclink">DELETE.SERVER</a></span> or <span style="font-weight: bold;"><a href="delete_server.htm" class="topiclink">DELETE.PRIVATE.SERVER</a></span> command. Deletion of public server definitions is restricted to users with administrative rights in the QMSYS account.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">DELETE.SERVER</span>  <span style="font-style: italic;">name</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Diagnosing Connection Problems</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">There are many reasons why a newly defined QMNet server may fail to connect. These include issues with firewalls, access rights, configuration settings, etc. The <span style="font-weight: bold;"><a href="find_file.htm" class="topiclink">FIND.FILE</a></span> command is a useful diagnostic aid when investigating connection issues.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Locking QMNet Files</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">An application may use record and file locks on files opened via QMNet using exactly the same methods as for local files. The lock is maintained on the remote system and will not appear in the output from a <span style="font-weight: bold;"><a href="list_readu.htm" class="topiclink">LIST.READU</a></span> command or the QMBasic <span style="font-weight: bold;"><a href="qmb_getlocks.htm" class="topiclink">GETLOCKS()</a></span> function on the local system.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p><span style="font-weight: bold;">Server Security</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The default behaviour of the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> command is to create a server definition that may be accessed by all users of the system. There is a potential security weakness here because the process started on the remote system to handle the QMNet connection runs as the user name specified in the server definition, regardless of the user name of the local user accessing the remote file. Security can be improved by arranging that the user name used for the remote process is dependent on the user name or user group of the local user. This can be achieved by use of the <span style="font-weight: bold;"><a href="admin_server.htm" class="topiclink">ADMIN.SERVER</a></span> command or an extended form of the <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span> command.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="admin_server.htm" class="topiclink">ADMIN.SERVER</a></span>, <span style="font-weight: bold;"><a href="delete_server.htm" class="topiclink">DELETE.SERVER</a></span>, <span style="font-weight: bold;"><a href="list_servers.htm" class="topiclink">LIST.SERVERS</a></span>, <span style="font-weight: bold;"><a href="set_server.htm" class="topiclink">SET.SERVER</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

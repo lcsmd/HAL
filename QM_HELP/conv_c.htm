@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Concatenation Conversion (C)</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="Concatentation conversion (C)" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "conv_c.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">Concatenation Conversion (C)</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="conv_call.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="conv_d.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The concatenation conversion code concatenates data items, optionally inserting separators between them. It behaves identically for input conversion with <span style="font-weight: bold;"><a href="qmb_iconv.htm" class="topiclink">ICONV()</a></span> and output conversion with <span style="font-weight: bold;"><a href="qmb_oconv.htm" class="topiclink">OCONV()</a></span>.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">The general form of a concatenation conversion code is</p>
+<p class="p_Normal" style="margin: 6px 0 6px 30px;"><span style="font-family: 'Courier New',Courier,monospace;">C{;} </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">c</span><span style="font-family: 'Courier New',Courier,monospace;"> </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">expr</span><span style="font-family: 'Courier New',Courier,monospace;"> </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">c</span><span style="font-family: 'Courier New',Courier,monospace;"> </span><span style="font-family: 'Courier New',Courier,monospace; font-style: italic;">expr</span><span style="font-family: 'Courier New',Courier,monospace;"> ...</span></p>
+<p class="p_Normal">where</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">c</span></td><td style="border:none;padding:0">is the separator. This may be any single character except for a digit, a mark character, a quote or a backslash. A semicolon specifies that no separator is to be inserted. Where <span style="font-style: italic;">c</span> is a space or semicolon and the next character is also a space or semicolon, this is treated as a further separator, allowing insertion of multiple spaces.</td></tr></table></div><p class="p_Normal" style="text-indent: -60px; margin: 0 0 0 90px;">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:60px"><span style="font-style: italic;">expr</span></td><td style="border:none;padding:0">is the data to be inserted and may be:</td></tr></table></div><p class="p_Normal" style="margin: 6px 0 0 120px;">a field number. This will be extracted from the current content of <span style="font-weight: bold;"><a href="at_variables.htm#record" class="topiclink">@RECORD</a></span> or from <a href="at_variables.htm#id" class="topiclink">@ID</a> if zero.</p>
+<p class="p_Normal" style="margin: 6px 0 0 120px;">a string enclosed in single quotes, double quotes or backslashes.</p>
+<p class="p_Normal" style="margin: 6px 0 0 120px;">an asterisk to substitute the data supplied in the conversion function call.</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal"><span style="font-weight: bold;">Examples</span></p>
+<p class="p_Normal">&nbsp;</p>
+<p class="p_Normal">If @RECORD contains F1<span style="font-size: 6pt;">FM</span>F2<span style="font-size: 6pt;">FM</span>F3 and @ID contain 21:</p>
+<p class="p_Normal">&nbsp;</p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none; border-spacing:0;">
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-weight: bold;">Operation</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-weight: bold;">Result</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OCONV('abc', 'C;3;&quot;xxx&quot;;1')</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">F3xxxF1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OCONV('abc', 'C;3;1')</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">F3F1</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OCONV('abc', 'C;&quot;aaa&quot;1&quot;bbb&quot;')</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">aaaF1bbb</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OCONV('abc', 'C;1 &nbsp; &nbsp;2')</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">F1 &nbsp; &nbsp;F2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OCONV('abc', 'C;1*2')</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">F1*F2</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OCONV('abc', 'C;1**')</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">F1*abc</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OCONV('abc', 'C; &nbsp; 3')</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;"> &nbsp; F3</span></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top; width:369px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">OCONV('abc', 'C;0=1')</span></p>
+</td>
+<td style="vertical-align:top; width:226px; padding:4px; border:none"><p class="p_Normal"><span style="font-family: 'Courier New',Courier,monospace;">21=F1</span></p>
+</td>
+</tr>
+</table>
+</div>
+
+</td></tr></table>
+
+</body>
+</html>

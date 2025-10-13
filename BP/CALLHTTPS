@@ -1,0 +1,476 @@
+      SUBROUTINE stdCallHTTPS(Context, InData, OutData, ErrText )
+      * ---------------------------------------------------------------------------
+      *  @@Name        : stdCallHTTPS
+      *  @@Description : Make an HTTPS call
+      *  @@Version     : 1.0
+      * ---------------------------------------------------------------------------
+      *  Brief Description
+      *  -----------------
+      *  @@INFO {
+      *     This calls an HTTPS or HTTP web site.
+      *     For example of its use, see test.source testCallHTTPS.
+      *     Note that most of the parameters here can be defaulted.
+      *  }
+      * ---------------------------------------------------------------------------
+      *  Warnings
+      *  --------
+      *
+      * ---------------------------------------------------------------------------
+      *  Modification History
+      *  --------------------
+      *
+      * ---------------------------------------------------------------------------
+      * Keywords
+      * --------
+      *
+      * --------------------------------------------------------------------------
+      * To Do List
+      * ----------
+      *
+      * --------------------------------------------------------------------------
+      VERDATA=''
+      VERDATA := 'Version=001000044;'
+      VERDATA := 'VerModVer=001000000;'
+      VERDATA := 'VerBeta=;'
+      VERDATA := 'VerDate=20115;'
+      VERDATA := 'VerProd=BLSTD;'
+      VERDATA := 'VerModule=CORE;'
+      VERDATA := 'VerTM=;'
+      VERDATA := 'VerCopy=2018 Brian Leach Consulting Limited;'
+      VERDATA := 'VerCo=Brian Leach Consulting Limited;'
+      VERDATA := 'VerDesc=Call HTTP(S) service;'
+      VERDATA := 'CatName=stdCallHTTPS;'
+      VERDATA := 'VerHist=26 JAN 23 1.0.44 mvPDF Release 3.1.3;'
+      $OPTIONS PICK
+      EQUATE CRLF TO CHAR(013):CHAR(010)
+      EQU CTX.LOGFILE       TO 1
+      EQU CTX.LOGLEVEL      TO 2
+      EQU CTX.GENEROUS      TO 3
+      EQU CTX.CERTPATH      TO 4 ;* may be cert or directory
+      EQU CTX.CERTFORMAT    TO 5
+      EQU CTX.CERTALGORITHM TO 6
+      EQU CTX.CERTPASS      TO 7
+      EQU CTX.CERTDEPTH     TO 8
+      EQU CTX.CONTENTTYPE   TO 9
+      EQU CTX.ACCEPTTYPES   TO 10
+      EQU CTX.USERNAME      TO 11
+      EQU CTX.PASSWORD      TO 12
+      EQU CTX.SHOW          TO 13
+      EQU CTX.RETURNHEADERS TO 14
+      EQU CTX.AUTHTYPE      TO 15
+      EQU IN.HTTPVERSION    TO 1
+      EQU IN.METHOD         TO 2
+      EQU IN.URL            TO 3
+      EQU IN.USEHTTP        TO 4
+      EQU IN.HEADERS        TO 5
+      EQU IN.VALUES         TO 6
+      EQU IN.MODE           TO 7
+      EQU IN.DATA           TO 10
+      EQU CERTFORMAT.PEM    TO 1
+      EQU CERTFORMAT.DER    TO 2
+      EQU CERTALGO.RSA      TO 1
+      EQU CERTALGO.DSA      TO 2
+      ErrText  = ''
+      OutData = ''
+      EQU OVERRIDE_API   To @TRUE
+      LogFile       = Context<CTX.LOGFILE>
+      LogLevel      = Context<CTX.LOGLEVEL>
+      Generous      = Context<CTX.GENEROUS>
+      CertPath      = Context<CTX.CERTPATH>
+      CertFormat    = Context<CTX.CERTFORMAT>
+      CertAlgorithm = Context<CTX.CERTALGORITHM>
+      CertPass      = Context<CTX.CERTPASS>
+      CertDepth     = Context<CTX.CERTDEPTH>
+      ContentType   = Context<CTX.CONTENTTYPE>
+      AcceptTypes   = Context<CTX.ACCEPTTYPES>
+      UserName      = Context<CTX.USERNAME>
+      Password      = Context<CTX.PASSWORD>
+      Show          = Context<CTX.SHOW>
+      ReturnHeaders = Context<CTX.RETURNHEADERS>
+      AuthType      = Context<CTX.AUTHTYPE> ;* added explicitly to header
+      HTTPVersion   = InData<IN.HTTPVERSION>
+      HTTPMethod    = InData<IN.METHOD>
+      URL           = InData<IN.URL>
+      UseHTTP       = InData<IN.USEHTTP>
+      Mode          = InData<IN.MODE> ;* to override the override!
+      RequestData   = Field(InData,@FM, IN.DATA, Len(InData))
+      GoSub Initialize
+      GoSub BuildHeaders
+      GoSub InitLogging
+      GoSub DoRequest
+      GoSub StopLogging
+      RETURN
+      *---------------------------------------------------------------------------
+      * AddCertificate
+      *---------------------------------------------------------------------------
+AddCertificate:
+      If CertPath <> '' Then
+         ReturnCode = addCertificate(CertPath, CertUsedAs, CertFormat, CertAlgorithm, hContext)
+         If Show Then Crt 'addCertificate: ':ReturnCode
+         ReturnCode = setAuthenticationDepth(hContext, CertDepth, CertRole)
+         If Show Then Crt 'setAuthenticationDepth: ':ReturnCode
+         ReturnCode = showSecurityContext(hContext,ContextInfo)
+         If Show Then Crt 'showSecurityContext: ':ReturnCode
+         Convert @FM To CRLF IN ContextInfo
+         If Show Then Crt ContextInfo
+      End
+      Return
+      *---------------------------------------------------------------------------
+      * BuildHeaders
+      *---------------------------------------------------------------------------
+BuildHeaders:
+      HTTPHeaders = 'Content-Type':@VM:ContentType
+      If AcceptTypes <> '' Then
+         HTTPHeaders<-1> = 'Accept':@VM:AcceptTypes
+      End
+      If UserName <> '' Then
+         If AuthType <> '' Then
+            HTTPHeaders<-1> = 'Authorization':@VM:AuthType:' ':UserName:':':Password
+         End Else
+            HTTPHeaders<-1> = 'Authorization':@VM:UserName:':':Password
+         End
+      End
+      HTTPHeaders<-1> = 'User-Agent':@VM:'Rocket UniVerse'
+      NoCustomHeaders = DCount(InData<IN.HEADERS>,@VM)
+      For ThisHeader = 1 To NoCustomHeaders
+         HTTPHeaders<-1> = InData<IN.HEADERS,ThisHeader>:@VM:InData<IN.VALUES, ThisHeader>
+      Next
+      Return
+      *---------------------------------------------------------------------------
+      * DoRequest
+      *---------------------------------------------------------------------------
+DoRequest:
+      If Not(UseHTTP) Then
+         GoSub InitContext
+         If ErrText <> '' Then
+            Return
+         End
+         GoSub SetRules
+         If ErrText <> '' Then
+            Return
+         End
+         GoSub AddCertificate
+         If ErrText <> '' Then
+            Return
+         End
+      End
+      If OVERRIDE_API And (Mode <> 1) Then
+         GoSub MakeSocketCall
+      End Else
+         Gosub MakeCall
+      End
+      Return
+      *---------------------------------------------------------------------------
+      * InitContext
+      *---------------------------------------------------------------------------
+InitContext:
+      ReturnCode = createSecurityContext(hContext, '')
+      If Show Then Crt 'createSecurityContext: ':ReturnCode
+      Begin Case
+         Case ReturnCode = 1
+            ErrText = "createSecurityContext: Security context could not be created."
+         Case ReturnCode = 2
+            ErrText = "createSecurityContext: Invalid version."
+      End Case
+      Return
+      *---------------------------------------------------------------------------
+      * Initialize
+      *---------------------------------------------------------------------------
+Initialize:
+      AuthenticationRule = ""
+      AuthenticationType = ""
+      HTTPAuth = ''  ;* automatically handled below
+      ServerOrClient = 2 ;* client
+      CertUsedAs = "2" ;* Used as an issuer certificate
+      CertRole  = 2  ;* client
+      If HTTPMethod = '' Then
+         HTTPMethod="GET"
+      End
+      If HTTPVersion = '' Then
+         HTTPVersion = "1.1"
+      End
+      If Generous Then
+         AuthenticationRule = "VerificationStrength"
+         AuthenticationType = "generous" ;* can be generous or strict
+      End
+      If CertFormat = '' Then
+         CertFormat = CERTFORMAT.DER
+      End
+      If CertAlgorithm = '' Then
+         CertAlgorithm = CERTALGO.RSA
+      End
+      If CertDepth = '' Then
+         CertDepth = 0
+      End
+      If ContentType = '' Then
+         ContentType = 'text/xml'
+      End
+      If LogLevel = '' Then
+         LogLevel = 10
+      End
+      Return
+      *---------------------------------------------------------------------------
+      * InitLogging
+      *---------------------------------------------------------------------------
+InitLogging:
+      If LogFile = '' Then
+         Return
+      End
+      LogAction = "ON"
+      ReturnCode = protocolLogging(LogFile, LogAction, LogLevel)
+      If Show Then Crt 'protocolLogging: ':ReturnCode
+      Return
+      *---------------------------------------------------------------------------
+      * MakeCall
+      *---------------------------------------------------------------------------
+MakeCall:
+      ReturnCode = setHTTPDefault("VERSION", HTTPVersion)
+      If HTTPAuth <> '' Then
+         ReturnCode = setHTTPDefault("AUTHENTICATE", HTTPAuth)
+         If ReturnCode <> 0 Then
+            ErrText = "Unable to set AUTHENTICATE Option"
+            Return
+         End
+      End
+      If HTTPHeaders <> '' Then
+         ReturnCode = setHTTPDefault('HEADERS',HTTPHeaders)
+         If Show Then Crt 'set HTTP Headers ':ReturnCode
+         If ReturnCode <> 0 Then
+            ErrText = "Unable to set HTTP Headers"
+            Return
+         End
+      End
+      ! would be nice if this was correctly documented
+      Temp = HTTPMethod:":":ContentType
+      ReturnCode = createSecureRequest(URL,Temp,hRequest,hContext)
+      If Show Then Crt 'createSecureRequest: ':ReturnCode
+      Begin Case
+         Case ReturnCode = 0
+         Case ReturnCode = 1
+            ErrText = "createSecureRequest : Invalid URL (Syntactically)."
+         Case ReturnCode = 2
+            ErrText = "createSecureRequest: Invalid method (For HTTP 1.0, only GET/POST/HEAD)"
+         Case 1
+            ErrText =  "createSecureRequest: failed ":ReturnCode
+      End Case
+      If ErrText <> '' Then Return
+      *
+      ReturnCode = submitRequest(hRequest,'',RequestData,ResponseHeaders,ResponseData,HTTPStatus)
+      If Show Then Crt 'submitRequest: ':ReturnCode
+      Begin Case
+         Case ReturnCode = 0
+         Case ReturnCode = 1
+            ErrText = "submitRequest: Invalid request handle."
+         Case ReturnCode =2
+            ErrText = "submitRequest: Timed out."
+         Case ReturnCode = 3
+            ErrText = "submitRequest: Network Error."
+         Case 1
+            ErrText = "submitRequest : Error :": ReturnCode
+      End Case
+      If ErrText <> '' Then Return
+      If Show Then Crt '[Status]'
+      If Show Then Crt HTTPStatus
+      Convert @FM To CRLF In ResponseHeaders
+      If Show Then Crt '[Response Headers]'
+      If Show Then Crt ResponseHeaders
+      If Show Then Crt '[Response Data]'
+      If Show Then Crt ResponseData
+      Begin Case
+         Case ReturnHeaders
+            OutData<1> = Lower(ResponseHeaders)
+            OutData<2> = Lower(ResponseData)
+         Case 1
+            OutData = ResponseData
+      End Case
+      Return
+      *---------------------------------------------------------------------------
+      * MakeSocketCall
+      *---------------------------------------------------------------------------
+MakeSocketCall:
+      Protocol = Field(URL,":",1,1)
+      URL = Field(URL,":",2,Len(URL))
+      If URL[1,2] = "//" Then
+         URL = URL[3,Len(URL)]
+      End
+      Server = Field(URL,"/",1,1)
+      Path = "/":Field(URL,"/",2,Len(URL))
+      Port = 443
+      If UseHTTP Then
+         Port = 80
+      End
+      If Count(Server,":") Then
+         Port = Field(Server,":",2,1)
+         Server = Field(Server,":",1,1)
+      End
+      Request = Change(RequestData,@FM,CRLF)
+      Pkt = InData<IN.METHOD>:" ":Path:" HTTP/1.1"
+      Pkt<-1> = "Host: ":Server
+      Pkt<-1> = "Content-Type: ":ContentType
+      If AcceptTypes <> '' Then
+         Pkt<-1> = "Accept: ":AcceptTypes
+      End
+      If UserName <> '' Then
+         Token = ''
+         Temp = UserName:":":Password
+         Ok = ENCODE("Base64", 1, Temp, 1, Token, 1)
+         Convert Char(10) To '' In Token
+         *          Token = Token[Char(10),1,1]
+         If AuthType <> '' Then
+            Pkt<-1> = "Authorization: ":AuthType:' ':Token
+         End Else
+            Pkt<-1> = "Authorization: ":Token
+         End
+      End
+      NoCustomHeaders = DCount(InData<IN.HEADERS>,@VM)
+      For ThisHeader = 1 To NoCustomHeaders
+         Pkt<-1> = InData<IN.HEADERS,ThisHeader>:': ':InData<IN.VALUES, ThisHeader>
+      Next
+      Pkt<-1> = "Content-Length: ":Len(Request)
+      Packet = Change(Pkt,@FM,CRLF):CRLF:CRLF:Request
+      If UseHTTP Then
+         ReturnCode = openSocket(Server, Port, 1, 0, hSocket)
+         If Show Then Crt 'openSocket: ':ReturnCode
+      End Else
+         ReturnCode = openSecureSocket(Server, Port, 1, 0, hSocket, hContext)
+         If Show Then Crt 'openSecureSocket: ':ReturnCode
+      End
+      Begin Case
+         Case ReturnCode = 0
+         Case ReturnCode = 101
+            ErrText = "openSecureSocket: Invalid security context handle."
+         Case ReturnCode = 102
+            ErrText = "openSecureSocket: SSL/TLS handshake failure."
+         Case ReturnCode = 103
+            ErrText = "openSecureSocket: Missing required certificate."
+         Case ReturnCode = 104
+            ErrText = "openSecureSocket: Unable to authenticate server."
+         Case 1
+            ErrText = "openSecureSocket: : Error :": ReturnCode
+      End Case
+      If ErrText <> '' Then Return
+      If Show Then
+         Crt "[Sending]"
+         Crt Packet
+      End
+      ReturnCode = writeSocket(hSocket, Packet, 0, 1, SentBytes)
+      If Show Then Crt 'writeSocket: ':ReturnCode
+      Begin Case
+         Case ReturnCode = 0
+         Case ReturnCode = 107
+            ErrText = "writeSocket: Encryption Error."
+         Case ReturnCode = 108
+            ErrText = "writeSocket: Decryption Error."
+         Case 1
+            ErrText = "writeSocket: : Error :": ReturnCode
+      End Case
+      If ErrText <> '' Then Return
+      ! Get response
+      BytesRead = 0
+      GotHeader = @False
+      ExpectedLength = 99999
+      ResponseData = ""
+      Packet = ""
+      Finished = @False
+      HTTPStatus = ''
+      Wait = 30000
+      Loop
+         Pkt = ''
+         ReturnCode = readSocket(hSocket, Pkt, 0, Wait, 0, BytesRead)
+         If Show Then Crt "readSocket : ":ReturnCode:" ":BytesRead
+         If Show then Crt "[Packet]"
+         If Show Then Crt Pkt
+         If ReturnCode = 0 Then
+            If Not(GotHeader) Then
+               Packet := Pkt
+               GoSub DecodeHeader
+            End Else
+               ResponseData := Pkt
+            End
+         End Else
+            Finished = @True
+         End
+      Until Finished Or (Len(ResponseData) >= ExpectedLength) Do
+         Wait = 1000 ;* don't hang around for the next chunk if no content-length
+      Repeat
+      ! Close down
+      ReturnCode = closeSocket(hSocket)
+      ! HTTP/1.1 200 OK
+      FindStr "HTTP" In ResponseHeaders Setting Pos Then
+         HTTPStatus = Field(ResponseHeaders<Pos>," ",2,1)
+      End
+      If Show Then Crt '[Status]'
+      If Show Then Crt HTTPStatus
+      If Show Then Crt '[Response Headers]'
+      If Show Then Crt Change(ResponseHeaders,@FM,CRLF)
+      If Show Then Crt '[Response Data]'
+      If Show Then Crt ResponseData
+      Begin Case
+         Case ReturnHeaders
+            OutData<1> = Lower(OrigHeaders)
+            OutData<2> = Lower(ResponseData)
+         Case 1
+            OutData = ResponseData
+      End Case
+      Return
+      *---------------------------------------------------------------------------
+      * decode the header  the only caution is the header is CRLF delimited.
+      *---------------------------------------------------------------------------
+DecodeHeader:
+      GotHeader = @False
+      ResponseHeaders = ""
+      OrigHeaders = ''
+      Temp = Change(Packet,CRLF,@FM)
+      FindStr "HTTP" In Temp Setting Pos Then
+         Packet = Field(Packet,CRLF,Pos, Len(Packet))
+      End
+      Temp = Change(Packet,CRLF,@FM)
+      Dc = Dcount(Temp,@FM)
+      For I = 1 To Dc Until GotHeader
+         Line = Temp<I>
+         If Line = "" Then
+            GotHeader = @True
+            ResponseData = Field(Packet,CRLF,I+1,Len(Packet))
+         End Else
+            ResponseHeaders<-1> = UpCase(Line)
+            OrigHeaders<-1> = Line
+         End
+      Next
+      GotHeader = @True ;* always on first packet
+      If GotHeader Then
+         FindStr "CONTENT-LENGTH" In ResponseHeaders Setting Pos Then
+            Temp = Convert(":",@FM,ResponseHeaders<Pos>)
+            ExpectedLength = Trim(Temp<2>)
+         End
+      End
+      Return
+      *---------------------------------------------------------------------------
+      * SetRules
+      *---------------------------------------------------------------------------
+SetRules:
+      If AuthenticationRule = '' Then
+         Return
+      End
+      ReturnCode = addAuthenticationRule(hContext,ServerOrClient,AuthenticationRule, AuthenticationType)
+      If Show Then Crt "AddAuthenticationRule : ":ReturnCode
+      Begin Case
+         Case ReturnCode = 1
+            ErrText = "addAuthenticationRule : Invalid Security Context handle."
+         Case ReturnCode = 2
+            ErrText = "addAuthenticationRule : Invalid rule name."
+         Case ReturnCode = 3
+            ErrText = "addAuthenticationRule : Invalid rule content."
+      End Case
+      Return
+      *---------------------------------------------------------------------------
+      * StopLogging
+      *---------------------------------------------------------------------------
+StopLogging:
+      If LogFile = '' Then
+         Return
+      End
+      LogAction = 'OFF'
+      ReturnStatus = protocolLogging(LogFile, LogAction, LogLevel)
+      If Show Then Crt 'protocolLogging: ':ReturnCode
+      Return
+

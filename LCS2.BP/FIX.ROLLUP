@@ -1,0 +1,18 @@
+     OPEN 'PRICE.ROLLUP' TO PR ELSE PRINT 'PR';STOP
+     CT=0
+     SELECT PR
+     LOOP WHILE READNEXT AA DO
+          READ R.B FROM PR,AA THEN
+               PRINT AA:"   ":R.B:
+               TOT.AMT = SUM(R.B<6>)
+               IF TOT.AMT = 0 THEN
+                    DELETE PR,AA
+                    PRINT "   DELETED"
+               END ELSE
+                    PRINT
+               END
+          END
+          CT+=1
+          PRINT CT
+     REPEAT
+

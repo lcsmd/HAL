@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>COPY.LIST</title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="COPY.LIST" />
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="default.css" rel="stylesheet" />
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+   <script type="text/javascript">
+     HMSyncTOC("index.html", "copy_list.htm");
+   </script>
+   <script type="text/javascript" src="highlight.js"></script>
+   <script type="text/javascript">
+     $(document).ready(function(){highlight();});
+   </script>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#649CCC">
+  <tr valign="middle">
+    <td align="left">
+      <h1 class="p_Heading1"><span class="f_Heading1">COPY.LIST</span></h1>
+
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="titlepage.htm"><img src="top.gif" border=0 alt="Top"></a>&nbsp;
+     <a href="copy.htm"><img src="previous.gif" border=0 alt="Previous"></a>&nbsp;
+     <a href="copy_listp.htm"><img src="next.gif" border=0 alt="Next"></a>
+     </span>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COPY.LIST</span> command copies a saved <a href="selectlists.htm" class="topiclink">select list</a> to another file or a different record in the same file. Alternatively, the list can be output to the display.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Format</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-weight: bold;">COPY.LIST</span> <span style="font-style: italic;">src.list</span> {<span style="font-weight: bold;">,</span> <span style="font-style: italic;">tgt.list</span>} {<span style="font-weight: bold;">FROM</span> <span style="font-style: italic;">src.file</span>} {<span style="font-weight: bold;">TO</span> <span style="font-style: italic;">tgt.file</span>} {<span style="font-style: italic;">options</span>}</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>where</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">src.list</span></td><td style="border:none;padding:0">is the name of the saved select list that is to be copied. If <span style="font-style: italic;">src.list</span> is given as <span style="font-weight: bold;">*</span>, all saved select lists in the source file are copied.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">tgt.list</span></td><td style="border:none;padding:0">is the name to be used for the copied select list. If omitted, the list retains its original name. A <span style="font-style: italic;">tgt.list</span> name cannot be specified when copying all saved lists from the source file.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">src.file</span></td><td style="border:none;padding:0">is the name of the file holding the <span style="font-style: italic;">src.list</span> to be copied. If omitted, the default saved lists file <span style="font-weight: bold;">$SAVEDLISTS</span> is used.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">tgt.file</span></td><td style="border:none;padding:0">is the name of the file to receive the copied select list. If omitted, the default saved lists file <span style="font-weight: bold;">$SAVEDLISTS</span> is used.</td></tr></table></div><p style="text-indent: -90px; margin: 0 0 0 120px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 30px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:90px"><span style="font-style: italic;">options</span></td><td style="border:none;padding:0">may be any of the following</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 330px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">CRT</span></td><td style="border:none;padding:0">Output the select list to the display. Neither <span style="font-style: italic;">tgt.list</span> nor <span style="font-style: italic;">tgt.file</span> may be specified with this option.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 330px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">DELETING</span></td><td style="border:none;padding:0">Delete <span style="font-style: italic;">src.list</span> after copying.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 330px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">LPTR</span> {<span style="font-style: italic;">n</span>}</td><td style="border:none;padding:0">Output the select list to logical print unit <span style="font-style: italic;">n</span>. If <span style="font-style: italic;">n</span> is not specified, the default print unit is used.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 330px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">NO.PAGE</span></td><td style="border:none;padding:0">Used with the <span style="font-weight: bold;">CRT</span> option, this option suppresses the normal pause between successive pages of output.</td></tr></table></div><p style="text-indent: -180px; margin: 0 0 0 330px;"><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0; padding: 0 0 0 0; margin: 0 0 0 150px;"><table style="border:none;border-spacing:0;padding:0;line-height: normal;"><tr style="vertical-align:baseline"><td style="border:none;padding:0;width:180px"><span style="font-weight: bold;">OVERWRITING</span></td><td style="border:none;padding:0">If <span style="font-style: italic;">tgt.list</span> already exists in <span style="font-style: italic;">tgt.file</span>, this option allows overwriting of the existing list. Without this option, a message is displayed and no copy occurs.</td></tr></table></div><p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COPY.LIST</span> command is used to copy saved select lists. The <span style="font-weight: bold;">FROM</span> and <span style="font-weight: bold;">TO</span> options allow copying from and to files other than the default <span style="font-weight: bold;">$SAVEDLISTS</span> file. When the default file is used, it will be created if it does not already exist.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>The <span style="font-weight: bold;">COPY.LIST</span> command does not affect any active select lists.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">Example</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p style="margin: 0 0 0 30px;"><span style="font-family: 'Courier New',Courier,monospace;">COPY.LIST INVENTORY TO INVENT.LISTS OVERWRITING</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p>This command copies the select list previously stored in <span style="font-weight: bold;">$SAVEDLISTS</span> as INVENTORY to a record of the same name in file INVENT.LISTS. Any existing record of the same name is overwritten.</p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-size: 10pt; font-family: Arial,Helvetica,sans-serif; color: #000000;">&nbsp;</span></p>
+<p><span style="font-weight: bold;">See also:</span></p>
+<p><span style="font-weight: bold;"><a href="delete_list.htm" class="topiclink">DELETE.LIST</a></span>, <span style="font-weight: bold;"><a href="edit_list.htm" class="topiclink">EDIT.LIST</a></span>, <span style="font-weight: bold;"><a href="get_list.htm" class="topiclink">GET.LIST</a></span>, <span style="font-weight: bold;"><a href="save_list.htm" class="topiclink">SAVE.LIST</a></span>,<span style="font-weight: bold;"> <a href="sort_list.htm" class="topiclink">SORT.LIST</a></span></p>
+
+</td></tr></table>
+
+</body>
+</html>

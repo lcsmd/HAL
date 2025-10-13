@@ -1,0 +1,57 @@
+SUBROUTINE LLM_CALL(prompt, response)
+* Makes an API call to an LLM using OpenQM's !CALLHTTP
+
+$include CALLHTTP.H
+
+* Read API key from API.KEYS file
+OPEN 'API.KEYS' TO F.API.KEYS ELSE
+    response = 'Error: Cannot open API.KEYS file'
+    RETURN
+END
+READ api.key FROM F.API.KEYS, 'OPENAI' ELSE
+    response = 'Error: Cannot read OpenAI API key'
+    RETURN
+END
+
+headers = ''
+headers<-1> = 'Content-Type: application/json'
+headers<-1> = 'Authorization: Bearer ' : TRIM(api.key)
+
+* Construct the request body
+request = ''
+request<1> = '{'
+request<-1> = '  "model": "gpt-3.5-turbo",'
+request<-1> = '  "messages": ['
+request<-1> = '    {'
+request<-1> = '      "role": "user",'
+request<-1> = '      "content": "' : prompt : '"'
+request<-1> = '    }'
+request<-1> = '  ]'
+request<-1> = '}'
+
+url = 'https://api.openai.com/v1/chat/completions'
+
+* Initialize CALLHTTP object
+http = new object("!CALLHTTP")
+
+* Set request parameters
+http->set.url(url)
+http->set.headers(headers)
+http->set.request.body(request)
+
+* Make the POST request
+CALL http->make.request("POST")
+
+* Get the response
+status = http->get.status.code()
+IF status = 200 THEN
+    resp = http->get.response.body()
+    * Parse JSON response to get the content
+    CALL JSON.PARSE(resp, parsed.resp)
+    response = parsed.resp<1,'choices',1,'message','content'>
+END ELSE
+    response = 'Error: ' : status
+END
+
+RETURN
+END 
