@@ -6,10 +6,11 @@
     "log_level": "INFO"
   },
   "whisper": {
-    "url": "http://ubuai.q.lcs.ai:9000/transcribe",
+    "url": "https://speech.lcs.ai/transcribe",
     "model": "large-v3",
     "language": "en",
-    "timeout": 10
+    "timeout": 10,
+    "fallback_url": "http://ubuai:9000/transcribe"
   },
   "qm_listener": {
     "host": "localhost",
@@ -17,10 +18,11 @@
     "timeout": 30
   },
   "ollama": {
-    "url": "http://ubuai.q.lcs.ai:11434",
+    "url": "https://ollama.lcs.ai",
     "default_model": "deepseek-r1:32b",
     "classification_model": "deepseek-r1:8b",
-    "timeout": 60
+    "timeout": 60,
+    "fallback_url": "http://ubuai:11434"
   },
   "openai": {
     "models": ["gpt-4o", "gpt-4o-mini"],
@@ -49,12 +51,13 @@
     "speech_pause_threshold_ms": 1000
   },
   "tts": {
-    "enabled": false,
-    "engine": "piper",
-    "url": "http://ubuai.q.lcs.ai:5000/tts",
+    "enabled": true,
+    "engine": "speech.lcs.ai",
+    "url": "https://speech.lcs.ai/tts",
     "voice": "en_US-lessac-medium",
     "speed": 1.0,
-    "fallback_engine": "none"
+    "fallback_url": "http://ubuai:5000/tts",
+    "fallback_engine": "piper"
   },
   "wake_words": {
     "primary": "hey hal",
