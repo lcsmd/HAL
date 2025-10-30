@@ -346,7 +346,7 @@ class VoiceGateway:
             'timestamp': datetime.now().isoformat()
         })
         
-    async def handle_client(self, websocket, path):
+    async def handle_client(self, websocket):
         session_id = None
         try:
             # Register client
@@ -368,6 +368,8 @@ class VoiceGateway:
             print(f"[{datetime.now()}] Client disconnected: {session_id}")
         except Exception as e:
             print(f"[{datetime.now()}] Error handling client: {e}")
+            import traceback
+            traceback.print_exc()
         finally:
             await self.unregister_client(websocket)
             
