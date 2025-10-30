@@ -1,0 +1,121 @@
+      PROGRAM APPOINTMENT.REMINDER
+      * Send reminders for upcoming appointments
+      * Can be run as a scheduled task
+      
+      $INCLUDE FILES.EQU
+      $INCLUDE EQU/apt.equ
+      $INCLUDE EQU/per.equ
+      $INCLUDE EQU/dtr.equ
+      
+      * Get reminder window (default 1 day ahead)
+      REMINDER.DAYS = 1
+      INPUT "Days ahead to check (default 1): ", DAYS.INPUT
+      IF DAYS.INPUT # "" AND NUM(DAYS.INPUT) THEN
+         REMINDER.DAYS = DAYS.INPUT
+      END
+      
+      * Calculate target date
+      TARGET.DATE = DATE() + REMINDER.DAYS
+      TARGET.DATE.STR = OCONV(TARGET.DATE, "D4-")
+      
+      PRINT ""
+      PRINT "Checking appointments for ":TARGET.DATE.STR
+      PRINT ""
+      
+      * Select appointments for target date
+      CMD = 'SELECT APPOINTMENT WITH APPOINTMENT_DATE = "':TARGET.DATE:'" AND STATUS = "scheduled" TO 1'
+      EXECUTE CMD
+      
+      * Process selected appointments
+      REMINDER.COUNT = 0
+      LOOP
+         READNEXT APT.ID ELSE EXIT
+         
+         READ APT.r FROM APT, APT.ID ELSE CONTINUE
+         
+         * Get person details
+         PERSON.ID = APT.r<APT.PERSON_ID>
+         READ PER.r FROM PER, PERSON.ID ELSE
+            PRINT "Warning: Person not found for appointment ":APT.ID
+            CONTINUE
+         END
+         
+         * Get doctor details
+         DOCTOR.ID = APT.r<APT.DOCTOR_ID>
+         READ DTR.r FROM DTR, DOCTOR.ID ELSE
+            DOCTOR.NAME = "Unknown"
+         END ELSE
+            DOCTOR.NAME = DTR.r<DTR.FIRST_NAME>:" ":DTR.r<DTR.LAST_NAME>
+         END
+         
+         * Format reminder message
+         PERSON.NAME = PER.r<PER.FIRST_NAME>:" ":PER.r<PER.LAST_NAME>
+         APT.DATE.STR = OCONV(APT.r<APT.APPOINTMENT_DATE>, "D4-")
+         APT.TIME.STR = APT.r<APT.APPOINTMENT_TIME>
+         APT.TYPE = APT.r<APT.APPOINTMENT_TYPE>
+         REASON = APT.r<APT.REASON>
+         
+         REMINDER.MSG = ""
+         REMINDER.MSG := "Appointment Reminder for ":PERSON.NAME
+         REMINDER.MSG := CHAR(10):CHAR(10)
+         REMINDER.MSG := "Date: ":APT.DATE.STR
+         REMINDER.MSG := CHAR(10)
+         REMINDER.MSG := "Time: ":APT.TIME.STR
+         REMINDER.MSG := CHAR(10)
+         REMINDER.MSG := "Doctor: ":DOCTOR.NAME
+         REMINDER.MSG := CHAR(10)
+         REMINDER.MSG := "Type: ":APT.TYPE
+         IF REASON # "" THEN
+            REMINDER.MSG := CHAR(10)
+            REMINDER.MSG := "Reason: ":REASON
+         END
+         
+         * Display reminder (in production, would send email/SMS/notification)
+         PRINT "="STRING(60, "=")
+         PRINT REMINDER.MSG
+         PRINT "="STRING(60, "=")
+         PRINT ""
+         
+         * Mark reminder as sent
+         APT.r<APT.REMINDER_SENT> = "Y"
+         APT.r<APT.REMINDER_DATE> = DATE()
+         APT.r<APT.UPDATED_DATE> = DATE()
+         WRITE APT.r ON APT, APT.ID
+         
+         REMINDER.COUNT += 1
+         
+         * TODO: Send actual notification via email/SMS/push
+         * GOSUB SEND.EMAIL.REMINDER
+         * GOSUB SEND.SMS.REMINDER
+         * GOSUB SEND.PUSH.NOTIFICATION
+      REPEAT
+      
+      PRINT ""
+      PRINT "Sent ":REMINDER.COUNT:" reminder(s)"
+      
+      STOP
+      
+* ============================================================================
+* Send email reminder (placeholder)
+* ============================================================================
+SEND.EMAIL.REMINDER:
+      * TODO: Integrate with email system
+      * Use PER.r<PER.EMAIL> for recipient
+      RETURN
+      
+* ============================================================================
+* Send SMS reminder (placeholder)
+* ============================================================================
+SEND.SMS.REMINDER:
+      * TODO: Integrate with SMS gateway
+      * Use PER.r<PER.MOBILE> for recipient
+      RETURN
+      
+* ============================================================================
+* Send push notification (placeholder)
+* ============================================================================
+SEND.PUSH.NOTIFICATION:
+      * TODO: Integrate with push notification service
+      RETURN
+      
+      END

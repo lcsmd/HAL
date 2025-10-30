@@ -1,0 +1,207 @@
+PROGRAM CRUD.TEMPLATE
+* Template for CRUD operations on HAL files
+* Replace FILENAME, ABB, and field names with actual values
+* This demonstrates the standard pattern for all CRUD operations
+
+$INCLUDE EQU/FILES.EQU
+
+* Example: Working with PERSON file
+* Replace 'per' with your file abbreviation
+* Replace field names with your actual fields
+
+* ============================================
+* CREATE - Add new record
+* ============================================
+CREATE.RECORD:
+   * Generate unique ID
+   ID = SYSTEM(9)  ; * Timestamp-based ID
+   
+   * Prompt for required fields
+   INPUT per.r<per.FIRST_NAME>, "First name: "
+   INPUT per.r<per.LAST_NAME>, "Last name: "
+   INPUT per.r<per.EMAIL>, "Email: "
+   
+   * Set system fields
+   per.r<per.CREATED_DATE> = DATE()
+   per.r<per.UPDATED_DATE> = DATE()
+   per.r<per.ACTIVE> = "Y"
+   
+   * Write record
+   WRITE per.r ON per, ID ELSE
+      CRT "Error writing record"
+      GOTO MENU
+   END
+   
+   CRT "Record created: ":ID
+   GOTO MENU
+
+* ============================================
+* READ - Display record
+* ============================================
+READ.RECORD:
+   INPUT ID, "Enter ID: "
+   IF ID = "" THEN GOTO MENU
+   
+   READ per.r FROM per, ID ELSE
+      CRT "Record not found: ":ID
+      GOTO MENU
+   END
+   
+   CRT ""
+   CRT "ID:         ":ID
+   CRT "First Name: ":per.r<per.FIRST_NAME>
+   CRT "Last Name:  ":per.r<per.LAST_NAME>
+   CRT "Email:      ":per.r<per.EMAIL>
+   CRT "Phone:      ":per.r<per.PHONE>
+   CRT "Created:    ":OCONV(per.r<per.CREATED_DATE>, "D4-")
+   CRT "Active:     ":per.r<per.ACTIVE>
+   CRT ""
+   GOTO MENU
+
+* ============================================
+* UPDATE - Modify existing record
+* ============================================
+UPDATE.RECORD:
+   INPUT ID, "Enter ID: "
+   IF ID = "" THEN GOTO MENU
+   
+   READ per.r FROM per, ID ELSE
+      CRT "Record not found: ":ID
+      GOTO MENU
+   END
+   
+   CRT "Current values (press ENTER to keep):"
+   CRT ""
+   
+   * Update fields
+   OLD.VALUE = per.r<per.FIRST_NAME>
+   INPUT NEW.VALUE, "First name [":OLD.VALUE:"]: "
+   IF NEW.VALUE # "" THEN per.r<per.FIRST_NAME> = NEW.VALUE
+   
+   OLD.VALUE = per.r<per.LAST_NAME>
+   INPUT NEW.VALUE, "Last name [":OLD.VALUE:"]: "
+   IF NEW.VALUE # "" THEN per.r<per.LAST_NAME> = NEW.VALUE
+   
+   OLD.VALUE = per.r<per.EMAIL>
+   INPUT NEW.VALUE, "Email [":OLD.VALUE:"]: "
+   IF NEW.VALUE # "" THEN per.r<per.EMAIL> = NEW.VALUE
+   
+   * Update system fields
+   per.r<per.UPDATED_DATE> = DATE()
+   
+   * Write updated record
+   WRITE per.r ON per, ID ELSE
+      CRT "Error updating record"
+      GOTO MENU
+   END
+   
+   CRT "Record updated: ":ID
+   GOTO MENU
+
+* ============================================
+* DELETE - Remove record
+* ============================================
+DELETE.RECORD:
+   INPUT ID, "Enter ID: "
+   IF ID = "" THEN GOTO MENU
+   
+   READ per.r FROM per, ID ELSE
+      CRT "Record not found: ":ID
+      GOTO MENU
+   END
+   
+   CRT "Record: ":per.r<per.FIRST_NAME>:" ":per.r<per.LAST_NAME>
+   INPUT CONFIRM, "Delete this record? (Y/N): "
+   
+   IF CONFIRM = "Y" THEN
+      DELETE per, ID ELSE
+         CRT "Error deleting record"
+         GOTO MENU
+      END
+      CRT "Record deleted: ":ID
+   END ELSE
+      CRT "Delete cancelled"
+   END
+   GOTO MENU
+
+* ============================================
+* LIST - Display all records
+* ============================================
+LIST.RECORDS:
+   SELECT per
+   LOOP
+      READNEXT ID ELSE EXIT
+      READ per.r FROM per, ID THEN
+         CRT ID:" - ":per.r<per.FIRST_NAME>:" ":per.r<per.LAST_NAME>:" (":per.r<per.EMAIL>:")"
+      END
+   REPEAT
+   CRT ""
+   GOTO MENU
+
+* ============================================
+* SEARCH - Find records by criteria
+* ============================================
+SEARCH.RECORDS:
+   INPUT SEARCH.TERM, "Search last name: "
+   IF SEARCH.TERM = "" THEN GOTO MENU
+   
+   FOUND.COUNT = 0
+   SELECT per
+   LOOP
+      READNEXT ID ELSE EXIT
+      READ per.r FROM per, ID THEN
+         IF INDEX(per.r<per.LAST_NAME>, SEARCH.TERM, 1) THEN
+            CRT ID:" - ":per.r<per.FIRST_NAME>:" ":per.r<per.LAST_NAME>
+            FOUND.COUNT += 1
+         END
+      END
+   REPEAT
+   
+   CRT ""
+   CRT "Found ":FOUND.COUNT:" records"
+   CRT ""
+   GOTO MENU
+
+* ============================================
+* MENU - Main menu
+* ============================================
+MENU:
+   CRT ""
+   CRT "=========================================="
+   CRT "    CRUD OPERATIONS - PERSON FILE"
+   CRT "=========================================="
+   CRT ""
+   CRT "1. Create new record"
+   CRT "2. Read record"
+   CRT "3. Update record"
+   CRT "4. Delete record"
+   CRT "5. List all records"
+   CRT "6. Search records"
+   CRT ""
+   CRT "0. Exit"
+   CRT ""
+   INPUT CHOICE, "Enter choice: "
+   
+   BEGIN CASE
+      CASE CHOICE = "0"
+         CRT "Exiting..."
+         STOP
+      CASE CHOICE = "1"
+         GOTO CREATE.RECORD
+      CASE CHOICE = "2"
+         GOTO READ.RECORD
+      CASE CHOICE = "3"
+         GOTO UPDATE.RECORD
+      CASE CHOICE = "4"
+         GOTO DELETE.RECORD
+      CASE CHOICE = "5"
+         GOTO LIST.RECORDS
+      CASE CHOICE = "6"
+         GOTO SEARCH.RECORDS
+      CASE 1
+         CRT "Invalid choice"
+         GOTO MENU
+   END CASE
+
+RETURN
+END

@@ -1,0 +1,39 @@
+SUBROUTINE SCHEMA.LIST.DOMAINS
+* List all domains with their files
+
+DOMAIN.FILE = "SCHEMA/DOMAINS_ENHANCED.csv"
+OPENSEQ DOMAIN.FILE TO F.DOMAIN ELSE
+   DOMAIN.FILE = "SCHEMA/DOMAINS.CSV"
+   OPENSEQ DOMAIN.FILE TO F.DOMAIN ELSE
+      CRT "Error: Cannot open domains file"
+      RETURN
+   END
+END
+
+CRT ""
+CRT "=========================================="
+CRT "         DOMAINS"
+CRT "=========================================="
+CRT ""
+
+LINE.NUM = 0
+LOOP
+   READSEQ LINE FROM F.DOMAIN ELSE EXIT
+   LINE.NUM += 1
+   IF LINE.NUM = 1 THEN CONTINUE
+   IF LINE = "" THEN CONTINUE
+   
+   ABB = FIELD(LINE, ",", 1)
+   NAME = FIELD(LINE, ",", 2)
+   DESC = FIELD(LINE, ",", 4)
+   
+   IF ABB # "" THEN
+      CRT ABB:" - ":NAME
+      CRT "  ":DESC
+      CRT ""
+   END
+REPEAT
+CLOSESEQ F.DOMAIN
+
+RETURN
+END

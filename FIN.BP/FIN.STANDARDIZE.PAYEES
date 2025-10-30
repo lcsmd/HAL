@@ -1,0 +1,328 @@
+PROGRAM FIN.STANDARDIZE.PAYEES
+*
+* STANDARDIZE.PAYEES - Apply rules to standardize payee names
+* Compatible with HAL schema-driven architecture
+*
+* Usage: STANDARDIZE.PAYEES [batch_id]
+*        If batch_id specified, processes only that batch
+*        Otherwise processes all unstandardized transactions
+*
+
+$INCLUDE EQU/FILES.EQU
+
+PROMPT ""
+
+* Get optional batch ID filter
+batch_filter = TRIM(SENTENCE())
+
+* Open files using COMMON FILES array
+OPEN "TRANSACTION" TO trn ELSE
+   CRT "ERROR: Cannot open TRANSACTION file"
+   STOP
+END
+
+OPEN "PAYEE" TO pye ELSE
+   CRT "ERROR: Cannot open PAYEE file"
+   STOP
+END
+
+OPEN "RULE" TO rul ELSE
+   CRT "ERROR: Cannot open RULE file"
+   STOP
+END
+
+CRT "Payee Standardization Process"
+CRT STR("-",60)
+CRT
+
+* Load all active rules
+CRT "Loading rules..."
+GOSUB LOAD_RULES
+CRT "  Loaded ": num_rules: " active rules"
+CRT
+
+* Process transactions
+processed = 0
+standardized = 0
+new_payees = 0
+
+SELECT trn
+LOOP
+   READNEXT trans_id ELSE DONE = @TRUE
+UNTIL DONE DO
+   READ trans_rec FROM trn, trans_id THEN
+      * Check batch filter
+      IF batch_filter # "" AND trans_rec<12> # batch_filter THEN
+         CONTINUE
+      END
+
+      processed = processed + 1
+
+      * Check if already standardized
+      IF trans_rec<3> = "" THEN
+         raw_payee = trans_rec<2>
+         std_payee = ""
+         payee_id = ""
+
+         * Apply rules
+         GOSUB APPLY_RULES
+
+         * If no rule matched, create fuzzy match or new payee
+         IF std_payee = "" THEN
+            GOSUB FIND_OR_CREATE_PAYEE
+         END
+
+         * Update transaction
+         IF std_payee # "" THEN
+            trans_rec<3> = std_payee
+            trans_rec<11> = payee_id
+            WRITE trans_rec TO trn, trans_id
+            standardized = standardized + 1
+         END
+      END
+
+      * Progress indicator
+      IF MOD(processed, 100) = 0 THEN
+         CRT "Processed ": processed: " transactions..."
+      END
+   END
+REPEAT
+
+CRT
+CRT STR("-",60)
+CRT "Standardization complete!"
+CRT "  Transactions processed: ": processed
+CRT "  Transactions standardized: ": standardized
+CRT "  New payees created: ": new_payees
+
+STOP
+
+*
+* Subroutine: Load all active rules sorted by priority
+*
+LOAD_RULES:
+   DIM rule_ids(1000)
+   DIM rule_recs(1000)
+   num_rules = 0
+
+   SELECT rul
+   LOOP
+      READNEXT rule_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ rule_rec FROM rul, rule_id THEN
+         * Check if active
+         IF rule_rec<6> = "Y" THEN
+            num_rules = num_rules + 1
+            rule_ids(num_rules) = rule_id
+            rule_recs(num_rules) = rule_rec
+         END
+      END
+   REPEAT
+
+   * Sort by priority (field 5)
+   FOR i = 1 TO num_rules - 1
+      FOR j = i + 1 TO num_rules
+         IF rule_recs(i)<5> > rule_recs(j)<5> THEN
+            * Swap
+            temp_id = rule_ids(i)
+            temp_rec = rule_recs(i)
+            rule_ids(i) = rule_ids(j)
+            rule_recs(i) = rule_recs(j)
+            rule_ids(j) = temp_id
+            rule_recs(j) = temp_rec
+         END
+      NEXT j
+   NEXT i
+
+   RETURN
+
+*
+* Subroutine: Apply rules to find standard payee name
+*
+APPLY_RULES:
+   FOR i = 1 TO num_rules
+      rule_rec = rule_recs(i)
+      rule_type = rule_rec<1>
+      pattern = rule_rec<2>
+      action = rule_rec<3>
+      target = rule_rec<4>
+
+      matched = @FALSE
+
+      BEGIN CASE
+         CASE rule_type = "PAYEE.MATCH"
+            * Simple pattern matching
+            IF INDEX(UPCASE(raw_payee), UPCASE(pattern), 1) > 0 THEN
+               matched = @TRUE
+            END
+
+         CASE rule_type = "EXACT.MATCH"
+            * Exact match (case insensitive)
+            IF UPCASE(raw_payee) = UPCASE(pattern) THEN
+               matched = @TRUE
+            END
+
+         CASE rule_type = "STARTS.WITH"
+            * Starts with pattern
+            IF UPCASE(raw_payee)[1, LEN(pattern)] = UPCASE(pattern) THEN
+               matched = @TRUE
+            END
+      END CASE
+
+      IF matched THEN
+         BEGIN CASE
+            CASE action = "STANDARDIZE"
+               std_payee = target
+               * Look up payee ID
+               GOSUB FIND_PAYEE_ID
+               RETURN
+         END CASE
+      END
+   NEXT i
+
+   RETURN
+
+*
+* Subroutine: Find or create payee record
+*
+FIND_OR_CREATE_PAYEE:
+   * Clean up raw payee name
+   clean_name = TRIM(raw_payee)
+
+   * Remove common suffixes
+   suffixes = "#" : "000" : @VM : "- PURCHASE" : @VM : "- PAYMENT"
+   FOR i = 1 TO DCOUNT(suffixes, @VM)
+      suffix = suffixes<1,i>
+      pos = INDEX(clean_name, suffix, 1)
+      IF pos > 0 THEN
+         clean_name = TRIM(clean_name[1, pos-1])
+      END
+   NEXT i
+
+   * Try fuzzy match against existing payees
+   SELECT pye
+   best_match = ""
+   best_score = 0
+
+   LOOP
+      READNEXT payee_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ payee_rec FROM pye, payee_id THEN
+         std_name = payee_rec<1>
+
+         * Calculate similarity score
+         GOSUB CALC_SIMILARITY
+
+         IF similarity > best_score AND similarity > 0.8 THEN
+            best_score = similarity
+            best_match = payee_id
+            std_payee = std_name
+         END
+      END
+   REPEAT
+
+   * If no good match found, create new payee
+   IF best_match = "" THEN
+      GOSUB CREATE_NEW_PAYEE
+   END ELSE
+      payee_id = best_match
+   END
+
+   RETURN
+
+*
+* Subroutine: Calculate similarity between two strings (0-1)
+*
+CALC_SIMILARITY:
+   str1 = UPCASE(clean_name)
+   str2 = UPCASE(std_name)
+
+   * Simple Levenshtein-like similarity
+   * For production, you might want a more sophisticated algorithm
+
+   len1 = LEN(str1)
+   len2 = LEN(str2)
+
+   IF len1 = 0 OR len2 = 0 THEN
+      similarity = 0
+      RETURN
+   END
+
+   * Count matching characters in order
+   matches = 0
+   pos2 = 1
+
+   FOR i = 1 TO len1
+      char1 = str1[i,1]
+      * Extract remainder of str2 starting at pos2
+      remainder_len = LEN(str2) - pos2 + 1
+      IF remainder_len > 0 THEN
+         remainder = str2[pos2, remainder_len]
+         found = INDEX(remainder, char1, 1)
+         IF found > 0 THEN
+            matches = matches + 1
+            pos2 = pos2 + found
+         END
+      END
+   NEXT i
+
+   * Calculate similarity using MAX replacement
+   max_len = len1
+   IF len2 > max_len THEN
+      max_len = len2
+   END
+   similarity = matches / max_len
+
+   RETURN
+
+*
+* Subroutine: Create new payee record
+*
+CREATE_NEW_PAYEE:
+   * Generate payee ID
+   payee_id = "P" : DATE() : TIME()
+
+   * Create payee record
+   payee_rec = ""
+   * STANDARD_NAME
+   payee_rec<1> = clean_name
+   * ALIASES (initial)
+   payee_rec<2> = raw_payee
+   * DEFAULT_CATEGORY
+   payee_rec<3> = trans_rec<5>
+   * AUTO_REIMBURSABLE
+   payee_rec<4> = "N"
+   * REIMBURSEMENT_TYPE
+   payee_rec<5> = ""
+   * VENDOR_TYPE
+   payee_rec<6> = ""
+   * NOTES
+   payee_rec<7> = "Auto-created"
+
+   WRITE payee_rec TO pye, payee_id
+
+   std_payee = clean_name
+   new_payees = new_payees + 1
+
+   RETURN
+
+*
+* Subroutine: Find payee ID by standard name
+*
+FIND_PAYEE_ID:
+   SELECT pye
+   LOOP
+      READNEXT test.payee_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ test.payee_rec FROM pye, test.payee_id THEN
+         IF test.payee_rec<1> = std_payee THEN
+            payee_id = test.payee_id
+            RETURN
+         END
+      END
+   REPEAT
+
+   payee_id = ""
+   RETURN
+
+END

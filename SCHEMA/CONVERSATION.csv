@@ -1,0 +1,24 @@
+FieldName,FieldNum,Type,Description,Required,Indexed
+ID,0,K,Unique conversation identifier,Y,Y
+SESSION_ID,1,A,Session identifier,Y,Y
+PERSONA_ID,2,A,Persona used for conversation,N,Y
+USER_ID,3,A,User identifier,N,Y
+TIMESTAMP,4,D,Message timestamp,Y,Y
+MESSAGE_TYPE,5,A,Type (user/assistant/system),Y,Y
+CONTENT,6,T,Message content,Y,N
+MODEL_USED,7,A,AI model used for response,N,Y
+TOKENS_INPUT,8,N,Input tokens used,N,N
+TOKENS_OUTPUT,9,N,Output tokens used,N,N
+COST,10,N,Cost of API call,N,N
+LATENCY_MS,11,N,Response latency in milliseconds,N,N
+CONTEXT_USED,12,M,Context IDs used (multivalued),N,N
+SENTIMENT,13,A,Message sentiment,N,N
+INTENT,14,A,Detected user intent,N,N
+ENTITIES,15,M,Extracted entities (multivalued),N,N
+ATTACHMENTS,16,M,Attachment references (multivalued),N,N
+PARENT_MESSAGE_ID,17,A,Parent message for threading,N,Y
+RATING,18,N,User rating of response (1-5),N,N
+FEEDBACK,19,T,User feedback,N,N
+ERROR_CODE,20,A,Error code if failed,N,N
+ERROR_MESSAGE,21,T,Error message if failed,N,N
+TAGS,22,M,Tags for categorization (multivalued),N,N

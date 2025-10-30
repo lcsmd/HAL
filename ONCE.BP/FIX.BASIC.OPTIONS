@@ -1,0 +1,77 @@
+PROGRAM FIX.BASIC.OPTIONS
+*
+* Purpose: Update $BASIC.OPTIONS to search EQU directory
+* Keeps existing options, just fixes the SEARCH path
+*
+
+PROMPT ""
+
+CRT
+CRT "Updating $BASIC.OPTIONS..."
+CRT STR("=",70)
+CRT
+
+* Open VOC
+OPEN "VOC" TO F.VOC ELSE
+   CRT "ERROR: Cannot open VOC"
+   STOP
+END
+
+* Read current options
+READ OPTIONS FROM F.VOC, "$BASIC.OPTIONS" ELSE
+   CRT "ERROR: Cannot read $BASIC.OPTIONS"
+   STOP
+END
+
+CRT "Current $BASIC.OPTIONS:"
+FOR I = 1 TO DCOUNT(OPTIONS, @FM)
+   CRT "  ": OPTIONS<I>
+NEXT I
+
+* Find and update SEARCH line
+FOUND = 0
+FOR I = 1 TO DCOUNT(OPTIONS, @FM)
+   LINE = OPTIONS<I>
+   IF LINE[1,6] = "SEARCH" THEN
+      OLD.LINE = LINE
+      OPTIONS<I> = "SEARCH @, EQU, SYSCOM"
+      FOUND = 1
+      CRT
+      CRT "Changed:"
+      CRT "  FROM: ": OLD.LINE
+      CRT "  TO:   ": OPTIONS<I>
+   END
+NEXT I
+
+IF NOT(FOUND) THEN
+   * Add SEARCH line if not found
+   OPTIONS<-1> = "SEARCH @, EQU, SYSCOM"
+   CRT
+   CRT "Added: SEARCH @, EQU, SYSCOM"
+END
+
+* Write back
+WRITE OPTIONS TO F.VOC, "$BASIC.OPTIONS"
+
+CRT
+CRT "Updated $BASIC.OPTIONS:"
+FOR I = 1 TO DCOUNT(OPTIONS, @FM)
+   CRT "  ": OPTIONS<I>
+NEXT I
+
+CRT
+CRT STR("=",70)
+CRT "Complete!"
+CRT
+CRT "The compiler will now search:"
+CRT "  @ = Current file (FIN.BP, etc.)"
+CRT "  EQU = EQU directory (where FILES.EQU is)"
+CRT "  SYSCOM = System common includes"
+CRT
+CRT "Your other options (CONCORDANCE, CATALOG, XREF, DEBUGGING) are preserved."
+CRT
+CRT "Now recompile: BASIC FIN.BP * NO.PAGE"
+CRT
+
+STOP
+END

@@ -1,0 +1,199 @@
+PROGRAM SETUP.DOMAINS
+* Create dictionary items for DOMAINS file and populate with initial data
+* Key: domain_name
+* Fields: domain_abb, domain_desc, domain_tags, files_names
+
+* Open DOMAINS file
+OPEN "DOMAINS" TO F.DOMAINS ELSE
+   CRT "Error: Cannot open DOMAINS file"
+   CRT "Please create it first: CREATE.FILE DOMAINS DYNAMIC"
+   STOP
+END
+
+* Open DOMAINS dictionary
+OPEN "DICT", "DOMAINS" TO F.DICT ELSE
+   CRT "Error: Cannot open DICT DOMAINS"
+   STOP
+END
+
+CRT "Creating dictionary items for DOMAINS file..."
+CRT ""
+
+* Create @ID dictionary entry
+DICT.REC = ""
+DICT.REC<1> = "D"
+DICT.REC<2> = "0"
+DICT.REC<3> = ""
+DICT.REC<4> = "Domain name"
+DICT.REC<5> = "15L"
+DICT.REC<6> = "S"
+DICT.REC<7> = ""
+DICT.REC<8> = ""
+WRITE DICT.REC ON F.DICT, "@ID"
+CRT "Created @ID"
+
+* Create DOMAIN_ABB dictionary entry (field 1)
+DICT.REC = ""
+DICT.REC<1> = "D"
+DICT.REC<2> = "1"
+DICT.REC<3> = ""
+DICT.REC<4> = "Domain abbreviation"
+DICT.REC<5> = "10L"
+DICT.REC<6> = "S"
+DICT.REC<7> = ""
+DICT.REC<8> = ""
+WRITE DICT.REC ON F.DICT, "DOMAIN_ABB"
+CRT "Created DOMAIN_ABB"
+
+* Create DOMAIN_DESC dictionary entry (field 2)
+DICT.REC = ""
+DICT.REC<1> = "D"
+DICT.REC<2> = "2"
+DICT.REC<3> = ""
+DICT.REC<4> = "Domain description"
+DICT.REC<5> = "50L"
+DICT.REC<6> = "S"
+DICT.REC<7> = ""
+DICT.REC<8> = ""
+WRITE DICT.REC ON F.DICT, "DOMAIN_DESC"
+CRT "Created DOMAIN_DESC"
+
+* Create DOMAIN_TAGS dictionary entry (field 3)
+DICT.REC = ""
+DICT.REC<1> = "D"
+DICT.REC<2> = "3"
+DICT.REC<3> = ""
+DICT.REC<4> = "Domain tags"
+DICT.REC<5> = "30L"
+DICT.REC<6> = "S"
+DICT.REC<7> = ""
+DICT.REC<8> = ""
+WRITE DICT.REC ON F.DICT, "DOMAIN_TAGS"
+CRT "Created DOMAIN_TAGS"
+
+* Create FILES_NAMES dictionary entry (field 4)
+DICT.REC = ""
+DICT.REC<1> = "D"
+DICT.REC<2> = "4"
+DICT.REC<3> = ""
+DICT.REC<4> = "File names in domain"
+DICT.REC<5> = "40L"
+DICT.REC<6> = "S"
+DICT.REC<7> = ""
+DICT.REC<8> = ""
+WRITE DICT.REC ON F.DICT, "FILES_NAMES"
+CRT "Created FILES_NAMES"
+
+CRT ""
+CRT "Dictionary items created successfully!"
+CRT ""
+CRT "Populating DOMAINS file with initial data..."
+CRT ""
+
+* Populate data
+* Format: domain_name as key, then fields 1-4
+
+* fin - finance
+REC = ""
+REC<1> = "fin"
+REC<2> = "financial matters including accounts, credit cards, loans, transactions, expenses, budget and securities"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "finance"
+CRT "Added: finance"
+
+* med - medical
+REC = ""
+REC<1> = "med"
+REC<2> = "health and medical concers. medications, doctors, disorders, surgeries, allergies, treatments"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "medical"
+CRT "Added: medical"
+
+* sch - school
+REC = ""
+REC<1> = "sch"
+REC<2> = "schools attended, degrees, courses, grades,teachers,majors, degrees"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "school"
+CRT "Added: school"
+
+* wor - work
+REC = ""
+REC<1> = "wor"
+REC<2> = "jobs,bosses,employees,companies,salaries,customers, vendors, projects,skills, duties"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "work"
+CRT "Added: work"
+
+* per - personal
+REC = ""
+REC<1> = "per"
+REC<2> = "family,friends,organizations,preferences,relationships"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "personal"
+CRT "Added: personal"
+
+* new - news
+REC = ""
+REC<1> = "new"
+REC<2> = "interests,news sources,podcasts, youtube channels,blogs,newsletters"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "news"
+CRT "Added: news"
+
+* sys - system
+REC = ""
+REC<1> = "sys"
+REC<2> = "internal information needed for system functioning only"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "system"
+CRT "Added: system"
+
+* sec - security
+REC = ""
+REC<1> = "sec"
+REC<2> = "passwords,credentials"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "security"
+CRT "Added: security"
+
+* com - communication
+REC = ""
+REC<1> = "com"
+REC<2> = "email,messages,phone_calls, contact_info,faxes"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "communication"
+CRT "Added: communication"
+
+* doc - documents
+REC = ""
+REC<1> = "doc"
+REC<2> = "articles"
+REC<3> = ""
+REC<4> = ""
+WRITE REC ON F.DOMAINS, "documents"
+CRT "Added: documents"
+
+CRT ""
+CRT "=========================================="
+CRT "DOMAINS file setup complete!"
+CRT "=========================================="
+CRT ""
+CRT "10 domain records created"
+CRT ""
+CRT "To view domains:"
+CRT "  LIST DOMAINS"
+CRT "  LIST DOMAINS DOMAIN_ABB DOMAIN_DESC"
+CRT ""
+
+RETURN
+END

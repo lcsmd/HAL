@@ -1,0 +1,36 @@
+* EQU DOCTOR.MAT.H
+* Generated from DICT DOCTOR at 10:20:28 on 23 Oct 2025
+* Copyright (c) Lawrence C  Sullivan,M.D. 2025, All Rights Reserved
+
+DIM DOCTOR(30)
+equate FIRST_NAME             to DOCTOR(1)
+equate LAST_NAME              to DOCTOR(2)
+equate MIDDLE_NAME            to DOCTOR(3)
+equate TITLE                  to DOCTOR(4)
+equate SPECIALTY              to DOCTOR(5)
+equate SUB_SPECIALTY          to DOCTOR(6)
+equate NPI_NUMBER             to DOCTOR(7)
+equate LICENSE_NUMBER         to DOCTOR(8)
+equate LICENSE_STATE          to DOCTOR(9)
+equate BOARD_CERTIFIED        to DOCTOR(10)
+equate CERTIFICATIONS         to DOCTOR(11)
+equate PRACTICE_NAME          to DOCTOR(12)
+equate FACILITY_ID            to DOCTOR(13)
+equate PHONE                  to DOCTOR(14)
+equate FAX                    to DOCTOR(15)
+equate EMAIL                  to DOCTOR(16)
+equate ADDRESS                to DOCTOR(17)
+equate CITY                   to DOCTOR(18)
+equate STATE                  to DOCTOR(19)
+equate ZIP                    to DOCTOR(20)
+equate ACCEPTING_PATIENTS     to DOCTOR(21)
+equate LANGUAGES              to DOCTOR(22)
+equate INSURANCE_ACCEPTED     to DOCTOR(23)
+equate WEBSITE                to DOCTOR(24)
+equate NOTES                  to DOCTOR(25)
+equate TAGS                   to DOCTOR(26)
+equate ACTIVE                 to DOCTOR(27)
+equate CREATED_DATE           to DOCTOR(28)
+equate CREATED_DATE.CNV       to "D4-"
+equate UPDATED_DATE           to DOCTOR(29)
+equate UPDATED_DATE.CNV       to "D4-"

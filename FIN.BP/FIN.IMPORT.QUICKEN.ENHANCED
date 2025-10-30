@@ -1,0 +1,432 @@
+PROGRAM IMPORT.QUICKEN.ENHANCED
+*
+* IMPORT.QUICKEN.ENHANCED - Import ALL fields from Quicken CSV export
+*
+* This version automatically detects and captures ALL columns from your CSV
+* 
+* Usage: RUN IMPORT.QUICKEN.ENHANCED <filename>
+*
+
+PROMPT ""
+
+* Get command line argument (skip program name)
+CMD = TRIM(SENTENCE())
+* Extract filename from command line (everything after program name)
+SPACE.POS = INDEX(CMD, " ", 1)
+IF SPACE.POS > 0 THEN
+   file_name = TRIM(CMD[SPACE.POS+1, 999])
+END ELSE
+   file_name = ""
+END
+
+IF file_name = "" THEN
+   PRINT "Usage: FIN.IMPORT.QUICKEN.ENHANCED <csv.filename>"
+   PRINT "Example: FIN.IMPORT.QUICKEN.ENHANCED QUICKEN.CSV"
+   STOP
+END
+
+* Automatically prepend UPLOADS/ if not already specified
+IF INDEX(file_name, "/", 1) = 0 AND INDEX(file_name, "\\", 1) = 0 THEN
+   file_name = "UPLOADS/" : file_name
+END
+
+* Open system files
+OPEN "TRANSACTION" TO trans_file ELSE
+   PRINT "ERROR: Cannot open TRANSACTION file"
+   PRINT "Run BUILD.SCHEMA first"
+   STOP
+END
+
+* Open DICT to read conversion codes
+OPEN "DICT TRANSACTION" TO dict_file ELSE
+   PRINT "ERROR: Cannot open DICT TRANSACTION"
+   STOP
+END
+
+OPEN "IMPORT.LOG" TO log_file ELSE
+   PRINT "ERROR: Cannot open IMPORT.LOG file"
+   STOP
+END
+
+* Open source CSV file using proper OPENSEQ syntax
+OPENSEQ file_name TO csv_file ELSE
+   PRINT "ERROR: Cannot open file ": file_name
+   PRINT "Status: ": STATUS()
+   STOP
+END
+
+PRINT "Importing from: ": file_name
+PRINT STR("=",70)
+
+* Generate batch ID
+batch_id = DATE() : "-" : TIME()
+import_date = DATE()
+record_count = 0
+error_list = ""
+min_date = ""
+max_date = ""
+
+* Read conversion codes from dictionary for each field
+DIM field_conv(25)
+* Initialize all to empty
+FOR fld = 1 TO 25
+   field_conv(fld) = ""
+NEXT fld
+
+* Read specific field conversions
+READ dict_rec FROM dict_file, "TRANS_DATE" THEN
+   field_conv(1) = dict_rec<3>
+END
+
+READ dict_rec FROM dict_file, "AMOUNT" THEN
+   field_conv(4) = dict_rec<3>
+END
+
+* Skip Quicken report header lines (lines 1-7)
+* Line 8 contains the actual column headers
+FOR skip_line = 1 TO 7
+   READSEQ dummy FROM csv_file ELSE
+      PRINT "ERROR: File too short - expected Quicken CSV format"
+      CLOSESEQ csv_file
+      STOP
+   END
+NEXT skip_line
+
+* Read actual column header row (line 8)
+READSEQ header FROM csv_file ELSE
+   PRINT "ERROR: Cannot read column header row"
+   CLOSESEQ csv_file
+   STOP
+END
+
+PRINT "CSV Headers detected:"
+PRINT header
+PRINT
+PRINT "Field Mapping:"
+PRINT STR("-",70)
+
+* Parse and map all headers
+GOSUB PARSE_HEADER
+
+PRINT STR("-",70)
+PRINT
+PRINT "Processing transactions..."
+PRINT
+
+* Process data rows
+done = @FALSE
+LOOP
+   READSEQ line FROM csv_file ELSE
+      done = @TRUE
+   END
+   
+UNTIL done DO
+   IF line # "" THEN
+      record_count = record_count + 1
+      GOSUB PROCESS_ROW
+      
+      * Show progress
+      IF MOD(record_count, 100) = 0 THEN
+         PRINT "Processed ": record_count: " records..."
+      END
+   END
+REPEAT
+
+CLOSESEQ csv_file
+
+* Write import log
+log_rec = ""
+log_rec<1> = import_date
+log_rec<2> = file_name
+log_rec<3> = record_count
+log_rec<4> = min_date : " to " : max_date
+log_rec<5> = error_list
+
+WRITE log_rec TO log_file, batch_id
+
+PRINT
+PRINT STR("=",70)
+PRINT "Import complete!"
+PRINT "  Records imported: ": record_count
+PRINT "  Batch ID: ": batch_id
+PRINT "  Date range: ": min_date: " to ": max_date
+IF error_list # "" THEN
+   PRINT "  Errors encountered: ": DCOUNT(error_list, @VM)
+   PRINT
+   PRINT "  Review IMPORT.LOG record '": batch_id: "' for details"
+END
+PRINT STR("=",70)
+
+STOP
+
+*
+* Subroutine: Parse CSV header and create field mapping
+*
+PARSE_HEADER:
+   header = UPCASE(header)
+   
+   * Count fields
+   num_fields = DCOUNT(header, ",")
+   
+   * Initialize mapping arrays
+   DIM field_names(100)
+   DIM field_positions(100)
+   
+   * Known field mappings (position in TRANSACTIONS record)
+   DIM field.map_name(25)
+   DIM field_map_pos(25)
+   
+   * Define standard field mappings
+   field.map_name(1) = "DATE"
+   field_map_pos(1) = 1
+   
+   field.map_name(2) = "PAYEE"
+   field_map_pos(2) = 2
+   
+   field.map_name(3) = "AMOUNT"
+   field_map_pos(3) = 4
+   
+   field.map_name(4) = "CATEGORY"
+   field_map_pos(4) = 5
+   
+   field.map_name(5) = "ACCOUNT"
+   field_map_pos(5) = 6
+   
+   field.map_name(6) = "MEMO"
+   field_map_pos(6) = 7
+   
+   field.map_name(7) = "SUBCATEGORY"
+   field_map_pos(7) = 14
+   
+   field.map_name(8) = "CHECK"
+   field_map_pos(8) = 15
+   
+   field.map_name(9) = "TYPE"
+   field_map_pos(9) = 16
+   
+   field.map_name(10) = "CLEARED"
+   field_map_pos(10) = 17
+   
+   field.map_name(11) = "TAGS"
+   field_map_pos(11) = 18
+   
+   field.map_name(12) = "ADDRESS"
+   field_map_pos(12) = 21
+   
+   field.map_name(13) = "CLASS"
+   field_map_pos(13) = 22
+   
+   num_mappings = 13
+   
+   * Parse each header field
+   FOR i = 1 TO num_fields
+      field = TRIM(FIELD(header, ",", i))
+      field = TRIM(field, '"', 'B')  ; * Remove quotes
+      field = CHANGE(field, " ", ".")
+      
+      field_names(i) = field
+      field_positions(i) = 0  ; * Default: unmapped
+      
+      * Try to match to known fields
+      FOR j = 1 TO num_mappings
+         map_name = field.map_name(j)
+         
+         * Check for partial matches
+         IF INDEX(field, map_name, 1) > 0 THEN
+            field_positions(i) = field_map_pos(j)
+            PRINT "  ": FMT(i, "2R"): ". ": FMT(field, "25L"): " => Field ": field_positions(i): " (": map_name: ")"
+            EXIT
+         END
+         
+         * Also check common aliases
+         BEGIN CASE
+            CASE map_name = "PAYEE" AND (INDEX(field, "DESCRIPTION", 1) > 0 OR INDEX(field, "DESC", 1) > 0 OR INDEX(field, "MERCHANT", 1) > 0)
+               field_positions(i) = field_map_pos(j)
+               PRINT "  ": FMT(i, "2R"): ". ": FMT(field, "25L"): " => Field ": field_positions(i): " (PAYEE alias)"
+               EXIT
+            CASE map_name = "AMOUNT" AND (INDEX(field, "AMT", 1) > 0 OR INDEX(field, "TOTAL", 1) > 0)
+               field_positions(i) = field_map_pos(j)
+               PRINT "  ": FMT(i, "2R"): ". ": FMT(field, "25L"): " => Field ": field_positions(i): " (AMOUNT alias)"
+               EXIT
+            CASE map_name = "MEMO" AND (INDEX(field, "NOTE", 1) > 0 OR INDEX(field, "COMMENT", 1) > 0)
+               field_positions(i) = field_map_pos(j)
+               PRINT "  ": FMT(i, "2R"): ". ": FMT(field, "25L"): " => Field ": field_positions(i): " (MEMO alias)"
+               EXIT
+            CASE map_name = "CATEGORY" AND INDEX(field, "CAT", 1) > 0
+               field_positions(i) = field_map_pos(j)
+               PRINT "  ": FMT(i, "2R"): ". ": FMT(field, "25L"): " => Field ": field_positions(i): " (CATEGORY alias)"
+               EXIT
+            CASE map_name = "ACCOUNT" AND INDEX(field, "ACCT", 1) > 0
+               field_positions(i) = field_map_pos(j)
+               PRINT "  ": FMT(i, "2R"): ". ": FMT(field, "25L"): " => Field ": field_positions(i): " (ACCOUNT alias)"
+               EXIT
+            CASE map_name = "CHECK" AND (INDEX(field, "NUMBER", 1) > 0 OR INDEX(field, "NUM", 1) > 0 OR INDEX(field, "CHK", 1) > 0)
+               field_positions(i) = field_map_pos(j)
+               PRINT "  ": FMT(i, "2R"): ". ": FMT(field, "25L"): " => Field ": field_positions(i): " (CHECK# alias)"
+               EXIT
+         END CASE
+      NEXT j
+      
+      * If unmapped, still capture it
+      IF field_positions(i) = 0 THEN
+         PRINT "  ": FMT(i, "2R"): ". ": FMT(field, "25L"): " => Unmapped (will be captured in raw data)"
+      END
+   NEXT i
+   
+   * Verify required fields are present
+   required_ok = @TRUE
+   
+   * Check for Date
+   date_found = @FALSE
+   FOR i = 1 TO num_fields
+      IF field_positions(i) = 1 THEN date_found = @TRUE
+   NEXT i
+   IF NOT(date_found) THEN
+      PRINT
+      PRINT "WARNING: Date field not found! Import may fail."
+      required_ok = @FALSE
+   END
+   
+   * Check for Payee
+   payee_found = @FALSE
+   FOR i = 1 TO num_fields
+      IF field_positions(i) = 2 THEN payee_found = @TRUE
+   NEXT i
+   IF NOT(payee_found) THEN
+      PRINT
+      PRINT "WARNING: Payee/Description field not found!"
+      required_ok = @FALSE
+   END
+   
+   * Check for Amount
+   amount_found = @FALSE
+   FOR i = 1 TO num_fields
+      IF field_positions(i) = 4 THEN amount_found = @TRUE
+   NEXT i
+   IF NOT(amount_found) THEN
+      PRINT
+      PRINT "WARNING: Amount field not found!"
+      required_ok = @FALSE
+   END
+   
+   IF NOT(required_ok) THEN
+      PRINT "Continue anyway (Y/N)? " :
+      INPUT answer
+      IF UPCASE(answer) # "Y" THEN STOP
+   END
+   
+   RETURN
+
+*
+* Subroutine: Process a single CSV row
+*
+PROCESS_ROW:
+   * Store original line
+   original_line = line
+   
+   * Parse CSV fields (handle quoted fields with commas)
+   DIM fields(100)
+   GOSUB PARSE_CSV_LINE
+   
+   * Initialize transaction record with all fields
+   trans_rec = ""
+   FOR i = 1 TO 23
+      trans_rec<i> = ""
+   NEXT i
+   
+   * Map fields according to field_positions
+   FOR i = 1 TO num_fields
+      field_val = fields(i)
+      pos = field_positions(i)
+      
+      IF pos > 0 THEN
+         * Apply conversion if field has one
+         conv_code = field_conv(pos)
+         IF conv_code # "" THEN
+            * Clean up value first
+            clean_val = TRIM(field_val)
+            
+            IF pos = 4 THEN
+               * Amount - remove $ and commas before conversion
+               clean_val = CHANGE(clean_val, "$", "")
+               clean_val = CHANGE(clean_val, ",", "")
+               clean_val = TRIM(clean_val)
+            END
+            
+            * Apply ICONV to convert to internal format
+            trans_rec<pos> = ICONV(clean_val, conv_code)
+         END ELSE
+            * No conversion - store as-is
+            trans_rec<pos> = field_val
+         END
+      END
+   NEXT i
+   
+   * Store original CSV row
+   trans_rec<23> = original_line
+   
+   * Set default values for processing fields
+   IF trans_rec<3> = "" THEN trans_rec<3> = ""  ; * STANDARDIZED.PAYEE (to be filled)
+   IF trans_rec<8> = "" THEN trans_rec<8> = "N"  ; * REIMBURSABLE.FLAG
+   IF trans_rec<9> = "" THEN trans_rec<9> = ""   ; * REIMBURSEMENT.CATEGORY
+   IF trans_rec<10> = "" THEN trans_rec<10> = "NOT.APPLICABLE"  ; * REIMBURSEMENT.STATUS
+   IF trans_rec<11> = "" THEN trans_rec<11> = ""  ; * PAYEE.ID
+   trans_rec<12> = batch_id  ; * IMPORT.BATCH.ID
+   IF trans_rec<13> = "" THEN trans_rec<13> = ""  ; * TAGS
+   
+   * Validate we got required fields
+   IF trans_rec<1> = "" THEN
+      error_list<1,-1> = "Row " : record_count : ": Missing or invalid date"
+      RETURN
+   END
+   
+   IF trans_rec<2> = "" THEN
+      error_list<1,-1> = "Row " : record_count : ": Missing payee"
+      RETURN
+   END
+   
+   * Track date range
+   IF min_date = "" OR trans_rec<1> < min_date THEN
+      min_date = trans_rec<1>
+   END
+   IF max_date = "" OR trans_rec<1> > max_date THEN
+      max_date = trans_rec<1>
+   END
+   
+   * Generate transaction ID
+   trans_id = batch_id : "-" : record_count
+   
+   * Write to file
+   WRITE trans_rec TO trans_file, trans_id
+   
+   RETURN
+
+*
+* Subroutine: Parse CSV line handling quoted fields
+*
+PARSE_CSV_LINE:
+   field_idx = 1
+   field_val = ""
+   in_quotes = @FALSE
+   
+   FOR i = 1 TO LEN(line)
+      char = line[i,1]
+      
+      BEGIN CASE
+         CASE char = '"'
+            in_quotes = NOT(in_quotes)
+         CASE char = ',' AND NOT(in_quotes)
+            fields(field_idx) = field_val
+            field_idx = field_idx + 1
+            field_val = ""
+         CASE 1
+            field_val := char
+      END CASE
+   NEXT i
+   
+   * Store last field
+   fields(field_idx) = field_val
+   
+   RETURN
+
+END

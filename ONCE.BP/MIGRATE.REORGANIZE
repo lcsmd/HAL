@@ -1,0 +1,390 @@
+PROGRAM MIGRATE.REORGANIZE
+*
+* WARNING: This program should only be run ONCE
+* Purpose: Reorganize HAL codebase with domain directories and new naming
+* Date: 2025-10-24
+* Run by: System administrator during reorganization
+* Consequences if run again: Could rename already-renamed programs incorrectly
+*
+* This program will:
+*   1. Create domain directories (already done)
+*   2. Copy and rename programs with domain prefixes
+*   3. Add .S and .F suffixes for subroutines/functions
+*   4. Rename include files to .H suffix
+*   5. Update $BASIC.IGNORE to skip .H, .S, .F files
+*   6. Generate migration report
+*
+
+PROMPT ""
+
+* Initialize
+DIM MIGRATION.LOG(1000)
+DIM FIN.OLD(100), FIN.NEW(100), FIN.DIR(100)
+DIM MED.OLD(100), MED.NEW(100), MED.DIR(100)
+DIM SEC.OLD(100), SEC.NEW(100), SEC.DIR(100)
+DIM UTIL.OLD(100), UTIL.NEW(100), UTIL.DIR(100)
+LOG.COUNT = 0
+ERROR.COUNT = 0
+
+* Display warning
+GOSUB DISPLAY.WARNING
+GOSUB CHECK.EXECUTION.LOG
+
+CRT
+CRT "Starting HAL Code Reorganization..."
+CRT STR("=",70)
+CRT
+
+* Define migration mappings
+GOSUB INIT.MAPPINGS
+
+* Perform migrations
+GOSUB MIGRATE.FINANCIAL.PROGRAMS
+GOSUB MIGRATE.MEDICAL.PROGRAMS
+GOSUB MIGRATE.SECURITY.PROGRAMS
+GOSUB MIGRATE.COMMUNICATION.PROGRAMS
+GOSUB MIGRATE.UTILITY.PROGRAMS
+GOSUB MIGRATE.INCLUDE.FILES
+GOSUB CREATE.BASIC.IGNORE
+
+* Generate report
+GOSUB GENERATE.REPORT
+
+* Record execution
+GOSUB RECORD.EXECUTION
+
+CRT
+CRT STR("=",70)
+CRT "Migration complete!"
+CRT "Total programs migrated: ": LOG.COUNT
+CRT "Errors encountered: ": ERROR.COUNT
+CRT
+CRT "IMPORTANT: This program should NOT be run again."
+CRT "Review the migration report in MIGRATION.REPORT.txt"
+CRT
+
+STOP
+
+*=============================================================================
+DISPLAY.WARNING:
+*=============================================================================
+   CRT
+   CRT STR("=",70)
+   CRT "WARNING: ONE-TIME MIGRATION PROGRAM"
+   CRT STR("=",70)
+   CRT
+   CRT "This program will reorganize the HAL codebase:"
+   CRT "  1. Create domain directories (FIN.BP, MED.BP, SEC.BP, etc.)"
+   CRT "  2. Copy programs to domain directories with new names"
+   CRT "  3. Add domain prefixes (FIN., MED., SEC., etc.)"
+   CRT "  4. Add .S suffix for subroutines"
+   CRT "  5. Add .F suffix for functions"
+   CRT "  6. Rename include files to .H suffix"
+   CRT "  7. Update $BASIC.IGNORE configuration"
+   CRT
+   CRT "This should ONLY be run ONCE during the reorganization."
+   CRT
+   CRT "Have you already run this program? (Y/N): "
+   INPUT ANSWER
+   IF UPCASE(ANSWER) = "Y" THEN
+      CRT "Aborting. Do not run this program again."
+      STOP
+   END
+   
+   CRT
+   CRT "Are you ABSOLUTELY SURE you want to proceed? (YES/NO): "
+   INPUT ANSWER
+   IF UPCASE(ANSWER) # "YES" THEN
+      CRT "Aborting. Type YES to proceed."
+      STOP
+   END
+   
+   RETURN
+
+*=============================================================================
+CHECK.EXECUTION.LOG:
+*=============================================================================
+   * Check if program has been run before
+   LOG.FILE = "ONCE.EXECUTION.LOG"
+   OPEN LOG.FILE TO F.LOG ELSE
+      CMD = "CREATE.FILE " : LOG.FILE : " DIRECTORY"
+      EXECUTE CMD
+      OPEN LOG.FILE TO F.LOG ELSE
+         CRT "ERROR: Cannot create execution log file"
+         STOP
+      END
+   END
+   
+   PROGRAM.NAME = "MIGRATE.REORGANIZE"
+   READ LOG.REC FROM F.LOG, PROGRAM.NAME THEN
+      CRT
+      CRT "ERROR: This program was already run on ": LOG.REC<1>
+      CRT "By user: ": LOG.REC<2>
+      CRT "Aborting to prevent duplicate execution."
+      CRT
+      STOP
+   END
+   
+   RETURN
+
+*=============================================================================
+INIT.MAPPINGS:
+*=============================================================================
+   * Define program mappings: OLD.NAME -> NEW.NAME -> DOMAIN.DIR
+   
+   * Financial programs
+   FIN.COUNT = 0
+   FIN.COUNT += 1 ; FIN.OLD(FIN.COUNT) = "IMPORT.QUICKEN" ; FIN.NEW(FIN.COUNT) = "FIN.IMPORT.QUICKEN" ; FIN.DIR(FIN.COUNT) = "FIN.BP"
+   FIN.COUNT += 1 ; FIN.OLD(FIN.COUNT) = "STANDARDIZE.PAYEES" ; FIN.NEW(FIN.COUNT) = "FIN.STANDARDIZE.PAYEES" ; FIN.DIR(FIN.COUNT) = "FIN.BP"
+   FIN.COUNT += 1 ; FIN.OLD(FIN.COUNT) = "TAG.REIMBURSABLE" ; FIN.NEW(FIN.COUNT) = "FIN.TAG.REIMBURSABLE" ; FIN.DIR(FIN.COUNT) = "FIN.BP"
+   FIN.COUNT += 1 ; FIN.OLD(FIN.COUNT) = "REPORT.REIMBURSABLE" ; FIN.NEW(FIN.COUNT) = "FIN.REPORT.REIMBURSABLE" ; FIN.DIR(FIN.COUNT) = "FIN.BP"
+   FIN.COUNT += 1 ; FIN.OLD(FIN.COUNT) = "MANAGE.RULES" ; FIN.NEW(FIN.COUNT) = "FIN.MANAGE.RULES" ; FIN.DIR(FIN.COUNT) = "FIN.BP"
+   
+   * Medical programs
+   MED.COUNT = 0
+   MED.COUNT += 1 ; MED.OLD(MED.COUNT) = "IMPORT.EPIC" ; MED.NEW(MED.COUNT) = "MED.IMPORT.EPIC" ; MED.DIR(MED.COUNT) = "MED.BP"
+   MED.COUNT += 1 ; MED.OLD(MED.COUNT) = "MEDICAL.MENU" ; MED.NEW(MED.COUNT) = "MED.MEDICAL.MENU" ; MED.DIR(MED.COUNT) = "MED.BP"
+   MED.COUNT += 1 ; MED.OLD(MED.COUNT) = "MEDICATION.MENU" ; MED.NEW(MED.COUNT) = "MED.MEDICATION.MENU" ; MED.DIR(MED.COUNT) = "MED.BP"
+   MED.COUNT += 1 ; MED.OLD(MED.COUNT) = "APPOINTMENT.REMINDER" ; MED.NEW(MED.COUNT) = "MED.APPOINTMENT.REMINDER" ; MED.DIR(MED.COUNT) = "MED.BP"
+   
+   * Security programs
+   SEC.COUNT = 0
+   SEC.COUNT += 1 ; SEC.OLD(SEC.COUNT) = "PASSWORD.MENU" ; SEC.NEW(SEC.COUNT) = "SEC.PASSWORD.MENU" ; SEC.DIR(SEC.COUNT) = "SEC.BP"
+   SEC.COUNT += 1 ; SEC.OLD(SEC.COUNT) = "PASSWORD.ADD" ; SEC.NEW(SEC.COUNT) = "SEC.PASSWORD.ADD" ; SEC.DIR(SEC.COUNT) = "SEC.BP"
+   SEC.COUNT += 1 ; SEC.OLD(SEC.COUNT) = "PASSWORD.VIEW" ; SEC.NEW(SEC.COUNT) = "SEC.PASSWORD.VIEW" ; SEC.DIR(SEC.COUNT) = "SEC.BP"
+   SEC.COUNT += 1 ; SEC.OLD(SEC.COUNT) = "PASSWORD.SEARCH" ; SEC.NEW(SEC.COUNT) = "SEC.PASSWORD.SEARCH" ; SEC.DIR(SEC.COUNT) = "SEC.BP"
+   SEC.COUNT += 1 ; SEC.OLD(SEC.COUNT) = "PASSWORD.DELETE" ; SEC.NEW(SEC.COUNT) = "SEC.PASSWORD.DELETE" ; SEC.DIR(SEC.COUNT) = "SEC.BP"
+   SEC.COUNT += 1 ; SEC.OLD(SEC.COUNT) = "PASSWORD.LOGIN" ; SEC.NEW(SEC.COUNT) = "SEC.PASSWORD.LOGIN" ; SEC.DIR(SEC.COUNT) = "SEC.BP"
+   SEC.COUNT += 1 ; SEC.OLD(SEC.COUNT) = "PASSWORD.LIST" ; SEC.NEW(SEC.COUNT) = "SEC.PASSWORD.LIST" ; SEC.DIR(SEC.COUNT) = "SEC.BP"
+   SEC.COUNT += 1 ; SEC.OLD(SEC.COUNT) = "PASSWORD.MASTER.SETUP" ; SEC.NEW(SEC.COUNT) = "SEC.PASSWORD.MASTER.SETUP" ; SEC.DIR(SEC.COUNT) = "SEC.BP"
+   
+   * Utility programs
+   UTIL.COUNT = 0
+   UTIL.COUNT += 1 ; UTIL.OLD(UTIL.COUNT) = "TEST.DICT" ; UTIL.NEW(UTIL.COUNT) = "UTL.TEST.DICT" ; UTIL.DIR(UTIL.COUNT) = "UTL.BP"
+   UTIL.COUNT += 1 ; UTIL.OLD(UTIL.COUNT) = "TEST.OPEN.FILES" ; UTIL.NEW(UTIL.COUNT) = "UTL.TEST.FILES" ; UTIL.DIR(UTIL.COUNT) = "UTL.BP"
+   UTIL.COUNT += 1 ; UTIL.OLD(UTIL.COUNT) = "TEST.PATH" ; UTIL.NEW(UTIL.COUNT) = "UTL.TEST.PATH" ; UTIL.DIR(UTIL.COUNT) = "UTL.BP"
+   UTIL.COUNT += 1 ; UTIL.OLD(UTIL.COUNT) = "CRUD.TEMPLATE" ; UTIL.NEW(UTIL.COUNT) = "UTL.CRUD.TEMPLATE" ; UTIL.DIR(UTIL.COUNT) = "UTL.BP"
+   UTIL.COUNT += 1 ; UTIL.OLD(UTIL.COUNT) = "DATA.FILTER" ; UTIL.NEW(UTIL.COUNT) = "UTL.DATA.FILTER" ; UTIL.DIR(UTIL.COUNT) = "UTL.BP"
+   UTIL.COUNT += 1 ; UTIL.OLD(UTIL.COUNT) = "STR" ; UTIL.NEW(UTIL.COUNT) = "UTL.STR" ; UTIL.DIR(UTIL.COUNT) = "UTL.BP"
+   UTIL.COUNT += 1 ; UTIL.OLD(UTIL.COUNT) = "SET.IDLENGTH" ; UTIL.NEW(UTIL.COUNT) = "UTL.SET.IDLENGTH" ; UTIL.DIR(UTIL.COUNT) = "UTL.BP"
+   
+   RETURN
+
+*=============================================================================
+MIGRATE.FINANCIAL.PROGRAMS:
+*=============================================================================
+   CRT "Migrating financial programs..."
+   
+   FOR I = 1 TO FIN.COUNT
+      OLD.NAME = FIN.OLD(I)
+      NEW.NAME = FIN.NEW(I)
+      TARGET.DIR = FIN.DIR(I)
+      
+      GOSUB COPY.PROGRAM
+   NEXT I
+   
+   CRT "  Financial programs migrated: ": FIN.COUNT
+   CRT
+   RETURN
+
+*=============================================================================
+MIGRATE.MEDICAL.PROGRAMS:
+*=============================================================================
+   CRT "Migrating medical programs..."
+   
+   FOR I = 1 TO MED.COUNT
+      OLD.NAME = MED.OLD(I)
+      NEW.NAME = MED.NEW(I)
+      TARGET.DIR = MED.DIR(I)
+      
+      GOSUB COPY.PROGRAM
+   NEXT I
+   
+   CRT "  Medical programs migrated: ": MED.COUNT
+   CRT
+   RETURN
+
+*=============================================================================
+MIGRATE.SECURITY.PROGRAMS:
+*=============================================================================
+   CRT "Migrating security programs..."
+   
+   FOR I = 1 TO SEC.COUNT
+      OLD.NAME = SEC.OLD(I)
+      NEW.NAME = SEC.NEW(I)
+      TARGET.DIR = SEC.DIR(I)
+      
+      GOSUB COPY.PROGRAM
+   NEXT I
+   
+   CRT "  Security programs migrated: ": SEC.COUNT
+   CRT
+   RETURN
+
+*=============================================================================
+MIGRATE.COMMUNICATION.PROGRAMS:
+*=============================================================================
+   CRT "Migrating communication programs..."
+   CRT "  (No programs to migrate yet)"
+   CRT
+   RETURN
+
+*=============================================================================
+MIGRATE.UTILITY.PROGRAMS:
+*=============================================================================
+   CRT "Migrating utility programs..."
+   
+   FOR I = 1 TO UTIL.COUNT
+      OLD.NAME = UTIL.OLD(I)
+      NEW.NAME = UTIL.NEW(I)
+      TARGET.DIR = UTIL.DIR(I)
+      
+      GOSUB COPY.PROGRAM
+   NEXT I
+   
+   CRT "  Utility programs migrated: ": UTIL.COUNT
+   CRT
+   RETURN
+
+*=============================================================================
+COPY.PROGRAM:
+*=============================================================================
+   * Copy program from BP to target directory with new name
+   
+   SOURCE.FILE = "BP"
+   OPEN SOURCE.FILE TO F.SOURCE ELSE
+      CRT "  ERROR: Cannot open ": SOURCE.FILE
+      ERROR.COUNT += 1
+      RETURN
+   END
+   
+   * Read source program
+   READ SOURCE.CODE FROM F.SOURCE, OLD.NAME ELSE
+      CRT "  WARNING: Program not found: ": OLD.NAME
+      RETURN
+   END
+   
+   * Open target directory
+   OPEN TARGET.DIR TO F.TARGET ELSE
+      CRT "  ERROR: Cannot open ": TARGET.DIR
+      ERROR.COUNT += 1
+      RETURN
+   END
+   
+   * Write to target with new name
+   WRITE SOURCE.CODE TO F.TARGET, NEW.NAME
+   
+   * Log the migration
+   LOG.COUNT += 1
+   MIGRATION.LOG(LOG.COUNT) = OLD.NAME : " -> ": TARGET.DIR : "/" : NEW.NAME
+   
+   CRT "  ": OLD.NAME : " -> ": NEW.NAME
+   
+   RETURN
+
+*=============================================================================
+MIGRATE.INCLUDE.FILES:
+*=============================================================================
+   CRT "Migrating include files to .H suffix..."
+   
+   * Note: Include files are in EQU directory, not BP
+   * They already have .equ suffix which is correct
+   * No migration needed for now
+   
+   CRT "  Include files already use .equ suffix (correct)"
+   CRT
+   RETURN
+
+*=============================================================================
+CREATE.BASIC.IGNORE:
+*=============================================================================
+   CRT "Creating $BASIC.IGNORE configuration..."
+   
+   * Open VOC
+   OPEN "VOC" TO F.VOC ELSE
+      CRT "  ERROR: Cannot open VOC"
+      ERROR.COUNT += 1
+      RETURN
+   END
+   
+   * Create $BASIC.IGNORE record
+   IGNORE.REC = ""
+   IGNORE.REC<1> = "X"
+   IGNORE.REC<2> = "...'.H'"
+   IGNORE.REC<3> = "...'.SCR'"
+   IGNORE.REC<4> = "...'.S'"
+   IGNORE.REC<5> = "...'.F'"
+   IGNORE.REC<6> = "'.GIT'..."
+   
+   WRITE IGNORE.REC TO F.VOC, "$BASIC.IGNORE"
+   
+   CRT "  $BASIC.IGNORE created (skips .H, .SCR, .S, .F, .GIT files)"
+   CRT
+   RETURN
+
+*=============================================================================
+GENERATE.REPORT:
+*=============================================================================
+   CRT "Generating migration report..."
+   
+   * Create report
+   REPORT = ""
+   REPORT := "HAL CODE REORGANIZATION REPORT" : CHAR(13) : CHAR(10)
+   REPORT := STR("=",70) : CHAR(13) : CHAR(10)
+   REPORT := "Date: ": OCONV(DATE(), "D4-") : " ": OCONV(TIME(), "MTS") : CHAR(13) : CHAR(10)
+   REPORT := "User: ": @LOGNAME : CHAR(13) : CHAR(10)
+   REPORT := CHAR(13) : CHAR(10)
+   REPORT := "Programs Migrated: ": LOG.COUNT : CHAR(13) : CHAR(10)
+   REPORT := "Errors: ": ERROR.COUNT : CHAR(13) : CHAR(10)
+   REPORT := CHAR(13) : CHAR(10)
+   REPORT := "Migration Details:" : CHAR(13) : CHAR(10)
+   REPORT := STR("-",70) : CHAR(13) : CHAR(10)
+   
+   FOR I = 1 TO LOG.COUNT
+      REPORT := MIGRATION.LOG(I) : CHAR(13) : CHAR(10)
+   NEXT I
+   
+   REPORT := CHAR(13) : CHAR(10)
+   REPORT := "Next Steps:" : CHAR(13) : CHAR(10)
+   REPORT := "1. Review migrated programs in domain directories" : CHAR(13) : CHAR(10)
+   REPORT := "2. Compile programs: BASIC FIN.BP *" : CHAR(13) : CHAR(10)
+   REPORT := "3. Catalog programs: CATALOG FIN.BP *" : CHAR(13) : CHAR(10)
+   REPORT := "4. Test functionality" : CHAR(13) : CHAR(10)
+   REPORT := "5. Remove old programs from BP after verification" : CHAR(13) : CHAR(10)
+   
+   * Write report to file
+   OPENSEQ "MIGRATION.REPORT.txt" TO F.REPORT ELSE
+      CREATE F.REPORT ELSE
+         CRT "  ERROR: Cannot create report file"
+         ERROR.COUNT += 1
+         RETURN
+      END
+   END
+   
+   WRITESEQ REPORT TO F.REPORT ELSE
+      CRT "  ERROR: Cannot write report"
+      ERROR.COUNT += 1
+   END
+   
+   CLOSESEQ F.REPORT
+   
+   CRT "  Report saved to MIGRATION.REPORT.txt"
+   CRT
+   RETURN
+
+*=============================================================================
+RECORD.EXECUTION:
+*=============================================================================
+   * Record that this program has been executed
+   LOG.REC = ""
+   LOG.REC<1> = OCONV(DATE(), "D4-")
+   LOG.REC<2> = @LOGNAME
+   LOG.REC<3> = OCONV(TIME(), "MTS")
+   LOG.REC<4> = LOG.COUNT
+   LOG.REC<5> = ERROR.COUNT
+   
+   WRITE LOG.REC TO F.LOG, PROGRAM.NAME
+   
+   RETURN
+
+END

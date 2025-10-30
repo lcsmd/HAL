@@ -1,0 +1,73 @@
+SUBROUTINE SCHEMA.ADD.DOMAIN
+* Add a new domain to DOMAINS_ENHANCED.csv
+
+CRT ""
+CRT "=========================================="
+CRT "         ADD NEW DOMAIN"
+CRT "=========================================="
+CRT ""
+
+* Get domain information
+INPUT DOMAIN.ABB, "Domain abbreviation (3 chars): "
+IF DOMAIN.ABB = "" THEN RETURN
+IF LEN(DOMAIN.ABB) # 3 THEN
+   CRT "Error: Abbreviation must be exactly 3 characters"
+   RETURN
+END
+
+INPUT DOMAIN.NAME, "Domain name: "
+IF DOMAIN.NAME = "" THEN RETURN
+
+INPUT DOMAIN.DESC, "Description: "
+INPUT DOMAIN.TAGS, "Tags (pipe-separated): "
+INPUT DOMAIN.FILES, "Files (pipe-separated): "
+INPUT DOMAIN.PRIORITY, "Priority (1=high, 2=medium, 3=low): "
+IF DOMAIN.PRIORITY = "" THEN DOMAIN.PRIORITY = "2"
+
+* Get next domain number
+DOMAIN.FILE = "SCHEMA/DOMAINS_ENHANCED.csv"
+OPENSEQ DOMAIN.FILE TO F.DOMAIN ELSE
+   CRT "Error: Cannot open ":DOMAIN.FILE
+   RETURN
+END
+
+MAX.NUM = 0
+LINE.NUM = 0
+LOOP
+   READSEQ LINE FROM F.DOMAIN ELSE EXIT
+   LINE.NUM += 1
+   IF LINE.NUM > 1 AND LINE # "" THEN
+      NUM = FIELD(LINE, ",", 3)
+      IF NUM > MAX.NUM THEN MAX.NUM = NUM
+   END
+REPEAT
+CLOSESEQ F.DOMAIN
+
+DOMAIN.NUM = MAX.NUM + 1
+
+* Append to file
+OPENSEQ DOMAIN.FILE TO F.DOMAIN ELSE
+   CRT "Error: Cannot open ":DOMAIN.FILE
+   RETURN
+END
+
+* Seek to end
+LOOP
+   READSEQ LINE FROM F.DOMAIN ELSE EXIT
+REPEAT
+
+* Write new domain
+NEW.LINE = DOMAIN.ABB:",":DOMAIN.NAME:",":DOMAIN.NUM:",":DOMAIN.DESC:",":DOMAIN.TAGS:",":DOMAIN.FILES:",":DOMAIN.PRIORITY:",active"
+WRITESEQ NEW.LINE TO F.DOMAIN ELSE
+   CRT "Error writing domain"
+END
+
+CLOSESEQ F.DOMAIN
+
+CRT ""
+CRT "Domain added successfully!"
+CRT "Domain Number: ":DOMAIN.NUM
+CRT ""
+
+RETURN
+END

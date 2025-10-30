@@ -1,0 +1,195 @@
+PROGRAM TAG.REIMBURSABLE
+*
+* TAG.REIMBURSABLE - Tag transactions as reimbursable based on rules and payees
+* Compatible with HAL schema-driven architecture
+*
+* Usage: TAG.REIMBURSABLE [batch_id]
+*
+
+$INCLUDE EQU/FILES.EQU
+
+PROMPT ""
+batch_filter = TRIM(SENTENCE())
+
+* Open files using COMMON FILES array
+OPEN "TRANSACTION" TO trn ELSE
+   CRT "ERROR: Cannot open TRANSACTION file"
+   STOP
+END
+
+OPEN "PAYEE" TO pye ELSE
+   CRT "ERROR: Cannot open PAYEE file"
+   STOP
+END
+
+OPEN "RULE" TO rul ELSE
+   CRT "ERROR: Cannot open RULE file"
+   STOP
+END
+
+CRT "Reimbursable Transaction Tagging"
+CRT STR("-",60)
+CRT
+
+* Load reimbursement rules
+GOSUB LOAD_REIMB_RULES
+CRT "Loaded ": num_reimb_rules: " reimbursement rules"
+CRT
+
+processed = 0
+tagged = 0
+already_tagged = 0
+
+SELECT trn
+LOOP
+   READNEXT trans_id ELSE DONE = @TRUE
+UNTIL DONE DO
+   READ trans_rec FROM trn, trans_id THEN
+      * Check batch filter
+      IF batch_filter # "" AND trans_rec<12> # batch_filter THEN
+         CONTINUE
+      END
+      
+      processed = processed + 1
+      
+      * Skip if already tagged
+      IF trans_rec<8> = "Y" THEN
+         already_tagged = already_tagged + 1
+         CONTINUE
+      END
+      
+      * Get transaction details
+      std_payee = trans_rec<3>
+      category = trans_rec<5>
+      amount = trans_rec<4>
+      memo = trans_rec<7>
+      payee_id = trans_rec<11>
+      
+      * Check if payee is auto-reimbursable
+      IF payee_id # "" THEN
+         READ payee_rec FROM pye, payee_id THEN
+            IF payee_rec<4> = "Y" THEN
+               trans_rec<8> = "Y"
+               trans_rec<9> = payee_rec<5>  ; * Reimbursement type
+               trans_rec<10> = "PENDING"
+               tagged = tagged + 1
+               WRITE trans_rec TO trn, trans_id
+               CONTINUE
+            END
+         END
+      END
+      
+      * Apply reimbursement rules
+      GOSUB APPLY_REIMB_RULES
+      
+      IF trans_rec<8> = "Y" THEN
+         WRITE trans_rec TO trn, trans_id
+         tagged = tagged + 1
+      END
+      
+      * Progress indicator
+      IF MOD(processed, 100) = 0 THEN
+         CRT "Processed ": processed: " transactions..."
+      END
+   END
+REPEAT
+
+CRT
+CRT STR("-",60)
+CRT "Tagging complete!"
+CRT "  Transactions processed: ": processed
+CRT "  Already tagged: ": already_tagged
+CRT "  Newly tagged: ": tagged
+CRT "  Total reimbursable: ": (tagged + already_tagged)
+
+STOP
+
+*
+* Subroutine: Load reimbursement tagging rules
+*
+LOAD_REIMB_RULES:
+   DIM reimb.rule_ids(500)
+   DIM reimb.rule_recs(500)
+   num_reimb_rules = 0
+   
+   SELECT rul
+   LOOP
+      READNEXT rule_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ rule_rec FROM rul, rule_id THEN
+         * Check if active and reimbursement-related
+         IF rule_rec<6> = "Y" AND rule_rec<3> = "TAG.REIMBURSABLE" THEN
+            num_reimb_rules = num_reimb_rules + 1
+            reimb.rule_ids(num_reimb_rules) = rule_id
+            reimb.rule_recs(num_reimb_rules) = rule_rec
+         END
+      END
+   REPEAT
+   
+   * Sort by priority
+   FOR i = 1 TO num_reimb_rules - 1
+      FOR j = i + 1 TO num_reimb_rules
+         IF reimb.rule_recs(i)<5> > reimb.rule_recs(j)<5> THEN
+            temp_id = reimb.rule_ids(i)
+            temp_rec = reimb.rule_recs(i)
+            reimb.rule_ids(i) = reimb.rule_ids(j)
+            reimb.rule_recs(i) = reimb.rule_recs(j)
+            reimb.rule_ids(j) = temp_id
+            reimb.rule_recs(j) = temp_rec
+         END
+      NEXT j
+   NEXT i
+   
+   RETURN
+
+*
+* Subroutine: Apply reimbursement rules to transaction
+*
+APPLY_REIMB_RULES:
+   FOR i = 1 TO num_reimb_rules
+      rule_rec = reimb.rule_recs(i)
+      rule_type = rule_rec<1>
+      pattern = rule_rec<2>
+      reimb_category = rule_rec<4>
+      
+      matched = @FALSE
+      
+      BEGIN CASE
+         CASE rule_type = "CATEGORY.MATCH"
+            * Match on transaction category
+            IF INDEX(UPCASE(category), UPCASE(pattern), 1) > 0 THEN
+               matched = @TRUE
+            END
+         
+         CASE rule_type = "PAYEE.MATCH"
+            * Match on payee name
+            IF INDEX(UPCASE(std_payee), UPCASE(pattern), 1) > 0 THEN
+               matched = @TRUE
+            END
+         
+         CASE rule_type = "MEMO.MATCH"
+            * Match on memo field
+            IF INDEX(UPCASE(memo), UPCASE(pattern), 1) > 0 THEN
+               matched = @TRUE
+            END
+         
+         CASE rule_type = "AMOUNT.RANGE"
+            * Pattern format: "MIN:MAX"
+            min_amt = FIELD(pattern, ":", 1)
+            max_amt = FIELD(pattern, ":", 2)
+            IF amount >= min_amt AND amount <= max_amt THEN
+               matched = @TRUE
+            END
+      END CASE
+      
+      IF matched THEN
+         trans_rec<8> = "Y"
+         trans_rec<9> = reimb_category
+         trans_rec<10> = "PENDING"
+         RETURN
+      END
+   NEXT i
+   
+   RETURN
+
+END

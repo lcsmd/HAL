@@ -1,0 +1,55 @@
+========================================
+HAL Code Reorganization
+Run These Commands in QM
+========================================
+
+Start QM:
+  cd C:\QMSYS\HAL
+  qm
+
+Then run these commands at the : prompt:
+
+:LOGTO HAL
+:BASIC ONCE.BP CREATE.DOMAIN.DIRS
+:RUN ONCE.BP CREATE.DOMAIN.DIRS
+:BASIC ONCE.BP MIGRATE.REORGANIZE
+:RUN ONCE.BP MIGRATE.REORGANIZE
+
+When prompted, type: YES
+
+========================================
+What This Does:
+========================================
+
+1. CREATE.DOMAIN.DIRS
+   - Creates QM directory files
+   - FIN.BP, MED.BP, SEC.BP, COM.BP, UTIL.BP
+
+2. MIGRATE.REORGANIZE
+   - Copies programs from BP to domain directories
+   - Renames with domain prefixes
+   - Originals stay in BP (safe!)
+   - Generates MIGRATION.REPORT.txt
+
+========================================
+After Migration:
+========================================
+
+Compile:
+  :BASIC FIN.BP *
+  :BASIC MED.BP *
+  :BASIC SEC.BP *
+  :BASIC UTIL.BP *
+
+Catalog:
+  :CATALOG FIN.BP *
+  :CATALOG MED.BP *
+  :CATALOG SEC.BP *
+  :CATALOG UTIL.BP *
+
+Test:
+  :FIN.IMPORT.QUICKEN
+  :SEC.PASSWORD.MENU
+  :MED.IMPORT.EPIC
+
+========================================

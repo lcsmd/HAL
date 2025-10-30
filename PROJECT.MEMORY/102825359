@@ -1,0 +1,78 @@
+You're right - let me document the complete HAL system vision and architecture, not just this photo task:
+
+## HAL - Complete System Vision
+
+### Core Philosophy
+**Schema-driven personal data management system** where CSV files are the single source of truth. All QM structures (files, dictionaries, equates) are auto-generated from schemas. Human/AI collaboration designs schemas, code builds structure.
+
+### Architecture Principles
+1. **Domain-based organization** - Prefix all files with domain (FIN., MED., MDA., etc.)
+2. **QMBasic for business logic** - Python only for external APIs, crypto, ML, parsing
+3. **Native QM operations** - Use OPENSEQ/READSEQ/WRITE, not shell commands
+4. **Automatic code generation** - BUILD.SCHEMA creates everything from CSVs
+5. **Field type registry** - FIELDS.csv tracks all field names/types for consistency
+
+### Domains
+- **FIN** - Financial (transactions, payees, categories, reimbursements)
+- **MED** - Medical (medications, doctors, allergies, appointments, tests)
+- **MDA** - Media (photos, videos, audio)
+- **PER** - Personal (people, relationships, preferences)
+- **SEC** - Security (passwords, credentials)
+- **COM** - Communication (email, messages, contacts)
+- **DOC** - Documents
+- **SCH** - School (education history)
+- **WOR** - Work (jobs, projects, skills)
+- **SYS** - System (internal functionality)
+
+### Key Systems Implemented
+1. **Financial Management**
+   - Quicken import (FIN.IMPORT.QUICKEN)
+   - Payee standardization with AI rules
+   - Transaction categorization
+   - Reimbursement tracking
+   - Tag system for flexible classification
+
+2. **Medical Records**
+   - Epic FHIR API integration
+   - Medication tracking
+   - Doctor/facility management
+   - Immunization records
+   - Test results
+
+3. **Password Manager** (SEC domain)
+   - QMBasic UI, Python crypto only
+   - AES-256 encryption
+   - Master password with lockout
+   - Category-based organization
+
+4. **Photo Management** (MDA domain - IN PROGRESS)
+   - Blur detection, duplicate detection
+   - EXIF metadata extraction
+   - NSFW filtering
+   - Auto-grouping by date
+   - Quality scoring
+
+### Schema System Components
+- **DOMAINS.CSV** - Domain definitions
+- **SCHEMA_INDEX.csv** - File registry (FileName, Abbrev, FileNum, Type)
+- **[FILENAME].csv** - Field definitions per file
+- **FIELDS.csv** - Master field registry (auto-generated)
+- **BUILD.SCHEMA** - Generates all QM structures
+- **BUILD.INDEX** - Creates secondary indexes
+
+### Generated Artifacts
+- **Data files** - QM hashed files
+- **Dictionaries** - Type D entries with conversions/formats
+- **Equate files** - EQU/[abb].equ with field constants
+- **FILES.EQU** - Master include with all equates
+
+### Future Enhancements
+- Email management system
+- Document indexing/search
+- Task/project management
+- Calendar/scheduling
+- Contact relationship mapping
+- AI-powered insights across domains
+- Cross-domain analytics
+
+This is HAL - your personal data fortress with intelligent automation!

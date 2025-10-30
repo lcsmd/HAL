@@ -1,0 +1,266 @@
+PROGRAM SETUP.COMMON.FIELDS
+* Add common field type definitions to FIELDS file
+* These are reusable across all files in the system
+
+OPEN "FIELDS" TO F.FIELDS ELSE
+   CRT "Error: Cannot open FIELDS file"
+   STOP
+END
+
+CRT ""
+CRT "Adding common field types to FIELDS..."
+CRT ""
+
+* ============================================
+* IDENTIFIERS
+* ============================================
+
+* person_id
+REC = "Person ID":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "person_id"
+CRT "Added: person_id"
+
+* company_id
+REC = "Company ID":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "company_id"
+CRT "Added: company_id"
+
+* project_id
+REC = "Project ID":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "project_id"
+CRT "Added: project_id"
+
+* ============================================
+* CONTACT INFORMATION
+* ============================================
+
+* phone
+REC = "Phone":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "phone"
+CRT "Added: phone"
+
+* phone_mobile
+REC = "Mobile Phone":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "phone_mobile"
+CRT "Added: phone_mobile"
+
+* phone_home
+REC = "Home Phone":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "phone_home"
+CRT "Added: phone_home"
+
+* phone_work
+REC = "Work Phone":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "phone_work"
+CRT "Added: phone_work"
+
+* url
+REC = "URL":@FM:"":@FM:"40L"
+WRITE REC ON F.FIELDS, "url"
+CRT "Added: url"
+
+* url_website
+REC = "Website":@FM:"":@FM:"40L"
+WRITE REC ON F.FIELDS, "url_website"
+CRT "Added: url_website"
+
+* ============================================
+* NAMES AND DESCRIPTIONS
+* ============================================
+
+* name
+REC = "Name":@FM:"":@FM:"30L"
+WRITE REC ON F.FIELDS, "name"
+CRT "Added: name"
+
+* name_first
+REC = "First Name":@FM:"":@FM:"20L"
+WRITE REC ON F.FIELDS, "name_first"
+CRT "Added: name_first"
+
+* name_last
+REC = "Last Name":@FM:"":@FM:"20L"
+WRITE REC ON F.FIELDS, "name_last"
+CRT "Added: name_last"
+
+* name_middle
+REC = "Middle Name":@FM:"":@FM:"20L"
+WRITE REC ON F.FIELDS, "name_middle"
+CRT "Added: name_middle"
+
+* title
+REC = "Title":@FM:"":@FM:"30L"
+WRITE REC ON F.FIELDS, "title"
+CRT "Added: title"
+
+* description
+REC = "Description":@FM:"":@FM:"50L"
+WRITE REC ON F.FIELDS, "description"
+CRT "Added: description"
+
+* notes
+REC = "Notes":@FM:"":@FM:"9999L"
+WRITE REC ON F.FIELDS, "notes"
+CRT "Added: notes"
+
+* ============================================
+* STATUS AND FLAGS
+* ============================================
+
+* status
+REC = "Status":@FM:"":@FM:"12L"
+WRITE REC ON F.FIELDS, "status"
+CRT "Added: status"
+
+* active
+REC = "Active":@FM:"":@FM:"1L"
+WRITE REC ON F.FIELDS, "active"
+CRT "Added: active"
+
+* priority
+REC = "Priority":@FM:"":@FM:"12L"
+WRITE REC ON F.FIELDS, "priority"
+CRT "Added: priority"
+
+* category
+REC = "Category":@FM:"":@FM:"20L"
+WRITE REC ON F.FIELDS, "category"
+CRT "Added: category"
+
+* type
+REC = "Type":@FM:"":@FM:"12L"
+WRITE REC ON F.FIELDS, "type"
+CRT "Added: type"
+
+* ============================================
+* ADDRESSES
+* ============================================
+
+* address
+REC = "Address":@FM:"":@FM:"40L"
+WRITE REC ON F.FIELDS, "address"
+CRT "Added: address"
+
+* address_street
+REC = "Street Address":@FM:"":@FM:"40L"
+WRITE REC ON F.FIELDS, "address_street"
+CRT "Added: address_street"
+
+* city
+REC = "City":@FM:"":@FM:"20L"
+WRITE REC ON F.FIELDS, "city"
+CRT "Added: city"
+
+* state
+REC = "State":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "state"
+CRT "Added: state"
+
+* zip
+REC = "Zip Code":@FM:"":@FM:"10L"
+WRITE REC ON F.FIELDS, "zip"
+CRT "Added: zip"
+
+* country
+REC = "Country":@FM:"":@FM:"15L"
+WRITE REC ON F.FIELDS, "country"
+CRT "Added: country"
+
+* ============================================
+* DATES (already have date, add more variants)
+* ============================================
+
+* date_start
+REC = "Start Date":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "date_start"
+CRT "Added: date_start"
+
+* date_end
+REC = "End Date":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "date_end"
+CRT "Added: date_end"
+
+* date_due
+REC = "Due Date":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "date_due"
+CRT "Added: date_due"
+
+* date_completed
+REC = "Completed Date":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "date_completed"
+CRT "Added: date_completed"
+
+* created_date (already exists from SETUP.FIELDS)
+REC = "Created Date":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "created_date"
+CRT "Added: created_date"
+
+* updated_date (already exists from SETUP.FIELDS)
+REC = "Updated Date":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "updated_date"
+CRT "Added: updated_date"
+
+* ============================================
+* NUMERIC FIELDS
+* ============================================
+
+* amount
+REC = "Amount":@FM:"MD2":@FM:"12R"
+WRITE REC ON F.FIELDS, "amount"
+CRT "Added: amount"
+
+* cost
+REC = "Cost":@FM:"MD2":@FM:"12R"
+WRITE REC ON F.FIELDS, "cost"
+CRT "Added: cost"
+
+* price
+REC = "Price":@FM:"MD2":@FM:"12R"
+WRITE REC ON F.FIELDS, "price"
+CRT "Added: price"
+
+* quantity
+REC = "Quantity":@FM:"MR0":@FM:"8R"
+WRITE REC ON F.FIELDS, "quantity"
+CRT "Added: quantity"
+
+* count
+REC = "Count":@FM:"MR0":@FM:"8R"
+WRITE REC ON F.FIELDS, "count"
+CRT "Added: count"
+
+* percent
+REC = "Percent":@FM:"MD2":@FM:"8R"
+WRITE REC ON F.FIELDS, "percent"
+CRT "Added: percent"
+
+* ============================================
+* TAGS AND REFERENCES
+* ============================================
+
+* tags
+REC = "Tags":@FM:"":@FM:"30L"
+WRITE REC ON F.FIELDS, "tags"
+CRT "Added: tags"
+
+* reference
+REC = "Reference":@FM:"":@FM:"20L"
+WRITE REC ON F.FIELDS, "reference"
+CRT "Added: reference"
+
+* external_id
+REC = "External ID":@FM:"":@FM:"20L"
+WRITE REC ON F.FIELDS, "external_id"
+CRT "Added: external_id"
+
+CRT ""
+CRT "=================================================="
+CRT "Common field types added successfully!"
+CRT "=================================================="
+CRT ""
+CRT "Field types can now be used across all files"
+CRT "Run BUILD.DICT <filename> to generate dictionaries"
+CRT ""
+
+STOP
+END

@@ -1,4 +1,0 @@
-* Standard parser include file
-DEFFUN PARSE.COMMAND()
-DEFFUN GET.TOKEN()
-DEFFUN GET.OPTION() 

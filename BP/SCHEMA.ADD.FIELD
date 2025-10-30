@@ -1,0 +1,98 @@
+SUBROUTINE SCHEMA.ADD.FIELD
+* Add a field to an existing file schema
+
+CRT ""
+CRT "=========================================="
+CRT "         ADD FIELD TO FILE"
+CRT "=========================================="
+CRT ""
+
+* Get filename
+INPUT FILENAME, "File name: "
+IF FILENAME = "" THEN RETURN
+FILENAME = UPCASE(FILENAME)
+
+* Open schema file
+SCHEMA.FILE = "SCHEMA/":FILENAME:".csv"
+OPENSEQ SCHEMA.FILE TO F.SCHEMA ELSE
+   CRT "Error: Schema file not found: ":SCHEMA.FILE
+   RETURN
+END
+
+* Read existing fields to get next field number
+MAX.FIELD.NUM = 0
+LINE.NUM = 0
+LOOP
+   READSEQ LINE FROM F.SCHEMA ELSE EXIT
+   LINE.NUM += 1
+   IF LINE.NUM > 1 AND LINE # "" THEN
+      FIELD.NUM = FIELD(LINE, ",", 2)
+      IF FIELD.NUM > MAX.FIELD.NUM THEN MAX.FIELD.NUM = FIELD.NUM
+   END
+REPEAT
+CLOSESEQ F.SCHEMA
+
+NEXT.FIELD.NUM = MAX.FIELD.NUM + 1
+
+* Get field information
+CRT ""
+CRT "Next field number: ":NEXT.FIELD.NUM
+CRT ""
+
+INPUT FIELD.NAME, "Field name (uppercase with underscores): "
+IF FIELD.NAME = "" THEN RETURN
+FIELD.NAME = UPCASE(FIELD.NAME)
+
+CRT ""
+CRT "Field types:"
+CRT "  K = Key (unique identifier)"
+CRT "  A = Alphanumeric (text)"
+CRT "  N = Numeric"
+CRT "  D = Date"
+CRT "  T = Text (long)"
+CRT "  M = Multivalued (array)"
+CRT ""
+INPUT FIELD.TYPE, "Field type: "
+IF FIELD.TYPE = "" THEN RETURN
+FIELD.TYPE = UPCASE(FIELD.TYPE)
+
+INPUT FIELD.DESC, "Description: "
+
+INPUT FIELD.REQUIRED, "Required (Y/N) [N]: "
+IF FIELD.REQUIRED = "" THEN FIELD.REQUIRED = "N"
+FIELD.REQUIRED = UPCASE(FIELD.REQUIRED)
+
+INPUT FIELD.INDEXED, "Indexed (Y/N) [N]: "
+IF FIELD.INDEXED = "" THEN FIELD.INDEXED = "N"
+FIELD.INDEXED = UPCASE(FIELD.INDEXED)
+
+* Append to schema file
+OPENSEQ SCHEMA.FILE TO F.SCHEMA ELSE
+   CRT "Error: Cannot open ":SCHEMA.FILE
+   RETURN
+END
+
+* Seek to end
+LOOP
+   READSEQ LINE FROM F.SCHEMA ELSE EXIT
+REPEAT
+
+* Write new field
+NEW.LINE = FIELD.NAME:",":NEXT.FIELD.NUM:",":FIELD.TYPE:",":FIELD.DESC:",":FIELD.REQUIRED:",":FIELD.INDEXED
+WRITESEQ NEW.LINE TO F.SCHEMA ELSE
+   CRT "Error writing field"
+END
+
+CLOSESEQ F.SCHEMA
+
+CRT ""
+CRT "Field added successfully!"
+CRT "Field Number: ":NEXT.FIELD.NUM
+CRT ""
+CRT "Next steps:"
+CRT "1. Run BUILD.SCHEMA to update dictionary and equates"
+CRT "2. Recompile programs that use this file"
+CRT ""
+
+RETURN
+END

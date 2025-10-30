@@ -1,0 +1,63 @@
+SUBROUTINE SCHEMA.SUMMARY
+* Display schema summary statistics
+
+* Read schema index
+INDEX.FILE = "SCHEMA/SCHEMA_INDEX.csv"
+OPENSEQ INDEX.FILE TO F.INDEX ELSE
+   CRT "Error: Cannot open ":INDEX.FILE
+   RETURN
+END
+
+FILE.COUNT = 0
+ACTIVE.COUNT = 0
+TOTAL.FIELDS = 0
+
+LOOP
+   READSEQ LINE FROM F.INDEX ELSE EXIT
+   FILE.COUNT += 1
+   IF FILE.COUNT > 1 THEN
+      STATUS = FIELD(LINE, ",", 8)
+      FIELD.COUNT = FIELD(LINE, ",", 7)
+      IF STATUS = "active" THEN
+         ACTIVE.COUNT += 1
+         TOTAL.FIELDS += FIELD.COUNT
+      END
+   END
+REPEAT
+CLOSESEQ F.INDEX
+
+* Read domains
+DOMAIN.FILE = "SCHEMA/DOMAINS_ENHANCED.csv"
+OPENSEQ DOMAIN.FILE TO F.DOMAIN ELSE
+   DOMAIN.FILE = "SCHEMA/DOMAINS.CSV"
+   OPENSEQ DOMAIN.FILE TO F.DOMAIN ELSE
+      CRT "Error: Cannot open domains file"
+      RETURN
+   END
+END
+
+DOMAIN.COUNT = 0
+LOOP
+   READSEQ LINE FROM F.DOMAIN ELSE EXIT
+   DOMAIN.COUNT += 1
+REPEAT
+CLOSESEQ F.DOMAIN
+DOMAIN.COUNT -= 1
+
+CRT ""
+CRT "=========================================="
+CRT "         SCHEMA SUMMARY"
+CRT "=========================================="
+CRT ""
+CRT "Domains:        ":DOMAIN.COUNT
+CRT "Total Files:    ":(FILE.COUNT - 1)
+CRT "Active Files:   ":ACTIVE.COUNT
+CRT "Total Fields:   ":TOTAL.FIELDS
+CRT ""
+CRT "Schema Location: c:\QMSYS\HAL\SCHEMA\"
+CRT "Build Program:   BUILD.SCHEMA"
+CRT "Index Program:   BUILD.INDEX"
+CRT ""
+
+RETURN
+END

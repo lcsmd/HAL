@@ -1,0 +1,148 @@
+PROGRAM UTL.ANALYZE.FIELDS
+*
+* Purpose: Analyze a file and create @ dictionary item with populated fields
+* Scans all records, finds fields with data, creates @ PH item for display
+*
+* Usage: UTL.ANALYZE.FIELDS <filename>
+*
+
+PROMPT ""
+
+* Get filename from command line
+CMD = TRIM(SENTENCE())
+SPACE.POS = INDEX(CMD, " ", 1)
+IF SPACE.POS > 0 THEN
+   FILE.NAME = TRIM(CMD[SPACE.POS+1, 999])
+END ELSE
+   FILE.NAME = ""
+END
+
+IF FILE.NAME = "" THEN
+   CRT "Usage: UTL.ANALYZE.FIELDS <filename>"
+   CRT "Example: UTL.ANALYZE.FIELDS TRANSACTION"
+   STOP
+END
+
+CRT
+CRT "Analyzing fields in ": FILE.NAME
+CRT STR("=",70)
+CRT
+
+* Open the data file
+OPEN FILE.NAME TO F.DATA ELSE
+   CRT "ERROR: Cannot open file ": FILE.NAME
+   STOP
+END
+
+* Open the dictionary
+DICT.NAME = "DICT ": FILE.NAME
+OPEN DICT.NAME TO F.DICT ELSE
+   CRT "ERROR: Cannot open ": DICT.NAME
+   STOP
+END
+
+* Get list of all D-type dictionary items (field definitions)
+SELECT F.DICT
+FIELD.LIST = ""
+FIELD.COUNT = 0
+
+LOOP
+   READNEXT DICT.ID ELSE EXIT
+   
+   * Read dictionary item
+   READ DICT.REC FROM F.DICT, DICT.ID ELSE CONTINUE
+   
+   * Only process D-type items (field definitions)
+   IF DICT.REC<1> = "D" THEN
+      FIELD.COUNT += 1
+      FIELD.LIST<FIELD.COUNT> = DICT.ID
+   END
+REPEAT
+
+CRT "Found ": FIELD.COUNT : " field definitions in dictionary"
+CRT
+
+* Now scan all data records to find populated fields
+SELECT F.DATA
+POPULATED.FIELDS = ""
+RECORD.COUNT = 0
+MAX.SCAN = 1000  ; * Limit scan for performance
+
+CRT "Scanning up to ": MAX.SCAN : " records..."
+CRT
+
+LOOP
+   READNEXT DATA.ID ELSE EXIT
+   
+   RECORD.COUNT += 1
+   IF RECORD.COUNT > MAX.SCAN THEN EXIT
+   
+   * Read data record
+   READ DATA.REC FROM F.DATA, DATA.ID ELSE CONTINUE
+   
+   * Check each field
+   FOR I = 1 TO FIELD.COUNT
+      FIELD.NAME = FIELD.LIST<I>
+      
+      * Read dict to get field number
+      READ DICT.REC FROM F.DICT, FIELD.NAME ELSE CONTINUE
+      FIELD.NUM = DICT.REC<2>
+      
+      * Check if this field has data in current record
+      IF DATA.REC<FIELD.NUM> # "" THEN
+         * Mark this field as populated (check if not already in list)
+         FOUND = 0
+         FOR J = 1 TO DCOUNT(POPULATED.FIELDS, @FM)
+            IF POPULATED.FIELDS<J> = FIELD.NAME THEN
+               FOUND = 1
+            END
+         NEXT J
+         IF NOT(FOUND) THEN
+            POPULATED.FIELDS<-1> = FIELD.NAME
+         END
+      END
+   NEXT I
+   
+   * Progress indicator
+   IF MOD(RECORD.COUNT, 100) = 0 THEN
+      CRT "  Scanned ": RECORD.COUNT : " records..."
+   END
+REPEAT
+
+CRT
+CRT "Scanned ": RECORD.COUNT : " records"
+CRT "Found ": DCOUNT(POPULATED.FIELDS, @FM) : " populated fields"
+CRT
+
+* Build space-delimited list for attribute 2
+SPACE.LIST = ""
+FOR I = 1 TO DCOUNT(POPULATED.FIELDS, @FM)
+   IF I > 1 THEN SPACE.LIST := " "
+   SPACE.LIST := POPULATED.FIELDS<I>
+NEXT I
+
+* Create @ dictionary item
+AT.REC = ""
+AT.REC<1> = "PH"
+AT.REC<2> = SPACE.LIST
+
+* Write @ item to dictionary
+WRITE AT.REC TO F.DICT, "@" ON ERROR
+   CRT "ERROR: Cannot write @ item to dictionary"
+   STOP
+END
+
+CRT "Created @ dictionary item:"
+CRT "  Type: PH (phrase)"
+CRT "  Fields: ": SPACE.LIST
+CRT
+CRT STR("=",70)
+CRT "Complete!"
+CRT
+CRT "Now you can use:"
+CRT "  LIST ": FILE.NAME
+CRT "  LIST ": FILE.NAME : " SAMPLE 10"
+CRT
+
+STOP
+END

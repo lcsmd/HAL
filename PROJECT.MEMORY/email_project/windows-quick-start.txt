@@ -1,0 +1,500 @@
+# Windows Quick Start Guide
+## AI-Enhanced Email Management System
+
+**Get up and running in 30 minutes**
+
+---
+
+## Overview
+
+You have:
+- ✅ OpenQM running on Windows
+- ✅ Python scripts that need to connect to OpenQM
+- ✅ All components will run on the same Windows machine
+
+---
+
+## Step-by-Step Installation
+
+### STEP 1: Install Python (5 minutes)
+
+1. Download Python 3.11 from: https://www.python.org/downloads/
+2. Run the installer
+3. ✅ **CHECK THIS BOX**: "Add Python to PATH"
+4. Click "Install Now"
+5. Verify installation:
+
+```cmd
+python --version
+pip --version
+```
+
+Should show Python 3.11.x
+
+---
+
+### STEP 2: Verify OpenQM (2 minutes)
+
+Open Command Prompt and type:
+```cmd
+qm
+```
+
+You should see the QM prompt (`:`).
+
+Type `:QUIT` to exit.
+
+**If `qm` command not found:**
+1. Find your OpenQM installation (e.g., `C:\OpenQM\bin`)
+2. Add to PATH:
+   - Right-click "This PC" → Properties
+   - Advanced system settings → Environment Variables
+   - Edit PATH, add OpenQM bin directory
+   - Restart Command Prompt
+
+---
+
+### STEP 3: Download and Extract Files (3 minutes)
+
+1. Create a folder: `C:\email_project`
+2. Place all the Python files (.py) in this folder
+3. Place all batch files (.bat) in this folder
+4. Place all HTML templates in: `C:\email_project\templates\`
+
+**Files you need:**
+```
+C:\email_project\
+├── install_windows.bat             ← START HERE
+├── openqm_setup.py
+├── openqm_interface.py
+├── app.py
+├── gmail_ingestion.py
+├── ai_categorization_engine.py
+├── rule_engine.py
+├── email_processor_daemon.py
+├── demo_testing_script.py
+└── templates\
+    ├── base.html
+    ├── dashboard.html
+    ├── emails.html
+    ├── email_detail.html
+    ├── threads.html
+    ├── categories.html
+    ├── rules.html
+    ├── ai_categorization.html
+    └── settings.html
+```
+
+---
+
+### STEP 4: Run Installation Script (5 minutes)
+
+1. **Open Command Prompt as Administrator:**
+   - Press Windows key
+   - Type "cmd"
+   - Right-click "Command Prompt"
+   - Select "Run as administrator"
+
+2. **Navigate to project folder:**
+```cmd
+cd C:\email_project
+```
+
+3. **Run installation:**
+```cmd
+install_windows.bat
+```
+
+This will:
+- Create `C:\email_management_system`
+- Install Python packages
+- Create OpenQM database files
+- Generate startup scripts
+
+**Expected output:**
+```
+[OK] Python found
+[OK] pip found
+[OK] OpenQM found
+[OK] Installation directory created
+[OK] Virtual environment created
+[OK] Python dependencies installed
+[OK] OpenQM database initialized
+```
+
+---
+
+### STEP 5: Critical Code Updates (5 minutes)
+
+The Python scripts need TWO small changes for Windows:
+
+#### A. Update `openqm_interface.py`
+
+Open: `C:\email_management_system\openqm_interface.py`
+
+Find ALL occurrences of this pattern (there are 3-4):
+```python
+result = subprocess.run(
+    ['qm', '-A', self.account, '-K', str(script_file)],
+    capture_output=True,
+    text=True,
+    timeout=30
+)
+```
+
+**Change to:**
+```python
+result = subprocess.run(
+    f'qm -A{self.account} -K{script_file}',
+    capture_output=True,
+    text=True,
+    timeout=30,
+    shell=True  # ← ADD THIS LINE
+)
+```
+
+**Why?** Windows needs `shell=True` to run `qm` commands.
+
+#### B. Update Default Paths
+
+In these files, change the base directory:
+
+**`app.py`** (around line 21):
+```python
+# Change this:
+BASE_DIR = Path.home() / 'email_management_system'
+
+# To this:
+BASE_DIR = Path('C:/email_management_system')
+```
+
+**Do the same in:**
+- `gmail_ingestion.py`
+- `ai_categorization_engine.py`
+- `email_processor_daemon.py`
+
+**Search for:** `Path.home() / 'email_management_system'`
+**Replace with:** `Path('C:/email_management_system')`
+
+---
+
+### STEP 6: Configure API Keys (5 minutes)
+
+1. **Edit config file:**
+```cmd
+notepad C:\email_management_system\config\config.ini
+```
+
+2. **Add your Anthropic API key:**
+```ini
+[ai]
+anthropic_api_key = sk-ant-your-actual-key-here
+```
+
+Get your key from: https://console.anthropic.com/
+
+3. **Save and close**
+
+---
+
+### STEP 7: Gmail Setup (5 minutes)
+
+1. **Go to Google Cloud Console:**
+   https://console.cloud.google.com/
+
+2. **Create a project:**
+   - Click "Select a project" → "New Project"
+   - Name it "Email Management"
+   - Click "Create"
+
+3. **Enable Gmail API:**
+   - Go to "APIs & Services" → "Library"
+   - Search for "Gmail API"
+   - Click "Enable"
+
+4. **Create credentials:**
+   - Go to "APIs & Services" → "Credentials"
+   - Click "Create Credentials" → "OAuth client ID"
+   - Application type: "Desktop app"
+   - Name: "Email System"
+   - Click "Create"
+   - Download JSON file
+
+5. **Save credentials:**
+   - Rename downloaded file to: `gmail_credentials.json`
+   - Copy to: `C:\email_management_system\config\gmail_credentials.json`
+
+---
+
+### STEP 8: Test the Installation (5 minutes)
+
+1. **Run demo script:**
+```cmd
+cd C:\email_management_system
+venv\Scripts\activate
+python demo_testing_script.py
+```
+
+This creates:
+- 20 sample emails
+- 6 categories (Work, Personal, Finance, etc.)
+- 6 automation rules
+
+**Expected output:**
+```
+✓ OpenQM connection successful
+✓ Created 20 sample emails
+✓ Created 6 categories
+✓ Created 6 rules
+✓ Rule application test complete
+```
+
+2. **Start web interface:**
+```cmd
+start_web.bat
+```
+
+Your browser should open to: http://localhost:5000
+
+You should see:
+- Dashboard with statistics
+- Recent emails listed
+- Navigation sidebar
+
+---
+
+## Usage
+
+### Import Real Emails
+
+Double-click: `C:\email_management_system\ingest_emails.bat`
+
+Or:
+```cmd
+cd C:\email_management_system
+venv\Scripts\activate
+python gmail_ingestion.py --max 100
+```
+
+First time will open browser for Gmail authentication.
+
+### Use AI Categorization
+
+1. Open web interface: http://localhost:5000
+2. Click "AI Categorization" in sidebar
+3. Click "🔍 Analyze Emails"
+4. Wait 30-60 seconds
+5. Review proposed categories
+6. Click "✅ Apply These Categories"
+
+### Create Custom Rules
+
+1. Open web interface
+2. Click "Rules" in sidebar
+3. Click "+ Create Rule"
+4. Fill in:
+   - Type: "domain"
+   - Pattern: "github.com"
+   - Categories: Select "Development"
+   - Description: "GitHub emails"
+5. Click "Create Rule"
+6. Click "⚡ Apply to All Emails"
+
+### Start Background Processor
+
+For continuous email monitoring:
+
+Double-click: `C:\email_management_system\start_daemon.bat`
+
+This will check for new emails every 15 minutes.
+
+---
+
+## Common Commands
+
+All commands run from: `C:\email_management_system`
+
+### Start Web Interface
+```cmd
+start_web.bat
+```
+
+### Import 100 Emails
+```cmd
+ingest_emails.bat
+```
+
+### AI Categorization
+```cmd
+venv\Scripts\activate
+python ai_categorization_engine.py --analyze 100
+```
+
+### Apply Rules
+```cmd
+venv\Scripts\activate
+python rule_engine.py --apply-all
+```
+
+### Check System Status
+```cmd
+venv\Scripts\activate
+python
+```
+Then:
+```python
+from openqm_interface import OpenQMInterface
+qm = OpenQMInterface()
+config = qm.read_record('SYSTEM.CONFIG', 'COUNTERS')
+print(f"Total emails: {config.get(1, 0)}")
+```
+
+---
+
+## Troubleshooting
+
+### "qm is not recognized"
+OpenQM not in PATH. Add OpenQM directory to system PATH.
+
+### "python is not recognized"
+Python not installed or not in PATH. Reinstall Python with "Add to PATH" checked.
+
+### Web interface won't start
+Port 5000 in use. Kill process:
+```cmd
+netstat -ano | findstr :5000
+taskkill /PID [number] /F
+```
+
+### "Cannot open file" in OpenQM
+Database files not created. Run:
+```cmd
+python openqm_setup.py
+```
+
+### Gmail authentication fails
+Delete token file and re-authenticate:
+```cmd
+del C:\email_management_system\config\gmail_token.pickle
+```
+
+### Import error: "No module named X"
+Dependencies not installed:
+```cmd
+pip install -r requirements.txt
+```
+
+---
+
+## Windows Service (Optional)
+
+To run email processor as a Windows service:
+
+1. **Download NSSM:**
+   https://nssm.cc/download
+
+2. **Extract and add to PATH** or copy to `C:\Windows\System32`
+
+3. **Install service:**
+```cmd
+cd C:\email_management_system
+install_service.bat
+```
+
+4. **Start service:**
+```cmd
+net start EmailProcessor
+```
+
+5. **Check status:**
+```cmd
+sc query EmailProcessor
+```
+
+---
+
+## File Locations
+
+**Main directory:**
+```
+C:\email_management_system\
+```
+
+**Configuration:**
+```
+C:\email_management_system\config\config.ini
+C:\email_management_system\config\gmail_credentials.json
+```
+
+**Logs:**
+```
+C:\email_management_system\logs\
+```
+
+**Data storage:**
+```
+C:\email_management_system\attachments\
+C:\email_management_system\bodies\
+```
+
+**OpenQM account:** `EMAILSYS`
+
+---
+
+## Next Steps
+
+After installation:
+
+1. ✅ Import your emails: `ingest_emails.bat`
+2. ✅ Let AI analyze them: Web UI → AI Categorization
+3. ✅ Create custom rules: Web UI → Rules
+4. ✅ Start background processor: `start_daemon.bat`
+
+---
+
+## Support Checklist
+
+If something doesn't work, verify:
+
+- [ ] Python installed (run `python --version`)
+- [ ] OpenQM accessible (run `qm`)
+- [ ] Files in `C:\email_management_system\`
+- [ ] Config file has API keys
+- [ ] Gmail credentials JSON in place
+- [ ] Code updated (added `shell=True`)
+- [ ] Virtual environment activated
+- [ ] Dependencies installed
+- [ ] Demo runs successfully
+- [ ] Web interface opens
+
+---
+
+## Success!
+
+Your system is ready when:
+- ✅ Demo script completes without errors
+- ✅ Web interface shows dashboard at http://localhost:5000
+- ✅ You can import emails from Gmail
+- ✅ AI categorization works
+- ✅ Rules can be created and applied
+
+**Congratulations! Your Windows email management system is operational.**
+
+---
+
+**Need Help?**
+
+Check logs:
+```
+C:\email_management_system\logs\processor_daemon.log
+```
+
+Or run commands with verbose output:
+```cmd
+python gmail_ingestion.py --max 10
+```
+
+---
+
+**Version 1.0 - Windows Edition**
+Built for Dr. Lawrence C. Sullivan

@@ -1,0 +1,320 @@
+      PROGRAM BUILD.SCHEMA
+      * Builds QM files, dictionaries, and EQU includes from CSV schema files
+      * All DICT entries created as type D (data definition), NOT type A (deprecated)
+      
+      COMMON FILES(50)
+      
+      * Read the schema index to get list of files to process
+      INDEX.FILE = "SCHEMA/SCHEMA_INDEX.csv"
+      OPENSEQ INDEX.FILE TO F.INDEX ELSE
+         CRT "Error: Cannot open ":INDEX.FILE
+         STOP
+      END
+      
+      * Read all lines from index file
+      CSV.LINES = ""
+      LINE.COUNT = 0
+      LOOP
+         READSEQ LINE FROM F.INDEX ELSE EXIT
+         LINE.COUNT += 1
+         IF LINE.COUNT > 1 THEN
+            CSV.LINES<-1> = LINE
+         END
+      REPEAT
+      CLOSESEQ F.INDEX
+      
+      CRT "Building schema from ":DCOUNT(CSV.LINES, @FM):" file definitions"
+      CRT ""
+      
+      * Process each file definition
+      FOR I = 1 TO DCOUNT(CSV.LINES, @FM)
+         LINE = CSV.LINES<I>
+         IF LINE = "" THEN CONTINUE
+         
+         FILENAME = FIELD(LINE, ",", 1)
+         ABB = FIELD(LINE, ",", 2)
+         FILENUM = FIELD(LINE, ",", 3)
+         FILETYPE = FIELD(LINE, ",", 4)
+         STATUS = FIELD(LINE, ",", 8)
+         
+         IF STATUS # "active" THEN CONTINUE
+         
+         CRT "Processing ":FILENAME:" (":ABB:")..."
+         
+         * Create the data file
+         CMD = "CREATE.FILE ":FILENAME:" ":FILETYPE
+         EXECUTE CMD CAPTURING OUTPUT SETTING RESULT
+         IF RESULT THEN
+            * File might already exist - try to open it
+            OPEN FILENAME TO F.DATA ELSE
+               CRT "  Error creating file ":FILENAME
+               CONTINUE
+            END
+         END ELSE
+            OPEN FILENAME TO F.DATA ELSE
+               CRT "  Error opening file ":FILENAME
+               CONTINUE
+            END
+         END
+         
+         * Open the dictionary
+         OPEN "DICT", FILENAME TO F.DICT ELSE
+            CRT "  Error opening DICT ":FILENAME
+            CONTINUE
+         END
+         
+         * Read the detailed schema CSV for this file
+         SCHEMA.CSV = "SCHEMA/":FILENAME:".csv"
+         OPENSEQ SCHEMA.CSV TO F.SCHEMA ELSE
+            CRT "  Warning: Schema file not found: ":SCHEMA.CSV
+            CONTINUE
+         END
+         
+         * Read field definitions
+         FIELD.LINES = ""
+         FIELD.COUNT = 0
+         LOOP
+            READSEQ FLINE FROM F.SCHEMA ELSE EXIT
+            FIELD.COUNT += 1
+            IF FIELD.COUNT > 1 THEN
+               FIELD.LINES<-1> = FLINE
+            END
+         REPEAT
+         CLOSESEQ F.SCHEMA
+         
+         * Create DICT entries - ALL AS TYPE D (not A)
+         DICT.COUNT = 0
+         FOR J = 1 TO DCOUNT(FIELD.LINES, @FM)
+            FLINE = FIELD.LINES<J>
+            IF FLINE = "" THEN CONTINUE
+            
+            FIELDNAME = FIELD(FLINE, ",", 1)
+            FIELDNUM = FIELD(FLINE, ",", 2)
+            FIELDTYPE = FIELD(FLINE, ",", 3)
+            FIELDDESC = FIELD(FLINE, ",", 4)
+            REQUIRED = FIELD(FLINE, ",", 5)
+            INDEXED = FIELD(FLINE, ",", 6)
+            
+            IF FIELDNAME = "" THEN CONTINUE
+            
+            * Build D-type dictionary entry
+            DICT.REC = ""
+            DICT.REC<1> = "D"
+            DICT.REC<2> = FIELDNUM
+            
+            * Determine conversion code and format based on field type and name
+            CONV.CODE = ""
+            FORMAT.SPEC = "15L"
+            
+            BEGIN CASE
+               CASE FIELDTYPE = "D"
+                  * Date fields: D4- conversion, 10R format
+                  CONV.CODE = "D4-"
+                  FORMAT.SPEC = "10R"
+                  
+               CASE FIELDTYPE = "N"
+                  * Numeric fields - check for currency, percentages, etc.
+                  IF INDEX(FIELDNAME, "COST", 1) OR INDEX(FIELDNAME, "PRICE", 1) OR INDEX(FIELDNAME, "AMOUNT", 1) OR INDEX(FIELDNAME, "TOTAL", 1) OR INDEX(FIELDNAME, "BALANCE", 1) THEN
+                     * Currency fields: MD2 conversion, right justified
+                     CONV.CODE = "MD2"
+                     FORMAT.SPEC = "12R"
+                  END ELSE IF INDEX(FIELDNAME, "PERCENT", 1) OR INDEX(FIELDNAME, "RATE", 1) THEN
+                     * Percentage/rate fields: MD2 conversion
+                     CONV.CODE = "MD2"
+                     FORMAT.SPEC = "8R"
+                  END ELSE IF INDEX(FIELDNAME, "COUNT", 1) OR INDEX(FIELDNAME, "NUM", 1) OR INDEX(FIELDNAME, "QTY", 1) OR INDEX(FIELDNAME, "QUANTITY", 1) THEN
+                     * Count/quantity fields: no decimals
+                     CONV.CODE = "MR0"
+                     FORMAT.SPEC = "8R"
+                  END ELSE
+                     * General numeric: right justified
+                     FORMAT.SPEC = "10R"
+                  END
+                  
+               CASE FIELDTYPE = "A"
+                  * Alphanumeric - check field name patterns
+                  IF INDEX(FIELDNAME, "ACTIVE", 1) OR INDEX(FIELDNAME, "FLAG", 1) OR INDEX(FIELDNAME, "VERIFIED", 1) THEN
+                     * Y/N flag fields
+                     FORMAT.SPEC = "1L"
+                  END ELSE IF INDEX(FIELDNAME, "STATUS", 1) OR INDEX(FIELDNAME, "TYPE", 1) OR INDEX(FIELDNAME, "LEVEL", 1) OR INDEX(FIELDNAME, "PRIORITY", 1) THEN
+                     * Status/type fields
+                     FORMAT.SPEC = "12L"
+                  END ELSE IF INDEX(FIELDNAME, "NAME", 1) OR INDEX(FIELDNAME, "TITLE", 1) THEN
+                     * Name/title fields
+                     FORMAT.SPEC = "30L"
+                  END ELSE IF INDEX(FIELDNAME, "EMAIL", 1) THEN
+                     * Email fields
+                     FORMAT.SPEC = "35L"
+                  END ELSE IF INDEX(FIELDNAME, "PHONE", 1) OR INDEX(FIELDNAME, "MOBILE", 1) THEN
+                     * Phone fields
+                     FORMAT.SPEC = "15L"
+                  END ELSE IF INDEX(FIELDNAME, "URL", 1) OR INDEX(FIELDNAME, "WEBSITE", 1) OR INDEX(FIELDNAME, "ENDPOINT", 1) THEN
+                     * URL fields
+                     FORMAT.SPEC = "40L"
+                  END ELSE IF INDEX(FIELDNAME, "CITY", 1) THEN
+                     FORMAT.SPEC = "20L"
+                  END ELSE IF INDEX(FIELDNAME, "STATE", 1) OR INDEX(FIELDNAME, "COUNTRY", 1) THEN
+                     FORMAT.SPEC = "15L"
+                  END ELSE IF INDEX(FIELDNAME, "ZIP", 1) OR INDEX(FIELDNAME, "POSTAL", 1) THEN
+                     FORMAT.SPEC = "10L"
+                  END ELSE IF INDEX(FIELDNAME, "DESC", 1) THEN
+                     * Description fields
+                     FORMAT.SPEC = "40L"
+                  END ELSE
+                     * Default alphanumeric
+                     FORMAT.SPEC = "20L"
+                  END
+                  
+               CASE FIELDTYPE = "T"
+                  * Text fields - wide format
+                  FORMAT.SPEC = "50L"
+                  
+               CASE FIELDTYPE = "K"
+                  * Key fields
+                  FORMAT.SPEC = "15L"
+                  
+               CASE 1
+                  * Default
+                  FORMAT.SPEC = "15L"
+            END CASE
+            
+            DICT.REC<3> = CONV.CODE
+            DICT.REC<4> = FIELDDESC
+            DICT.REC<5> = FORMAT.SPEC
+            
+            * Field 6: S for single-valued, M for multivalued
+            IF FIELDTYPE = "M" THEN
+               DICT.REC<6> = "M"
+            END ELSE
+               DICT.REC<6> = "S"
+            END
+            DICT.REC<7> = ""
+            * Field 8: X if indexed, blank if not
+            IF INDEXED = "Y" THEN
+               DICT.REC<8> = "X"
+            END ELSE
+               DICT.REC<8> = ""
+            END
+            
+            WRITE DICT.REC ON F.DICT, FIELDNAME
+            DICT.COUNT += 1
+         NEXT J
+         
+         CRT "  Created ":DICT.COUNT:" DICT entries (type D)"
+         
+         * Create include file with new structure
+         EQU.CONTENT = ""
+         EQU.CONTENT<-1> = "* ":FILENAME:" field equates"
+         EQU.CONTENT<-1> = "* Auto-generated by BUILD.SCHEMA"
+         EQU.CONTENT<-1> = ""
+         
+         * File handle equates
+         EQU.CONTENT<-1> = "EQU ":FILENAME:".FILE.NUM TO ":FILENUM
+         EQU.CONTENT<-1> = "EQU ":FILENAME:".F TO FILES(":FILENAME:".FILE.NUM)"
+         EQU.CONTENT<-1> = "EQU ":ABB:".F TO ":FILENAME:".F"
+         EQU.CONTENT<-1> = "EQU ":ABB:" TO ":ABB:".F"
+         EQU.CONTENT<-1> = ""
+         
+         * Field attribute equates (with .A suffix)
+         FOR J = 1 TO DCOUNT(FIELD.LINES, @FM)
+            FLINE = FIELD.LINES<J>
+            IF FLINE = "" THEN CONTINUE
+            
+            FIELDNAME = FIELD(FLINE, ",", 1)
+            FIELDNUM = FIELD(FLINE, ",", 2)
+            
+            IF FIELDNAME = "" THEN CONTINUE
+            
+            EQU.CONTENT<-1> = "EQU ":FILENAME:".":FIELDNAME:".A TO ":FIELDNUM
+         NEXT J
+         
+         EQU.CONTENT<-1> = ""
+         
+         * Field access equates (using .R<attribute>)
+         FOR J = 1 TO DCOUNT(FIELD.LINES, @FM)
+            FLINE = FIELD.LINES<J>
+            IF FLINE = "" THEN CONTINUE
+            
+            FIELDNAME = FIELD(FLINE, ",", 1)
+            
+            IF FIELDNAME = "" THEN CONTINUE
+            
+            EQU.CONTENT<-1> = "EQU ":ABB:".":FIELDNAME:" TO ":ABB:".R<":FILENAME:".":FIELDNAME:".A>"
+         NEXT J
+         
+         * Write include file
+         EQU.FILENAME = "EQU/":FILENAME:".h"
+         OPENSEQ EQU.FILENAME TO F.EQU THEN
+            CLOSESEQ F.EQU
+            OSDELETE EQU.FILENAME
+         END
+         
+         OPENSEQ EQU.FILENAME TO F.EQU ELSE
+            CREATE F.EQU ELSE
+               CRT "  Error creating EQU file: ":EQU.FILENAME
+               CONTINUE
+            END
+         END
+         
+         FOR J = 1 TO DCOUNT(EQU.CONTENT, @FM)
+            WRITESEQ EQU.CONTENT<J> TO F.EQU ELSE
+               CRT "  Error writing to EQU file"
+            END
+         NEXT J
+         CLOSESEQ F.EQU
+         
+         CRT "  Created EQU file: ":EQU.FILENAME
+         CRT ""
+      NEXT I
+      
+      * Update master FILES.EQU
+      CRT "Updating master FILES.EQU..."
+      MASTER.EQU = ""
+      MASTER.EQU<-1> = "* Master file equates"
+      MASTER.EQU<-1> = "* Auto-generated by BUILD.SCHEMA"
+      MASTER.EQU<-1> = ""
+      MASTER.EQU<-1> = "COMMON FILES(50)"
+      MASTER.EQU<-1> = ""
+      
+      FOR I = 1 TO DCOUNT(CSV.LINES, @FM)
+         LINE = CSV.LINES<I>
+         IF LINE = "" THEN CONTINUE
+         
+         ABB = FIELD(LINE, ",", 2)
+         STATUS = FIELD(LINE, ",", 8)
+         
+         IF STATUS = "active" THEN
+            MASTER.EQU<-1> = "$INCLUDE EQU ":ABB:".equ"
+         END
+      NEXT I
+      
+      * Write master FILES.EQU
+      MASTER.FILE = "EQU/FILES.EQU"
+      OPENSEQ MASTER.FILE TO F.MASTER THEN
+         CLOSESEQ F.MASTER
+         OSDELETE MASTER.FILE
+      END
+      
+      OPENSEQ MASTER.FILE TO F.MASTER ELSE
+         CREATE F.MASTER ELSE
+            CRT "Error creating master FILES.EQU"
+            STOP
+         END
+      END
+      
+      FOR I = 1 TO DCOUNT(MASTER.EQU, @FM)
+         WRITESEQ MASTER.EQU<I> TO F.MASTER ELSE
+            CRT "Error writing master FILES.EQU"
+         END
+      NEXT I
+      CLOSESEQ F.MASTER
+      
+      CRT "Master FILES.EQU updated"
+      CRT ""
+      CRT "Schema build complete!"
+      CRT "All DICT entries created as type D (data definition)"
+      
+      RETURN
+      END
+
+

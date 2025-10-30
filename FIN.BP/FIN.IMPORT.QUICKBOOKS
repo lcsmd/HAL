@@ -1,0 +1,432 @@
+      PROGRAM FIN.IMPORT.QUICKBOOKS
+      *
+      * Import QuickBooks CSV transactions
+      * Usage: FIN.IMPORT.QUICKBOOKS <filename>
+      *
+      * QuickBooks CSV Format:
+      * Line 1: QB (identifier)
+      * Line 2: Headers - ID,TYPE,DATE,NUM,NAME,DESC,ITEM,ACCOUNT,CLASS,SPLIT,DEBIT,CREDIT,AMT
+      * Line 3+: Transaction data
+      *
+      * Field Mapping:
+      * - DATE -> TRANS_DATE (field 1)
+      * - NAME + DESC -> ORIGINAL_PAYEE (field 2)
+      * - AMT -> AMOUNT (field 4)
+      * - ITEM -> CATEGORY (field 5)
+      * - ACCOUNT -> ACCOUNT (field 6)
+      * - TYPE -> TRANSACTION_TYPE (field 17)
+      * - CLASS -> CLASS (field 23)
+      *
+
+      PROMPT ""
+
+      * Get filename
+      CMD = TRIM(SENTENCE())
+      SPACE.POS = INDEX(CMD, " ", 1)
+      IF SPACE.POS > 0 THEN
+         file_name = TRIM(CMD[SPACE.POS+1, 999])
+      END ELSE
+         file_name = ""
+      END
+
+      IF file_name = "" THEN
+         CRT "Usage: FIN.IMPORT.QUICKBOOKS <csv.filename>"
+         CRT "Example: FIN.IMPORT.QUICKBOOKS transactions.csv"
+         STOP
+      END
+
+      * Auto-prepend UPLOADS/
+      IF INDEX(file_name, "/", 1) = 0 AND INDEX(file_name, "\\", 1) = 0 THEN
+         file_name = "UPLOADS/" : file_name
+      END
+
+      * Open files
+      OPEN "TRANSACTION" TO F.TRANS ELSE
+         CRT "ERROR: Cannot open TRANSACTION file"
+         STOP
+      END
+
+      OPEN "IMPORT.LOG" TO F.LOG ELSE
+         CRT "ERROR: Cannot open IMPORT.LOG file"
+         STOP
+      END
+
+      * Open CSV file
+      OPENSEQ file_name TO F.CSV ELSE
+         CRT "ERROR: Cannot open ": file_name
+         STOP
+      END
+
+      CRT
+      CRT "Importing QuickBooks transactions from: ": file_name
+      CRT STR("=",70)
+
+      * Initialize counters
+      batch_id = DATE() : "-" : TIME()
+      record_count = 0
+      error_count = 0
+      skip_count = 0
+      error_list = ""
+      skip_list = ""
+      min_date = ""
+      max_date = ""
+      total_debits = 0
+      total_credits = 0
+
+      * Read first line (should be "QB")
+      READSEQ line FROM F.CSV ELSE
+         CRT "ERROR: Cannot read file"
+         CLOSESEQ F.CSV
+         STOP
+      END
+
+      IF TRIM(line) # "QB" THEN
+         CRT "WARNING: Expected 'QB' identifier, found: ": TRIM(line)
+         CRT "Continuing anyway..."
+      END
+
+      * Read header line
+      READSEQ line FROM F.CSV ELSE
+         CRT "ERROR: Cannot read headers"
+         CLOSESEQ F.CSV
+         STOP
+      END
+
+      * Parse header using CSVDQ
+      header = CSVDQ(line)
+      CRT "Columns found: ": DCOUNT(header, @FM)
+      CRT
+
+      * Map column positions
+      id_col = 0
+      type_col = 0
+      date_col = 0
+      num_col = 0
+      name_col = 0
+      desc_col = 0
+      item_col = 0
+      account_col = 0
+      class_col = 0
+      split_col = 0
+      debit_col = 0
+      credit_col = 0
+      amt_col = 0
+
+      FOR i = 1 TO DCOUNT(header, @FM)
+         col_name = UPCASE(TRIM(header<i>))
+         BEGIN CASE
+            CASE col_name = "ID"
+               id_col = i
+            CASE col_name = "TYPE"
+               type_col = i
+            CASE col_name = "DATE"
+               date_col = i
+            CASE col_name = "NUM"
+               num_col = i
+            CASE col_name = "NAME"
+               name_col = i
+            CASE col_name = "DESC"
+               desc_col = i
+            CASE col_name = "ITEM"
+               item_col = i
+            CASE col_name = "ACCOUNT"
+               account_col = i
+            CASE col_name = "CLASS"
+               class_col = i
+            CASE col_name = "SPLIT"
+               split_col = i
+            CASE col_name = "DEBIT"
+               debit_col = i
+            CASE col_name = "CREDIT"
+               credit_col = i
+            CASE col_name = "AMT"
+               amt_col = i
+         END CASE
+      NEXT i
+
+      * Validate required columns
+      IF date_col = 0 THEN
+         CRT "ERROR: DATE column not found"
+         CLOSESEQ F.CSV
+         STOP
+      END
+
+      IF amt_col = 0 THEN
+         CRT "ERROR: AMT column not found"
+         CLOSESEQ F.CSV
+         STOP
+      END
+
+      CRT "Processing QuickBooks transactions..."
+      CRT
+
+      * Process data rows
+      LOOP
+         READSEQ line FROM F.CSV ELSE EXIT
+
+         IF line = "" THEN CONTINUE
+
+         * Parse CSV line
+         row = CSVDQ(line)
+         record_count += 1
+
+         * Extract fields
+         qb_id = row<id_col>
+         trans_type = row<type_col>
+         trans_date = row<date_col>
+         check_num = row<num_col>
+         name = row<name_col>
+         description = row<desc_col>
+         item = row<item_col>
+         account = row<account_col>
+         class = row<class_col>
+         split_account = row<split_col>
+         debit = row<debit_col>
+         credit = row<credit_col>
+         amount = row<amt_col>
+
+         * Convert date to QM internal format (MM/DD/YY or MM/DD/YYYY format)
+         * QM internal date format is days since 31-Dec-1967
+         IF trans_date # "" THEN
+            * Try standard D conversion (handles MM/DD/YYYY and MM/DD/YY)
+            trans_date = ICONV(trans_date, "D")
+            
+            * If that fails, try explicit formats
+            IF trans_date = "" THEN
+               trans_date = ICONV(TRIM(row<date_col>), "D2/")
+            END
+            IF trans_date = "" THEN
+               trans_date = ICONV(TRIM(row<date_col>), "D4/")
+            END
+         END
+
+         * Validate date conversion
+         IF trans_date = "" OR NOT(NUM(trans_date)) THEN
+            error_count += 1
+            error_list<-1> = "Row ": record_count : " (ID ": qb_id : "): Invalid date [": row<date_col> : "]"
+            CONTINUE
+         END
+
+         * Build payee from NAME and DESC
+         payee = TRIM(name)
+         IF description # "" THEN
+            IF payee # "" THEN payee := ", "
+            payee := TRIM(description)
+         END
+
+         IF payee = "" THEN
+            payee = "[No Payee]"
+         END
+
+         * Clean and convert amount to QM internal numeric format
+         * QM stores numbers as strings but ensures proper numeric format
+         IF amount # "" THEN
+            * Remove commas, quotes, and dollar signs
+            amount = TRIM(amount)
+            amount = CHANGE(amount, ",", "")
+            amount = CHANGE(amount, '"', "")
+            amount = CHANGE(amount, "$", "")
+            amount = TRIM(amount)
+            
+            * Convert to numeric using MD2 (2 decimal places)
+            * This ensures proper numeric storage format
+            amount = ICONV(amount, "MD2")
+            
+            * Validate conversion
+            IF NOT(NUM(amount)) THEN
+               error_count += 1
+               error_list<-1> = "Row ": record_count : " (ID ": qb_id : "): Invalid amount [": row<amt_col> : "]"
+               CONTINUE
+            END
+            
+            * Store as numeric value (QM internal format)
+            * QM stores as string but in proper numeric format: "123.45"
+            amount = amount + 0  ; * Force numeric
+         END ELSE
+            amount = 0
+         END
+
+         * Track totals (convert debit/credit to numeric for summation)
+         IF debit # "" THEN
+            debit_amt = TRIM(debit)
+            debit_amt = CHANGE(debit_amt, ",", "")
+            debit_amt = CHANGE(debit_amt, '"', "")
+            debit_amt = CHANGE(debit_amt, "$", "")
+            debit_amt = ICONV(TRIM(debit_amt), "MD2")
+            IF NUM(debit_amt) THEN
+               total_debits += debit_amt
+            END
+         END
+
+         IF credit # "" THEN
+            credit_amt = TRIM(credit)
+            credit_amt = CHANGE(credit_amt, ",", "")
+            credit_amt = CHANGE(credit_amt, '"', "")
+            credit_amt = CHANGE(credit_amt, "$", "")
+            credit_amt = ICONV(TRIM(credit_amt), "MD2")
+            IF NUM(credit_amt) THEN
+               total_credits += credit_amt
+            END
+         END
+
+         * Track date range
+         IF min_date = "" OR trans_date < min_date THEN min_date = trans_date
+         IF max_date = "" OR trans_date > max_date THEN max_date = trans_date
+
+         * Check if duplicate exists: same date, payee, amount
+         is_dup = 0
+         SELECT F.TRANS
+         LOOP
+            READNEXT check_id ELSE EXIT
+            READ check_rec FROM F.TRANS, check_id THEN
+               IF check_rec<1> = trans_date AND UPCASE(TRIM(check_rec<2>)) = UPCASE(TRIM(payee)) AND check_rec<4> = amount THEN
+                  is_dup = 1
+                  dup_trans_id = check_id
+                  EXIT
+               END
+            END
+         REPEAT
+         CLEARSELECT
+         
+         IF is_dup THEN
+            skip_count += 1
+            skip_msg = "Row ": record_count : " (QB ID ": qb_id : "): Duplicate of ": dup_trans_id
+            skip_list<-1> = skip_msg
+            IF MOD(skip_count, 50) = 0 THEN
+               CRT "  Skipped ": skip_count : " duplicates..."
+            END
+            CONTINUE
+         END
+
+         * Build transaction record
+         * Field structure based on TRANSACTION.DIC:
+         * <1> TRANS_DATE
+         * <2> ORIGINAL_PAYEE
+         * <3> STANDARDIZED_PAYEE (empty for now)
+         * <4> AMOUNT
+         * <5> CATEGORY
+         * <6> ACCOUNT
+         * <7> MEMO
+         * <8> REIMBURSABLE_FLAG
+         * <9> REIMBURSEMENT_CATEGORY
+         * <10> REIMBURSEMENT_STATUS
+         * <11> PAYEE_ID
+         * <12> IMPORT_BATCH_ID
+         * <13> TAGS
+         * <14> REIMB_PERCENTAGE
+         * <15> SUBCATEGORY
+         * <16> CHECK_NUMBER
+         * <17> TRANSACTION_TYPE
+         * <18> CLEARED_STATUS
+         * <19> QUICKEN_TAGS
+         * <20> SPLIT_FLAG
+         * <21> PARENT_TRANS_ID
+         * <22> ADDRESS
+         * <23> CLASS
+         * <24> RAW_CSV_LINE
+
+         trans_rec = ""
+         trans_rec<1> = trans_date
+         trans_rec<2> = payee
+         trans_rec<3> = ""                    ; * STANDARDIZED_PAYEE (to be filled by standardization)
+         trans_rec<4> = amount
+         trans_rec<5> = item                  ; * CATEGORY
+         trans_rec<6> = account
+         trans_rec<7> = ""                    ; * MEMO (not in QuickBooks export)
+         trans_rec<8> = "N"                   ; * REIMBURSABLE_FLAG
+         trans_rec<9> = ""                    ; * REIMBURSEMENT_CATEGORY
+         trans_rec<10> = "NOT.APPLICABLE"     ; * REIMBURSEMENT_STATUS
+         trans_rec<11> = ""                   ; * PAYEE_ID (to be linked later)
+         trans_rec<12> = batch_id
+         trans_rec<13> = ""                   ; * TAGS
+         trans_rec<14> = ""                   ; * REIMB_PERCENTAGE
+         trans_rec<15> = ""                   ; * SUBCATEGORY
+         trans_rec<16> = check_num
+         trans_rec<17> = trans_type           ; * TRANSACTION_TYPE (Deposit, Check, etc.)
+         trans_rec<18> = ""                   ; * CLEARED_STATUS
+         trans_rec<19> = ""                   ; * QUICKEN_TAGS
+         trans_rec<20> = ""                   ; * SPLIT_FLAG
+         trans_rec<21> = ""                   ; * PARENT_TRANS_ID
+         trans_rec<22> = ""                   ; * ADDRESS
+         trans_rec<23> = class
+         trans_rec<24> = line                 ; * RAW_CSV_LINE
+
+         * Generate transaction ID
+         * Format: BATCH-QBID or BATCH-COUNTER if no QB ID
+         IF qb_id # "" THEN
+            trans_id = batch_id : "-QB" : qb_id
+         END ELSE
+            trans_id = batch_id : "-" : record_count
+         END
+
+         * Write transaction
+         WRITE trans_rec TO F.TRANS, trans_id
+
+         * Progress indicator
+         IF MOD(record_count, 100) = 0 THEN
+            CRT "  Processed ": record_count : " records..."
+         END
+      REPEAT
+
+      CLOSESEQ F.CSV
+
+      * Calculate imported count (excluding duplicates and errors)
+      imported_count = record_count - skip_count - error_count
+
+      * Write import log
+      log_rec = ""
+      log_rec<1> = DATE()                                  ; * Import date
+      log_rec<2> = file_name                               ; * Source file
+      log_rec<3> = record_count                            ; * Total records processed
+      log_rec<4> = OCONV(min_date, "D4-") : " to " : OCONV(max_date, "D4-")  ; * Date range
+      log_rec<5> = error_list                              ; * Errors
+      log_rec<6> = error_count                             ; * Error count
+      log_rec<7> = "QuickBooks CSV Import"                 ; * Import type
+      log_rec<8> = OCONV(total_debits, "MD2")              ; * Total debits
+      log_rec<9> = OCONV(total_credits, "MD2")             ; * Total credits
+      log_rec<10> = skip_count                             ; * Duplicates skipped
+      log_rec<11> = skip_list                              ; * Duplicate details
+      log_rec<12> = imported_count                         ; * Actually imported
+
+      WRITE log_rec TO F.LOG, batch_id
+
+      * Display summary
+      CRT
+      CRT STR("=",70)
+      CRT "QuickBooks Import Complete!"
+      CRT STR("=",70)
+      CRT "  Records processed: ": record_count
+      CRT "  Records imported: ": imported_count
+      IF skip_count > 0 THEN
+         CRT "  Duplicates skipped: ": skip_count
+      END
+      IF error_count > 0 THEN
+         CRT "  Errors: ": error_count
+      END
+      CRT "  Batch ID: ": batch_id
+      CRT "  Date range: ": OCONV(min_date, "D4-") : " to " : OCONV(max_date, "D4-")
+      CRT "  Total debits: $": OCONV(total_debits, "MD2")
+      CRT "  Total credits: $": OCONV(total_credits, "MD2")
+      CRT STR("-",70)
+      IF skip_count > 0 THEN
+         CRT "  Note: ": skip_count : " duplicate transaction(s) were skipped"
+         CRT "        Review IMPORT.LOG ": batch_id : " for duplicate details"
+      END
+      IF error_count > 0 THEN
+         CRT "  Warning: ": error_count : " error(s) encountered"
+         CRT "           Review IMPORT.LOG ": batch_id : " for error details"
+      END
+      IF skip_count = 0 AND error_count = 0 THEN
+         CRT "  Status: No duplicates or errors detected"
+      END
+      CRT STR("=",70)
+      CRT
+      CRT "Next steps:"
+      CRT "  1. Review imported transactions: LIST TRANSACTION WITH IMPORT.BATCH.ID = '": batch_id : "'"
+      CRT "  2. Standardize payee names (if needed)"
+      CRT "  3. Tag reimbursable transactions (if applicable)"
+      CRT
+
+      STOP
+      END
+

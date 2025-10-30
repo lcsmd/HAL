@@ -1,0 +1,31 @@
+FieldName,FieldNum,Type,Description,Required,Indexed
+ID,0,K,Unique appointment ID,Y,Y
+PERSON_ID,1,A,Reference to PERSON file,Y,Y
+DOCTOR_ID,2,A,Doctor ID,Y,Y
+FACILITY_ID,3,A,Healthcare facility ID,N,Y
+APPOINTMENT_DATE,4,D,Appointment date,Y,Y
+APPOINTMENT_TIME,5,T,Appointment time,Y,N
+DURATION,6,N,Duration in minutes,N,N
+APPOINTMENT_TYPE,7,A,Type (checkup/follow-up/consultation/procedure/emergency),Y,Y
+REASON,8,A,Reason for visit,Y,N
+STATUS,9,A,Status (scheduled/confirmed/completed/cancelled/no-show),Y,Y
+REMINDER_SENT,10,A,Reminder sent flag (Y/N),N,N
+REMINDER_DATE,11,D,Date reminder sent,N,N
+CHECK_IN_TIME,12,T,Check-in time,N,N
+CHECK_OUT_TIME,13,T,Check-out time,N,N
+WAIT_TIME,14,N,Wait time in minutes,N,N
+COPAY_AMOUNT,15,N,Copay amount,N,N
+COPAY_PAID,16,A,Copay paid flag (Y/N),N,N
+INSURANCE_ID,17,A,Insurance ID used,N,Y
+VISIT_SUMMARY,18,T,Visit summary notes,N,N
+DIAGNOSIS_CODES,19,M,ICD codes from visit (multivalued),N,N
+PROCEDURES,20,M,Procedures performed (multivalued),N,N
+PRESCRIPTIONS,21,M,Medication IDs prescribed (multivalued),N,N
+TESTS_ORDERED,22,M,Test IDs ordered (multivalued),N,N
+FOLLOW_UP_REQUIRED,23,A,Follow-up required flag (Y/N),N,N
+FOLLOW_UP_DATE,24,D,Scheduled follow-up date,N,N
+ATTACHMENTS,25,M,Document IDs (multivalued),N,N
+TAGS,26,M,Tags for categorization (multivalued),N,N
+ACTIVE,27,A,Active status (Y/N),Y,Y
+CREATED_DATE,28,D,Record creation date,Y,N
+UPDATED_DATE,29,D,Last update date,Y,N

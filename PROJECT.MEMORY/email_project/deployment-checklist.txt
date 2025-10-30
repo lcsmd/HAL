@@ -1,0 +1,552 @@
+# AI-Enhanced Email Management System
+## Deployment Checklist & Quick Reference
+
+**For Dr. Lawrence C. Sullivan**
+
+---
+
+## Pre-Deployment Checklist
+
+### System Requirements
+- [ ] OpenQM installed and running
+- [ ] Python 3.8+ installed
+- [ ] pip package manager available
+- [ ] Minimum 2GB RAM
+- [ ] Minimum 10GB disk space (more for attachments)
+- [ ] Internet connection for API access
+
+### API Credentials
+- [ ] Gmail OAuth2 credentials obtained
+- [ ] Gmail API enabled in Google Cloud Console
+- [ ] Anthropic API key obtained (for AI features)
+- [ ] Exchange credentials configured (if using Exchange)
+
+---
+
+## Installation Steps
+
+### 1. Run Automated Installation
+```bash
+chmod +x complete_installation.sh
+./complete_installation.sh
+```
+
+**Expected output:**
+```
+✓ Python 3 found
+✓ OpenQM found
+✓ Installation directory created
+✓ Virtual environment created
+✓ Python dependencies installed
+✓ OpenQM database initialized
+✓ Configuration file created
+```
+
+### 2. Configure API Keys
+
+Edit configuration file:
+```bash
+cd ~/email_management_system
+nano config/config.ini
+```
+
+**Required changes:**
+```ini
+[ai]
+anthropic_api_key = sk-ant-your-actual-key-here
+
+[gmail]
+credentials_file = config/gmail_credentials.json
+```
+
+### 3. Add Gmail Credentials
+
+Place your downloaded `credentials.json` file:
+```bash
+cp ~/Downloads/credentials.json ~/email_management_system/config/gmail_credentials.json
+```
+
+### 4. Verify Installation
+
+Run test script:
+```bash
+cd ~/email_management_system
+source venv/bin/activate
+python demo_testing_script.py --test-only
+```
+
+**Expected output:**
+```
+✓ OpenQM connection successful
+  Email count: 0
+  Thread count: 0
+  Attachment count: 0
+```
+
+---
+
+## First-Time Setup
+
+### Step 1: Import Initial Emails
+
+```bash
+./ingest_emails.sh
+```
+
+**What happens:**
+1. Opens browser for Gmail authentication
+2. Downloads 100 most recent emails
+3. Extracts attachments
+4. Stores in OpenQM database
+5. Creates body files
+
+**Estimated time:** 2-5 minutes for 100 emails
+
+### Step 2: Run Demo (Optional)
+
+Creates sample data to explore features:
+```bash
+python demo_testing_script.py
+```
+
+**What it creates:**
+- 20 sample emails
+- 6 categories (Work, Personal, Finance, etc.)
+- 6 automated rules
+- Applies rules to all emails
+
+### Step 3: Start Web Interface
+
+```bash
+./start_web.sh
+```
+
+Open browser: **http://localhost:5000**
+
+**Expected page:** Dashboard with statistics and recent emails
+
+### Step 4: AI Categorization (First Run)
+
+1. Navigate to **AI Categorization** page
+2. Click **"🔍 Analyze Emails"** (100 emails recommended)
+3. Wait 30-60 seconds for Claude analysis
+4. Review proposed categories
+5. Click **"✅ Apply These Categories"**
+
+**What happens:**
+- Claude analyzes email patterns
+- Proposes 5-15 categories
+- Assigns categories to emails
+- Creates automation rules
+
+---
+
+## Daily Usage
+
+### Import New Emails
+
+**Manual:**
+```bash
+./ingest_emails.sh
+```
+
+**Automatic (via daemon):**
+```bash
+./start_daemon.sh
+```
+
+Or install as system service:
+```bash
+sudo cp /tmp/email-processor.service /etc/systemd/system/
+sudo systemctl enable email-processor
+sudo systemctl start email-processor
+```
+
+### Check Daemon Status
+
+```bash
+sudo systemctl status email-processor
+
+# View logs
+tail -f ~/email_management_system/logs/processor_daemon.log
+```
+
+### Apply Rules to New Emails
+
+**Automatic:** Daemon applies rules during ingestion
+
+**Manual:**
+```bash
+python rule_engine.py --apply-new
+```
+
+### Categorize Uncategorized Emails
+
+```bash
+python ai_categorization_engine.py --batch
+```
+
+---
+
+## File Locations
+
+### Critical Files
+```
+~/email_management_system/
+├── config/
+│   ├── config.ini                  # Main configuration
+│   ├── gmail_credentials.json      # Gmail OAuth creds
+│   └── gmail_token.pickle          # Gmail auth token
+├── templates/                      # HTML templates (9 files)
+├── app.py                          # Flask web application
+├── openqm_interface.py            # OpenQM wrapper
+├── gmail_ingestion.py             # Gmail import
+├── ai_categorization_engine.py    # AI features
+├── rule_engine.py                 # Rule automation
+├── email_processor_daemon.py      # Background daemon
+└── openqm_setup.py                # Database setup
+```
+
+### Data Storage
+```
+~/email_management_system/
+├── attachments/                    # Email attachments (by hash)
+├── bodies/                         # Email body files (.bod, .hbod)
+├── html_objects/                   # Extracted HTML images
+└── logs/                           # Application logs
+```
+
+### OpenQM Files
+```
+OpenQM Account: EMAILSYS
+
+Files:
+- EMAILS              # Main email records
+- ATTACHMENTS         # Attachment metadata
+- BODIES             # Body file references
+- THREADS            # Email thread groups
+- CATEGORIES         # Category definitions
+- RULES              # Automation rules
+- CONTACTS           # Contact information
+- GROUPS             # Email groups
+- DOMAINS            # Domain patterns
+- KEYWORDS           # Keyword index
+- HTML.OBJECTS       # HTML object refs
+- DISCLAIMERS        # Disclaimer text
+- SYSTEM.CONFIG      # System settings
+```
+
+---
+
+## Quick Commands
+
+### Email Import
+```bash
+# Import latest 100
+./ingest_emails.sh
+
+# Import 500 emails
+python gmail_ingestion.py --max 500
+
+# Import only unread
+python gmail_ingestion.py --max 100 --query "is:unread"
+```
+
+### AI Categorization
+```bash
+# Analyze 100 newest
+python ai_categorization_engine.py --analyze 100
+
+# Batch categorize all uncategorized
+python ai_categorization_engine.py --batch
+
+# Suggest for one email
+python ai_categorization_engine.py --email-id E0000000123
+```
+
+### Rules
+```bash
+# Apply all rules to all emails
+python rule_engine.py --apply-all
+
+# Apply to new emails only
+python rule_engine.py --apply-new
+
+# Show statistics
+python rule_engine.py --stats
+```
+
+### Web Server
+```bash
+# Start web interface
+./start_web.sh
+
+# Access at
+http://localhost:5000
+```
+
+### Daemon
+```bash
+# Run in foreground
+./start_daemon.sh
+
+# Run once and exit
+python email_processor_daemon.py --once
+
+# As system service
+sudo systemctl start email-processor
+sudo systemctl stop email-processor
+sudo systemctl restart email-processor
+sudo systemctl status email-processor
+```
+
+---
+
+## Verification Tests
+
+### Test 1: OpenQM Connection
+```bash
+python -c "from openqm_interface import *; qm = OpenQMInterface(); print('✓ OpenQM OK' if qm.read_record('SYSTEM.CONFIG', 'COUNTERS') else '✗ Failed')"
+```
+
+### Test 2: Gmail Authentication
+```bash
+python -c "from gmail_ingestion import *; g = GmailIngestion(Path('config'), Path('.'), 'EMAILSYS'); g.authenticate(); print('✓ Gmail OK')"
+```
+
+### Test 3: AI Engine
+```bash
+python -c "from ai_categorization_engine import *; a = AICategorizationEngine(Path('config/config.ini')); print('✓ AI OK')"
+```
+
+### Test 4: Web Server
+```bash
+curl http://localhost:5000/api/stats
+# Should return JSON with statistics
+```
+
+### Test 5: Email Count
+```bash
+python -c "from openqm_interface import *; qm = OpenQMInterface(); print(f'Total emails: {len(qm.select_records(\"EMAILS\", \"\"))}')"
+```
+
+---
+
+## Common Operations
+
+### View Email Count by Category
+
+```python
+from openqm_interface import OpenQMInterface
+
+qm = OpenQMInterface()
+cat_ids = qm.select_records('CATEGORIES', '')
+
+for cat_id in cat_ids:
+    cat_data = qm.read_record('CATEGORIES', cat_id)
+    if cat_data:
+        name = cat_data.get(1, '')
+        count = cat_data.get(4, 0)
+        print(f"{name}: {count} emails")
+```
+
+### Find Uncategorized Emails
+
+```python
+from openqm_interface import OpenQMInterface, EmailRecord
+
+qm = OpenQMInterface()
+email_rec = EmailRecord(qm)
+email_ids = qm.select_records('EMAILS', '')
+
+uncategorized = []
+for email_id in email_ids:
+    email = email_rec.get(email_id)
+    if email and not email.get('categories'):
+        uncategorized.append(email_id)
+
+print(f"Uncategorized: {len(uncategorized)}")
+```
+
+### Export Category Statistics
+
+```bash
+python -c "
+from openqm_interface import *
+import json
+
+qm = OpenQMInterface()
+cats = []
+
+for cat_id in qm.select_records('CATEGORIES', ''):
+    cat = qm.read_record('CATEGORIES', cat_id)
+    if cat:
+        cats.append({
+            'id': cat_id,
+            'name': cat.get(1, ''),
+            'count': cat.get(4, 0)
+        })
+
+print(json.dumps(cats, indent=2))
+" > category_stats.json
+```
+
+---
+
+## Monitoring
+
+### Health Check Script
+
+Create `health_check.sh`:
+```bash
+#!/bin/bash
+cd ~/email_management_system
+source venv/bin/activate
+
+echo "=== System Health Check ==="
+echo ""
+
+# OpenQM
+python -c "from openqm_interface import *; qm = OpenQMInterface(); print('OpenQM:', '✓ OK' if qm.read_record('SYSTEM.CONFIG', 'COUNTERS') else '✗ FAILED')"
+
+# Web server
+curl -s http://localhost:5000/api/stats > /dev/null && echo "Web Server: ✓ OK" || echo "Web Server: ✗ FAILED"
+
+# Daemon
+systemctl is-active --quiet email-processor && echo "Daemon: ✓ RUNNING" || echo "Daemon: ✗ STOPPED"
+
+# Disk space
+df -h ~/email_management_system | tail -1 | awk '{print "Disk Space: " $4 " available"}'
+
+# Email count
+python -c "from openqm_interface import *; qm = OpenQMInterface(); print('Total Emails:', len(qm.select_records('EMAILS', '')))"
+
+echo ""
+echo "=== Health Check Complete ==="
+```
+
+### Log Monitoring
+
+```bash
+# Watch daemon logs
+tail -f logs/processor_daemon.log
+
+# Check for errors
+grep ERROR logs/*.log
+
+# Check recent activity
+grep "Processing" logs/processor_daemon.log | tail -20
+```
+
+---
+
+## Backup & Recovery
+
+### Backup Script
+
+```bash
+#!/bin/bash
+BACKUP_DIR="$HOME/email_backups/$(date +%Y%m%d_%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+
+# OpenQM data
+qm -A EMAILSYS -KCOPY.FILE EMAILS "$BACKUP_DIR/EMAILS"
+qm -A EMAILSYS -KCOPY.FILE CATEGORIES "$BACKUP_DIR/CATEGORIES"
+qm -A EMAILSYS -KCOPY.FILE RULES "$BACKUP_DIR/RULES"
+
+# File data
+tar -czf "$BACKUP_DIR/bodies.tar.gz" bodies/
+tar -czf "$BACKUP_DIR/attachments.tar.gz" attachments/
+
+# Config
+cp -r config "$BACKUP_DIR/"
+
+echo "Backup complete: $BACKUP_DIR"
+```
+
+### Recovery
+
+```bash
+# Restore OpenQM files
+qm -A EMAILSYS -KRESTORE.FILE EMAILS "$BACKUP_DIR/EMAILS"
+
+# Restore file data
+tar -xzf "$BACKUP_DIR/bodies.tar.gz"
+tar -xzf "$BACKUP_DIR/attachments.tar.gz"
+```
+
+---
+
+## Performance Tuning
+
+### Daemon Configuration
+
+Edit `config/config.ini`:
+```ini
+[daemon]
+# Check interval (minutes)
+check_interval_minutes = 15
+
+# Batch size
+batch_size = 50
+
+# Auto-categorize threshold
+ai_categorize_threshold = 100
+```
+
+### Flask Configuration
+
+For production, use Gunicorn:
+```bash
+pip install gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 app:app
+```
+
+### Database Optimization
+
+```bash
+# Rebuild OpenQM indexes
+qm -A EMAILSYS -K "BUILD.INDEX EMAILS"
+```
+
+---
+
+## Troubleshooting Quick Reference
+
+| Problem | Solution |
+|---------|----------|
+| Port 5000 in use | `lsof -ti:5000 \| xargs kill` |
+| Can't connect to OpenQM | Check: `qm -A EMAILSYS -K "SELECT EMAILS"` |
+| Gmail auth fails | Delete `config/gmail_token.pickle`, re-authenticate |
+| AI not working | Check API key in config.ini |
+| No emails showing | Run `./ingest_emails.sh` |
+| Daemon not starting | Check logs: `tail logs/processor_daemon.log` |
+| High memory usage | Reduce batch_size in config.ini |
+| Slow web interface | Add pagination, enable caching |
+
+---
+
+## Support Contacts
+
+**System Administrator:** Dr. Lawrence C. Sullivan
+**Documentation Version:** 1.0.0
+**Last Updated:** April 2025
+
+---
+
+## Success Criteria
+
+Your system is fully operational when:
+
+- [x] OpenQM connection test passes
+- [x] Can import emails via `./ingest_emails.sh`
+- [x] Web interface accessible at http://localhost:5000
+- [x] Dashboard shows email statistics
+- [x] AI categorization completes successfully
+- [x] Rules apply automatically
+- [x] Daemon runs without errors
+- [x] Health check script passes all tests
+
+---
+
+**Congratulations! Your AI-Enhanced Email Management System is ready for production use.**

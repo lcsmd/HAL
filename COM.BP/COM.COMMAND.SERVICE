@@ -1,0 +1,88 @@
+PROGRAM COM.COMMAND.SERVICE
+*
+* Command execution service - reads commands from file, executes, returns results
+* Usage: COM.COMMAND.SERVICE
+*
+* Creates COMMAND.QUEUE directory for command/response files
+*
+
+PROMPT ""
+
+CRT
+CRT "QM Command Service"
+CRT STR("=",70)
+CRT
+
+* Create command queue directory if needed
+EXECUTE "CREATE.FILE COMMAND.QUEUE DIRECTORY"
+
+* Open command queue
+OPEN "COMMAND.QUEUE" TO F.QUEUE ELSE
+   CRT "ERROR: Cannot open COMMAND.QUEUE"
+   STOP
+END
+
+CRT "Service started. Monitoring for commands..."
+CRT "Press Ctrl+C to stop"
+CRT
+
+* Main service loop
+LOOP
+   * Check for pending commands
+   SELECT F.QUEUE
+   
+   LOOP
+      READNEXT cmd_id ELSE EXIT
+      
+      * Read command
+      READ cmd_rec FROM F.QUEUE, cmd_id ELSE CONTINUE
+      
+      * Extract command and parameters
+      command = cmd_rec<1>
+      status = cmd_rec<2>
+      
+      * Skip if already processed
+      IF status = "COMPLETE" OR status = "ERROR" THEN CONTINUE
+      
+      CRT "Processing command: ": cmd_id
+      CRT "  Command: ": command
+      
+      * Mark as processing
+      cmd_rec<2> = "PROCESSING"
+      cmd_rec<3> = DATE()
+      cmd_rec<4> = TIME()
+      WRITE cmd_rec TO F.QUEUE, cmd_id
+      
+      * Execute command and capture output
+      output = ""
+      error_msg = ""
+      
+      * Use EXECUTE CAPTURING to get output
+      EXECUTE command CAPTURING output
+      
+      * Check for errors
+      IF STATUS() # 0 THEN
+         error_msg = "Command failed with status: ": STATUS()
+         cmd_rec<2> = "ERROR"
+         cmd_rec<6> = error_msg
+      END ELSE
+         cmd_rec<2> = "COMPLETE"
+      END
+      
+      * Store results
+      cmd_rec<5> = output
+      cmd_rec<7> = DATE()
+      cmd_rec<8> = TIME()
+      
+      WRITE cmd_rec TO F.QUEUE, cmd_id
+      
+      CRT "  Status: ": cmd_rec<2>
+      CRT
+   REPEAT
+   
+   * Sleep for 1 second before checking again
+   SLEEP 1
+REPEAT
+
+STOP
+END

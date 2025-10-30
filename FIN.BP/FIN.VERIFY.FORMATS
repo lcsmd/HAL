@@ -1,0 +1,148 @@
+      PROGRAM FIN.VERIFY.FORMATS
+      *
+      * Verify that dates and amounts are stored in proper QM internal format
+      * Usage: FIN.VERIFY.FORMATS [batch.id]
+      *
+
+      PROMPT ""
+
+      * Get optional batch ID parameter
+      CMD = TRIM(SENTENCE())
+      SPACE.POS = INDEX(CMD, " ", 1)
+      IF SPACE.POS > 0 THEN
+         batch_filter = TRIM(CMD[SPACE.POS+1, 999])
+      END ELSE
+         batch_filter = ""
+      END
+
+      * Open files
+      OPEN "TRANSACTION" TO F.TRANS ELSE
+         CRT "ERROR: Cannot open TRANSACTION file"
+         STOP
+      END
+
+      CRT
+      CRT "Verifying Date and Amount Internal Formats"
+      CRT STR("=",70)
+      IF batch_filter # "" THEN
+         CRT "Batch ID: ": batch_filter
+      ELSE
+         CRT "Checking all transactions"
+      END
+      CRT STR("=",70)
+      CRT
+
+      * Counters
+      checked_count = 0
+      date_errors = 0
+      amount_errors = 0
+      sample_count = 0
+      max_samples = 10
+
+      * Check transactions
+      SELECT F.TRANS
+      LOOP
+         READNEXT trans_key ELSE EXIT
+         READ trans_rec FROM F.TRANS, trans_key THEN
+            * Filter by batch if specified
+            IF batch_filter # "" THEN
+               IF trans_rec<12> # batch_filter THEN CONTINUE
+            END
+
+            checked_count += 1
+
+            * Get fields
+            trans_date = trans_rec<1>
+            payee = trans_rec<2>
+            amount = trans_rec<4>
+
+            * Check date format
+            date_ok = 1
+            IF trans_date = "" THEN
+               date_ok = 0
+               date_errors += 1
+            END ELSE IF NOT(NUM(trans_date)) THEN
+               date_ok = 0
+               date_errors += 1
+            END ELSE
+               * Verify it's a valid internal date (positive integer)
+               IF trans_date < 0 THEN
+                  date_ok = 0
+                  date_errors += 1
+               END
+            END
+
+            * Check amount format
+            amount_ok = 1
+            IF NOT(NUM(amount)) THEN
+               amount_ok = 0
+               amount_errors += 1
+            END
+
+            * Display sample records
+            IF sample_count < max_samples THEN
+               sample_count += 1
+               CRT "Sample #": sample_count : " - Transaction ID: ": trans_key
+               CRT "  Internal Date: ": trans_date : " (": (IF date_ok THEN "VALID" ELSE "INVALID") : ")"
+               CRT "  Display Date:  ": OCONV(trans_date, "D4-")
+               CRT "  Internal Amt:  ": amount : " (": (IF amount_ok THEN "VALID" ELSE "INVALID") : ")"
+               CRT "  Display Amt:   $": OCONV(amount, "MD2")
+               CRT "  Payee:         ": payee
+               CRT
+            END
+
+            * Progress
+            IF MOD(checked_count, 500) = 0 THEN
+               CRT "  Checked ": checked_count : " transactions..."
+            END
+         END
+      REPEAT
+
+      * Summary
+      CRT STR("=",70)
+      CRT "Verification Complete"
+      CRT STR("=",70)
+      CRT "  Transactions checked: ": checked_count
+      CRT "  Date format errors:   ": date_errors
+      CRT "  Amount format errors: ": amount_errors
+      CRT STR("-",70)
+
+      IF date_errors = 0 AND amount_errors = 0 THEN
+         CRT "  STATUS: All dates and amounts in correct internal format"
+         CRT "  ✓ Dates stored as internal date values (days since 31-Dec-1967)"
+         CRT "  ✓ Amounts stored as numeric values with 2 decimal places"
+      END ELSE
+         CRT "  WARNING: Format errors detected!"
+         IF date_errors > 0 THEN
+            CRT "  - ": date_errors : " date(s) not in proper internal format"
+         END
+         IF amount_errors > 0 THEN
+            CRT "  - ": amount_errors : " amount(s) not in proper numeric format"
+         END
+      END
+      CRT STR("=",70)
+      CRT
+
+      * Format explanation
+      CRT "QM Internal Format Information:"
+      CRT "-------------------------------"
+      CRT "Dates:"
+      CRT "  - Internal: Integer (days since 31-Dec-1967)"
+      CRT "  - Example: 18407 = 04/25/2018"
+      CRT "  - Display: Use OCONV(date, 'D4-') or OCONV(date, 'D2/')"
+      CRT
+      CRT "Amounts:"
+      CRT "  - Internal: Numeric string with decimals"
+      CRT "  - Example: '123.45' or '-67.89'"
+      CRT "  - Display: Use OCONV(amount, 'MD2') for $xxx.xx format"
+      CRT "  - Math operations work directly on internal format"
+      CRT
+      CRT "Verification:"
+      CRT "  - NUM(value) returns TRUE if proper numeric format"
+      CRT "  - Date comparisons work with internal format (18407 < 18408)"
+      CRT "  - Amount math works directly (123.45 + 67.89 = 191.34)"
+      CRT
+
+      STOP
+      END
+

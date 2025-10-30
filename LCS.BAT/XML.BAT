@@ -1,1 +1,0 @@
-POWERSHELL & "c:\qmsys\LCS\LCS.BAT\XML.HTM"

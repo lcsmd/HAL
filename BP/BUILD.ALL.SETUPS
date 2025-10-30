@@ -1,0 +1,40 @@
+PROGRAM BUILD.ALL.SETUPS
+* Compile and catalog all setup programs, then run them
+
+SEPARATOR = STR("=", 60)
+
+CRT ""
+CRT SEPARATOR
+CRT "Compiling and Cataloging All Setup Programs"
+CRT SEPARATOR
+CRT ""
+
+* List of programs to compile
+PROGRAMS = "SETUP.DOMAINS":@FM:"SETUP.FILES":@FM:"SETUP.FIELDS":@FM:"SETUP.DOM_FILE_FIELD":@FM:"RUN.ALL.SETUPS"
+
+* Compile and catalog each program
+FOR I = 1 TO DCOUNT(PROGRAMS, @FM)
+   PROG = PROGRAMS<I>
+   CRT ""
+   CRT "Compiling ":PROG:"..."
+   EXECUTE "BASIC BP ":PROG CAPTURING OUTPUT
+   CRT OUTPUT
+   
+   CRT "Cataloging ":PROG:"..."
+   EXECUTE "CATALOG BP ":PROG:" LOCAL" CAPTURING OUTPUT
+   CRT OUTPUT
+NEXT I
+
+CRT ""
+CRT SEPARATOR
+CRT "All programs compiled and cataloged!"
+CRT SEPARATOR
+CRT ""
+CRT "Now running RUN.ALL.SETUPS..."
+CRT ""
+
+* Run the master setup program
+EXECUTE "RUN.ALL.SETUPS"
+
+STOP
+END

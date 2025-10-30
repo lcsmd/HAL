@@ -1,0 +1,45 @@
+SUBROUTINE SCHEMA.LIST.FILES
+* List all files grouped by domain
+
+INDEX.FILE = "SCHEMA/SCHEMA_INDEX.csv"
+OPENSEQ INDEX.FILE TO F.INDEX ELSE
+   CRT "Error: Cannot open ":INDEX.FILE
+   RETURN
+END
+
+CRT ""
+CRT "=========================================="
+CRT "         FILES BY DOMAIN"
+CRT "=========================================="
+CRT ""
+
+* Read all files
+FILES.DATA = ""
+LINE.NUM = 0
+LOOP
+   READSEQ LINE FROM F.INDEX ELSE EXIT
+   LINE.NUM += 1
+   IF LINE.NUM > 1 AND LINE # "" THEN
+      FILES.DATA<-1> = LINE
+   END
+REPEAT
+CLOSESEQ F.INDEX
+
+* Group by domain (first 3 chars of abbrev)
+FOR I = 1 TO DCOUNT(FILES.DATA, @FM)
+   LINE = FILES.DATA<I>
+   FILENAME = FIELD(LINE, ",", 1)
+   ABB = FIELD(LINE, ",", 2)
+   FILENUM = FIELD(LINE, ",", 3)
+   FIELD.COUNT = FIELD(LINE, ",", 7)
+   STATUS = FIELD(LINE, ",", 8)
+   
+   IF STATUS = "active" THEN
+      CRT FILENAME:" (":ABB:") - ":FIELD.COUNT:" fields"
+   END
+NEXT I
+
+CRT ""
+
+RETURN
+END

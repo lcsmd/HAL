@@ -1,0 +1,420 @@
+PROGRAM MANAGE.RULES
+*
+* MANAGE.RULES - Interactive rule management utility
+*
+* Usage: RUN MANAGE.RULES
+*
+
+PROMPT ""
+* Open files
+OPEN "RULES" TO rules_file ELSE
+   PRINT "ERROR: Cannot open RULES file"
+   STOP
+END
+
+OPEN "PAYEES" TO payee_file ELSE
+   PRINT "ERROR: Cannot open PAYEES file"
+   STOP
+END
+
+LOOP
+   PRINT
+   PRINT "Rule Management Menu"
+   PRINT STR("=",60)
+   PRINT "1. List all rules"
+   PRINT "2. Add payee standardization rule"
+   PRINT "3. Add reimbursement tagging rule"
+   PRINT "4. Add auto-reimbursable payee"
+   PRINT "5. Edit rule"
+   PRINT "6. Delete rule"
+   PRINT "7. Activate/Deactivate rule"
+   PRINT "8. Import sample rules"
+   PRINT "9. Exit"
+   PRINT
+   INPUT choice
+   
+   BEGIN CASE
+      CASE choice = "1"
+         GOSUB LIST_RULES
+      CASE choice = "2"
+         GOSUB ADD_PAYEE_RULE
+      CASE choice = "3"
+         GOSUB ADD_REIMB_RULE
+      CASE choice = "4"
+         GOSUB ADD_AUTO_PAYEE
+      CASE choice = "5"
+         GOSUB EDIT_RULE
+      CASE choice = "6"
+         GOSUB DELETE_RULE
+      CASE choice = "7"
+         GOSUB TOGGLE_RULE
+      CASE choice = "8"
+         GOSUB IMPORT_SAMPLES
+      CASE choice = "9"
+         PRINT "Goodbye!"
+         STOP
+      CASE 1
+         PRINT "Invalid choice"
+   END CASE
+REPEAT
+
+STOP
+
+*
+* Subroutine: List all rules
+*
+LIST_RULES:
+   PRINT
+   PRINT "Current Rules"
+   PRINT STR("-",80)
+   PRINT FMT("ID", "15L"):" ":
+   PRINT FMT("Type", "20L"):" ":
+   PRINT FMT("Pattern", "25L"):" ":
+   PRINT FMT("Pri", "5R"):" ":
+   PRINT FMT("Active", "6L")
+   PRINT STR("-",80)
+   
+   count = 0
+   SELECT rules_file
+   LOOP
+      READNEXT rule_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ rule_rec FROM rules_file, rule_id THEN
+         count = count + 1
+         rule_type = rule_rec<1>
+         pattern = rule_rec<2>
+         priority = rule_rec<5>
+         active = rule_rec<6>
+         
+         PRINT FMT(rule_id, "15L"):" ":
+         PRINT FMT(rule_type, "20L"):" ":
+         PRINT FMT(pattern[1,25], "25L"):" ":
+         PRINT FMT(priority, "5R"):" ":
+         PRINT FMT(active, "6L")
+      END
+   REPEAT
+   
+   PRINT STR("-",80)
+   PRINT "Total rules: ": count
+   
+   RETURN
+
+*
+* Subroutine: Add payee standardization rule
+*
+ADD_PAYEE_RULE:
+   PRINT
+   PRINT "Add Payee Standardization Rule"
+   PRINT STR("-",60)
+   
+   PRINT "Rule types:"
+   PRINT "  1. PAYEE.MATCH (contains text)"
+   PRINT "  2. EXACT.MATCH (exact name match)"
+   PRINT "  3. STARTS.WITH (starts with text)"
+   PRINT
+   PRINT "Select type (1-3): " :
+   INPUT type_choice
+   
+   BEGIN CASE
+      CASE type_choice = "1"
+         rule_type = "PAYEE.MATCH"
+      CASE type_choice = "2"
+         rule_type = "EXACT.MATCH"
+      CASE type_choice = "3"
+         rule_type = "STARTS.WITH"
+      CASE 1
+         PRINT "Invalid choice"
+         RETURN
+   END CASE
+   
+   PRINT
+   PRINT "Enter pattern to match: " :
+   INPUT pattern
+   PRINT "Enter standard payee name: " :
+   INPUT std_name
+   PRINT "Priority (1-100, lower = higher priority): " :
+   INPUT priority
+   
+   IF priority = "" THEN priority = 50
+   
+   * Generate rule ID
+   rule_id = "R" : DATE() : TIME()
+   
+   * Create rule record
+   rule_rec = ""
+   rule_rec<1> = rule_type
+   rule_rec<2> = pattern
+   rule_rec<3> = "STANDARDIZE"
+   rule_rec<4> = std_name
+   rule_rec<5> = priority
+   rule_rec<6> = "Y"
+   
+   WRITE rule_rec TO rules_file, rule_id
+   
+   PRINT
+   PRINT "Rule created: ": rule_id
+   
+   RETURN
+
+*
+* Subroutine: Add reimbursement tagging rule
+*
+ADD_REIMB_RULE:
+   PRINT
+   PRINT "Add Reimbursement Tagging Rule"
+   PRINT STR("-",60)
+   
+   PRINT "Rule types:"
+   PRINT "  1. CATEGORY.MATCH (match transaction category)"
+   PRINT "  2. PAYEE.MATCH (match payee name)"
+   PRINT "  3. MEMO.MATCH (match memo field)"
+   PRINT "  4. AMOUNT.RANGE (match amount range)"
+   PRINT
+   PRINT "Select type (1-4): " :
+   INPUT type_choice
+   
+   BEGIN CASE
+      CASE type_choice = "1"
+         rule_type = "CATEGORY.MATCH"
+         PRINT "Enter category pattern: " :
+         INPUT pattern
+      CASE type_choice = "2"
+         rule_type = "PAYEE.MATCH"
+         PRINT "Enter payee pattern: " :
+         INPUT pattern
+      CASE type_choice = "3"
+         rule_type = "MEMO.MATCH"
+         PRINT "Enter memo pattern: " :
+         INPUT pattern
+      CASE type_choice = "4"
+         rule_type = "AMOUNT.RANGE"
+         PRINT "Enter min amount: " :
+         INPUT min_amt
+         PRINT "Enter max amount: " :
+         INPUT max_amt
+         pattern = min_amt : ":" : max_amt
+      CASE 1
+         PRINT "Invalid choice"
+         RETURN
+   END CASE
+   
+   PRINT
+   PRINT "Enter reimbursement category: " :
+   INPUT reimb_cat
+   PRINT "Priority (1-100): " :
+   INPUT priority
+   
+   IF priority = "" THEN priority = 50
+   
+   * Generate rule ID
+   rule_id = "R" : DATE() : TIME()
+   
+   * Create rule record
+   rule_rec = ""
+   rule_rec<1> = rule_type
+   rule_rec<2> = pattern
+   rule_rec<3> = "TAG.REIMBURSABLE"
+   rule_rec<4> = reimb_cat
+   rule_rec<5> = priority
+   rule_rec<6> = "Y"
+   
+   WRITE rule_rec TO rules_file, rule_id
+   
+   PRINT
+   PRINT "Rule created: ": rule_id
+   
+   RETURN
+
+*
+* Subroutine: Add auto-reimbursable payee
+*
+ADD_AUTO_PAYEE:
+   PRINT
+   PRINT "Add Auto-Reimbursable Payee"
+   PRINT STR("-",60)
+   
+   PRINT "Enter payee name: " :
+   INPUT payee_name
+   PRINT "Enter reimbursement type: " :
+   INPUT reimb_type
+   
+   * Search for existing payee
+   payee_id = ""
+   SELECT payee_file
+   LOOP
+      READNEXT test_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ payee_rec FROM payee_file, test_id THEN
+         IF UPCASE(payee_rec<1>) = UPCASE(payee_name) THEN
+            payee_id = test_id
+            DONE = @TRUE  ; * Break out of loop
+         END
+      END
+   REPEAT
+   
+   IF payee_id # "" THEN
+      * Update existing payee
+      PRINT "Found existing payee, updating..."
+      payee_rec<4> = "Y"
+      payee_rec<5> = reimb_type
+      WRITE payee_rec TO payee_file, payee_id
+   END ELSE
+      * Create new payee
+      payee_id = "P" : DATE() : TIME()
+      payee_rec = ""
+      payee_rec<1> = payee_name
+      payee_rec<2> = payee_name
+      payee_rec<3> = ""
+      payee_rec<4> = "Y"
+      payee_rec<5> = reimb_type
+      payee_rec<6> = ""
+      payee_rec<7> = "Manual entry"
+      WRITE payee_rec TO payee_file, payee_id
+      PRINT "Created new payee: ": payee_id
+   END
+   
+   PRINT "Payee marked as auto-reimbursable"
+   
+   RETURN
+
+*
+* Subroutine: Toggle rule active status
+*
+TOGGLE_RULE:
+   PRINT
+   PRINT "Enter rule ID to toggle: " :
+   INPUT rule_id
+   
+   READ rule_rec FROM rules_file, rule_id THEN
+      IF rule_rec<6> = "Y" THEN
+         rule_rec<6> = "N"
+         PRINT "Rule deactivated"
+      END ELSE
+         rule_rec<6> = "Y"
+         PRINT "Rule activated"
+      END
+      WRITE rule_rec TO rules_file, rule_id
+   END ELSE
+      PRINT "Rule not found"
+   END
+   
+   RETURN
+
+*
+* Subroutine: Delete rule
+*
+DELETE_RULE:
+   PRINT
+   PRINT "Enter rule ID to delete: " :
+   INPUT rule_id
+   PRINT "Confirm deletion (Y/N): " :
+   INPUT confirm
+   
+   IF UPCASE(confirm) = "Y" THEN
+      DELETE rules_file, rule_id
+      PRINT "Rule deleted"
+   END ELSE
+      PRINT "Deletion cancelled"
+   END
+   
+   RETURN
+
+*
+* Subroutine: Edit rule
+*
+EDIT_RULE:
+   PRINT
+   PRINT "Enter rule ID to edit: " :
+   INPUT rule_id
+   
+   READ rule_rec FROM rules_file, rule_id THEN
+      PRINT "Current values:"
+      PRINT "  Type: ": rule_rec<1>
+      PRINT "  Pattern: ": rule_rec<2>
+      PRINT "  Target: ": rule_rec<4>
+      PRINT "  Priority: ": rule_rec<5>
+      PRINT
+      PRINT "New pattern (Enter to keep current): " :
+      INPUT new_pattern
+      PRINT "New target (Enter to keep current): " :
+      INPUT new_target
+      PRINT "New priority (Enter to keep current): " :
+      INPUT new_priority
+      
+      IF new_pattern # "" THEN rule_rec<2> = new_pattern
+      IF new_target # "" THEN rule_rec<4> = new_target
+      IF new_priority # "" THEN rule_rec<5> = new_priority
+      
+      WRITE rule_rec TO rules_file, rule_id
+      PRINT "Rule updated"
+   END ELSE
+      PRINT "Rule not found"
+   END
+   
+   RETURN
+
+*
+* Subroutine: Import sample rules
+*
+IMPORT_SAMPLES:
+   PRINT
+   PRINT "Importing sample rules..."
+   
+   * Sample payee standardization rules
+   DIM samples(20,6)
+   
+   samples(1,1) = "STARTS.WITH"
+   samples(1,2) = "AMAZON"
+   samples(1,3) = "STANDARDIZE"
+   samples(1,4) = "Amazon.com"
+   samples(1,5) = "10"
+   samples(1,6) = "Y"
+   
+   samples(2,1) = "PAYEE.MATCH"
+   samples(2,2) = "CVS"
+   samples(2,3) = "STANDARDIZE"
+   samples(2,4) = "CVS Pharmacy"
+   samples(2,5) = "10"
+   samples(2,6) = "Y"
+   
+   samples(3,1) = "PAYEE.MATCH"
+   samples(3,2) = "WALGREENS"
+   samples(3,3) = "STANDARDIZE"
+   samples(3,4) = "Walgreens"
+   samples(3,5) = "10"
+   samples(3,6) = "Y"
+   
+   samples(4,1) = "CATEGORY.MATCH"
+   samples(4,2) = "MEDICAL"
+   samples(4,3) = "TAG.REIMBURSABLE"
+   samples(4,4) = "MEDICAL.EXPENSE"
+   samples(4,5) = "20"
+   samples(4,6) = "Y"
+   
+   samples(5,1) = "CATEGORY.MATCH"
+   samples(5,2) = "OFFICE"
+   samples(5,3) = "TAG.REIMBURSABLE"
+   samples(5,4) = "OFFICE.SUPPLIES"
+   samples(5,5) = "20"
+   samples(5,6) = "Y"
+   
+   num_samples = 5
+   
+   FOR i = 1 TO num_samples
+      rule_id = "SAMPLE" : i
+      rule_rec = ""
+      rule_rec<1> = samples(i,1)
+      rule_rec<2> = samples(i,2)
+      rule_rec<3> = samples(i,3)
+      rule_rec<4> = samples(i,4)
+      rule_rec<5> = samples(i,5)
+      rule_rec<6> = samples(i,6)
+      WRITE rule_rec TO rules_file, rule_id
+   NEXT i
+   
+   PRINT "Imported ": num_samples: " sample rules"
+   PRINT "You can edit or delete these as needed"
+   
+   RETURN
+
+END

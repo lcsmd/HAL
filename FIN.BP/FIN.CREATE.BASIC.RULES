@@ -1,0 +1,79 @@
+      PROGRAM FIN.CREATE.BASIC.RULES
+      *
+      * Create basic payee standardization rules
+      *
+
+      PROMPT ""
+
+      OPEN "RULE" TO rule_file ELSE
+         PRINT "ERROR: Cannot open RULE file"
+         STOP
+      END
+
+      PRINT "Creating basic payee standardization rules..."
+      PRINT
+
+      * Write rules directly
+      * Field 1: RULE_TYPE
+      * Field 2: PATTERN  
+      * Field 3: ACTION
+      * Field 4: TARGET_VALUE
+      * Field 5: PRIORITY
+      * Field 6: ACTIVE_FLAG
+      
+      rule_rec = ""
+      rule_rec<1> = "PAYEE_STANDARDIZATION"
+      rule_rec<2> = "AMAZON.*"
+      rule_rec<3> = "STANDARDIZE"
+      rule_rec<4> = "Amazon"
+      rule_rec<5> = 10
+      rule_rec<6> = "Y"
+      WRITE rule_rec TO rule_file, "AMAZON"
+      PRINT "  Created: Amazon"
+
+      rule_rec = ""
+      rule_rec<1> = "PAYEE_STANDARDIZATION"
+      rule_rec<2> = "WAL.*MART.*"
+      rule_rec<3> = "STANDARDIZE"
+      rule_rec<4> = "Walmart"
+      rule_rec<5> = 10
+      rule_rec<6> = "Y"
+      WRITE rule_rec TO rule_file, "WALMART"
+      PRINT "  Created: Walmart"
+
+      rule_rec = ""
+      rule_rec<1> = "PAYEE_STANDARDIZATION"
+      rule_rec<2> = "TARGET.*"
+      rule_rec<3> = "STANDARDIZE"
+      rule_rec<4> = "Target"
+      rule_rec<5> = 10
+      rule_rec<6> = "Y"
+      WRITE rule_rec TO rule_file, "TARGET"
+      PRINT "  Created: Target"
+
+      rule_rec = ""
+      rule_rec<1> = "PAYEE_STANDARDIZATION"
+      rule_rec<2> = "STARBUCKS.*"
+      rule_rec<3> = "STANDARDIZE"
+      rule_rec<4> = "Starbucks"
+      rule_rec<5> = 10
+      rule_rec<6> = "Y"
+      WRITE rule_rec TO rule_file, "STARBUCKS"
+      PRINT "  Created: Starbucks"
+
+      rule_rec = ""
+      rule_rec<1> = "PAYEE_STANDARDIZATION"
+      rule_rec<2> = "MCDONALD.*"
+      rule_rec<3> = "STANDARDIZE"
+      rule_rec<4> = "McDonald's"
+      rule_rec<5> = 10
+      rule_rec<6> = "Y"
+      WRITE rule_rec TO rule_file, "MCDONALDS"
+      PRINT "  Created: McDonald's"
+
+      PRINT
+      PRINT "Created 5 standardization rules"
+      PRINT
+      PRINT "Now run: FIN.STANDARDIZE.PAYEES.V2 21118-5588"
+
+      END

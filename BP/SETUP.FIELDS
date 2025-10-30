@@ -1,0 +1,113 @@
+PROGRAM SETUP.FIELDS
+* Create dictionary items for FIELDS file and populate with field type definitions
+* Key: fieldname
+* Fields: display_desc, conv, len_just
+
+OPEN "FIELDS" TO F.FIELDS ELSE
+   CRT "Error: Cannot open FIELDS file"
+   STOP
+END
+
+OPEN "DICT", "FIELDS" TO F.DICT ELSE
+   CRT "Error: Cannot open DICT FIELDS"
+   STOP
+END
+
+CRT "Creating dictionary items for FIELDS file..."
+CRT ""
+
+* @ID
+DICT.REC = "D":@FM:"0":@FM:"":@FM:"Field name":@FM:"20L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "@ID"
+CRT "Created @ID"
+
+* DISPLAY_DESC (field 1)
+DICT.REC = "D":@FM:"1":@FM:"":@FM:"Display description":@FM:"30L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "DISPLAY_DESC"
+CRT "Created DISPLAY_DESC"
+
+* CONV (field 2)
+DICT.REC = "D":@FM:"2":@FM:"":@FM:"Conversion":@FM:"10L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "CONV"
+CRT "Created CONV"
+
+* LEN_JUST (field 3)
+DICT.REC = "D":@FM:"3":@FM:"":@FM:"Length/Justification":@FM:"10L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "LEN_JUST"
+CRT "Created LEN_JUST"
+
+CRT ""
+CRT "Dictionary items created successfully!"
+CRT ""
+CRT "Populating FIELDS file with field type definitions..."
+CRT ""
+
+* emailaccount
+REC = "Email account":@FM:"":@FM:"20L"
+WRITE REC ON F.FIELDS, "emailaccount"
+CRT "Added: emailaccount"
+
+* eadd (major type)
+REC = "Email address":@FM:"":@FM:"30L"
+WRITE REC ON F.FIELDS, "eadd"
+CRT "Added: eadd"
+
+* eadd_from (qualified type)
+REC = "From email address":@FM:"":@FM:"30L"
+WRITE REC ON F.FIELDS, "eadd_from"
+CRT "Added: eadd_from"
+
+* eadd_to (qualified type)
+REC = "To email":@FM:"":@FM:"30L"
+WRITE REC ON F.FIELDS, "eadd_to"
+CRT "Added: eadd_to"
+
+* eadd_cc (qualified type)
+REC = "CC to":@FM:"":@FM:"30L"
+WRITE REC ON F.FIELDS, "eadd_cc"
+CRT "Added: eadd_cc"
+
+* eadd_bcc (qualified type)
+REC = "BCC to":@FM:"":@FM:"30L"
+WRITE REC ON F.FIELDS, "eadd_bcc"
+CRT "Added: eadd_bcc"
+
+* subject
+REC = "":@FM:"":@FM:"50L"
+WRITE REC ON F.FIELDS, "subject"
+CRT "Added: subject"
+
+* body
+REC = "":@FM:"html":@FM:"9999L"
+WRITE REC ON F.FIELDS, "body"
+CRT "Added: body"
+
+* date (major type)
+REC = "Date":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "date"
+CRT "Added: date"
+
+* date_sent (qualified type)
+REC = "Date sent":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "date_sent"
+CRT "Added: date_sent"
+
+* date_rec (qualified type)
+REC = "Date received":@FM:"D4-":@FM:"10R"
+WRITE REC ON F.FIELDS, "date_rec"
+CRT "Added: date_rec"
+
+CRT ""
+CRT "=================================================="
+CRT "FIELDS file setup complete!"
+CRT "=================================================="
+CRT ""
+CRT "11 field type records created"
+CRT ""
+CRT "To view field types:"
+CRT "  LIST FIELDS"
+CRT "  LIST FIELDS DISPLAY_DESC CONV LEN_JUST"
+CRT ""
+
+STOP
+END

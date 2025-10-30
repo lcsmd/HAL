@@ -1,0 +1,252 @@
+      PROGRAM MEDICATION.MENU
+      * Medication Management
+      
+      $INCLUDE FILES.EQU
+      $INCLUDE EQU/med.equ
+      
+      LOOP
+         CRT @(-1)
+         PRINT ""
+         PRINT "====================================="
+         PRINT "   MEDICATION MANAGEMENT"
+         PRINT "====================================="
+         PRINT ""
+         PRINT "1. List All Medications"
+         PRINT "2. List Active Medications"
+         PRINT "3. Add New Medication"
+         PRINT "4. Edit Medication"
+         PRINT "5. Discontinue Medication"
+         PRINT "6. Delete Medication"
+         PRINT "7. Search Medications"
+         PRINT "8. Medication Report"
+         PRINT "Q. Return to Main Menu"
+         PRINT ""
+         INPUT "Select option: ", CHOICE
+         
+         CHOICE = OCONV(CHOICE, "MCU")
+         
+         BEGIN CASE
+            CASE CHOICE = "1"
+               GOSUB LIST.ALL
+            CASE CHOICE = "2"
+               GOSUB LIST.ACTIVE
+            CASE CHOICE = "3"
+               GOSUB ADD.MEDICATION
+            CASE CHOICE = "4"
+               GOSUB EDIT.MEDICATION
+            CASE CHOICE = "5"
+               GOSUB DISCONTINUE.MEDICATION
+            CASE CHOICE = "6"
+               GOSUB DELETE.MEDICATION
+            CASE CHOICE = "7"
+               GOSUB SEARCH.MEDICATION
+            CASE CHOICE = "8"
+               GOSUB MEDICATION.REPORT
+            CASE CHOICE = "Q"
+               EXIT
+            CASE 1
+               PRINT "Invalid choice"
+               SLEEP 1
+         END CASE
+      REPEAT
+      
+      STOP
+      
+* ============================================================================
+* List all medications
+* ============================================================================
+LIST.ALL:
+      EXECUTE "LIST MEDICATION"
+      PRINT ""
+      INPUT "Press ENTER to continue...", DUMMY
+      RETURN
+      
+* ============================================================================
+* List active medications
+* ============================================================================
+LIST.ACTIVE:
+      EXECUTE 'LIST MEDICATION WITH STATUS = "active"'
+      PRINT ""
+      INPUT "Press ENTER to continue...", DUMMY
+      RETURN
+      
+* ============================================================================
+* Add new medication
+* ============================================================================
+ADD.MEDICATION:
+      PRINT ""
+      PRINT "Add New Medication"
+      PRINT "=================="
+      PRINT ""
+      
+      * Generate new ID
+      NEW.ID = "MED":OCONV(DATE(), "D4"):OCONV(TIME(), "MTS")
+      
+      * Initialize record
+      MED.r = ""
+      
+      * Get person ID
+      INPUT "Person ID: ", MED.r<MED.PERSON_ID>
+      IF MED.r<MED.PERSON_ID> = "" THEN
+         PRINT "Error: Person ID required"
+         RETURN
+      END
+      
+      * Get medication details
+      INPUT "Medication Name: ", MED.r<MED.MEDICATION_NAME>
+      IF MED.r<MED.MEDICATION_NAME> = "" THEN
+         PRINT "Error: Medication name required"
+         RETURN
+      END
+      
+      INPUT "Generic Name: ", MED.r<MED.GENERIC_NAME>
+      INPUT "Dosage: ", MED.r<MED.DOSAGE>
+      INPUT "Dosage Unit (mg/ml/units): ", MED.r<MED.DOSAGE_UNIT>
+      INPUT "Frequency (daily/BID/TID/QID/PRN): ", MED.r<MED.FREQUENCY>
+      INPUT "Route (oral/IV/topical/injection): ", MED.r<MED.ROUTE>
+      INPUT "Start Date (YYYY-MM-DD): ", START.DATE.STR
+      MED.r<MED.START_DATE> = ICONV(START.DATE.STR, "D4-")
+      INPUT "Prescriber ID: ", MED.r<MED.PRESCRIBER_ID>
+      INPUT "Reason: ", MED.r<MED.REASON>
+      
+      * Set defaults
+      MED.r<MED.STATUS> = "active"
+      MED.r<MED.ACTIVE> = "Y"
+      MED.r<MED.CREATED_DATE> = DATE()
+      MED.r<MED.UPDATED_DATE> = DATE()
+      
+      * Write record
+      WRITE MED.r ON MED, NEW.ID
+      
+      PRINT ""
+      PRINT "Medication added successfully. ID: ":NEW.ID
+      PRINT ""
+      INPUT "Press ENTER to continue...", DUMMY
+      RETURN
+      
+* ============================================================================
+* Edit medication
+* ============================================================================
+EDIT.MEDICATION:
+      PRINT ""
+      INPUT "Enter Medication ID to edit: ", MED.ID
+      IF MED.ID = "" THEN RETURN
+      
+      READ MED.r FROM MED, MED.ID ELSE
+         PRINT "Error: Medication not found"
+         SLEEP 2
+         RETURN
+      END
+      
+      PRINT ""
+      PRINT "Current: ":MED.r<MED.MEDICATION_NAME>
+      PRINT ""
+      PRINT "Leave blank to keep current value"
+      PRINT ""
+      
+      INPUT "Dosage [":MED.r<MED.DOSAGE>:"]: ", NEW.VAL
+      IF NEW.VAL # "" THEN MED.r<MED.DOSAGE> = NEW.VAL
+      
+      INPUT "Frequency [":MED.r<MED.FREQUENCY>:"]: ", NEW.VAL
+      IF NEW.VAL # "" THEN MED.r<MED.FREQUENCY> = NEW.VAL
+      
+      INPUT "Status (active/discontinued) [":MED.r<MED.STATUS>:"]: ", NEW.VAL
+      IF NEW.VAL # "" THEN MED.r<MED.STATUS> = NEW.VAL
+      
+      MED.r<MED.UPDATED_DATE> = DATE()
+      
+      WRITE MED.r ON MED, MED.ID
+      
+      PRINT ""
+      PRINT "Medication updated successfully"
+      PRINT ""
+      INPUT "Press ENTER to continue...", DUMMY
+      RETURN
+      
+* ============================================================================
+* Discontinue medication
+* ============================================================================
+DISCONTINUE.MEDICATION:
+      PRINT ""
+      INPUT "Enter Medication ID to discontinue: ", MED.ID
+      IF MED.ID = "" THEN RETURN
+      
+      READ MED.r FROM MED, MED.ID ELSE
+         PRINT "Error: Medication not found"
+         SLEEP 2
+         RETURN
+      END
+      
+      PRINT ""
+      PRINT "Medication: ":MED.r<MED.MEDICATION_NAME>
+      INPUT "Confirm discontinue (Y/N): ", CONFIRM
+      
+      IF OCONV(CONFIRM, "MCU") = "Y" THEN
+         MED.r<MED.STATUS> = "discontinued"
+         MED.r<MED.END_DATE> = DATE()
+         MED.r<MED.UPDATED_DATE> = DATE()
+         WRITE MED.r ON MED, MED.ID
+         PRINT "Medication discontinued"
+      END
+      
+      PRINT ""
+      INPUT "Press ENTER to continue...", DUMMY
+      RETURN
+      
+* ============================================================================
+* Delete medication
+* ============================================================================
+DELETE.MEDICATION:
+      PRINT ""
+      INPUT "Enter Medication ID to delete: ", MED.ID
+      IF MED.ID = "" THEN RETURN
+      
+      READ MED.r FROM MED, MED.ID ELSE
+         PRINT "Error: Medication not found"
+         SLEEP 2
+         RETURN
+      END
+      
+      PRINT ""
+      PRINT "Medication: ":MED.r<MED.MEDICATION_NAME>
+      PRINT "WARNING: This will permanently delete the record"
+      INPUT "Confirm delete (Y/N): ", CONFIRM
+      
+      IF OCONV(CONFIRM, "MCU") = "Y" THEN
+         DELETE MED, MED.ID
+         PRINT "Medication deleted"
+      END
+      
+      PRINT ""
+      INPUT "Press ENTER to continue...", DUMMY
+      RETURN
+      
+* ============================================================================
+* Search medications
+* ============================================================================
+SEARCH.MEDICATION:
+      PRINT ""
+      INPUT "Enter search term: ", SEARCH.TERM
+      IF SEARCH.TERM = "" THEN RETURN
+      
+      EXECUTE 'LIST MEDICATION WITH MEDICATION_NAME LIKE "...':SEARCH.TERM:'..."'
+      
+      PRINT ""
+      INPUT "Press ENTER to continue...", DUMMY
+      RETURN
+      
+* ============================================================================
+* Medication report
+* ============================================================================
+MEDICATION.REPORT:
+      PRINT ""
+      INPUT "Enter Person ID for report: ", PERSON.ID
+      IF PERSON.ID = "" THEN RETURN
+      
+      EXECUTE 'LIST MEDICATION WITH PERSON_ID = "':PERSON.ID:'" BY START_DATE'
+      
+      PRINT ""
+      INPUT "Press ENTER to continue...", DUMMY
+      RETURN
+      
+      END

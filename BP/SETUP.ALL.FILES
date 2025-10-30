@@ -1,0 +1,300 @@
+PROGRAM SETUP.ALL.FILES
+* Create comprehensive file and field definitions for HAL system
+* Includes both traditional data files and AI infrastructure
+
+OPEN "FILES" TO F.FILES ELSE
+   CRT "Error: Cannot open FILES file"
+   STOP
+END
+
+OPEN "DOM_FILE_FIELD" TO F.DOM_FILE_FIELD ELSE
+   CRT "Error: Cannot open DOM_FILE_FIELD file"
+   STOP
+END
+
+CRT ""
+CRT "Building comprehensive HAL schema..."
+CRT ""
+
+* ============================================
+* PERSONAL DOMAIN (per)
+* ============================================
+
+CRT "Creating PERSON file..."
+REC = "per":@FM:"person":@FM:"per":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "person"
+
+* person fields
+DOMAIN = "per" : FILENAME = "person" : FIELDNAME = "name_first" : M_S = "s" : ASSOC = "" : INDEX.FLAG = "x" : REQUIRED = "y"
+GOSUB ADD.FIELD
+GOSUB ADD.FIELD("per", "person", "name_last", "s", "", "x", "y")
+GOSUB ADD.FIELD("per", "person", "name_middle", "s", "", "", "n")
+GOSUB ADD.FIELD("per", "person", "phone_mobile", "s", "", "x", "n")
+GOSUB ADD.FIELD("per", "person", "phone_home", "s", "", "", "n")
+GOSUB ADD.FIELD("per", "person", "eadd", "s", "", "x", "n")
+GOSUB ADD.FIELD("per", "person", "address_street", "s", "", "", "n")
+GOSUB ADD.FIELD("per", "person", "city", "s", "", "x", "n")
+GOSUB ADD.FIELD("per", "person", "state", "s", "", "x", "n")
+GOSUB ADD.FIELD("per", "person", "zip", "s", "", "", "n")
+GOSUB ADD.FIELD("per", "person", "country", "s", "", "", "n")
+GOSUB ADD.FIELD("per", "person", "date", "s", "", "", "n")
+GOSUB ADD.FIELD("per", "person", "notes", "s", "", "", "n")
+GOSUB ADD.FIELD("per", "person", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("per", "person", "active", "s", "", "x", "y")
+GOSUB ADD.FIELD("per", "person", "created_date", "s", "", "x", "y")
+GOSUB ADD.FIELD("per", "person", "updated_date", "s", "", "", "y")
+CRT "  17 fields added"
+
+* ============================================
+* COMMUNICATION DOMAIN (com)
+* ============================================
+
+CRT "Creating CONTACT file..."
+REC = "con":@FM:"contact":@FM:"com":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "contact"
+
+GOSUB ADD.FIELD("com", "contact", "person_id", "s", "", "x", "y")
+GOSUB ADD.FIELD("com", "contact", "company_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("com", "contact", "category", "s", "", "x", "n")
+GOSUB ADD.FIELD("com", "contact", "priority", "s", "", "x", "n")
+GOSUB ADD.FIELD("com", "contact", "notes", "s", "", "", "n")
+GOSUB ADD.FIELD("com", "contact", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("com", "contact", "active", "s", "", "x", "y")
+GOSUB ADD.FIELD("com", "contact", "created_date", "s", "", "x", "y")
+CRT "  8 fields added"
+
+CRT "Creating MESSAGE file..."
+REC = "msg":@FM:"message":@FM:"com":@FM:"":@FM:"":@FM:"[date:time]:seq":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "message"
+
+GOSUB ADD.FIELD("com", "message", "person_id", "s", "", "x", "y")
+GOSUB ADD.FIELD("com", "message", "phone", "s", "", "x", "n")
+GOSUB ADD.FIELD("com", "message", "type", "s", "", "x", "y")
+GOSUB ADD.FIELD("com", "message", "direction", "s", "", "x", "y")
+GOSUB ADD.FIELD("com", "message", "subject", "s", "", "x", "n")
+GOSUB ADD.FIELD("com", "message", "body", "s", "", "", "y")
+GOSUB ADD.FIELD("com", "message", "date_sent", "s", "", "x", "y")
+GOSUB ADD.FIELD("com", "message", "status", "s", "", "x", "y")
+GOSUB ADD.FIELD("com", "message", "tags", "m", "", "x", "n")
+CRT "  9 fields added"
+
+* ============================================
+* MEDICAL DOMAIN (med)
+* ============================================
+
+CRT "Creating MEDICAL_RECORD file..."
+REC = "mrc":@FM:"medical_record":@FM:"med":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "medical_record"
+
+GOSUB ADD.FIELD("med", "medical_record", "person_id", "s", "", "x", "y")
+GOSUB ADD.FIELD("med", "medical_record", "date", "s", "", "x", "y")
+GOSUB ADD.FIELD("med", "medical_record", "type", "s", "", "x", "y")
+GOSUB ADD.FIELD("med", "medical_record", "title", "s", "", "x", "y")
+GOSUB ADD.FIELD("med", "medical_record", "description", "s", "", "", "n")
+GOSUB ADD.FIELD("med", "medical_record", "notes", "s", "", "", "n")
+GOSUB ADD.FIELD("med", "medical_record", "external_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("med", "medical_record", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("med", "medical_record", "created_date", "s", "", "x", "y")
+CRT "  9 fields added"
+
+* ============================================
+* WORK DOMAIN (wor)
+* ============================================
+
+CRT "Creating PROJECT file..."
+REC = "prj":@FM:"project":@FM:"wor":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "project"
+
+GOSUB ADD.FIELD("wor", "project", "name", "s", "", "x", "y")
+GOSUB ADD.FIELD("wor", "project", "description", "s", "", "", "n")
+GOSUB ADD.FIELD("wor", "project", "status", "s", "", "x", "y")
+GOSUB ADD.FIELD("wor", "project", "priority", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "project", "date_start", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "project", "date_end", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "project", "person_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "project", "company_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "project", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("wor", "project", "active", "s", "", "x", "y")
+GOSUB ADD.FIELD("wor", "project", "created_date", "s", "", "x", "y")
+CRT "  11 fields added"
+
+CRT "Creating TASK file..."
+REC = "tsk":@FM:"task":@FM:"wor":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "task"
+
+GOSUB ADD.FIELD("wor", "task", "title", "s", "", "x", "y")
+GOSUB ADD.FIELD("wor", "task", "description", "s", "", "", "n")
+GOSUB ADD.FIELD("wor", "task", "project_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "task", "status", "s", "", "x", "y")
+GOSUB ADD.FIELD("wor", "task", "priority", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "task", "date_due", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "task", "date_completed", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "task", "person_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("wor", "task", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("wor", "task", "created_date", "s", "", "x", "y")
+CRT "  10 fields added"
+
+* ============================================
+* AI INFRASTRUCTURE DOMAIN (sys)
+* ============================================
+
+CRT ""
+CRT "Creating AI Infrastructure files..."
+CRT ""
+
+CRT "Creating PROMPT_TEMPLATE file..."
+REC = "ptp":@FM:"prompt_template":@FM:"sys":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "prompt_template"
+
+GOSUB ADD.FIELD("sys", "prompt_template", "name", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "prompt_template", "description", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "prompt_template", "category", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "prompt_template", "template_text", "s", "", "", "y")
+GOSUB ADD.FIELD("sys", "prompt_template", "parameters", "m", "", "", "n")
+GOSUB ADD.FIELD("sys", "prompt_template", "system_role", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "prompt_template", "temperature", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "prompt_template", "max_tokens", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "prompt_template", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("sys", "prompt_template", "active", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "prompt_template", "created_date", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "prompt_template", "updated_date", "s", "", "", "y")
+CRT "  12 fields added"
+
+CRT "Creating PERSONA file..."
+REC = "prs":@FM:"persona":@FM:"sys":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "persona"
+
+GOSUB ADD.FIELD("sys", "persona", "name", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "persona", "description", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "persona", "personality", "s", "", "", "y")
+GOSUB ADD.FIELD("sys", "persona", "voice_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "persona", "tone", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "persona", "expertise", "m", "", "x", "n")
+GOSUB ADD.FIELD("sys", "persona", "system_prompt", "s", "", "", "y")
+GOSUB ADD.FIELD("sys", "persona", "temperature", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "persona", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("sys", "persona", "active", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "persona", "created_date", "s", "", "x", "y")
+CRT "  11 fields added"
+
+CRT "Creating VOICE file..."
+REC = "voi":@FM:"voice":@FM:"sys":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "voice"
+
+GOSUB ADD.FIELD("sys", "voice", "name", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "voice", "description", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "voice", "provider", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "voice", "voice_id", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "voice", "language", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "voice", "gender", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "voice", "accent", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "voice", "sample_url", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "voice", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("sys", "voice", "active", "s", "", "x", "y")
+CRT "  10 fields added"
+
+CRT "Creating WAKE_WORD file..."
+REC = "wak":@FM:"wake_word":@FM:"sys":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "wake_word"
+
+GOSUB ADD.FIELD("sys", "wake_word", "word", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "wake_word", "persona_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "wake_word", "action", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "wake_word", "priority", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "wake_word", "active", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "wake_word", "created_date", "s", "", "x", "y")
+CRT "  6 fields added"
+
+CRT "Creating MOOD file..."
+REC = "mod":@FM:"mood":@FM:"sys":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "mood"
+
+GOSUB ADD.FIELD("sys", "mood", "name", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "mood", "description", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "mood", "temperature", "s", "", "", "y")
+GOSUB ADD.FIELD("sys", "mood", "tone_modifiers", "m", "", "", "n")
+GOSUB ADD.FIELD("sys", "mood", "response_style", "s", "", "", "y")
+GOSUB ADD.FIELD("sys", "mood", "active", "s", "", "x", "y")
+CRT "  6 fields added"
+
+CRT "Creating CONVERSATION file..."
+REC = "cvs":@FM:"conversation":@FM:"sys":@FM:"":@FM:"":@FM:"[date:time]:seq":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "conversation"
+
+GOSUB ADD.FIELD("sys", "conversation", "persona_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "conversation", "mood_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "conversation", "title", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "conversation", "context", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "conversation", "date_start", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "conversation", "date_end", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "conversation", "message_count", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "conversation", "tags", "m", "", "x", "n")
+CRT "  8 fields added"
+
+CRT "Creating CONVERSATION_MESSAGE file..."
+REC = "cvm":@FM:"conversation_message":@FM:"sys":@FM:"":@FM:"":@FM:"[conv_id]:seq":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "conversation_message"
+
+GOSUB ADD.FIELD("sys", "conversation_message", "conversation_id", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "conversation_message", "role", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "conversation_message", "content", "s", "", "", "y")
+GOSUB ADD.FIELD("sys", "conversation_message", "prompt_template_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "conversation_message", "date", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "conversation_message", "tokens", "s", "", "", "n")
+CRT "  6 fields added"
+
+CRT "Creating MEMORY file..."
+REC = "mem":@FM:"memory":@FM:"sys":@FM:"":@FM:"":@FM:"auto":@FM:"":@FM:"0"
+WRITE REC ON F.FILES, "memory"
+
+GOSUB ADD.FIELD("sys", "memory", "type", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "memory", "content", "s", "", "", "y")
+GOSUB ADD.FIELD("sys", "memory", "context", "s", "", "", "n")
+GOSUB ADD.FIELD("sys", "memory", "person_id", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "memory", "date", "s", "", "x", "y")
+GOSUB ADD.FIELD("sys", "memory", "importance", "s", "", "x", "n")
+GOSUB ADD.FIELD("sys", "memory", "tags", "m", "", "x", "n")
+GOSUB ADD.FIELD("sys", "memory", "active", "s", "", "x", "y")
+CRT "  8 fields added"
+
+CRT ""
+CRT "=================================================="
+CRT "Schema creation complete!"
+CRT "=================================================="
+CRT ""
+CRT "Files created:"
+CRT "  PERSON (per)"
+CRT "  CONTACT (com)"
+CRT "  MESSAGE (com)"
+CRT "  EMAIL (com) - already exists"
+CRT "  MEDICAL_RECORD (med)"
+CRT "  PROJECT (wor)"
+CRT "  TASK (wor)"
+CRT "  PROMPT_TEMPLATE (sys)"
+CRT "  PERSONA (sys)"
+CRT "  VOICE (sys)"
+CRT "  WAKE_WORD (sys)"
+CRT "  MOOD (sys)"
+CRT "  CONVERSATION (sys)"
+CRT "  CONVERSATION_MESSAGE (sys)"
+CRT "  MEMORY (sys)"
+CRT ""
+CRT "Next steps:"
+CRT "  1. CREATE.FILE for each file"
+CRT "  2. BUILD.DICT for each file"
+CRT "  3. Start loading data!"
+CRT ""
+
+STOP
+
+* ============================================
+* SUBROUTINE: ADD.FIELD
+* Uses variables: DOMAIN, FILENAME, FIELDNAME, M_S, ASSOC, INDEX.FLAG, REQUIRED
+* ============================================
+ADD.FIELD:
+   KEY = DOMAIN:":":FILENAME:":":FIELDNAME
+   REC = M_S:@FM:ASSOC:@FM:INDEX.FLAG:@FM:REQUIRED
+   WRITE REC ON F.DOM_FILE_FIELD, KEY
+   RETURN
+
+END

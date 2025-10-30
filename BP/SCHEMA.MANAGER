@@ -1,0 +1,88 @@
+PROGRAM SCHEMA.MANAGER
+* Schema Management System - Main Menu
+* Manages domains, files, and fields through CSV schemas
+
+LOOP
+   CRT ""
+   CRT "=========================================="
+   CRT "    HAL SCHEMA MANAGEMENT SYSTEM"
+   CRT "=========================================="
+   CRT ""
+   CRT "1. View Schema Summary"
+   CRT "2. List Domains"
+   CRT "3. List Files by Domain"
+   CRT "4. View File Schema"
+   CRT "5. Validate Schema Files"
+   CRT "6. Build Schema (Create Files/Dicts/Equates)"
+   CRT "7. Build Indexes"
+   CRT "8. Add New Domain"
+   CRT "9. Add New File"
+   CRT "10. Add Field to File"
+   CRT "11. Export Schema Documentation"
+   CRT ""
+   CRT "0. Exit"
+   CRT ""
+   INPUT CHOICE, "Enter choice: "
+   
+   BEGIN CASE
+      CASE CHOICE = "0"
+         CRT "Exiting..."
+         EXIT
+         
+      CASE CHOICE = "1"
+         CALL SCHEMA.SUMMARY
+         
+      CASE CHOICE = "2"
+         CALL SCHEMA.LIST.DOMAINS
+         
+      CASE CHOICE = "3"
+         CALL SCHEMA.LIST.FILES
+         
+      CASE CHOICE = "4"
+         CALL SCHEMA.VIEW.FILE
+         
+      CASE CHOICE = "5"
+         CALL SCHEMA.VALIDATE
+         
+      CASE CHOICE = "6"
+         CRT ""
+         CRT "Building schema from CSV files..."
+         CRT "This will create/update files, dictionaries, and equates."
+         INPUT CONFIRM, "Continue? (Y/N): "
+         IF CONFIRM = "Y" THEN
+            EXECUTE "BUILD.SCHEMA"
+         END ELSE
+            CRT "Build cancelled"
+         END
+         
+      CASE CHOICE = "7"
+         INPUT FILENAME, "Enter filename (or ALL): "
+         IF FILENAME # "" THEN
+            INPUT FIELDNAME, "Enter field name (or ALL): "
+            IF FIELDNAME # "" THEN
+               EXECUTE "BUILD.INDEX ":FILENAME:" ":FIELDNAME
+            END
+         END
+         
+      CASE CHOICE = "8"
+         CALL SCHEMA.ADD.DOMAIN
+         
+      CASE CHOICE = "9"
+         CALL SCHEMA.ADD.FILE
+         
+      CASE CHOICE = "10"
+         CALL SCHEMA.ADD.FIELD
+         
+      CASE CHOICE = "11"
+         CALL SCHEMA.EXPORT.DOCS
+         
+      CASE 1
+         CRT "Invalid choice"
+   END CASE
+   
+   CRT ""
+   INPUT DUMMY, "Press ENTER to continue..."
+REPEAT
+
+RETURN
+END

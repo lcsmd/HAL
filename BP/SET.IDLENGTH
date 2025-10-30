@@ -1,0 +1,136 @@
+      PROGRAM SET.IDLENGTH
+      *
+      * Purpose: Set the display length for @ID in DICT of directory files
+      * Usage: SET.IDLENGTH <length> <filename> [filename...]
+      *        SET.IDLENGTH <length>  (uses active select list)
+      *
+      * Examples:
+      *   SET.IDLENGTH 30 TRANS.BP EPIC.BP
+      *   SELECT-LIST TRANS.BP EPIC.BP FIN.BP
+      *   SET.IDLENGTH 25
+      *
+      * Changes DICT @ID attribute 5 from default 12R to specified length
+      *
+
+      PROMPT ""
+
+      * Get command line arguments
+      SENTENCE = TRIM(SENTENCE())
+      NUM.ARGS = DCOUNT(SENTENCE, " ")
+
+      IF NUM.ARGS < 3 THEN
+         * Need at least program name, length, and one filename
+         * Check for active select list
+         READLIST FILE.LIST ELSE
+            CRT "Usage: SET.IDLENGTH <length> <filename> [filename...]"
+            CRT "   or: SET.IDLENGTH <length>  (with active select list)"
+            CRT
+            CRT "Examples:"
+            CRT "  SET.IDLENGTH 30 TRANS.BP EPIC.BP"
+            CRT "  SET.IDLENGTH 25 FIN.BP MED.BP SEC.BP"
+            CRT
+            STOP
+         END
+
+         * Get length from second argument (first is program name)
+         NEW.LENGTH = FIELD(SENTENCE, " ", 2)
+         IF NOT(NUM(NEW.LENGTH)) THEN
+            CRT "ERROR: Length must be numeric"
+            STOP
+         END
+
+         * Use select list for filenames
+         USE.LIST = 1
+
+      END ELSE
+         * Get length from second argument (first is program name)
+         NEW.LENGTH = FIELD(SENTENCE, " ", 2)
+         IF NOT(NUM(NEW.LENGTH)) THEN
+            CRT "ERROR: Length must be numeric"
+            STOP
+         END
+
+         * Get filenames from remaining arguments (starting at position 3)
+         FILE.LIST = ""
+         FILE.COUNT = 0
+         FOR I = 3 TO NUM.ARGS
+            FILE.COUNT += 1
+            FILE.LIST<FILE.COUNT> = FIELD(SENTENCE, " ", I)
+         NEXT I
+
+         USE.LIST = 0
+      END
+
+      * Build new format string (e.g., "30L")
+      NEW.FORMAT = NEW.LENGTH : "L"
+
+      CRT
+      CRT "Setting @ID display length to ": NEW.LENGTH : " characters"
+      CRT STR("=",70)
+      CRT
+
+      * Process each file
+      SUCCESS.COUNT = 0
+      ERROR.COUNT = 0
+
+      IF USE.LIST THEN
+         FILE.COUNT = DCOUNT(FILE.LIST, @FM)
+         FOR I = 1 TO FILE.COUNT
+            FILE.NAME = FILE.LIST<I>
+            GOSUB PROCESS.FILE
+         NEXT I
+      END ELSE
+         FOR I = 1 TO FILE.COUNT
+            FILE.NAME = FILE.LIST<I>
+            GOSUB PROCESS.FILE
+         NEXT I
+      END
+
+      CRT
+      CRT STR("=",70)
+      CRT "Complete!"
+      CRT "  Files updated: ": SUCCESS.COUNT
+      CRT "  Errors: ": ERROR.COUNT
+      CRT
+
+      STOP
+
+      *=============================================================================
+PROCESS.FILE:
+      *=============================================================================
+      * Open DICT of file
+      DICT.NAME = "DICT " : FILE.NAME
+      OPEN DICT.NAME TO F.DICT ELSE
+         CRT "  ERROR: Cannot open ": DICT.NAME
+         ERROR.COUNT += 1
+         RETURN
+      END
+
+      * Read @ID dictionary record
+      READ DICT.REC FROM F.DICT, "@ID" ELSE
+         CRT "  ERROR: Cannot read @ID from ": DICT.NAME
+         ERROR.COUNT += 1
+         RETURN
+      END
+
+      * Get current format
+      OLD.FORMAT = DICT.REC<5>
+
+      * Update format (attribute 5)
+      DICT.REC<5> = NEW.FORMAT
+
+      * Write back
+      WRITE DICT.REC TO F.DICT, "@ID" ON ERROR
+         CRT "  ERROR: Cannot write @ID to ": DICT.NAME
+         ERROR.COUNT += 1
+         RETURN
+      END
+
+      CRT "  ": FILE.NAME : " - Updated @ID format: ": OLD.FORMAT : " -> ": NEW.FORMAT
+      SUCCESS.COUNT += 1
+
+      RETURN
+
+      * End of subroutines
+
+      END

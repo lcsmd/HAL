@@ -1,0 +1,66 @@
+PROGRAM CHECK.INCLUDE.PATH
+*
+* Purpose: Check and fix include file search path
+*
+
+PROMPT ""
+
+CRT
+CRT "Checking include file configuration..."
+CRT STR("=",70)
+CRT
+
+* Check if EQU/FILES.EQU exists
+OPEN "EQU" TO F.EQU ELSE
+   CRT "ERROR: Cannot open EQU directory"
+   STOP
+END
+
+READ TEST FROM F.EQU, "FILES.EQU" THEN
+   CRT "OK: EQU/FILES.EQU exists"
+END ELSE
+   CRT "ERROR: EQU/FILES.EQU not found"
+   STOP
+END
+
+* Check VOC for $BASIC.OPTIONS
+OPEN "VOC" TO F.VOC ELSE
+   CRT "ERROR: Cannot open VOC"
+   STOP
+END
+
+READ OPTIONS FROM F.VOC, "$BASIC.OPTIONS" THEN
+   CRT
+   CRT "Current $BASIC.OPTIONS:"
+   FOR I = 1 TO DCOUNT(OPTIONS, @FM)
+      CRT "  ": OPTIONS<I>
+   NEXT I
+END ELSE
+   CRT
+   CRT "$BASIC.OPTIONS not found - will create"
+END
+
+* Create/update $BASIC.OPTIONS with SEARCH path
+NEW.OPTIONS = ""
+NEW.OPTIONS<1> = "X"
+NEW.OPTIONS<2> = "SEARCH @, EQU, SYSCOM"
+NEW.OPTIONS<3> = "NO.PAGE"
+
+WRITE NEW.OPTIONS TO F.VOC, "$BASIC.OPTIONS"
+
+CRT
+CRT "Updated $BASIC.OPTIONS:"
+CRT "  Type: X"
+CRT "  SEARCH @, EQU, SYSCOM"
+CRT "  NO.PAGE"
+CRT
+CRT "This tells the compiler to search:"
+CRT "  @ = Current file (FIN.BP, etc.)"
+CRT "  EQU = EQU directory for include files"
+CRT "  SYSCOM = System common includes"
+CRT
+CRT "Now recompile: BASIC FIN.BP * NO.PAGE"
+CRT
+
+STOP
+END

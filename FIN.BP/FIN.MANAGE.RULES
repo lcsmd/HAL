@@ -1,0 +1,429 @@
+PROGRAM FIN.MANAGE.RULES
+*
+* MANAGE.RULES - Interactive rule management utility
+* Compatible with HAL schema-driven architecture
+*
+* Usage: MANAGE.RULES
+*
+
+$INCLUDE EQU/FILES.EQU
+
+PROMPT ""
+
+* Open files using COMMON FILES array
+OPEN "RULE" TO rul ELSE
+   CRT "ERROR: Cannot open RULE file"
+   STOP
+END
+
+OPEN "PAYEE" TO pye ELSE
+   CRT "ERROR: Cannot open PAYEE file"
+   STOP
+END
+
+LOOP
+   CRT
+   CRT "Rule Management Menu"
+   CRT STR("=",60)
+   CRT "1. List all rules"
+   CRT "2. Add payee standardization rule"
+   CRT "3. Add reimbursement tagging rule"
+   CRT "4. Add auto-reimbursable payee"
+   CRT "5. Edit rule"
+   CRT "6. Delete rule"
+   CRT "7. Activate/Deactivate rule"
+   CRT "8. Import sample rules"
+   CRT "9. Exit"
+   CRT
+   INPUT choice
+   
+   BEGIN CASE
+      CASE choice = "1"
+         GOSUB LIST_RULES
+      CASE choice = "2"
+         GOSUB ADD_PAYEE_RULE
+      CASE choice = "3"
+         GOSUB ADD_REIMB_RULE
+      CASE choice = "4"
+         GOSUB ADD_AUTO_PAYEE
+      CASE choice = "5"
+         GOSUB EDIT_RULE
+      CASE choice = "6"
+         GOSUB DELETE_RULE
+      CASE choice = "7"
+         GOSUB TOGGLE_RULE
+      CASE choice = "8"
+         GOSUB IMPORT_SAMPLES
+      CASE choice = "9"
+         CRT "Goodbye!"
+         STOP
+      CASE 1
+         CRT "Invalid choice"
+   END CASE
+REPEAT
+
+STOP
+
+*
+* Subroutine: List all rules
+*
+LIST_RULES:
+   CRT
+   CRT "Current Rules"
+   CRT STR("-",80)
+   CRT FMT("ID", "15L"):" ":
+   CRT FMT("Type", "20L"):" ":
+   CRT FMT("Pattern", "25L"):" ":
+   CRT FMT("Pri", "5R"):" ":
+   CRT FMT("Active", "6L")
+   CRT STR("-",80)
+   
+   count = 0
+   SELECT rul
+   LOOP
+      READNEXT rule_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ rule_rec FROM rul, rule_id THEN
+         count = count + 1
+         rule_type = rule_rec<1>
+         pattern = rule_rec<2>
+         priority = rule_rec<5>
+         active = rule_rec<6>
+         
+         CRT FMT(rule_id, "15L"):" ":
+         CRT FMT(rule_type, "20L"):" ":
+         CRT FMT(pattern[1,25], "25L"):" ":
+         CRT FMT(priority, "5R"):" ":
+         CRT FMT(active, "6L")
+      END
+   REPEAT
+   
+   CRT STR("-",80)
+   CRT "Total rules: ": count
+   
+   RETURN
+
+*
+* Subroutine: Add payee standardization rule
+*
+ADD_PAYEE_RULE:
+   CRT
+   CRT "Add Payee Standardization Rule"
+   CRT STR("-",60)
+   
+   CRT "Rule types:"
+   CRT "  1. PAYEE.MATCH (contains text)"
+   CRT "  2. EXACT.MATCH (exact name match)"
+   CRT "  3. STARTS.WITH (starts with text)"
+   CRT
+   CRT "Select type (1-3): " :
+   INPUT type_choice
+   
+   BEGIN CASE
+      CASE type_choice = "1"
+         rule_type = "PAYEE.MATCH"
+      CASE type_choice = "2"
+         rule_type = "EXACT.MATCH"
+      CASE type_choice = "3"
+         rule_type = "STARTS.WITH"
+      CASE 1
+         CRT "Invalid choice"
+         RETURN
+   END CASE
+   
+   CRT
+   CRT "Enter pattern to match: " :
+   INPUT pattern
+   CRT "Enter standard payee name: " :
+   INPUT std_name
+   CRT "Priority (1-100, lower = higher priority): " :
+   INPUT priority
+   
+   IF priority = "" THEN priority = 50
+   
+   * Generate rule ID
+   rule_id = "R" : DATE() : TIME()
+   
+   * Create rule record
+   rule_rec = ""
+   rule_rec<1> = rule_type
+   rule_rec<2> = pattern
+   rule_rec<3> = "STANDARDIZE"
+   rule_rec<4> = std_name
+   rule_rec<5> = priority
+   rule_rec<6> = "Y"
+   rule_rec<7> = DATE()
+   
+   WRITE rule_rec TO rul, rule_id
+   
+   CRT
+   CRT "Rule created: ": rule_id
+   
+   RETURN
+
+*
+* Subroutine: Add reimbursement tagging rule
+*
+ADD_REIMB_RULE:
+   CRT
+   CRT "Add Reimbursement Tagging Rule"
+   CRT STR("-",60)
+   
+   CRT "Rule types:"
+   CRT "  1. CATEGORY.MATCH (match transaction category)"
+   CRT "  2. PAYEE.MATCH (match payee name)"
+   CRT "  3. MEMO.MATCH (match memo field)"
+   CRT "  4. AMOUNT.RANGE (match amount range)"
+   CRT
+   CRT "Select type (1-4): " :
+   INPUT type_choice
+   
+   BEGIN CASE
+      CASE type_choice = "1"
+         rule_type = "CATEGORY.MATCH"
+         CRT "Enter category pattern: " :
+         INPUT pattern
+      CASE type_choice = "2"
+         rule_type = "PAYEE.MATCH"
+         CRT "Enter payee pattern: " :
+         INPUT pattern
+      CASE type_choice = "3"
+         rule_type = "MEMO.MATCH"
+         CRT "Enter memo pattern: " :
+         INPUT pattern
+      CASE type_choice = "4"
+         rule_type = "AMOUNT.RANGE"
+         CRT "Enter min amount: " :
+         INPUT min_amt
+         CRT "Enter max amount: " :
+         INPUT max_amt
+         pattern = min_amt : ":" : max_amt
+      CASE 1
+         CRT "Invalid choice"
+         RETURN
+   END CASE
+   
+   CRT
+   CRT "Enter reimbursement category: " :
+   INPUT reimb_cat
+   CRT "Priority (1-100): " :
+   INPUT priority
+   
+   IF priority = "" THEN priority = 50
+   
+   * Generate rule ID
+   rule_id = "R" : DATE() : TIME()
+   
+   * Create rule record
+   rule_rec = ""
+   rule_rec<1> = rule_type
+   rule_rec<2> = pattern
+   rule_rec<3> = "TAG.REIMBURSABLE"
+   rule_rec<4> = reimb_cat
+   rule_rec<5> = priority
+   rule_rec<6> = "Y"
+   rule_rec<7> = DATE()
+   
+   WRITE rule_rec TO rul, rule_id
+   
+   CRT
+   CRT "Rule created: ": rule_id
+   
+   RETURN
+
+*
+* Subroutine: Add auto-reimbursable payee
+*
+ADD_AUTO_PAYEE:
+   CRT
+   CRT "Add Auto-Reimbursable Payee"
+   CRT STR("-",60)
+   
+   CRT "Enter payee name: " :
+   INPUT payee_name
+   CRT "Enter reimbursement type: " :
+   INPUT reimb_type
+   
+   * Search for existing payee
+   payee_id = ""
+   SELECT pye
+   LOOP
+      READNEXT test_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ payee_rec FROM pye, test_id THEN
+         IF UPCASE(payee_rec<1>) = UPCASE(payee_name) THEN
+            payee_id = test_id
+            DONE = @TRUE
+         END
+      END
+   REPEAT
+   
+   IF payee_id # "" THEN
+      * Update existing payee
+      CRT "Found existing payee, updating..."
+      payee_rec<4> = "Y"
+      payee_rec<5> = reimb_type
+      WRITE payee_rec TO pye, payee_id
+   END ELSE
+      * Create new payee
+      payee_id = "P" : DATE() : TIME()
+      payee_rec = ""
+      payee_rec<1> = payee_name
+      payee_rec<2> = payee_name
+      payee_rec<3> = ""
+      payee_rec<4> = "Y"
+      payee_rec<5> = reimb_type
+      payee_rec<6> = ""
+      payee_rec<7> = "Manual entry"
+      WRITE payee_rec TO pye, payee_id
+      CRT "Created new payee: ": payee_id
+   END
+   
+   CRT "Payee marked as auto-reimbursable"
+   
+   RETURN
+
+*
+* Subroutine: Toggle rule active status
+*
+TOGGLE_RULE:
+   CRT
+   CRT "Enter rule ID to toggle: " :
+   INPUT rule_id
+   
+   READ rule_rec FROM rul, rule_id THEN
+      IF rule_rec<6> = "Y" THEN
+         rule_rec<6> = "N"
+         CRT "Rule deactivated"
+      END ELSE
+         rule_rec<6> = "Y"
+         CRT "Rule activated"
+      END
+      rule_rec<8> = DATE()
+      WRITE rule_rec TO rul, rule_id
+   END ELSE
+      CRT "Rule not found"
+   END
+   
+   RETURN
+
+*
+* Subroutine: Delete rule
+*
+DELETE_RULE:
+   CRT
+   CRT "Enter rule ID to delete: " :
+   INPUT rule_id
+   CRT "Confirm deletion (Y/N): " :
+   INPUT confirm
+   
+   IF UPCASE(confirm) = "Y" THEN
+      DELETE rul, rule_id
+      CRT "Rule deleted"
+   END ELSE
+      CRT "Deletion cancelled"
+   END
+   
+   RETURN
+
+*
+* Subroutine: Edit rule
+*
+EDIT_RULE:
+   CRT
+   CRT "Enter rule ID to edit: " :
+   INPUT rule_id
+   
+   READ rule_rec FROM rul, rule_id THEN
+      CRT "Current values:"
+      CRT "  Type: ": rule_rec<1>
+      CRT "  Pattern: ": rule_rec<2>
+      CRT "  Target: ": rule_rec<4>
+      CRT "  Priority: ": rule_rec<5>
+      CRT
+      CRT "New pattern (Enter to keep current): " :
+      INPUT new_pattern
+      CRT "New target (Enter to keep current): " :
+      INPUT new_target
+      CRT "New priority (Enter to keep current): " :
+      INPUT new_priority
+      
+      IF new_pattern # "" THEN rule_rec<2> = new_pattern
+      IF new_target # "" THEN rule_rec<4> = new_target
+      IF new_priority # "" THEN rule_rec<5> = new_priority
+      rule_rec<8> = DATE()
+      
+      WRITE rule_rec TO rul, rule_id
+      CRT "Rule updated"
+   END ELSE
+      CRT "Rule not found"
+   END
+   
+   RETURN
+
+*
+* Subroutine: Import sample rules
+*
+IMPORT_SAMPLES:
+   CRT
+   CRT "Importing sample rules..."
+   
+   * Sample payee standardization rules
+   DIM samples(20,6)
+   
+   samples(1,1) = "STARTS.WITH"
+   samples(1,2) = "AMAZON"
+   samples(1,3) = "STANDARDIZE"
+   samples(1,4) = "Amazon.com"
+   samples(1,5) = "10"
+   samples(1,6) = "Y"
+   
+   samples(2,1) = "PAYEE.MATCH"
+   samples(2,2) = "CVS"
+   samples(2,3) = "STANDARDIZE"
+   samples(2,4) = "CVS Pharmacy"
+   samples(2,5) = "10"
+   samples(2,6) = "Y"
+   
+   samples(3,1) = "PAYEE.MATCH"
+   samples(3,2) = "WALGREENS"
+   samples(3,3) = "STANDARDIZE"
+   samples(3,4) = "Walgreens"
+   samples(3,5) = "10"
+   samples(3,6) = "Y"
+   
+   samples(4,1) = "CATEGORY.MATCH"
+   samples(4,2) = "MEDICAL"
+   samples(4,3) = "TAG.REIMBURSABLE"
+   samples(4,4) = "MEDICAL.EXPENSE"
+   samples(4,5) = "20"
+   samples(4,6) = "Y"
+   
+   samples(5,1) = "CATEGORY.MATCH"
+   samples(5,2) = "OFFICE"
+   samples(5,3) = "TAG.REIMBURSABLE"
+   samples(5,4) = "OFFICE.SUPPLIES"
+   samples(5,5) = "20"
+   samples(5,6) = "Y"
+   
+   num_samples = 5
+   
+   FOR i = 1 TO num_samples
+      rule_id = "SAMPLE" : i
+      rule_rec = ""
+      rule_rec<1> = samples(i,1)
+      rule_rec<2> = samples(i,2)
+      rule_rec<3> = samples(i,3)
+      rule_rec<4> = samples(i,4)
+      rule_rec<5> = samples(i,5)
+      rule_rec<6> = samples(i,6)
+      rule_rec<7> = DATE()
+      WRITE rule_rec TO rul, rule_id
+   NEXT i
+   
+   CRT "Imported ": num_samples: " sample rules"
+   CRT "You can edit or delete these as needed"
+   
+   RETURN
+
+END

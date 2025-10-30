@@ -1,0 +1,220 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║                         ⭐ START HERE ⭐                               ║
+║              OpenQM Transaction Management System                    ║
+║                     Installation & First Use                         ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+📦 WHAT YOU DOWNLOADED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+You have all these files ready to use:
+  ✓ 8 OpenQM programs (CREATE.FILES, IMPORT.*, etc.)
+  ✓ 1 automation script (master_workflow.sh)
+  ✓ 1 installation script (INSTALL.sh)
+  ✓ Documentation files (README.md, guides, etc.)
+
+
+🚀 INSTALLATION (Choose One Method)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+METHOD 1: AUTOMATIC (RECOMMENDED) ⭐
+────────────────────────────────────────────────────────────────────────
+1. Download all files to a folder on your computer
+2. Open terminal and go to that folder:
+   $ cd /path/to/downloaded/files
+
+3. Run the installation script:
+   $ chmod +x INSTALL.sh
+   $ ./INSTALL.sh
+
+4. Follow the prompts - it does everything automatically!
+
+
+METHOD 2: MANUAL (If automatic doesn't work)
+────────────────────────────────────────────────────────────────────────
+See: MANUAL_INSTALL.md for step-by-step instructionINSTALL.SHs
+
+
+💡 WHERE DO FILES GO?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Files get copied to your OpenQM account directory, typically:
+  • $HOME/qm/accounts/QMSYS
+  • /usr/qmsys/accounts/QMSYS
+  • /usr/local/qm/accounts/QMSYS
+
+The installation script finds this automatically!
+
+
+✅ AFTER INSTALLATION - YOUR FIRST SESSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1: Go to your QM directory
+────────────────────────────────────────────────────────────────────────
+$ cd /path/to/your/qm/account
+(The installer tells you this path!)
+
+
+Step 2: Initialize the system
+────────────────────────────────────────────────────────────────────────
+$ ./master_workflow.sh init
+
+This creates the database files and adds sample rules.
+
+
+Step 3: Get your Quicken CSV ready
+────────────────────────────────────────────────────────────────────────
+Export from Quicken:
+  • File → Export → Export to Excel format
+  • Select your accounts
+  • Set date range (last 2 years)
+  • Include all fields
+  • Save as CSV
+
+Copy it to your QM directory:
+$ cp /path/to/quicken_export.csv .
+
+
+Step 4: Import your data
+────────────────────────────────────────────────────────────────────────
+$ ./master_workflow.sh import-enhanced quicken_export.csv
+
+This imports ALL fields from your CSV!
+
+
+Step 5: See what you got
+────────────────────────────────────────────────────────────────────────
+$ ./master_workflow.sh analyze
+
+Shows you all the fields that were captured.
+
+
+Step 6: Set up your rules
+────────────────────────────────────────────────────────────────────────
+$ ./master_workflow.sh rules
+
+Interactive menu to:
+  • Add payee standardization rules
+  • Add reimbursement tagging rules
+  • Mark vendors as auto-reimbursable
+
+Sample rules are already loaded - customize them!
+
+
+Step 7: Process everything
+────────────────────────────────────────────────────────────────────────
+$ ./master_workflow.sh process
+
+This:
+  • Standardizes payee names
+  • Tags reimbursable transactions
+  • Links everything together
+
+
+Step 8: Generate your report
+────────────────────────────────────────────────────────────────────────
+$ ./master_workflow.sh report SUMMARY
+
+See totals by category!
+
+Or export to Excel:
+$ ./master_workflow.sh report EXPORT
+
+Creates a CSV file you can open in Excel or Google Sheets.
+
+
+📚 WHERE TO GET HELP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Quick commands:
+  QUICK_REFERENCE.txt        All commands at a glance
+
+Getting started:
+  MANUAL_INSTALL.md          Detailed installation steps
+  CSV_IMPORT_GUIDE.md        CSV format and import help
+
+Full documentation:
+  README.md                  Complete system documentation
+
+Troubleshooting:
+  MANUAL_INSTALL.md          Has troubleshooting section
+
+
+🎯 COMMON COMMANDS (After Installation)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Check system status:
+$ ./master_workflow.sh status
+
+Import new transactions:
+$ ./master_workflow.sh import-enhanced newfile.csv
+$ ./master_workflow.sh process
+
+Get help:
+$ ./master_workflow.sh help
+
+Manage rules:
+$ ./master_workflow.sh rules
+
+Generate reports:
+$ ./master_workflow.sh report SUMMARY
+$ ./master_workflow.sh report PENDING DETAIL
+$ ./master_workflow.sh report EXPORT FROM 20240101
+
+
+⚡ SUPER QUICK START (If you're experienced with QM)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+$ ./INSTALL.sh                                    # Install
+$ cd /path/to/qm/account                          # Go there
+$ ./master_workflow.sh init                       # Setup
+$ ./master_workflow.sh import-enhanced data.csv   # Import
+$ ./master_workflow.sh process                    # Process
+$ ./master_workflow.sh report SUMMARY             # Report
+
+
+🔧 SYSTEM REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Required:
+  ✓ OpenQM database system installed
+  ✓ Linux/Unix environment (or Windows with adaptations)
+  ✓ Bash shell
+  ✓ Quicken CSV export file
+
+Optional:
+  • Excel or Google Sheets (for working with exported reports)
+
+
+❓ FREQUENTLY ASKED QUESTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: Where do I get OpenQM?
+A: Visit openqm.com or check if it's already installed on your system
+
+Q: Can I import multiple CSV files?
+A: Yes! Each import gets tracked separately with a batch ID
+
+Q: What if my CSV has different column names?
+A: The enhanced import auto-detects most variations
+
+Q: Can I modify the code?
+A: Absolutely! All programs are fully editable
+
+Q: What if I make a mistake?
+A: Delete the data files and run CREATE.FILES again to start over
+
+Q: Do I need to know QM programming?
+A: No! Use the master_workflow.sh script for everything
+
+
+📞 NEED HELP?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Read QUICK_REFERENCE.txt for command syntax
+2. Read README.md for detailed explanations
+3. Read MANUAL_INSTALL.md for installation help
+4. Check that OpenQM is working: type 'qm' in terminal
+
+
+═══════════════════════════════════════════════════════════════════════
+Ready to start? Run: ./INSTALL.sh
+═══════════════════════════════════════════════════════════════════════

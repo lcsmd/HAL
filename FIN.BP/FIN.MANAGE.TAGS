@@ -1,0 +1,344 @@
+PROGRAM FIN.MANAGE.TAGS
+*
+* Tag & Category Management System
+* Human: Interactive menus for creating tags, categories, rules
+* AI: Structured interface for proposing rules with confidence scores
+*
+
+PROMPT ""
+
+* Open files
+OPEN "TAG" TO tag_file ELSE
+   PRINT "ERROR: Cannot open TAG file"
+   STOP
+END
+
+OPEN "CATEGORY" TO cat_file ELSE
+   PRINT "ERROR: Cannot open CATEGORY file"
+   STOP
+END
+
+OPEN "RULE" TO rule_file ELSE
+   PRINT "ERROR: Cannot open RULE file"
+   STOP
+END
+
+OPEN "PAYEE" TO payee_file ELSE
+   PRINT "ERROR: Cannot open PAYEE file"
+   STOP
+END
+
+OPEN "TRANSACTION" TO trans_file ELSE
+   PRINT "ERROR: Cannot open TRANSACTION file"
+   STOP
+END
+
+* Main menu
+LOOP
+   PRINT
+   PRINT "Tag & Category Management"
+   PRINT STR("=",70)
+   PRINT "1. Manage Tags"
+   PRINT "2. Manage Categories"
+   PRINT "3. Manage Rules"
+   PRINT "4. Tag Payees (assign tags to specific payees)"
+   PRINT "5. Apply Rules to Transactions"
+   PRINT "6. View Reports"
+   PRINT "9. Exit"
+   PRINT
+   PRINT "Select: ";
+   INPUT choice
+   
+   BEGIN CASE
+      CASE choice = "1"
+         GOSUB MANAGE_TAGS
+      CASE choice = "2"
+         GOSUB MANAGE_CATEGORIES
+      CASE choice = "3"
+         GOSUB MANAGE_RULES
+      CASE choice = "4"
+         GOSUB TAG_PAYEES
+      CASE choice = "5"
+         GOSUB APPLY_RULES
+      CASE choice = "6"
+         GOSUB VIEW_REPORTS
+      CASE choice = "9"
+         PRINT "Goodbye!"
+         STOP
+   END CASE
+REPEAT
+
+STOP
+
+*
+* Manage Tags
+*
+MANAGE_TAGS:
+   PRINT
+   PRINT "Tag Management"
+   PRINT STR("-",70)
+   PRINT "1. List all tags"
+   PRINT "2. Create new tag"
+   PRINT "3. Edit tag"
+   PRINT "0. Back"
+   PRINT "Select: ";
+   INPUT sub
+   
+   BEGIN CASE
+      CASE sub = "1"
+         GOSUB LIST_TAGS
+      CASE sub = "2"
+         GOSUB CREATE_TAG
+      CASE sub = "3"
+         GOSUB EDIT_TAG
+   END CASE
+   RETURN
+
+*
+* List Tags
+*
+LIST_TAGS:
+   PRINT
+   PRINT "Current Tags:"
+   PRINT STR("-",70)
+   
+   SELECT tag_file
+   DONE = @FALSE
+   count = 0
+   
+   LOOP
+      READNEXT tag_key ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ tag_rec FROM tag_file, tag_key THEN
+         count = count + 1
+         PRINT tag_key : " - " : tag_rec<1> : " (" : tag_rec<2> : ")"
+         IF tag_rec<3> > 0 THEN
+            PRINT "  Reimbursement: " : tag_rec<3> : "%"
+         END
+      END
+   REPEAT
+   
+   PRINT
+   PRINT "Total: " : count
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+*
+* Create Tag
+*
+CREATE_TAG:
+   PRINT
+   PRINT "Create New Tag"
+   PRINT STR("-",70)
+   
+   PRINT "Tag key (e.g., REIMB.MED.100): ";
+   INPUT tag_key
+   IF tag_key = "" THEN RETURN
+   
+   READ existing FROM tag_file, tag_key THEN
+      PRINT "ERROR: Tag already exists"
+      PRINT "Press RETURN: ";
+      INPUT dummy
+      RETURN
+   END
+   
+   PRINT "Tag name: ";
+   INPUT tag_name
+   IF tag_name = "" THEN RETURN
+   
+   PRINT "Tag type:"
+   PRINT "  1. REIMB (Reimbursable)"
+   PRINT "  2. CATEGORY"
+   PRINT "  3. PAYEE"
+   PRINT "  4. CUSTOM"
+   PRINT "Select (1-4): ";
+   INPUT ttype
+   
+   BEGIN CASE
+      CASE ttype = "1"
+         tag_type = "REIMB"
+      CASE ttype = "2"
+         tag_type = "CATEGORY"
+      CASE ttype = "3"
+         tag_type = "PAYEE"
+      CASE 1
+         tag_type = "CUSTOM"
+   END CASE
+   
+   PRINT "Reimbursement % (0-100, or blank): ";
+   INPUT reimb_pct
+   IF reimb_pct = "" THEN reimb_pct = 0
+   
+   PRINT "Description: ";
+   INPUT desc
+   
+   tag_rec = ""
+   tag_rec<1> = tag_name
+   tag_rec<2> = tag_type
+   tag_rec<3> = reimb_pct
+   tag_rec<4> = ""  ; * Color
+   tag_rec<5> = ""  ; * Icon
+   tag_rec<6> = desc
+   tag_rec<7> = "Y" ; * Active
+   tag_rec<8> = DATE()
+   tag_rec<9> = 0   ; * Usage count
+   
+   WRITE tag_rec TO tag_file, tag_key
+   PRINT
+   PRINT "Tag created: " : tag_key
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+*
+* Edit Tag
+*
+EDIT_TAG:
+   PRINT "Tag key to edit: ";
+   INPUT tag_key
+   IF tag_key = "" THEN RETURN
+   
+   READ tag_rec FROM tag_file, tag_key ELSE
+      PRINT "Tag not found"
+      PRINT "Press RETURN: ";
+      INPUT dummy
+      RETURN
+   END
+   
+   PRINT "Current: " : tag_rec<1>
+   PRINT "New name (or RETURN to keep): ";
+   INPUT new_name
+   IF new_name # "" THEN tag_rec<1> = new_name
+   
+   PRINT "Current reimb %: " : tag_rec<3>
+   PRINT "New % (or RETURN to keep): ";
+   INPUT new_pct
+   IF new_pct # "" THEN tag_rec<3> = new_pct
+   
+   WRITE tag_rec TO tag_file, tag_key
+   PRINT "Tag updated"
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+*
+* Manage Categories
+*
+MANAGE_CATEGORIES:
+   PRINT
+   PRINT "Category Management (8-digit hierarchical keys)"
+   PRINT STR("-",70)
+   PRINT "Examples:"
+   PRINT "  04000000 = Medical (no subcategory)"
+   PRINT "  04000100 = Medical:Outpatient"
+   PRINT "  04000200 = Medical:Prescription"
+   PRINT
+   PRINT "1. List categories"
+   PRINT "2. Create category"
+   PRINT "0. Back"
+   PRINT "Select: ";
+   INPUT sub
+   
+   BEGIN CASE
+      CASE sub = "1"
+         GOSUB LIST_CATEGORIES
+      CASE sub = "2"
+         GOSUB CREATE_CATEGORY
+   END CASE
+   RETURN
+
+*
+* List Categories
+*
+LIST_CATEGORIES:
+   PRINT
+   SELECT cat_file
+   DONE = @FALSE
+   count = 0
+   
+   LOOP
+      READNEXT cat_key ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ cat_rec FROM cat_file, cat_key THEN
+         count = count + 1
+         PRINT cat_key : " - " : cat_rec<1>
+      END
+   REPEAT
+   
+   PRINT
+   PRINT "Total: " : count
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+*
+* Create Category
+*
+CREATE_CATEGORY:
+   PRINT
+   PRINT "Category key (8 digits, e.g., 04000100): ";
+   INPUT cat_key
+   IF cat_key = "" THEN RETURN
+   
+   PRINT "Category name: ";
+   INPUT cat_name
+   PRINT "Parent key (or blank for top-level): ";
+   INPUT parent_key
+   PRINT "Default reimb % (or blank): ";
+   INPUT def_pct
+   
+   cat_rec = ""
+   cat_rec<1> = cat_name
+   cat_rec<2> = parent_key
+   cat_rec<3> = 0  ; * Level (calculated)
+   cat_rec<4> = def_pct
+   cat_rec<5> = "" ; * Tag keys
+   cat_rec<6> = "" ; * Description
+   cat_rec<7> = "Y"
+   cat_rec<8> = DATE()
+   cat_rec<9> = 0
+   
+   WRITE cat_rec TO cat_file, cat_key
+   PRINT "Category created"
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+*
+* Manage Rules (stub)
+*
+MANAGE_RULES:
+   PRINT "Rule management - Coming soon"
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+*
+* Tag Payees (stub)
+*
+TAG_PAYEES:
+   PRINT "Payee tagging - Coming soon"
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+*
+* Apply Rules (stub)
+*
+APPLY_RULES:
+   PRINT "Apply rules - Coming soon"
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+*
+* View Reports (stub)
+*
+VIEW_REPORTS:
+   PRINT "Reports - Coming soon"
+   PRINT "Press RETURN: ";
+   INPUT dummy
+   RETURN
+
+END

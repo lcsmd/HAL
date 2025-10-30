@@ -1,0 +1,208 @@
+PROGRAM DATA.FILTER
+* Reusable data quality filter for imports
+* Usage: CALL DATA.FILTER(FILE.TYPE, REC, ACTION, MATCH.KEY)
+* Returns: ACTION = "IMPORT", "SKIP", "MERGE", "ARCHIVE", "REVIEW"
+*          MATCH.KEY = existing record key if duplicate found
+
+SUBROUTINE DATA.FILTER(FILE.TYPE, REC, ACTION, MATCH.KEY)
+
+* Default action
+ACTION = "IMPORT"
+MATCH.KEY = ""
+
+* Open filter rules
+OPEN "DATA_FILTER" TO F.FILTER ELSE
+   RETURN  ;* No filters defined, import everything
+END
+
+* Select active filters for this file type
+SELECT.CMD = "SELECT DATA_FILTER WITH FILE_TYPE = '":FILE.TYPE:"' AND ACTIVE = 'Y' BY PRIORITY"
+EXECUTE SELECT.CMD
+
+* Process each filter rule
+LOOP
+   READNEXT FILTER.ID ELSE EXIT
+   
+   READ FILTER.REC FROM F.FILTER, FILTER.ID ELSE CONTINUE
+   
+   FILTER.TYPE = FILTER.REC<3>
+   CRITERIA = FILTER.REC<4>
+   FILTER.ACTION = FILTER.REC<5>
+   
+   BEGIN CASE
+      CASE FILTER.TYPE = "age"
+         GOSUB CHECK.AGE
+         
+      CASE FILTER.TYPE = "duplicate"
+         GOSUB CHECK.DUPLICATE
+         
+      CASE FILTER.TYPE = "invalid"
+         GOSUB CHECK.INVALID
+         
+      CASE FILTER.TYPE = "required"
+         GOSUB CHECK.REQUIRED
+   END CASE
+   
+   * If filter triggered, apply action and stop
+   IF ACTION # "IMPORT" THEN RETURN
+REPEAT
+
+RETURN
+
+* ============================================
+* CHECK.AGE - Skip old records
+* ============================================
+CHECK.AGE:
+   * Parse criteria: "days:90" or "date:2024-01-01"
+   CONVERT ":" TO @FM IN CRITERIA
+   AGE.TYPE = CRITERIA<1>
+   AGE.VALUE = CRITERIA<2>
+   
+   * Get record date (field varies by file type)
+   BEGIN CASE
+      CASE FILE.TYPE = "email"
+         REC.DATE = REC<8>  ;* date_sent
+      CASE FILE.TYPE = "message"
+         REC.DATE = REC<7>  ;* date_sent
+      CASE FILE.TYPE = "medical_record"
+         REC.DATE = REC<2>  ;* date
+      CASE 1
+         REC.DATE = REC<16> ;* created_date (common field)
+   END CASE
+   
+   IF REC.DATE = "" THEN RETURN
+   
+   * Check age
+   IF AGE.TYPE = "days" THEN
+      CUTOFF.DATE = DATE() - AGE.VALUE
+      IF OCONV(REC.DATE, "D4-") < OCONV(CUTOFF.DATE, "D4-") THEN
+         ACTION = FILTER.ACTION
+      END
+   END ELSE IF AGE.TYPE = "date" THEN
+      IF REC.DATE < AGE.VALUE THEN
+         ACTION = FILTER.ACTION
+      END
+   END
+   RETURN
+
+* ============================================
+* CHECK.DUPLICATE - Find duplicates
+* ============================================
+CHECK.DUPLICATE:
+   * Parse criteria: "email" or "name+dob" or "phone"
+   MATCH.FIELDS = CRITERIA
+   
+   * Build search query based on match fields
+   BEGIN CASE
+      CASE FILE.TYPE = "person"
+         IF MATCH.FIELDS = "email" THEN
+            EMAIL = REC<6>
+            IF EMAIL # "" THEN
+               GOSUB FIND.PERSON.BY.EMAIL
+            END
+         END ELSE IF MATCH.FIELDS = "phone" THEN
+            PHONE = REC<4>
+            IF PHONE # "" THEN
+               GOSUB FIND.PERSON.BY.PHONE
+            END
+         END ELSE IF MATCH.FIELDS = "name+dob" THEN
+            NAME = REC<1>:" ":REC<2>
+            DOB = REC<12>
+            IF NAME # "" AND DOB # "" THEN
+               GOSUB FIND.PERSON.BY.NAME.DOB
+            END
+         END
+         
+      CASE FILE.TYPE = "email"
+         * Check for duplicate by message-id or date+from+subject
+         MSG.ID = REC<1>
+         IF MSG.ID # "" THEN
+            GOSUB FIND.EMAIL.BY.MSGID
+         END
+   END CASE
+   
+   IF MATCH.KEY # "" THEN
+      ACTION = FILTER.ACTION
+   END
+   RETURN
+
+* ============================================
+* CHECK.INVALID - Validate data
+* ============================================
+CHECK.INVALID:
+   * Parse criteria: "email_format" or "phone_format"
+   VALID = @TRUE
+   
+   BEGIN CASE
+      CASE CRITERIA = "email_format"
+         EMAIL = REC<6>
+         IF EMAIL # "" THEN
+            IF INDEX(EMAIL, "@", 1) = 0 THEN VALID = @FALSE
+            IF INDEX(EMAIL, ".", 1) = 0 THEN VALID = @FALSE
+         END
+         
+      CASE CRITERIA = "phone_format"
+         PHONE = REC<4>
+         IF PHONE # "" THEN
+            * Remove non-digits
+            DIGITS = PHONE
+            CONVERT "()-. " TO "" IN DIGITS
+            IF NOT(NUM(DIGITS)) THEN VALID = @FALSE
+            IF LEN(DIGITS) < 10 THEN VALID = @FALSE
+         END
+   END CASE
+   
+   IF NOT(VALID) THEN
+      ACTION = FILTER.ACTION
+   END
+   RETURN
+
+* ============================================
+* CHECK.REQUIRED - Check required fields
+* ============================================
+CHECK.REQUIRED:
+   * Parse criteria: "1,2,6" (field numbers)
+   CONVERT "," TO @FM IN CRITERIA
+   FIELD.COUNT = DCOUNT(CRITERIA, @FM)
+   
+   FOR I = 1 TO FIELD.COUNT
+      FIELD.NUM = CRITERIA<I>
+      IF REC<FIELD.NUM> = "" THEN
+         ACTION = FILTER.ACTION
+         RETURN
+      END
+   NEXT I
+   RETURN
+
+* ============================================
+* FIND DUPLICATE HELPERS
+* ============================================
+FIND.PERSON.BY.EMAIL:
+   OPEN "PERSON" TO F.PERSON ELSE RETURN
+   SELECT.CMD = 'SELECT PERSON WITH EADD = "':EMAIL:'"'
+   EXECUTE SELECT.CMD
+   READNEXT MATCH.KEY ELSE MATCH.KEY = ""
+   RETURN
+
+FIND.PERSON.BY.PHONE:
+   OPEN "PERSON" TO F.PERSON ELSE RETURN
+   SELECT.CMD = 'SELECT PERSON WITH PHONE_MOBILE = "':PHONE:'"'
+   EXECUTE SELECT.CMD
+   READNEXT MATCH.KEY ELSE MATCH.KEY = ""
+   RETURN
+
+FIND.PERSON.BY.NAME.DOB:
+   OPEN "PERSON" TO F.PERSON ELSE RETURN
+   SELECT.CMD = 'SELECT PERSON WITH NAME_FIRST = "':REC<1>:'" AND NAME_LAST = "':REC<2>:'" AND DATE = "':DOB:'"'
+   EXECUTE SELECT.CMD
+   READNEXT MATCH.KEY ELSE MATCH.KEY = ""
+   RETURN
+
+FIND.EMAIL.BY.MSGID:
+   OPEN "EMAIL" TO F.EMAIL ELSE RETURN
+   SELECT.CMD = 'SELECT EMAIL WITH EMAILACCOUNT = "':MSG.ID:'"'
+   EXECUTE SELECT.CMD
+   READNEXT MATCH.KEY ELSE MATCH.KEY = ""
+   RETURN
+
+END

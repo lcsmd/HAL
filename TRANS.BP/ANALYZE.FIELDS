@@ -1,0 +1,215 @@
+PROGRAM ANALYZE.FIELDS
+*
+* ANALYZE.FIELDS - Show what fields were captured from your Quicken import
+*
+* Usage: RUN ANALYZE.FIELDS [batch_id]
+*        Shows field usage statistics and sample data
+*
+
+PROMPT ""
+batch_filter = TRIM(SENTENCE())
+
+* Open files
+OPEN "TRANSACTIONS" TO trans_file ELSE
+   PRINT "ERROR: Cannot open TRANSACTIONS file"
+   STOP
+END
+
+PRINT "Field Analysis Report"
+PRINT STR("=",70)
+PRINT
+
+* Field definitions
+DIM field_names(25)
+field_names(1) = "DATE"
+field_names(2) = "RAW.PAYEE"
+field_names(3) = "STANDARDIZED.PAYEE"
+field_names(4) = "AMOUNT"
+field_names(5) = "CATEGORY"
+field_names(6) = "ACCOUNT"
+field_names(7) = "MEMO"
+field_names(8) = "REIMBURSABLE.FLAG"
+field_names(9) = "REIMBURSEMENT.CATEGORY"
+field_names(10) = "REIMBURSEMENT.STATUS"
+field_names(11) = "PAYEE.ID"
+field_names(12) = "IMPORT.BATCH.ID"
+field_names(13) = "TAGS"
+field_names(14) = "SUBCATEGORY"
+field_names(15) = "CHECK.NUMBER"
+field_names(16) = "TRANSACTION.TYPE"
+field_names(17) = "CLEARED.STATUS"
+field_names(18) = "QUICKEN.TAGS"
+field_names(19) = "SPLIT.FLAG"
+field_names(20) = "SPLIT.DETAILS"
+field_names(21) = "ADDRESS"
+field_names(22) = "CLASS"
+field_names(23) = "ORIGINAL.CSV.ROW"
+
+* Track field usage
+DIM field_populated(25)
+DIM field_samples(25)
+
+FOR i = 1 TO 23
+   field_populated(i) = 0
+NEXT i
+
+total_records = 0
+
+* Scan transactions
+SELECT trans_file
+LOOP
+   READNEXT trans_id ELSE DONE = @TRUE
+UNTIL DONE DO
+   READ trans_rec FROM trans_file, trans_id THEN
+      * Apply batch filter if specified
+      IF batch_filter # "" AND trans_rec<12> # batch_filter THEN
+         CONTINUE
+      END
+      
+      total_records = total_records + 1
+      
+      * Check each field
+      FOR i = 1 TO 23
+         IF trans_rec<i> # "" THEN
+            field_populated(i) += 1
+            * Keep first sample
+            IF field_samples(i) = "" THEN
+               field_samples(i) = trans_rec<i>
+            END
+         END
+      NEXT i
+   END
+REPEAT
+
+PRINT "Total transactions analyzed: ": total_records
+IF batch_filter # "" THEN
+   PRINT "Batch filter: ": batch_filter
+END
+PRINT
+PRINT STR("-",70)
+PRINT "Field Usage Statistics:"
+PRINT STR("-",70)
+PRINT
+
+PRINT FMT("Field #", "8L"): " ":
+PRINT FMT("Field Name", "25L"): " ":
+PRINT FMT("Populated", "10R"): " ":
+PRINT FMT("%", "6R"): " ":
+PRINT "Sample"
+PRINT STR("-",70)
+
+FOR i = 1 TO 23
+   IF field_populated(i) > 0 OR i <= 13 THEN
+      pct = 0
+      IF total_records > 0 THEN
+         pct = INT((field_populated(i) * 100) / total_records)
+      END
+      
+      sample = field_samples(i)
+      IF LEN(sample) > 30 THEN
+         sample = sample[1,27] : "..."
+      END
+      
+      PRINT FMT(i, "8R"): " ":
+      PRINT FMT(field_names(i), "25L"): " ":
+      PRINT FMT(field_populated(i), "10R"): " ":
+      PRINT FMT(pct : "%", "6R"): " ":
+      PRINT sample
+   END
+NEXT i
+
+PRINT STR("-",70)
+PRINT
+
+* Show which fields are being used
+PRINT "Fields WITH data from Quicken:"
+PRINT
+count = 0
+FOR i = 1 TO 23
+   IF field_populated(i) > 0 THEN
+      IF i # 8 AND i # 9 AND i # 10 AND i # 11 AND i # 12 AND i # 13 THEN
+         PRINT "  - ": field_names(i)
+         count = count + 1
+      END
+   END
+NEXT i
+
+IF count = 0 THEN
+   PRINT "  (None - check your import)"
+END
+
+PRINT
+PRINT "System/Processing fields (not from Quicken):"
+PRINT "  - STANDARDIZED.PAYEE (filled by STANDARDIZE.PAYEES)"
+PRINT "  - REIMBURSABLE.FLAG (filled by TAG.REIMBURSABLE)"
+PRINT "  - REIMBURSEMENT.CATEGORY (filled by TAG.REIMBURSABLE)"
+PRINT "  - REIMBURSEMENT.STATUS (filled by TAG.REIMBURSABLE)"
+PRINT "  - PAYEE.ID (filled by STANDARDIZE.PAYEES)"
+PRINT "  - IMPORT.BATCH.ID (filled by import)"
+PRINT "  - TAGS (user-defined)"
+
+PRINT
+PRINT STR("-",70)
+
+* Show sample records
+PRINT
+PRINT "Display sample records (Y/N)? " :
+INPUT answer
+IF UPCASE(answer) = "Y" THEN
+   PRINT
+   GOSUB SHOW_SAMPLES
+END
+
+STOP
+
+*
+* Subroutine: Show sample records with all fields
+*
+SHOW_SAMPLES:
+   PRINT "Sample Transaction Records"
+   PRINT STR("=",70)
+   
+   count = 0
+   SELECT trans_file
+   LOOP
+      READNEXT trans_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ trans_rec FROM trans_file, trans_id THEN
+         IF batch_filter # "" AND trans_rec<12> # batch_filter THEN
+            CONTINUE
+         END
+         
+         count = count + 1
+         
+         PRINT
+         PRINT "Transaction #": count: " (ID: ": trans_id: ")"
+         PRINT STR("-",70)
+         
+         FOR i = 1 TO 23
+            IF trans_rec<i> # "" THEN
+               value = trans_rec<i>
+               IF i = 23 THEN
+                  * Original CSV row - truncate if too long
+                  IF LEN(value) > 60 THEN
+                     value = value[1,57] : "..."
+                  END
+               END
+               
+               PRINT "  ": FMT(field_names(i), "25L"): ": ": value
+            END
+         NEXT i
+         
+         IF count >= 3 THEN
+            PRINT
+            PRINT "Show more (Y/N)? " :
+            INPUT more
+            IF UPCASE(more) # "Y" THEN
+               RETURN
+            END
+         END
+      END
+   REPEAT
+   
+   RETURN
+
+END

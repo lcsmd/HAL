@@ -1,0 +1,87 @@
+PROGRAM MIGRATE.TRANS.TO.FIN
+*
+* Purpose: Migrate TRANS.BP programs to FIN.BP with FIN. prefix
+* Will NOT overwrite existing programs
+*
+
+PROMPT ""
+
+CRT
+CRT "Migrating TRANS.BP programs to FIN.BP"
+CRT STR("=",70)
+CRT
+
+* Open directories
+OPEN "TRANS.BP" TO F.TRANS ELSE
+   CRT "ERROR: Cannot open TRANS.BP"
+   STOP
+END
+
+OPEN "FIN.BP" TO F.FIN ELSE
+   CRT "ERROR: Cannot open FIN.BP"
+   STOP
+END
+
+* List of programs to migrate
+* Format: OLD.NAME -> NEW.NAME
+DIM OLD.NAMES(20), NEW.NAMES(20)
+COUNT = 0
+
+COUNT += 1 ; OLD.NAMES(COUNT) = "IMPORT.QUICKEN.ENHANCED" ; NEW.NAMES(COUNT) = "FIN.IMPORT.QUICKEN.ENHANCED"
+COUNT += 1 ; OLD.NAMES(COUNT) = "MANAGE.RULES" ; NEW.NAMES(COUNT) = "FIN.MANAGE.RULES.V2"
+COUNT += 1 ; OLD.NAMES(COUNT) = "REPORT.REIMBURSABLE" ; NEW.NAMES(COUNT) = "FIN.REPORT.REIMBURSABLE.V2"
+COUNT += 1 ; OLD.NAMES(COUNT) = "STANDARDIZE.PAYEES" ; NEW.NAMES(COUNT) = "FIN.STANDARDIZE.PAYEES.V2"
+COUNT += 1 ; OLD.NAMES(COUNT) = "STANDARDIZE.PAYEES.CORRECTED" ; NEW.NAMES(COUNT) = "FIN.STANDARDIZE.PAYEES.V3"
+COUNT += 1 ; OLD.NAMES(COUNT) = "TAG.REIMBURSABLE" ; NEW.NAMES(COUNT) = "FIN.TAG.REIMBURSABLE.V2"
+COUNT += 1 ; OLD.NAMES(COUNT) = "CREATE.FILES" ; NEW.NAMES(COUNT) = "FIN.CREATE.FILES"
+COUNT += 1 ; OLD.NAMES(COUNT) = "ANALYZE.FIELDS" ; NEW.NAMES(COUNT) = "FIN.ANALYZE.FIELDS"
+
+SUCCESS = 0
+SKIPPED = 0
+ERRORS = 0
+
+FOR I = 1 TO COUNT
+   OLD.NAME = OLD.NAMES(I)
+   NEW.NAME = NEW.NAMES(I)
+   
+   * Read from TRANS.BP
+   READ CONTENT FROM F.TRANS, OLD.NAME ELSE
+      CRT "  SKIP: ": OLD.NAME : " (not found)"
+      SKIPPED += 1
+      CONTINUE
+   END
+   
+   * Check if target already exists
+   READ TEST FROM F.FIN, NEW.NAME THEN
+      CRT "  SKIP: ": NEW.NAME : " (already exists - not overwriting)"
+      SKIPPED += 1
+      CONTINUE
+   END
+   
+   * Write to FIN.BP with new name
+   WRITE CONTENT TO F.FIN, NEW.NAME ON ERROR
+      CRT "  ERROR: Cannot write ": NEW.NAME
+      ERRORS += 1
+      CONTINUE
+   END
+   
+   CRT "  ": OLD.NAME : " -> FIN.BP/": NEW.NAME
+   SUCCESS += 1
+NEXT I
+
+CRT
+CRT STR("=",70)
+CRT "Migration Complete!"
+CRT "  Copied: ": SUCCESS
+CRT "  Skipped: ": SKIPPED
+CRT "  Errors: ": ERRORS
+CRT
+CRT "Next Steps:"
+CRT "  1. Compile: BASIC FIN.BP * NO.PAGE"
+CRT "  2. Catalog: CATALOG FIN.BP * NO.PAGE"
+CRT "  3. Test the migrated programs"
+CRT "  4. TRANS.BP can be archived after verification"
+CRT
+
+STOP
+END

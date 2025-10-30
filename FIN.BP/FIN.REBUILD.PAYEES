@@ -1,0 +1,375 @@
+      PROGRAM FIN.REBUILD.PAYEES
+      *
+      * Rebuild PAYEE file from transactions
+      * - Intelligent name cleaning (remove store #, locations, IDs)
+      * - Apply standardization rules
+      * - Group variations under single payee
+      * - Track all aliases
+      *
+
+      PROMPT ""
+
+      * Open files
+      OPEN "TRANSACTION" TO trans_file ELSE
+         PRINT "ERROR: Cannot open TRANSACTION file"
+         STOP
+      END
+
+      OPEN "PAYEE" TO payee_file ELSE
+         PRINT "ERROR: Cannot open PAYEE file"
+         STOP
+      END
+
+      OPEN "RULE" TO rules_file ELSE
+         PRINT "ERROR: Cannot open RULE file"
+         STOP
+      END
+
+      PRINT "Rebuild PAYEE File"
+      PRINT STR("=",70)
+      PRINT
+      PRINT "This will:"
+      PRINT "  - Clear existing payees"
+      PRINT "  - Clean payee names (remove store #, locations)"
+      PRINT "  - Apply standardization rules"
+      PRINT "  - Group variations together"
+      PRINT
+      PRINT "Continue? (Y/N): ";
+      INPUT confirm
+
+      IF confirm # "Y" AND confirm # "y" THEN
+         PRINT "Cancelled"
+         STOP
+      END
+
+      * Clear existing payees
+      PRINT
+      PRINT "Clearing existing payees..."
+      CLEARFILE payee_file
+
+      * Load standardization rules
+      PRINT "Loading standardization rules..."
+      GOSUB LOAD_RULES
+      PRINT "  Loaded " : rule_count : " rules"
+
+      * Process transactions
+      PRINT
+      PRINT "Processing transactions..."
+
+      SELECT trans_file
+      DONE = @FALSE
+      processed = 0
+      payee_data = ""  ; * Keyed array
+      payee_keys = ""  ; * List of payee keys
+      payee_count = 0
+
+      LOOP
+         READNEXT trans_id ELSE DONE = @TRUE
+      UNTIL DONE DO
+         READ trans_rec FROM trans_file, trans_id THEN
+            processed = processed + 1
+
+            original_payee = trans_rec<2>
+            amount = trans_rec<4>
+            category = trans_rec<5>
+            trans_date = trans_rec<1>
+
+            * Clean and standardize payee name
+            GOSUB CLEAN_PAYEE_NAME
+
+            * Debug: Show first 10 cleanings
+            IF processed <= 10 THEN
+               PRINT "  [" : processed : "] '" : original_payee : "' -> '" : std_payee : "'"
+            END
+
+            * Find existing payee
+            found_pos = 0
+            FOR p = 1 TO payee_count
+               IF payee_keys<p> = std_payee THEN
+                  found_pos = p
+                  p = payee_count + 1  ; * Exit loop
+               END
+            NEXT p
+
+            IF found_pos > 0 THEN
+               * Update existing payee
+               pos = found_pos
+
+               * Check if alias already exists
+               existing_aliases = payee_data<2,pos>
+               found_alias = 0
+               FOR k = 1 TO DCOUNT(existing_aliases, @VM)
+                  IF existing_aliases<1,k> = original_payee THEN
+                     found_alias = 1
+                  END
+               NEXT k
+
+               IF found_alias = 0 THEN
+                  payee_data<2,pos,-1> = original_payee
+               END
+
+               payee_data<3,pos> = payee_data<3,pos> + 1
+               payee_data<4,pos> = payee_data<4,pos> + amount
+
+               IF trans_date < payee_data<5,pos> OR payee_data<5,pos> = "" THEN
+                  payee_data<5,pos> = trans_date
+               END
+               IF trans_date > payee_data<6,pos> THEN
+                  payee_data<6,pos> = trans_date
+               END
+            END ELSE
+               * Create new payee
+               payee_count = payee_count + 1
+               payee_keys<payee_count> = std_payee
+               payee_data<2,payee_count> = original_payee
+               payee_data<3,payee_count> = 1
+               payee_data<4,payee_count> = amount
+               payee_data<5,payee_count> = trans_date
+               payee_data<6,payee_count> = trans_date
+               payee_data<7,payee_count> = category
+            END
+
+            IF MOD(processed, 1000) = 0 THEN
+               PRINT "  " : processed : " trans, " : payee_count : " payees"
+            END
+         END
+      REPEAT
+
+      PRINT
+      PRINT "Creating payee records..."
+
+      * Write payee records
+      FOR i = 1 TO payee_count
+         std_name = payee_keys<i>
+         aliases = payee_data<2,i>
+         trans_count = payee_data<3,i>
+         total_amount = OCONV(payee_data<4,i>,'MD2')
+         first_date = OCONV(payee_data<5,i>,'D4-')
+         last_date = OCONV(payee_data<6,i>,'D4-')
+         def_category = payee_data<7,i>
+
+         payee_id = "P" : DATE() : "-" : i
+
+         payee_rec = ""
+         payee_rec<1> = std_name
+         payee_rec<2> = aliases
+         payee_rec<3> = def_category
+         payee_rec<4> = "N"
+         payee_rec<5> = ""
+         payee_rec<6> = ""
+         payee_rec<7> = "Auto-created"
+         payee_rec<8> = first_date
+         payee_rec<9> = last_date
+         payee_rec<10> = trans_count
+         payee_rec<11> = total_amount
+         payee_rec<18> = ""
+         payee_rec<19> = ""
+         payee_rec<20> = ""
+         payee_rec<21> = ""
+         
+         WRITE payee_rec TO payee_file, payee_id
+      NEXT i
+
+      PRINT
+      PRINT "Exporting to CSV..."
+      GOSUB EXPORT_CSV
+
+      PRINT
+      PRINT STR("=",70)
+      PRINT "Complete!"
+      PRINT "  Transactions: " : processed
+      PRINT "  Unique payees: " : payee_count
+      PRINT
+
+      STOP
+
+      *
+      * Export to CSV
+      *
+EXPORT_CSV:
+      csv_file = "C:\QMSYS\HAL\DOWNLOAD\PAYEES_EXPORT.csv"
+
+      OPENSEQ csv_file TO csv_fv ELSE
+         CREATE csv_fv ELSE
+            PRINT "ERROR: Cannot create CSV"
+            RETURN
+         END
+      END
+
+      header = "PAYEE_ID,STANDARD_NAME,LAST_CHARGE_DATE,CHARGE_CT,TOTAL_AMOUNT,PERCENT_REIMBURSE,DISPUTE,CANCEL,REVIEW"
+      WRITESEQ header TO csv_fv THEN NULL
+
+      SELECT payee_file
+      csv_count = 0
+
+      LOOP
+         READNEXT exp_id ELSE EXIT
+         READ exp_rec FROM payee_file, exp_id THEN
+            csv_count = csv_count + 1
+            std_name = exp_rec<1>
+            IF INDEX(std_name, ",", 1) > 0 THEN std_name = '"' : std_name : '"'
+
+            csv_line = exp_id : "," : std_name : "," : exp_rec<9> : "," : exp_rec<10> : "," : exp_rec<11> : "," : exp_rec<18> : "," : exp_rec<19> : "," : exp_rec<20> : "," : exp_rec<21>
+            WRITESEQ csv_line TO csv_fv THEN NULL
+         END
+      REPEAT
+
+      CLOSESEQ csv_fv
+      PRINT "  Exported " : csv_count : " payees to C:\QMSYS\HAL\DOWNLOADS\PAYEES_EXPORT.csv"
+      RETURN
+
+      *
+      * Load standardization rules
+      *
+LOAD_RULES:
+      rule_count = 0
+      rule_patterns = ""
+      rule_targets = ""
+
+      SELECT rules_file
+      DONE2 = @FALSE
+
+      LOOP
+         READNEXT rule_id ELSE DONE2 = @TRUE
+      UNTIL DONE2 DO
+         READ rule_rec FROM rules_file, rule_id THEN
+            IF rule_rec<1> = "PAYEE_STANDARDIZATION" AND rule_rec<6> = "Y" THEN
+               rule_count = rule_count + 1
+               rule_patterns<rule_count> = rule_rec<2>
+               rule_targets<rule_count> = rule_rec<4>
+            END
+         END
+      REPEAT
+
+      RETURN
+
+      *
+      * Clean and standardize payee name
+      *
+CLEAN_PAYEE_NAME:
+      clean_name = TRIM(original_payee)
+
+      * Apply rules first
+      FOR i = 1 TO rule_count
+         pattern = rule_patterns<i>
+         target = rule_targets<i>
+
+         * Check if pattern has wildcard
+         IF pattern[LEN(pattern),1] = "*" THEN
+            * Wildcard match - check if clean_name starts with pattern
+            pattern_prefix = pattern[1,LEN(pattern)-1]
+            IF UPCASE(clean_name)[1,LEN(pattern_prefix)] = UPCASE(pattern_prefix) THEN
+               std_payee = target
+               RETURN
+            END
+         END ELSE
+            * Exact match
+            IF INDEX(UPCASE(clean_name), UPCASE(pattern), 1) > 0 THEN
+               std_payee = target
+               RETURN
+            END
+         END
+      NEXT i
+
+      * Rule-based cleaning (based on research best practices)
+
+      * Rule 1: Remove card numbers (XXXX1234, Card xx3819)
+      pos = INDEX(clean_name, "XXXX", 1)
+      IF pos > 0 THEN clean_name = TRIM(clean_name[1,pos-1])
+
+      pos = INDEX(UPCASE(clean_name), "CARD ", 1)
+      IF pos > 0 THEN clean_name = TRIM(clean_name[1,pos-1])
+
+      * Rule 2: Remove "Value Date:" and everything after
+      pos = INDEX(UPCASE(clean_name), "VALUE DATE", 1)
+      IF pos > 0 THEN clean_name = TRIM(clean_name[1,pos-1])
+
+      * Rule 3: Remove store/location numbers
+      * "CVS #123" -> "CVS", "STORE 456" -> ""
+      pos = INDEX(clean_name, " #", 1)
+      IF pos > 0 THEN
+         IF pos + 2 <= LEN(clean_name) THEN
+            next_char = clean_name[pos+2,1]
+            IF next_char >= "0" AND next_char <= "9" THEN
+               clean_name = TRIM(clean_name[1,pos-1])
+            END
+         END
+      END
+
+      pos = INDEX(UPCASE(clean_name), " STORE", 1)
+      IF pos > 0 THEN clean_name = TRIM(clean_name[1,pos-1])
+
+      * Rule 4: Remove common location suffixes (only if at end)
+      * "MERCHANT SYDNEY AU" -> "MERCHANT"
+      * Only remove 2-3 letter state/country codes at very end
+      IF LEN(clean_name) > 4 THEN
+         last_word = ""
+         last_space = 0
+         FOR j = LEN(clean_name) TO 1 STEP -1
+            IF clean_name[j,1] = " " THEN
+               last_space = j
+               j = 0
+            END
+         NEXT j
+
+         IF last_space > 0 THEN
+            last_word = UPCASE(clean_name[last_space+1,999])
+            * Only remove if it's a known state/country code
+            state_codes = "AU":@VM:"US":@VM:"UK":@VM:"NY":@VM:"CA":@VM:"NSW":@VM:"VIC":@VM:"QLD":@VM:"NJ":@VM:"TX":@VM:"FL"
+            LOCATE last_word IN state_codes<1> SETTING pos THEN
+               clean_name = TRIM(clean_name[1,last_space-1])
+            END
+         END
+      END
+
+      * Rule 5: Remove trailing numbers (>8 digits = transaction ID)
+      * "MERCHANT 12345678901" -> "MERCHANT"
+      * But keep "7-ELEVEN"
+      last_space = 0
+      FOR j = LEN(clean_name) TO 1 STEP -1
+         IF clean_name[j,1] = " " THEN
+            last_space = j
+            j = 0
+         END
+      NEXT j
+
+      IF last_space > 0 THEN
+         tail = clean_name[last_space+1,999]
+         * Check if tail is all digits and long
+         all_digits = 1
+         FOR j = 1 TO LEN(tail)
+            char = tail[j,1]
+            IF char < "0" OR char > "9" THEN
+               all_digits = 0
+            END
+         NEXT j
+
+         IF all_digits = 1 AND LEN(tail) > 6 THEN
+            clean_name = TRIM(clean_name[1,last_space-1])
+         END
+      END
+
+      * Rule 6: Remove special chars at end
+      * "MERCHANT***" -> "MERCHANT"
+      LOOP
+         last_char = clean_name[LEN(clean_name),1]
+      WHILE last_char = "*" OR last_char = "-" OR last_char = "." OR last_char = "," DO
+         clean_name = clean_name[1,LEN(clean_name)-1]
+      REPEAT
+
+      * Rule 7: Remove extra spaces
+      LOOP
+      WHILE INDEX(clean_name, "  ", 1) > 0 DO
+         clean_name = CHANGE(clean_name, "  ", " ")
+      REPEAT
+
+      std_payee = TRIM(clean_name)
+
+      * If result is empty or too short, use original
+      IF std_payee = "" OR LEN(std_payee) < 3 THEN
+         std_payee = TRIM(original_payee)
+      END
+
+      RETURN
+
+      END

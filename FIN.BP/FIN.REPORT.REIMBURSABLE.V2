@@ -1,0 +1,340 @@
+      PROGRAM REPORT.REIMBURSABLE
+      *
+      * REPORT.REIMBURSABLE - Generate reports of reimbursable transactions
+      *
+      * Usage: RUN REPORT.REIMBURSABLE [options]
+      *        Options:
+      *          PENDING - Only pending reimbursements
+      *          PAID - Only paid reimbursements
+      *          SUMMARY - Summary by category
+      *          DETAIL - Detailed transaction list (default)
+      *          EXPORT - Export to CSV
+      *          FROM <date> - Start date (YYYYMMDD)
+      *          TO <date> - End date (YYYYMMDD)
+      *
+
+      PROMPT ""
+      * Parse command line
+      cmd.line = TRIM(SENTENCE())
+      GOSUB PARSE_OPTIONS
+
+      * Open files
+      OPEN "TRANSACTION" TO trans_file ELSE
+         PRINT "ERROR: Cannot open TRANSACTION file"
+         STOP
+      END
+
+      PRINT "Reimbursable Transactions Report"
+      PRINT "Generated: ": OCONV(DATE(), "D4-")
+      PRINT STR("=",70)
+      PRINT
+
+      * Collect reimbursable transactions using dynamic arrays
+      trans.list = ""
+      amounts = ""
+      categories = ""
+      payees = ""
+      dates = ""
+      num_trans = 0
+      total_amount = 0
+      DONE = @FALSE
+
+      SELECT trans_file
+      LOOP
+         READNEXT trans_id ELSE DONE = @TRUE
+      UNTIL DONE DO
+         READ trans_rec FROM trans_file, trans_id THEN
+            * Filter: Must be reimbursable
+            IF trans_rec<8> # "Y" THEN
+               CONTINUE
+            END
+
+            * Filter: Status
+            status = trans_rec<10>
+            IF status_filter # "" AND status # status_filter THEN
+               CONTINUE
+            END
+
+            * Filter: Date range
+            trans_date = trans_rec<1>
+            IF from_date # "" AND trans_date < from_date THEN
+               CONTINUE
+            END
+            IF to_date # "" AND trans_date > to_date THEN
+               CONTINUE
+            END
+
+            * Add to dynamic arrays
+            num_trans = num_trans + 1
+            trans.list<num_trans> = trans_id
+            amounts<num_trans> = trans_rec<4>
+            categories<num_trans> = trans_rec<9>
+            payees<num_trans> = trans_rec<3>
+            dates<num_trans> = trans_rec<1>
+            total_amount = total_amount + trans_rec<4>
+         END
+      REPEAT
+
+      PRINT "Total transactions found: ": num_trans
+      PRINT "Total amount: $": FMT(total_amount, "R2")
+      PRINT
+
+      IF num_trans = 0 THEN
+         PRINT "No reimbursable transactions found matching criteria."
+         STOP
+      END
+
+      * Generate appropriate report
+      BEGIN CASE
+         CASE report_type = "SUMMARY"
+            GOSUB GENERATE_SUMMARY
+         CASE report_type = "EXPORT"
+            GOSUB GENERATE_EXPORT
+         CASE 1
+            GOSUB GENERATE_DETAIL
+      END CASE
+
+      STOP
+
+      *
+      * Subroutine: Parse command line options
+      *
+PARSE_OPTIONS:
+      status_filter = ""
+      report_type = "DETAIL"
+      from_date = ""
+      to_date = ""
+
+      * Parse tokens
+      num_tokens = DCOUNT(cmd.line, " ")
+      FOR i = 1 TO num_tokens
+         token = UPCASE(TRIM(FIELD(cmd.line, " ", i)))
+
+         BEGIN CASE
+            CASE token = "PENDING"
+               status_filter = "PENDING"
+            CASE token = "PAID"
+               status_filter = "PAID"
+            CASE token = "SUBMITTED"
+               status_filter = "SUBMITTED"
+            CASE token = "SUMMARY"
+               report_type = "SUMMARY"
+            CASE token = "DETAIL"
+               report_type = "DETAIL"
+            CASE token = "EXPORT"
+               report_type = "EXPORT"
+            CASE token = "FROM"
+               from_date = TRIM(FIELD(cmd.line, " ", i+1))
+               from_date = CHANGE(from_date, "-", "")
+               from_date = CHANGE(from_date, "/", "")
+            CASE token = "TO"
+               to_date = TRIM(FIELD(cmd.line, " ", i+1))
+               to_date = CHANGE(to_date, "-", "")
+               to_date = CHANGE(to_date, "/", "")
+         END CASE
+      NEXT i
+
+      RETURN
+
+      *
+      * Subroutine: Generate detailed report
+      *
+GENERATE_DETAIL:
+      PRINT STR("-",70)
+      PRINT FMT("Date", "10L"):" ":
+      PRINT FMT("Payee", "30L"):" ":
+      PRINT FMT("Category", "15L"):" ":
+      PRINT FMT("Amount", "12R")
+      PRINT STR("-",70)
+
+      * Sort by date
+      GOSUB SORT_BY_DATE
+
+      FOR i = 1 TO num_trans
+         READ trans_rec FROM trans_file, trans.list<i> THEN
+            trans_date = trans_rec<1>
+            formatted_date = trans_date[5,2]:"/":trans_date[7,2]:"/":trans_date[1,4]
+
+            PRINT FMT(formatted_date, "10L"):" ":
+            PRINT FMT(trans_rec<3>, "30L"):" ":
+            PRINT FMT(trans_rec<9>, "15L"):" ":
+            PRINT FMT("$":FMT(trans_rec<4>, "R2"), "12R")
+         END
+      NEXT i
+
+      PRINT STR("-",70)
+      PRINT FMT("TOTAL", "56L"):" ":
+      PRINT FMT("$":FMT(total_amount, "R2"), "12R")
+      PRINT
+
+      RETURN
+
+      *
+      * Subroutine: Generate summary by category
+      *
+GENERATE_SUMMARY:
+      * Accumulate by category using dynamic arrays
+      cat_names = ""
+      cat_totals = ""
+      cat_counts = ""
+      num_cats = 0
+
+      FOR i = 1 TO num_trans
+         ccat = categories<i>
+         IF ccat = "" THEN
+            ccat = "UNCATEGORIZED"
+         END
+
+         * Find or create category slot
+         found = 0
+         FOR j = 1 TO num_cats
+            IF cat_names<j> = ccat THEN
+               found = j
+               j = num_cats + 1
+               * Break out of loop
+            END
+         NEXT j
+
+         IF found = 0 THEN
+            num_cats = num_cats + 1
+            found = num_cats
+            cat_names<found> =  ccat
+            cat_totals<found> = 0
+            cat_counts<found> = 0
+         END
+
+         cat_totals<found> += amounts<i>
+         cat_counts<found> += 1
+      NEXT i
+
+      * Sort categories by total (descending)
+      FOR i = 1 TO num_cats - 1
+         FOR j = i + 1 TO num_cats
+            IF cat_totals<i> < cat_totals<j> THEN
+               * Swap
+               temp = cat_names<i>
+               cat_names<i> = cat_names<j>
+               cat_names<j> = temp
+
+               temp = cat_totals<i>
+               cat_totals<i> = cat_totals<j>
+               cat_totals<j> = temp
+
+               temp = cat_counts<i>
+               cat_counts<i> = cat_counts<j>
+               cat_counts<j> = temp
+            END
+         NEXT j
+      NEXT i
+
+      * Print summary
+      PRINT STR("-",60)
+      PRINT FMT("Category", "30L"):" ":
+      PRINT FMT("Count", "10R"):" ":
+      PRINT FMT("Total", "15R")
+      PRINT STR("-",60)
+
+      FOR i = 1 TO num_cats
+         PRINT FMT(cat_names<i>, "30L"):" ":
+         PRINT FMT(cat_counts<i>, "10R"):" ":
+         PRINT FMT("$":FMT(cat_totals<i>, "R2"), "15R")
+      NEXT i
+
+      PRINT STR("-",60)
+      PRINT FMT("TOTAL", "40L"):" ":
+      PRINT FMT("$":FMT(total_amount, "R2"), "15R")
+      PRINT
+
+      RETURN
+
+      *
+      * Subroutine: Generate CSV export
+      *
+GENERATE_EXPORT:
+      export_file = "reimbursable_" : DATE() : ".csv"
+
+      OPENSEQ export_file TO csv_file THEN
+         PRINT "File exists, appending timestamp..."
+         CLOSESEQ csv_file
+         export_file = "reimbursable_" : DATE() : "_" : TIME() : ".csv"
+      END
+
+      OPENSEQ export_file TO csv_file ELSE
+         CREATE csv_file ELSE
+            PRINT "ERROR: Cannot create export file"
+            RETURN
+         END
+      END
+
+      * Write header
+      header = "Date,Payee,Category,Amount,Memo,Status"
+      WRITESEQ header TO csv_file ELSE
+         PRINT "ERROR: Cannot write to export file"
+         RETURN
+      END
+
+      * Sort by date
+      GOSUB SORT_BY_DATE
+
+      * Write data
+      FOR i = 1 TO num_trans
+         READ trans_rec FROM trans_file, trans.list<i> THEN
+            trans_date = trans_rec<1>
+            formatted_date = trans_date[5,2]:"/":trans_date[7,2]:"/":trans_date[1,4]
+
+            line = formatted_date : ","
+            line := '"' : trans_rec<3> : '"' : ","
+            line := '"' : trans_rec<9> : '"' : ","
+            line := trans_rec<4> : ","
+            line := '"' : trans_rec<7> : '"' : ","
+            line := trans_rec<10>
+
+            WRITESEQ line TO csv_file ELSE
+               PRINT "ERROR: Cannot write line ": i
+            END
+         END
+      NEXT i
+
+      CLOSESEQ csv_file
+
+      PRINT "Export complete: ": export_file
+      PRINT
+
+      RETURN
+
+      *
+      * Subroutine: Sort transactions by date
+      *
+SORT_BY_DATE:
+      * Simple bubble sort (sufficient for typical transaction volumes)
+      FOR i = 1 TO num_trans - 1
+         FOR j = i + 1 TO num_trans
+            IF dates<i> > dates<j> THEN
+               * Swap all parallel arrays
+               temp = trans.list<i>
+               trans.list<i> = trans.list<j>
+               trans.list<j> = temp
+
+               temp = amounts<i>
+               amounts<i> = amounts<j>
+               amounts<j> = temp
+
+               temp = categories<i>
+               categories<i> = categories<j>
+               categories<j> = temp
+
+               temp = payees<i>
+               payees<i> = payees<j>
+               payees<j> = temp
+
+               temp = dates<i>
+               dates<i> = dates<j>
+               dates<j> = temp
+            END
+         NEXT j
+      NEXT i
+
+      RETURN
+
+      END
+

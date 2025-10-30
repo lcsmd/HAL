@@ -1,0 +1,596 @@
+PROGRAM IMPORT.PHOTOS
+*
+* Import photos from filesystem into PHOTO.STORE
+* - Analyzes photos for quality, duplicates, NSFW content
+* - Extracts EXIF metadata
+* - Auto-groups photos by date/time proximity
+* - Moves unusable photos to separate directories
+*
+* Usage: IMPORT.PHOTOS [source_path] [RECURSE] [MOVE]
+*        If no path specified, defaults to M:\PHOTO.IMPORT
+*
+
+$INCLUDE EQU COMMON.h
+$INCLUDE EQU VAR.h
+$INCLUDE EQU PHOTO.h
+$INCLUDE EQU PHOTO_GROUP.h
+
+* Open all files
+CALL OPEN.FILES
+
+PROMPT ""
+
+* Parse arguments
+source_path = ""
+recurse_flag = @FALSE
+move_flag = @FALSE
+
+IF SYSTEM(11) > 0 THEN
+   * First argument might be path or option
+   first_arg = UPCASE(TRIM(SYSTEM(1001)))
+   
+   IF first_arg = "RECURSE" OR first_arg = "MOVE" THEN
+      * No path specified, use default
+      source_path = "M:\PHOTO.IMPORT"
+      IF first_arg = "RECURSE" THEN recurse_flag = @TRUE
+      IF first_arg = "MOVE" THEN move_flag = @TRUE
+   END ELSE
+      * First arg is the path
+      source_path = TRIM(SYSTEM(1001))
+   END
+   
+   * Parse remaining arguments
+   FOR arg_num = 2 TO SYSTEM(11)
+      arg = UPCASE(TRIM(SYSTEM(1000 + arg_num)))
+      IF arg = "RECURSE" THEN recurse_flag = @TRUE
+      IF arg = "MOVE" THEN move_flag = @TRUE
+   NEXT arg_num
+END ELSE
+   * No arguments - use default path
+   source_path = "M:\PHOTO.IMPORT"
+END
+
+* Open files
+OPEN "MDA.PHOTO" TO photo_file ELSE
+   PRINT "ERROR: Cannot open MDA.PHOTO file"
+   PRINT "Run: BUILD.SCHEMA"
+   STOP
+END
+
+OPEN "MDA.PHOTO_GROUP" TO group_file ELSE
+   PRINT "ERROR: Cannot open MDA.PHOTO_GROUP file"
+   PRINT "Run: BUILD.SCHEMA"
+   STOP
+END
+
+OPEN "PHOTO.STORE" TO store_file ELSE
+   PRINT "ERROR: Cannot open PHOTO.STORE"
+   PRINT "Run: CREATE.FILE PHOTO.STORE 1 101"
+   STOP
+END
+
+* Create output directories
+base_path = "C:\\QMSYS\\HAL\\PHOTO_IMPORT"
+dup_path = base_path : "\\DUPLICATES"
+blur_path = base_path : "\\BLURRY"
+nsfw_path = base_path : "\\ADULT"
+reject_path = base_path : "\\REJECTED"
+
+EXECUTE "SH -c 'mkdir " : base_path : "'" CAPTURING output
+EXECUTE "SH -c 'mkdir " : dup_path : "'" CAPTURING output
+EXECUTE "SH -c 'mkdir " : blur_path : "'" CAPTURING output
+EXECUTE "SH -c 'mkdir " : nsfw_path : "'" CAPTURING output
+EXECUTE "SH -c 'mkdir " : reject_path : "'" CAPTURING output
+
+PRINT "Photo Import System"
+PRINT STR("=",70)
+PRINT "Source: " : source_path
+PRINT "Recurse: " : IF recurse_flag THEN "Yes" ELSE "No"
+PRINT "Move files: " : IF move_flag THEN "Yes" ELSE "No"
+PRINT
+
+* Initialize counters
+total_files = 0
+imported = 0
+duplicates = 0
+blurry = 0
+nsfw = 0
+rejected = 0
+
+* Build hash index for duplicate detection
+PRINT "Building duplicate detection index..."
+hash_index = ""
+SELECT photo_file
+LOOP
+   READNEXT photo_id ELSE EXIT
+   READ photo_rec FROM photo_file, photo_id THEN
+      file_hash = photo_rec<5>
+      IF file_hash # "" THEN
+         hash_index<-1> = file_hash : @VM : photo_id
+      END
+   END
+REPEAT
+PRINT "  Indexed " : DCOUNT(hash_index, @FM) : " existing photos"
+PRINT
+
+* Get file list
+PRINT "Scanning for photos..."
+GOSUB GET_FILE_LIST
+PRINT "  Found " : DCOUNT(file_list, @FM) : " image files"
+PRINT
+
+IF DCOUNT(file_list, @FM) = 0 THEN
+   PRINT "No image files found in source path"
+   STOP
+END
+
+* Process each file
+PRINT "Processing photos..."
+PRINT
+
+FOR i = 1 TO DCOUNT(file_list, @FM)
+   filepath = file_list<i>
+   IF filepath = "" THEN CONTINUE
+   
+   total_files = total_files + 1
+   
+   * Show progress
+   IF MOD(total_files, 10) = 0 THEN
+      PRINT "  Processed " : total_files : " files..."
+   END
+   
+   * Analyze photo
+   GOSUB ANALYZE_PHOTO
+   
+   IF analysis_success THEN
+      * Check for duplicate
+      LOCATE analysis_hash IN hash_index<1,1> SETTING pos THEN
+         * Duplicate found
+         duplicates = duplicates + 1
+         GOSUB MOVE_TO_DUPLICATES
+      END ELSE
+         * Check quality filters
+         IF analysis_nsfw = "Y" THEN
+            nsfw = nsfw + 1
+            GOSUB MOVE_TO_NSFW
+         END ELSE IF analysis_blurry = "Y" THEN
+            blurry = blurry + 1
+            GOSUB MOVE_TO_BLURRY
+         END ELSE
+            * Import photo
+            GOSUB IMPORT_PHOTO
+            IF import_success THEN
+               imported = imported + 1
+               * Add to hash index
+               hash_index<-1> = analysis_hash : @VM : new_photo_id
+            END ELSE
+               rejected = rejected + 1
+               GOSUB MOVE_TO_REJECTED
+            END
+         END
+      END
+   END ELSE
+      rejected = rejected + 1
+      GOSUB MOVE_TO_REJECTED
+   END
+NEXT i
+
+PRINT
+PRINT "Creating photo groups..."
+GOSUB CREATE_PHOTO_GROUPS
+
+PRINT
+PRINT STR("=",70)
+PRINT "Import Complete!"
+PRINT "  Total files: " : total_files
+PRINT "  Imported: " : imported
+PRINT "  Duplicates: " : duplicates
+PRINT "  Blurry: " : blurry
+PRINT "  Adult content: " : nsfw
+PRINT "  Rejected: " : rejected
+PRINT "  Photo groups: " : groups_created
+PRINT
+
+STOP
+
+*
+* Get list of image files from source path
+*
+GET_FILE_LIST:
+   file_list = ""
+   
+   * Scan for JPG files
+   cmd = '!dir /b /s "' : source_path : '\*.jpg"'
+   EXECUTE cmd CAPTURING jpg_list
+   * Filter out error messages
+   IF jpg_list # "" AND INDEX(jpg_list, 'File Not Found', 1) = 0 THEN file_list = jpg_list
+   
+   * Scan for JPEG files
+   cmd = '!dir /b /s "' : source_path : '\*.jpeg"'
+   EXECUTE cmd CAPTURING jpeg_list
+   * Filter out error messages
+   IF jpeg_list # "" AND INDEX(jpeg_list, 'File Not Found', 1) = 0 THEN
+      IF file_list # "" THEN
+         file_list := @FM : jpeg_list
+      END ELSE
+         file_list = jpeg_list
+      END
+   END
+   
+   * Scan for PNG files
+   cmd = '!dir /b /s "' : source_path : '\*.png"'
+   EXECUTE cmd CAPTURING png_list
+   * Filter out error messages
+   IF png_list # "" AND INDEX(png_list, 'File Not Found', 1) = 0 THEN
+      IF file_list # "" THEN
+         file_list := @FM : png_list
+      END ELSE
+         file_list = png_list
+      END
+   END
+   
+   RETURN
+
+*
+* Analyze photo using Python helper
+*
+ANALYZE_PHOTO:
+   analysis_success = @FALSE
+   analysis_hash = ""
+   analysis_blurry = "N"
+   analysis_nsfw = "N"
+   analysis_data = ""
+   
+   * Call Python analyzer
+   cmd = '!python C:\QMSYS\HAL\PY\photo_analyzer.py analyze "' : filepath : '"'
+   EXECUTE cmd CAPTURING json_output
+   
+   * Parse JSON response
+   IF INDEX(json_output, '"success": true', 1) > 0 THEN
+      analysis_success = @TRUE
+      
+      * Extract hash
+      hash_pos = INDEX(json_output, '"file_hash": "', 1)
+      IF hash_pos > 0 THEN
+         hash_start = hash_pos + 14
+         hash_end = INDEX(json_output[hash_start,999], '"', 1)
+         analysis_hash = json_output[hash_start, hash_end-1]
+      END
+      
+      * Extract blur flag
+      IF INDEX(json_output, '"is_blurry": "Y"', 1) > 0 THEN
+         analysis_blurry = "Y"
+      END
+      
+      * Extract NSFW flag
+      IF INDEX(json_output, '"adult_content": "Y"', 1) > 0 THEN
+         analysis_nsfw = "Y"
+      END
+      
+      analysis_data = json_output
+   END
+   
+   RETURN
+
+*
+* Import photo into system
+*
+IMPORT_PHOTO:
+   import_success = @FALSE
+   
+   * Generate new photo ID
+   new_photo_id = "PHO" : DATE() : "-" : TIME()
+   
+   * Extract original filename
+   orig_filename = filepath
+   slash_pos = 0
+   FOR j = LEN(orig_filename) TO 1 STEP -1
+      IF orig_filename[j,1] = "\\" OR orig_filename[j,1] = "/" THEN
+         slash_pos = j
+         j = 0
+      END
+   NEXT j
+   IF slash_pos > 0 THEN orig_filename = orig_filename[slash_pos+1,999]
+   
+   * Extract extension
+   dot_pos = 0
+   FOR j = LEN(orig_filename) TO 1 STEP -1
+      IF orig_filename[j,1] = "." THEN
+         dot_pos = j
+         j = 0
+      END
+   NEXT j
+   
+   extension = ""
+   IF dot_pos > 0 THEN extension = orig_filename[dot_pos,999]
+   
+   store_filename = new_photo_id : extension
+   
+   * Read binary file using OSREAD
+   OSREAD photo_data FROM filepath ELSE import_success = @FALSE ; RETURN
+   
+   * Write to PHOTO.STORE directory file  
+   WRITE photo_data TO store_file, store_filename
+   
+   * Delete source file if MOVE flag is set
+   IF move_flag THEN
+      cmd = '!del /Q "' : filepath : '"'
+      EXECUTE cmd CAPTURING output
+   END
+   
+   * Success - now create metadata record
+   GOSUB PARSE_ANALYSIS_JSON
+   
+   photo_rec = ""
+   photo_rec<1> = store_filename
+   photo_rec<2> = orig_filename
+   photo_rec<3> = filepath
+   photo_rec<4> = json_file_size
+   photo_rec<5> = analysis_hash
+   photo_rec<6> = json_mime_type
+   photo_rec<7> = json_width
+   photo_rec<8> = json_height
+   photo_rec<9> = json_orientation
+   photo_rec<10> = json_date_taken
+   photo_rec<11> = OCONV(DATE(), "D4-")
+   photo_rec<12> = json_camera_make
+   photo_rec<13> = json_camera_model
+   photo_rec<14> = json_gps_lat
+   photo_rec<15> = json_gps_lon
+   photo_rec<16> = ""
+   photo_rec<17> = ""
+   photo_rec<18> = ""
+   photo_rec<19> = ""
+   photo_rec<20> = ""
+   photo_rec<21> = ""
+   photo_rec<22> = json_quality_score
+   photo_rec<23> = json_blur_score
+   photo_rec<24> = analysis_blurry
+   photo_rec<25> = "N"
+   photo_rec<26> = ""
+   photo_rec<27> = analysis_nsfw
+   photo_rec<28> = "N"
+   photo_rec<29> = "N"
+   photo_rec<30> = "N"
+   photo_rec<31> = ""
+   
+   WRITE photo_rec TO PHO, new_photo_id
+   import_success = @TRUE
+   
+   RETURN
+
+*
+* Parse JSON analysis data
+*
+PARSE_ANALYSIS_JSON:
+   json_file_size = 0
+   json_mime_type = ""
+   json_width = 0
+   json_height = 0
+   json_orientation = ""
+   json_date_taken = ""
+   json_camera_make = ""
+   json_camera_model = ""
+   json_gps_lat = 0
+   json_gps_lon = 0
+   json_quality_score = 0
+   json_blur_score = 0
+   
+   * Extract values from JSON (simplified parser)
+   * In production, use proper JSON parser
+   
+   * File size
+   pos = INDEX(analysis_data, '"file_size": ', 1)
+   IF pos > 0 THEN
+      start_pos = pos + 13
+      end_pos = INDEX(analysis_data[start_pos,999], ',', 1)
+      json_file_size = analysis_data[start_pos, end_pos-1]
+   END
+   
+   * Width
+   pos = INDEX(analysis_data, '"width": ', 1)
+   IF pos > 0 THEN
+      start_pos = pos + 9
+      end_pos = INDEX(analysis_data[start_pos,999], ',', 1)
+      json_width = analysis_data[start_pos, end_pos-1]
+   END
+   
+   * Height
+   pos = INDEX(analysis_data, '"height": ', 1)
+   IF pos > 0 THEN
+      start_pos = pos + 10
+      end_pos = INDEX(analysis_data[start_pos,999], ',', 1)
+      json_height = analysis_data[start_pos, end_pos-1]
+   END
+   
+   * Orientation
+   pos = INDEX(analysis_data, '"orientation": "', 1)
+   IF pos > 0 THEN
+      start_pos = pos + 16
+      end_pos = INDEX(analysis_data[start_pos,999], '"', 1)
+      json_orientation = analysis_data[start_pos, end_pos-1]
+   END
+   
+   * MIME type
+   pos = INDEX(analysis_data, '"mime_type": "', 1)
+   IF pos > 0 THEN
+      start_pos = pos + 14
+      end_pos = INDEX(analysis_data[start_pos,999], '"', 1)
+      json_mime_type = analysis_data[start_pos, end_pos-1]
+   END
+   
+   * Quality score
+   pos = INDEX(analysis_data, '"quality_score": ', 1)
+   IF pos > 0 THEN
+      start_pos = pos + 17
+      end_pos = INDEX(analysis_data[start_pos,999], ',', 1)
+      IF end_pos = 0 THEN end_pos = INDEX(analysis_data[start_pos,999], '}', 1)
+      json_quality_score = analysis_data[start_pos, end_pos-1]
+   END
+   
+   * Blur score
+   pos = INDEX(analysis_data, '"blur_score": ', 1)
+   IF pos > 0 THEN
+      start_pos = pos + 14
+      end_pos = INDEX(analysis_data[start_pos,999], ',', 1)
+      IF end_pos = 0 THEN end_pos = INDEX(analysis_data[start_pos,999], '}', 1)
+      json_blur_score = analysis_data[start_pos, end_pos-1]
+   END
+   
+   RETURN
+
+*
+* Move file to duplicates directory
+*
+MOVE_TO_DUPLICATES:
+   GOSUB EXTRACT_FILENAME
+   dest = dup_path : "\" : filename
+   cmd = '!move /Y "' : filepath : '" "' : dest : '"'
+   EXECUTE cmd CAPTURING output
+   RETURN
+
+*
+* Move file to blurry directory
+*
+MOVE_TO_BLURRY:
+   GOSUB EXTRACT_FILENAME
+   dest = blur_path : "\" : filename
+   cmd = '!move /Y "' : filepath : '" "' : dest : '"'
+   EXECUTE cmd CAPTURING output
+   RETURN
+
+*
+* Move file to NSFW directory
+*
+MOVE_TO_NSFW:
+   GOSUB EXTRACT_FILENAME
+   dest = nsfw_path : "\" : filename
+   cmd = '!move /Y "' : filepath : '" "' : dest : '"'
+   EXECUTE cmd CAPTURING output
+   RETURN
+
+*
+* Move file to rejected directory
+*
+MOVE_TO_REJECTED:
+   GOSUB EXTRACT_FILENAME
+   dest = reject_path : "\" : filename
+   cmd = '!move /Y "' : filepath : '" "' : dest : '"'
+   EXECUTE cmd CAPTURING output
+   RETURN
+
+*
+* Extract filename from full path
+*
+EXTRACT_FILENAME:
+   filename = filepath
+   slash_pos = 0
+   FOR j = LEN(filename) TO 1 STEP -1
+      IF filename[j,1] = "\\" OR filename[j,1] = "/" THEN
+         slash_pos = j
+         j = 0
+      END
+   NEXT j
+   IF slash_pos > 0 THEN filename = filename[slash_pos+1,999]
+   RETURN
+
+*
+* Create photo groups based on date/time proximity
+*
+CREATE_PHOTO_GROUPS:
+   groups_created = 0
+   
+   * Get all photos sorted by date
+   SELECT PHO
+   photo_dates = ""
+   photo_ids = ""
+   
+   LOOP
+      READNEXT photo_id ELSE EXIT
+      READ photo_rec FROM PHO, photo_id THEN
+         date_taken = photo_rec<10>
+         IF date_taken # "" THEN
+            photo_dates<-1> = date_taken
+            photo_ids<-1> = photo_id
+         END
+      END
+   REPEAT
+   
+   IF DCOUNT(photo_ids, @FM) = 0 THEN RETURN
+   
+   * Group photos by same date (simplified)
+   current_group = ""
+   current_group_start = ""
+   current_group_end = ""
+   
+   FOR i = 1 TO DCOUNT(photo_ids, @FM)
+      photo_id = photo_ids<i>
+      photo_date = photo_dates<i>
+      
+      IF current_group = "" THEN
+         * Start new group
+         current_group<-1> = photo_id
+         current_group_start = photo_date
+         current_group_end = photo_date
+      END ELSE
+         * Check if same date (first 10 chars = YYYY-MM-DD)
+         IF photo_date[1,10] = current_group_start[1,10] THEN
+            current_group<-1> = photo_id
+            current_group_end = photo_date
+         END ELSE
+            * Save current group if it has multiple photos
+            IF DCOUNT(current_group, @FM) > 1 THEN
+               GOSUB SAVE_PHOTO_GROUP
+            END
+            * Start new group
+            current_group = photo_id
+            current_group_start = photo_date
+            current_group_end = photo_date
+         END
+      END
+   NEXT i
+   
+   * Save final group
+   IF DCOUNT(current_group, @FM) > 1 THEN
+      GOSUB SAVE_PHOTO_GROUP
+   END
+   
+   RETURN
+
+*
+* Save a photo group
+*
+SAVE_PHOTO_GROUP:
+   group_id = "PHG" : DATE() : "-" : groups_created
+   
+   group_rec = ""
+   group_rec<1> = "Photo Group " : (groups_created + 1)
+   group_rec<2> = "Unknown"
+   group_rec<3> = current_group_start[1,10]
+   group_rec<4> = current_group_end[1,10]
+   group_rec<5> = DCOUNT(current_group, @FM)
+   group_rec<6> = ""
+   group_rec<7> = 0
+   group_rec<8> = 0
+   group_rec<9> = ""
+   group_rec<10> = ""
+   group_rec<11> = ""
+   group_rec<12> = "N"
+   group_rec<13> = ""
+   
+   WRITE group_rec TO PHG, group_id
+   
+   * Update photos with group ID
+   FOR j = 1 TO DCOUNT(current_group, @FM)
+      photo_id = current_group<j>
+      READ photo_rec FROM PHO, photo_id THEN
+         photo_rec<17> = group_id
+         WRITE photo_rec TO PHO, photo_id
+      END
+   NEXT j
+   
+   groups_created = groups_created + 1
+   
+   RETURN
+
+END

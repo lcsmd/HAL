@@ -1,0 +1,465 @@
+# Windows Setup Guide
+## AI-Enhanced Email Management System
+
+---
+
+## Prerequisites
+
+### 1. Install Python
+
+Download and install Python 3.8 or later from:
+https://www.python.org/downloads/
+
+**IMPORTANT:** During installation, check the box:
+☑ **"Add Python to PATH"**
+
+Verify installation:
+```cmd
+python --version
+pip --version
+```
+
+### 2. Verify OpenQM Installation
+
+Your OpenQM should already be installed. Verify it's accessible:
+```cmd
+qm
+```
+
+If this doesn't work, you may need to add OpenQM to your PATH:
+1. Right-click "This PC" → Properties
+2. Click "Advanced system settings"
+3. Click "Environment Variables"
+4. Edit PATH and add OpenQM installation directory (e.g., `C:\OpenQM`)
+
+---
+
+## Installation Steps
+
+### Step 1: Run Installation Script
+
+1. Download all files to a temporary directory
+2. Open Command Prompt as Administrator
+3. Navigate to the directory with files
+4. Run:
+
+```cmd
+install_windows.bat
+```
+
+This will:
+- Create `C:\email_management_system`
+- Set up Python virtual environment
+- Install all dependencies
+- Create OpenQM database files
+- Generate startup scripts
+
+### Step 2: Update Python Scripts for Windows
+
+The Python scripts need minor updates to work on Windows. Here are the changes:
+
+#### A. Update `openqm_interface.py`
+
+Find this line (around line 61):
+```python
+result = subprocess.run(
+    ['qm', '-A', self.account, '-K', str(script_file)],
+```
+
+Change to:
+```python
+result = subprocess.run(
+    f'qm -A{self.account} -K{script_file}',
+    shell=True,  # ADD THIS LINE
+```
+
+Do this for ALL subprocess.run() calls in openqm_interface.py.
+
+#### B. Update Default Paths
+
+In these files, update the default base directory:
+
+**`app.py`** (line ~21):
+```python
+# OLD:
+BASE_DIR = Path.home() / 'email_management_system'
+
+# NEW:
+BASE_DIR = Path('C:/email_management_system')
+```
+
+**`gmail_ingestion.py`**, **`ai_categorization_engine.py`**, **`rule_engine.py`**, **`email_processor_daemon.py`**:
+
+Change any references to:
+```python
+Path.home() / 'email_management_system'
+```
+
+To:
+```python
+Path('C:/email_management_system')
+```
+
+**Note:** Use forward slashes (/) even on Windows - Python's Path handles this correctly.
+
+### Step 3: Configure API Keys
+
+Edit the configuration file:
+```cmd
+notepad C:\email_management_system\config\config.ini
+```
+
+Update these sections:
+
+```ini
+[ai]
+anthropic_api_key = sk-ant-your-actual-key-here
+
+[gmail]
+credentials_file = config\gmail_credentials.json
+```
+
+### Step 4: Add Gmail Credentials
+
+1. Go to: https://console.cloud.google.com/
+2. Create a project and enable Gmail API
+3. Create OAuth 2.0 credentials (Desktop app)
+4. Download the JSON file
+5. Save it as: `C:\email_management_system\config\gmail_credentials.json`
+
+---
+
+## Running the System
+
+### Start Web Interface
+
+Double-click: `C:\email_management_system\start_web.bat`
+
+Or manually:
+```cmd
+cd C:\email_management_system
+venv\Scripts\activate
+python app.py
+```
+
+Access at: **http://localhost:5000**
+
+### Import Emails
+
+Double-click: `C:\email_management_system\ingest_emails.bat`
+
+Or manually:
+```cmd
+cd C:\email_management_system
+venv\Scripts\activate
+python gmail_ingestion.py --max 100
+```
+
+### Run Demo (Creates Sample Data)
+
+Double-click: `C:\email_management_system\run_demo.bat`
+
+### Start Background Processor
+
+Double-click: `C:\email_management_system\start_daemon.bat`
+
+---
+
+## Windows Service Installation (Optional)
+
+To run the email processor as a Windows service:
+
+### 1. Install NSSM (Non-Sucking Service Manager)
+
+Download from: https://nssm.cc/download
+
+Extract and add to PATH, or copy `nssm.exe` to `C:\Windows\System32`
+
+### 2. Install Service
+
+Double-click: `C:\email_management_system\install_service.bat`
+
+Or manually:
+```cmd
+nssm install EmailProcessor "C:\email_management_system\venv\Scripts\python.exe" "C:\email_management_system\email_processor_daemon.py"
+nssm set EmailProcessor AppDirectory "C:\email_management_system"
+nssm set EmailProcessor DisplayName "Email Management System Processor"
+nssm set EmailProcessor Start SERVICE_AUTO_START
+```
+
+### 3. Manage Service
+
+Start:
+```cmd
+net start EmailProcessor
+```
+
+Stop:
+```cmd
+net stop EmailProcessor
+```
+
+Check status:
+```cmd
+sc query EmailProcessor
+```
+
+Remove service:
+```cmd
+nssm remove EmailProcessor confirm
+```
+
+---
+
+## File Locations (Windows)
+
+```
+C:\email_management_system\
+├── config\
+│   ├── config.ini              # Main configuration
+│   ├── gmail_credentials.json  # Gmail OAuth credentials
+│   └── gmail_token.pickle      # Gmail auth token (auto-generated)
+├── templates\                  # HTML templates (9 files)
+├── venv\                       # Python virtual environment
+├── attachments\                # Email attachments storage
+├── bodies\                     # Email body files
+├── html_objects\               # Extracted HTML images
+├── logs\                       # Application logs
+├── temp\                       # Temporary files
+├── app.py                      # Flask web application
+├── openqm_interface.py         # OpenQM database wrapper
+├── gmail_ingestion.py          # Gmail email importer
+├── ai_categorization_engine.py # AI categorization
+├── rule_engine.py              # Rule automation
+├── email_processor_daemon.py   # Background processor
+├── start_web.bat               # Start web interface
+├── start_daemon.bat            # Start background processor
+├── ingest_emails.bat           # Import emails manually
+└── run_demo.bat                # Run demo with sample data
+```
+
+---
+
+## OpenQM on Windows
+
+### Verify OpenQM Account
+
+```cmd
+qm
+```
+
+At the QM prompt:
+```
+:LOGTO EMAILSYS
+:LISTF
+```
+
+You should see all the files (EMAILS, CATEGORIES, etc.)
+
+### Query Data
+
+```cmd
+qm -AEMAILSYS
+```
+
+Then:
+```
+:SELECT EMAILS
+:COUNT EMAILS
+```
+
+---
+
+## Troubleshooting
+
+### "qm is not recognized"
+
+OpenQM is not in PATH. Add it:
+1. Find OpenQM installation directory (e.g., `C:\OpenQM`)
+2. Add to System PATH environment variable
+3. Restart Command Prompt
+
+### "Python is not recognized"
+
+Python is not in PATH. Reinstall Python with "Add to PATH" checked.
+
+### Port 5000 Already in Use
+
+Kill the existing process:
+```cmd
+netstat -ano | findstr :5000
+taskkill /PID [PID_NUMBER] /F
+```
+
+Or change the port in `app.py`:
+```python
+app.run(debug=True, host='0.0.0.0', port=5001)
+```
+
+### Gmail Authentication Fails
+
+Delete the token and re-authenticate:
+```cmd
+del C:\email_management_system\config\gmail_token.pickle
+```
+
+Then run `ingest_emails.bat` again.
+
+### OpenQM "Cannot open file" Error
+
+The file doesn't exist. Create it:
+```cmd
+cd C:\email_management_system
+venv\Scripts\activate
+python openqm_setup.py
+```
+
+### Import Error: "No module named 'anthropic'"
+
+Dependencies not installed:
+```cmd
+cd C:\email_management_system
+venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+---
+
+## Testing the Installation
+
+### Test 1: OpenQM Connection
+
+```cmd
+cd C:\email_management_system
+venv\Scripts\activate
+python
+```
+
+Then in Python:
+```python
+from openqm_interface import OpenQMInterface
+qm = OpenQMInterface()
+config = qm.read_record('SYSTEM.CONFIG', 'COUNTERS')
+print(config)
+exit()
+```
+
+Should print counter values.
+
+### Test 2: Run Demo
+
+```cmd
+run_demo.bat
+```
+
+Should create sample emails, categories, and rules.
+
+### Test 3: Web Interface
+
+```cmd
+start_web.bat
+```
+
+Open browser to: http://localhost:5000
+
+Should see dashboard with statistics.
+
+---
+
+## Performance Considerations (Windows)
+
+### Windows Defender
+
+Add exclusions for better performance:
+1. Open Windows Security
+2. Virus & threat protection → Manage settings
+3. Add exclusions:
+   - `C:\email_management_system\`
+   - `C:\OpenQM\` (if applicable)
+
+### Firewall
+
+If accessing from other machines, allow port 5000:
+```cmd
+netsh advfirewall firewall add rule name="Email System Web" dir=in action=allow protocol=TCP localport=5000
+```
+
+---
+
+## Backup (Windows)
+
+### Backup Script (backup.bat)
+
+```batch
+@echo off
+set BACKUP_DIR=C:\email_backups\%date:~-4,4%%date:~-10,2%%date:~-7,2%_%time:~0,2%%time:~3,2%
+mkdir "%BACKUP_DIR%"
+
+REM OpenQM data
+qm -AEMAILSYS -KCOPY.FILE EMAILS "%BACKUP_DIR%\EMAILS"
+qm -AEMAILSYS -KCOPY.FILE CATEGORIES "%BACKUP_DIR%\CATEGORIES"
+qm -AEMAILSYS -KCOPY.FILE RULES "%BACKUP_DIR%\RULES"
+
+REM File data
+tar -czf "%BACKUP_DIR%\bodies.tar.gz" C:\email_management_system\bodies
+tar -czf "%BACKUP_DIR%\attachments.tar.gz" C:\email_management_system\attachments
+
+REM Config
+xcopy C:\email_management_system\config "%BACKUP_DIR%\config\" /E /I
+
+echo Backup complete: %BACKUP_DIR%
+pause
+```
+
+---
+
+## Windows-Specific Features
+
+### Task Scheduler (Instead of Cron)
+
+To run daily maintenance:
+
+1. Open Task Scheduler
+2. Create Basic Task
+3. Trigger: Daily at 2:00 AM
+4. Action: Start a program
+5. Program: `C:\email_management_system\venv\Scripts\python.exe`
+6. Arguments: `C:\email_management_system\email_processor_daemon.py --once`
+7. Start in: `C:\email_management_system`
+
+---
+
+## Support
+
+For Windows-specific issues:
+- Check logs: `C:\email_management_system\logs\`
+- OpenQM logs: Check OpenQM error files
+- Python errors: Check Command Prompt output
+
+---
+
+## Summary Checklist
+
+Installation:
+- [ ] Python installed (with PATH)
+- [ ] OpenQM accessible via `qm` command
+- [ ] Run `install_windows.bat`
+- [ ] Update Python scripts (add `shell=True`)
+- [ ] Configure API keys in `config.ini`
+- [ ] Add Gmail credentials JSON file
+
+Testing:
+- [ ] Run `run_demo.bat` successfully
+- [ ] `start_web.bat` launches browser interface
+- [ ] `ingest_emails.bat` imports real emails
+- [ ] Dashboard shows statistics
+
+Optional:
+- [ ] Install as Windows service with NSSM
+- [ ] Configure Windows Defender exclusions
+- [ ] Set up automated backups
+- [ ] Configure firewall if remote access needed
+
+---
+
+**System Ready for Production Use on Windows!**

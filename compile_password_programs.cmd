@@ -1,0 +1,35 @@
+@echo off
+REM Compile Password Manager Programs
+
+cd /d C:\QMSYS\HAL
+
+qm -kHAL -c"BASIC BP PASSWORD.MASTER.SETUP"
+qm -kHAL -c"CATALOG BP PASSWORD.MASTER.SETUP"
+
+qm -kHAL -c"BASIC BP PASSWORD.LOGIN"
+qm -kHAL -c"CATALOG BP PASSWORD.LOGIN"
+
+qm -kHAL -c"BASIC BP PASSWORD.ADD"
+qm -kHAL -c"CATALOG BP PASSWORD.ADD"
+
+qm -kHAL -c"BASIC BP PASSWORD.VIEW"
+qm -kHAL -c"CATALOG BP PASSWORD.VIEW"
+
+qm -kHAL -c"BASIC BP PASSWORD.LIST"
+qm -kHAL -c"CATALOG BP PASSWORD.LIST"
+
+qm -kHAL -c"BASIC BP PASSWORD.SEARCH"
+qm -kHAL -c"CATALOG BP PASSWORD.SEARCH"
+
+qm -kHAL -c"BASIC BP PASSWORD.DELETE"
+qm -kHAL -c"CATALOG BP PASSWORD.DELETE"
+
+qm -kHAL -c"BASIC BP PASSWORD.MENU"
+qm -kHAL -c"CATALOG BP PASSWORD.MENU"
+
+echo.
+echo All password programs compiled and cataloged!
+echo.
+echo To run: qm -kHAL -c"PASSWORD.MENU"
+echo.
+pause

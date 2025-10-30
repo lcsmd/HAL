@@ -1,0 +1,157 @@
+      PROGRAM REFACTOR.SCHEMA
+      * One-time program to refactor schema architecture
+      * Creates COMMON.h, VAR.h, renames schema files, updates SCHEMA_INDEX.csv
+
+      PRINT "Schema Architecture Refactoring"
+      PRINT STR("=", 70)
+      PRINT ""
+
+      * Step 1: Create EQU/COMMON.h
+      PRINT "Creating EQU/COMMON.h..."
+      COMMON.FILENAME = "EQU/COMMON.h"
+      OPENSEQ COMMON.FILENAME TO F.COMMON THEN
+         CLOSESEQ F.COMMON
+         OSDELETE COMMON.FILENAME
+      END
+
+      OPENSEQ COMMON.FILENAME TO F.COMMON ELSE
+         CREATE F.COMMON ELSE
+            PRINT "  ERROR: Cannot create COMMON.h"
+            STOP
+         END
+      END
+
+      WRITESEQ "* COMMON.h - Shared COMMON variables across all programs" TO F.COMMON ELSE NULL
+      WRITESEQ "* Include this in every program that needs file access" TO F.COMMON ELSE NULL
+      WRITESEQ "" TO F.COMMON ELSE NULL
+      WRITESEQ "COMMON /FILES/ MAT FILES" TO F.COMMON ELSE NULL
+      CLOSESEQ F.COMMON
+      PRINT "  Created EQU/COMMON.h"
+
+      * Step 2: Create EQU/VAR.h
+      PRINT "Creating EQU/VAR.h..."
+      VAR.FILE = "EQU/VAR.h"
+      OPENSEQ VAR.FILE TO F.VAR THEN
+         CLOSESEQ F.VAR
+         OSDELETE VAR.FILE
+      END
+
+      OPENSEQ VAR.FILE TO F.VAR ELSE
+         CREATE F.VAR ELSE
+            PRINT "  ERROR: Cannot create VAR.h"
+            STOP
+         END
+      END
+
+      WRITESEQ "* VAR.h - Named constants used across programs" TO F.VAR ELSE NULL
+      WRITESEQ "" TO F.VAR ELSE NULL
+      WRITESEQ "* Boolean values" TO F.VAR ELSE NULL
+      WRITESEQ "EQU TRUE TO 1" TO F.VAR ELSE NULL
+      WRITESEQ "EQU FALSE TO 0" TO F.VAR ELSE NULL
+      WRITESEQ "" TO F.VAR ELSE NULL
+      WRITESEQ "* Field marks" TO F.VAR ELSE NULL
+      WRITESEQ "EQU FM TO CHAR(254)" TO F.VAR ELSE NULL
+      WRITESEQ "EQU VM TO CHAR(253)" TO F.VAR ELSE NULL
+      WRITESEQ "EQU SM TO CHAR(252)" TO F.VAR ELSE NULL
+      WRITESEQ "" TO F.VAR ELSE NULL
+      WRITESEQ "* Common status values" TO F.VAR ELSE NULL
+      WRITESEQ "EQU STATUS.ACTIVE TO " : CHAR(34) : "active" : CHAR(34) TO F.VAR ELSE NULL
+      WRITESEQ "EQU STATUS.INACTIVE TO " : CHAR(34) : "inactive" : CHAR(34) TO F.VAR ELSE NULL
+      WRITESEQ "EQU STATUS.DELETED TO " : CHAR(34) : "deleted" : CHAR(34) TO F.VAR ELSE NULL
+      WRITESEQ "" TO F.VAR ELSE NULL
+      WRITESEQ "* Yes/No flags" TO F.VAR ELSE NULL
+      WRITESEQ "EQU YES TO " : CHAR(34) : "Y" : CHAR(34) TO F.VAR ELSE NULL
+      WRITESEQ "EQU NO TO " : CHAR(34) : "N" : CHAR(34) TO F.VAR ELSE NULL
+      CLOSESEQ F.VAR
+      PRINT "  Created EQU/VAR.h"
+
+      * Step 3: Rename schema files
+      PRINT ""
+      PRINT "Renaming schema files..."
+
+      * Check if old files exist
+      OLD.PHOTO = "SCHEMA/MDA.PHOTO.csv"
+      NEW.PHOTO = "SCHEMA/PHOTO.csv"
+      OSREAD TEMP FROM OLD.PHOTO THEN
+         OSWRITE TEMP TO NEW.PHOTO
+         OSDELETE OLD.PHOTO
+         PRINT "  Renamed MDA.PHOTO.csv -> PHOTO.csv"
+      END ELSE
+         PRINT "  MDA.PHOTO.csv not found (may already be renamed)"
+      END
+
+      OLD.GROUP = "SCHEMA/MDA.PHOTO_GROUP.csv"
+      NEW.GROUP = "SCHEMA/PHOTO_GROUP.csv"
+      OSREAD TEMP FROM OLD.GROUP THEN
+         OSWRITE TEMP TO NEW.GROUP
+         OSDELETE OLD.GROUP
+         PRINT "  Renamed MDA.PHOTO_GROUP.csv -> PHOTO_GROUP.csv"
+      END ELSE
+         PRINT "  MDA.PHOTO_GROUP.csv not found (may already be renamed)"
+      END
+
+      * Step 4: Update SCHEMA_INDEX.csv
+      PRINT ""
+      PRINT "Updating SCHEMA_INDEX.csv..."
+      INDEX.FILE = "SCHEMA/SCHEMA_INDEX.csv"
+      OPENSEQ INDEX.FILE TO F.INDEX ELSE
+         PRINT "  ERROR: Cannot open SCHEMA_INDEX.csv"
+         STOP
+      END
+
+      * Read all lines
+      LINES = ""
+      LOOP
+         READSEQ LINE FROM F.INDEX ELSE EXIT
+         * Replace MDA.PHOTO with PHOTO
+         IF INDEX(LINE, "MDA.PHOTO,mph", 1) THEN
+            LINE = "PHOTO,pho,39,DYNAMIC,1,Photo metadata,31,active"
+         END ELSE IF INDEX(LINE, "MDA.PHOTO_GROUP,mpg", 1) THEN
+            LINE = "PHOTO_GROUP,phg,40,DYNAMIC,1,Photo event groups,13,active"
+         END
+         LINES<-1> = LINE
+      REPEAT
+      CLOSESEQ F.INDEX
+
+      * Write back
+      OSDELETE INDEX.FILE
+      OPENSEQ INDEX.FILE TO F.INDEX ELSE
+         CREATE F.INDEX ELSE
+            PRINT "  ERROR: Cannot recreate SCHEMA_INDEX.csv"
+            STOP
+         END
+      END
+
+      FOR I = 1 TO DCOUNT(LINES, @FM)
+         WRITESEQ LINES<I> TO F.INDEX ELSE NULL
+      NEXT I
+      CLOSESEQ F.INDEX
+      PRINT "  Updated SCHEMA_INDEX.csv (MDA.PHOTO -> PHOTO, MDA.PHOTO_GROUP -> PHOTO_GROUP)"
+
+      * Step 5: Delete old .equ files that will be replaced
+      PRINT ""
+      PRINT "Cleaning up old equate files..."
+      OSREAD TEMP FROM "EQU/mph.equ" THEN
+         OSDELETE "EQU/mph.equ"
+         PRINT "  Deleted EQU/mph.equ"
+      END
+
+      OSREAD TEMP FROM "EQU/mpg.equ" THEN
+         OSDELETE "EQU/mpg.equ"
+         PRINT "  Deleted EQU/mpg.equ"
+      END
+
+      PRINT ""
+      PRINT STR("=", 70)
+      PRINT "Refactoring complete!"
+      PRINT ""
+      PRINT "Next steps:"
+      PRINT "  1. BASIC BP BUILD.SCHEMA NO.PAGE"
+      PRINT "  2. CATALOG BP BUILD.SCHEMA"
+      PRINT "  3. BUILD.SCHEMA"
+      PRINT "  4. BASIC BP OPEN.FILES NO.PAGE"
+      PRINT "  5. CATALOG BP OPEN.FILES"
+      PRINT ""
+
+      RETURN
+      END

@@ -1,0 +1,102 @@
+PROGRAM BUILD.INDEX
+* Builds secondary indexes for fields marked with X in DICT field 8
+* Usage: BUILD.INDEX <filename> <fieldname>
+*    or: BUILD.INDEX <filename> ALL
+*
+* If fieldname is ALL, builds all indexes marked with X in field 8
+
+* Get command line arguments
+SENTENCE = TRIM(SYSTEM(1026))
+IF SENTENCE = "" THEN
+   * Interactive mode
+   INPUT FILENAME, "Enter filename: "
+   INPUT FIELDNAME, "Enter field name (or ALL): "
+END ELSE
+   * Command line mode
+   ARGS = FIELD(SENTENCE, " ", 2, 999)
+   FILENAME = FIELD(ARGS, " ", 1)
+   FIELDNAME = FIELD(ARGS, " ", 2)
+END
+
+IF FILENAME = "" THEN
+   CRT "Error: Filename required"
+   CRT "Usage: BUILD.INDEX <filename> <fieldname|ALL>"
+   STOP
+END
+
+IF FIELDNAME = "" THEN
+   CRT "Error: Field name required"
+   CRT "Usage: BUILD.INDEX <filename> <fieldname|ALL>"
+   STOP
+END
+
+* Open the data file
+OPEN FILENAME TO F.DATA ELSE
+   CRT "Error: Cannot open file ":FILENAME
+   STOP
+END
+
+* Open the dictionary
+OPEN "DICT", FILENAME TO F.DICT ELSE
+   CRT "Error: Cannot open DICT ":FILENAME
+   STOP
+END
+
+CRT "Building indexes for ":FILENAME:"..."
+CRT ""
+
+IF FIELDNAME = "ALL" THEN
+   * Build all indexes marked with X in field 8
+   SELECT F.DICT
+   LOOP
+      READNEXT DICT.ID ELSE EXIT
+      
+      READ DICT.REC FROM F.DICT, DICT.ID THEN
+         * Check if this is a D-type with X in field 8
+         IF DICT.REC<1> = "D" AND DICT.REC<8> = "X" THEN
+            CRT "Building index for ":DICT.ID:"..."
+            CMD = "CREATE.INDEX ":FILENAME:" ":DICT.ID
+            EXECUTE CMD CAPTURING OUTPUT SETTING RESULT
+            IF RESULT THEN
+               CRT "  Error creating index for ":DICT.ID
+               CRT "  ":OUTPUT
+            END ELSE
+               CRT "  Index created successfully"
+            END
+         END
+      END
+   REPEAT
+END ELSE
+   * Build index for specific field
+   READ DICT.REC FROM F.DICT, FIELDNAME ELSE
+      CRT "Error: Field ":FIELDNAME:" not found in dictionary"
+      STOP
+   END
+   
+   * Check if field is marked for indexing
+   IF DICT.REC<8> # "X" THEN
+      CRT "Warning: Field ":FIELDNAME:" is not marked for indexing (DICT<8> is not X)"
+      INPUT ANSWER, "Continue anyway? (Y/N): "
+      IF ANSWER # "Y" THEN
+         CRT "Index creation cancelled"
+         STOP
+      END
+   END
+   
+   CRT "Building index for ":FIELDNAME:"..."
+   CMD = "CREATE.INDEX ":FILENAME:" ":FIELDNAME
+   EXECUTE CMD CAPTURING OUTPUT SETTING RESULT
+   IF RESULT THEN
+      CRT "Error creating index for ":FIELDNAME
+      CRT OUTPUT
+   END ELSE
+      CRT "Index created successfully"
+   END
+END
+
+CRT ""
+CRT "Index build complete"
+
+RETURN
+END
+

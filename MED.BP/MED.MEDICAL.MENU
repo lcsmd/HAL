@@ -1,0 +1,66 @@
+      PROGRAM MEDICAL.MENU
+      * Medical Data Management Menu
+      
+      LOOP
+         CRT @(-1)
+         PRINT ""
+         PRINT "========================================="
+         PRINT "   MEDICAL DATA MANAGEMENT SYSTEM"
+         PRINT "========================================="
+         PRINT ""
+         PRINT "1.  Medical History"
+         PRINT "2.  Medications"
+         PRINT "3.  Allergies"
+         PRINT "4.  Immunizations"
+         PRINT "5.  Vital Signs"
+         PRINT "6.  Medical Tests"
+         PRINT "7.  Appointments"
+         PRINT "8.  Doctors"
+         PRINT "9.  Healthcare Facilities"
+         PRINT "10. Pharmacies"
+         PRINT "11. Insurance"
+         PRINT ""
+         PRINT "I.  Import Epic Data"
+         PRINT "E.  Export Medical Data"
+         PRINT "Q.  Quit"
+         PRINT ""
+         PRINT "Select option: "; INPUT CHOICE
+         
+         CHOICE = OCONV(CHOICE, "MCU")
+         
+         BEGIN CASE
+            CASE CHOICE = "1"
+               EXECUTE "MEDICAL.HISTORY.MENU"
+            CASE CHOICE = "2"
+               EXECUTE "MEDICATION.MENU"
+            CASE CHOICE = "3"
+               EXECUTE "ALLERGY.MENU"
+            CASE CHOICE = "4"
+               EXECUTE "IMMUNIZATION.MENU"
+            CASE CHOICE = "5"
+               EXECUTE "VITAL.SIGNS.MENU"
+            CASE CHOICE = "6"
+               EXECUTE "MEDICAL.TEST.MENU"
+            CASE CHOICE = "7"
+               EXECUTE "APPOINTMENT.MENU"
+            CASE CHOICE = "8"
+               EXECUTE "DOCTOR.MENU"
+            CASE CHOICE = "9"
+               EXECUTE "FACILITY.MENU"
+            CASE CHOICE = "10"
+               EXECUTE "PHARMACY.MENU"
+            CASE CHOICE = "11"
+               EXECUTE "INSURANCE.MENU"
+            CASE CHOICE = "I"
+               EXECUTE "IMPORT.EPIC"
+            CASE CHOICE = "E"
+               EXECUTE "EXPORT.MEDICAL"
+            CASE CHOICE = "Q"
+               EXIT
+            CASE 1
+               PRINT "Invalid choice"
+               SLEEP 1
+         END CASE
+      REPEAT
+      
+      END

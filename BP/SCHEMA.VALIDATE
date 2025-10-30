@@ -1,0 +1,145 @@
+SUBROUTINE SCHEMA.VALIDATE
+* Validate all schema CSV files for consistency and errors
+
+CRT ""
+CRT "=========================================="
+CRT "      SCHEMA VALIDATION"
+CRT "=========================================="
+CRT ""
+
+ERROR.COUNT = 0
+WARNING.COUNT = 0
+
+* Validate SCHEMA_INDEX.csv
+INDEX.FILE = "SCHEMA/SCHEMA_INDEX.csv"
+OPENSEQ INDEX.FILE TO F.INDEX ELSE
+   CRT "ERROR: Cannot open ":INDEX.FILE
+   ERROR.COUNT += 1
+   RETURN
+END
+
+CRT "Validating SCHEMA_INDEX.csv..."
+FILE.NUMS = ""
+FILE.ABBS = ""
+LINE.NUM = 0
+
+LOOP
+   READSEQ LINE FROM F.INDEX ELSE EXIT
+   LINE.NUM += 1
+   IF LINE.NUM = 1 THEN CONTINUE
+   IF LINE = "" THEN CONTINUE
+   
+   FILENAME = FIELD(LINE, ",", 1)
+   ABB = FIELD(LINE, ",", 2)
+   FILENUM = FIELD(LINE, ",", 3)
+   
+   * Check for duplicate file numbers
+   IF LOCATE(FILENUM, FILE.NUMS, 1; POS) THEN
+      CRT "  ERROR: Duplicate FileNum ":FILENUM:" for ":FILENAME
+      ERROR.COUNT += 1
+   END ELSE
+      FILE.NUMS<-1> = FILENUM
+   END
+   
+   * Check for duplicate abbreviations
+   IF LOCATE(ABB, FILE.ABBS, 1; POS) THEN
+      CRT "  ERROR: Duplicate Abbrev ":ABB:" for ":FILENAME
+      ERROR.COUNT += 1
+   END ELSE
+      FILE.ABBS<-1> = ABB
+   END
+   
+   * Check if individual schema file exists
+   SCHEMA.FILE = "SCHEMA/":FILENAME:".csv"
+   OPENSEQ SCHEMA.FILE TO F.SCHEMA THEN
+      CLOSESEQ F.SCHEMA
+   END ELSE
+      CRT "  WARNING: Schema file not found: ":SCHEMA.FILE
+      WARNING.COUNT += 1
+   END
+REPEAT
+CLOSESEQ F.INDEX
+
+CRT "  Validated ":(LINE.NUM - 1):" file definitions"
+CRT ""
+
+* Validate individual file schemas
+CRT "Validating individual file schemas..."
+FOR I = 1 TO DCOUNT(FILE.NUMS, @FM)
+   FILENUM = FILE.NUMS<I>
+   * Find filename for this number
+   OPENSEQ INDEX.FILE TO F.INDEX ELSE CONTINUE
+   LINE.NUM = 0
+   FILENAME = ""
+   LOOP
+      READSEQ LINE FROM F.INDEX ELSE EXIT
+      LINE.NUM += 1
+      IF LINE.NUM = 1 THEN CONTINUE
+      IF FIELD(LINE, ",", 3) = FILENUM THEN
+         FILENAME = FIELD(LINE, ",", 1)
+         EXIT
+      END
+   REPEAT
+   CLOSESEQ F.INDEX
+   
+   IF FILENAME = "" THEN CONTINUE
+   
+   SCHEMA.FILE = "SCHEMA/":FILENAME:".csv"
+   OPENSEQ SCHEMA.FILE TO F.SCHEMA ELSE CONTINUE
+   
+   FIELD.NUMS = ""
+   FIELD.NAMES = ""
+   FLINE.NUM = 0
+   
+   LOOP
+      READSEQ FLINE FROM F.SCHEMA ELSE EXIT
+      FLINE.NUM += 1
+      IF FLINE.NUM = 1 THEN CONTINUE
+      IF FLINE = "" THEN CONTINUE
+      
+      FIELDNAME = FIELD(FLINE, ",", 1)
+      FIELDNUM = FIELD(FLINE, ",", 2)
+      FIELDTYPE = FIELD(FLINE, ",", 3)
+      
+      IF FIELDNAME = "" THEN CONTINUE
+      
+      * Check for duplicate field numbers
+      IF LOCATE(FIELDNUM, FIELD.NUMS, 1; POS) THEN
+         CRT "  ERROR in ":FILENAME:": Duplicate FieldNum ":FIELDNUM
+         ERROR.COUNT += 1
+      END ELSE
+         FIELD.NUMS<-1> = FIELDNUM
+      END
+      
+      * Check for duplicate field names
+      IF LOCATE(FIELDNAME, FIELD.NAMES, 1; POS) THEN
+         CRT "  ERROR in ":FILENAME:": Duplicate FieldName ":FIELDNAME
+         ERROR.COUNT += 1
+      END ELSE
+         FIELD.NAMES<-1> = FIELDNAME
+      END
+      
+      * Validate field type
+      VALID.TYPES = "K":@FM:"A":@FM:"N":@FM:"D":@FM:"T":@FM:"M"
+      IF NOT(LOCATE(FIELDTYPE, VALID.TYPES, 1; POS)) THEN
+         CRT "  ERROR in ":FILENAME:": Invalid Type '":FIELDTYPE:"' for ":FIELDNAME
+         ERROR.COUNT += 1
+      END
+   REPEAT
+   CLOSESEQ F.SCHEMA
+NEXT I
+
+CRT ""
+CRT "=========================================="
+CRT "Validation complete"
+CRT "Errors:   ":ERROR.COUNT
+CRT "Warnings: ":WARNING.COUNT
+CRT "=========================================="
+CRT ""
+
+IF ERROR.COUNT = 0 AND WARNING.COUNT = 0 THEN
+   CRT "Schema is valid and ready to build!"
+END
+
+RETURN
+END

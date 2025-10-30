@@ -1,0 +1,49 @@
+PROGRAM PROCESS.IMPORT
+*
+* Process imported transactions through standardization and tagging
+* Usage: PROCESS.IMPORT <batch-id>
+*
+
+PROMPT ""
+
+* Get batch ID
+CMD = TRIM(SENTENCE())
+SPACE.POS = INDEX(CMD, " ", 1)
+IF SPACE.POS > 0 THEN
+   batch_id = TRIM(CMD[SPACE.POS+1, 999])
+END ELSE
+   batch_id = ""
+END
+
+IF batch_id = "" THEN
+   CRT "Usage: PROCESS.IMPORT <batch-id>"
+   CRT "Example: PROCESS.IMPORT 21118-5588"
+   STOP
+END
+
+CRT
+CRT "Processing import batch: ": batch_id
+CRT STR("=",70)
+CRT
+
+* Step 1: Standardize payees
+CRT "Step 1: Standardizing payees..."
+EXECUTE "FIN.STANDARDIZE.PAYEES.V2 ": batch_id
+CRT
+
+* Step 2: Tag reimbursable items
+CRT "Step 2: Tagging reimbursable transactions..."
+EXECUTE "FIN.TAG.REIMBURSABLE.V2 ": batch_id
+CRT
+
+* Step 3: Generate report
+CRT "Step 3: Generating summary report..."
+EXECUTE "FIN.REPORT.REIMBURSABLE.V2 SUMMARY"
+CRT
+
+CRT STR("=",70)
+CRT "Processing complete!"
+CRT
+
+STOP
+END

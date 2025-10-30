@@ -1,0 +1,78 @@
+PROGRAM CREATE.FILES
+*
+* CREATE.FILES - Creates all files for transaction management system
+*
+* Usage: RUN CREATE.FILES
+*
+
+DIM file_list(10)
+DIM file_desc(10)
+
+* Define files to create
+file_list(1) = "TRANSACTIONS"
+file_desc(1) = "Main transaction data"
+
+file_list(2) = "PAYEES"
+file_desc(2) = "Standardized payee master"
+
+file_list(3) = "RULES"
+file_desc(3) = "Standardization and tagging rules"
+
+file_list(4) = "REIMBURSEMENTS"
+file_desc(4) = "Reimbursement batch tracking"
+
+file_list(5) = "IMPORT.LOG"
+file_desc(5) = "Import history and audit trail"
+
+num_files = 5
+
+PRINT "Transaction Management System - File Creation"
+PRINT STR("-",60)
+PRINT
+
+FOR i = 1 TO num_files
+   file_name = file_list(i)
+   PRINT "Creating ": file_name: " - ": file_desc(i)
+   
+   * Create the file (dynamic file)
+   EXECUTE "CREATE-FILE " : file_name CAPTURING output
+   
+   * Check if creation was successful
+   OPEN file_name TO file_var THEN
+      PRINT "  [OK] File created successfully"
+      CLOSE file_var
+   END ELSE
+      PRINT "  [ERROR] Could not create file"
+   END
+   
+   PRINT
+NEXT i
+
+* Create indices
+PRINT "Creating indices..."
+PRINT
+
+* Transaction indices
+EXECUTE "CREATE.INDEX TRANSACTIONS DATE" CAPTURING output
+PRINT "  Transaction DATE index created"
+
+EXECUTE "CREATE.INDEX TRANSACTIONS STANDARDIZED.PAYEE" CAPTURING output
+PRINT "  Transaction PAYEE index created"
+
+EXECUTE "CREATE.INDEX TRANSACTIONS REIMBURSABLE.FLAG" CAPTURING output
+PRINT "  Transaction REIMBURSABLE.FLAG index created"
+
+* Payee indices
+EXECUTE "CREATE.INDEX PAYEES STANDARD.NAME" CAPTURING output
+PRINT "  Payee NAME index created"
+
+PRINT
+PRINT "File creation complete!"
+PRINT
+PRINT "Files created:"
+FOR i = 1 TO num_files
+   PRINT "  - ": file_list(i)
+NEXT i
+
+STOP
+END

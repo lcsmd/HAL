@@ -1,0 +1,142 @@
+      PROGRAM FIN.CHECK.DUPLICATES
+      *
+      * Check for duplicate transactions in TRANSACTION file
+      * Usage: FIN.CHECK.DUPLICATES [batch.id]
+      *
+      * Duplicate criteria: Same DATE + PAYEE + AMOUNT
+      *
+
+      PROMPT ""
+
+      * Get optional batch ID parameter
+      CMD = TRIM(SENTENCE())
+      SPACE.POS = INDEX(CMD, " ", 1)
+      IF SPACE.POS > 0 THEN
+         batch_filter = TRIM(CMD[SPACE.POS+1, 999])
+      END ELSE
+         batch_filter = ""
+      END
+
+      * Open files
+      OPEN "TRANSACTION" TO F.TRANS ELSE
+         CRT "ERROR: Cannot open TRANSACTION file"
+         STOP
+      END
+
+      CRT
+      CRT "Checking for duplicate transactions..."
+      CRT STR("=",70)
+      IF batch_filter # "" THEN
+         CRT "Filtering by batch ID: ": batch_filter
+         CRT STR("=",70)
+      END
+      CRT
+
+      * Build index of all transactions
+      * Key format: DATE|PAYEE|AMOUNT
+      dup_index = ""
+      trans_count = 0
+
+      SELECT F.TRANS
+      LOOP
+         READNEXT trans_key ELSE EXIT
+         READ trans_rec FROM F.TRANS, trans_key THEN
+            * Apply batch filter if specified
+            IF batch_filter # "" THEN
+               IF trans_rec<12> # batch_filter THEN CONTINUE
+            END
+
+            trans_count += 1
+
+            * Build duplicate key
+            trans_date = trans_rec<1>
+            payee = UPCASE(TRIM(trans_rec<2>))
+            amount = trans_rec<4>
+            dup_key = trans_date : "|" : payee : "|" : amount
+
+            * Store transaction ID under this key
+            IF dup_index<dup_key> = "" THEN
+               dup_index<dup_key> = trans_key
+            END ELSE
+               * Append to list (duplicate found)
+               dup_index<dup_key> := @VM : trans_key
+            END
+
+            * Progress
+            IF MOD(trans_count, 500) = 0 THEN
+               CRT "  Processed ": trans_count : " transactions..."
+            END
+         END
+      REPEAT
+
+      CRT "  Total transactions checked: ": trans_count
+      CRT
+
+      * Find duplicates
+      duplicate_count = 0
+      duplicate_groups = 0
+
+      * Iterate through index
+      LOOP
+         REMOVE dup_key FROM dup_index SETTING delim
+         IF dup_key = "" THEN EXIT
+         
+         trans_list = dup_index<dup_key>
+         dup_group_size = DCOUNT(trans_list, @VM)
+
+         IF dup_group_size > 1 THEN
+            * Found duplicates
+            duplicate_groups += 1
+            duplicate_count += dup_group_size
+
+            * Parse key
+            key_parts = CHANGE(dup_key, "|", @FM)
+            dup_date = key_parts<1>
+            dup_payee = key_parts<2>
+            dup_amount = key_parts<3>
+
+            CRT "Duplicate Group #": duplicate_groups
+            CRT "  Date: ": OCONV(dup_date, "D4-")
+            CRT "  Payee: ": dup_payee
+            CRT "  Amount: $": OCONV(dup_amount, "MD2")
+            CRT "  Occurrences: ": dup_group_size
+            CRT "  Transaction IDs:"
+
+            * List all transaction IDs in this group
+            FOR i = 1 TO dup_group_size
+               trans_id = trans_list<1,i>
+               READ trans_rec FROM F.TRANS, trans_id THEN
+                  batch_id = trans_rec<12>
+                  account = trans_rec<6>
+                  CRT "    ": trans_id : " (Batch: ": batch_id : ", Account: ": account : ")"
+               END
+            NEXT i
+            CRT
+         END
+      UNTIL delim = 0 REPEAT
+
+      * Summary
+      CRT STR("=",70)
+      IF duplicate_groups > 0 THEN
+         CRT "DUPLICATES FOUND!"
+         CRT "  Duplicate groups: ": duplicate_groups
+         CRT "  Total duplicate transactions: ": duplicate_count
+         CRT
+         CRT "To remove duplicates, use:"
+         CRT "  DELETE TRANSACTION <transaction.id>"
+         CRT
+         CRT "Or to see full transaction details:"
+         CRT "  LIST TRANSACTION <transaction.id> *"
+      END ELSE
+         CRT "No duplicates found."
+         IF batch_filter # "" THEN
+            CRT "All transactions in batch ": batch_filter : " are unique."
+         END ELSE
+            CRT "All transactions in database are unique."
+         END
+      END
+      CRT STR("=",70)
+
+      STOP
+      END
+

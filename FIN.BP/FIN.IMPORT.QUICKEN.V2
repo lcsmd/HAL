@@ -1,0 +1,217 @@
+      PROGRAM FIN.IMPORT.QUICKEN.V2
+      *
+      * Import Quicken CSV using native READCSV and ICONV conversions
+      * Usage: FIN.IMPORT.QUICKEN.V2 <filename>
+      *
+
+      PROMPT ""
+
+      * Get filename
+      CMD = TRIM(SENTENCE())
+      SPACE.POS = INDEX(CMD, " ", 1)
+      IF SPACE.POS > 0 THEN
+         file_name = TRIM(CMD[SPACE.POS+1, 999])
+      END ELSE
+         file_name = ""
+      END
+
+      IF file_name = "" THEN
+         CRT "Usage: FIN.IMPORT.QUICKEN.V2 <csv.filename>"
+         CRT "Example: FIN.IMPORT.QUICKEN.V2 QUICKEN.CSV"
+         STOP
+      END
+
+      * Auto-prepend UPLOADS/
+      IF INDEX(file_name, "/", 1) = 0 AND INDEX(file_name, "\\", 1) = 0 THEN
+         file_name = "UPLOADS/" : file_name
+      END
+
+      * Open files
+      OPEN "TRANSACTION" TO F.TRANS ELSE
+         CRT "ERROR: Cannot open TRANSACTION file"
+         STOP
+      END
+
+      OPEN "DICT TRANSACTION" TO F.DICT ELSE
+         CRT "ERROR: Cannot open DICT TRANSACTION"
+         STOP
+      END
+
+      OPEN "IMPORT.LOG" TO F.LOG ELSE
+         CRT "ERROR: Cannot open IMPORT.LOG file"
+         STOP
+      END
+
+      * Open CSV file
+      OPENSEQ file_name TO F.CSV ELSE
+         CRT "ERROR: Cannot open ": file_name
+         STOP
+      END
+
+      CRT
+      CRT "Importing from: ": file_name
+      CRT STR("=",70)
+
+      * Initialize
+      batch_id = DATE() : "-" : TIME()
+      record_count = 0
+      error_list = ""
+      min_date = ""
+      max_date = ""
+      
+      * Set American date format (M/D/Y not D/M/Y)
+      * Note: QM uses M/D/Y format by default in US locale
+      * No need to modify @SYSTEM.SET
+
+      * Read conversion codes from dictionary
+      READ dict_rec FROM F.DICT, "TRANS_DATE" THEN
+         date_conv = dict_rec<3>
+      END ELSE
+         date_conv = ""
+      END
+
+      READ dict_rec FROM F.DICT, "AMOUNT" THEN
+         amt_conv = dict_rec<3>
+      END ELSE
+         amt_conv = ""
+      END
+
+      * Skip Quicken header lines (1-7)
+      FOR i = 1 TO 7
+         READSEQ dummy FROM F.CSV ELSE
+            CRT "ERROR: File too short"
+            CLOSESEQ F.CSV
+            STOP
+         END
+      NEXT i
+
+      * Read column headers and parse CSV
+      READSEQ line FROM F.CSV ELSE
+         CRT "ERROR: Cannot read headers"
+         CLOSESEQ F.CSV
+         STOP
+      END
+      header = CSVDQ(line)
+
+      CRT "Columns: ": DCOUNT(header, @FM)
+      CRT
+
+      * Map column positions
+      date_col = 0
+      payee_col = 0
+      amount_col = 0
+      category_col = 0
+      account_col = 0
+
+      FOR i = 1 TO DCOUNT(header, @FM)
+         col_name = UPCASE(TRIM(header<i>))
+         BEGIN CASE
+            CASE col_name = "DATE"
+               date_col = i
+            CASE col_name = "PAYEE/SECURITY"
+               payee_col = i
+            CASE col_name = "AMOUNT"
+               amount_col = i
+            CASE col_name = "CATEGORY"
+               category_col = i
+            CASE col_name = "ACCOUNT"
+               account_col = i
+         END CASE
+      NEXT i
+
+      CRT "Processing transactions..."
+
+      * Read data rows using READSEQ + CSVDQ
+      LOOP
+         READSEQ line FROM F.CSV ELSE EXIT
+
+         IF line = "" THEN CONTINUE
+
+         * Parse CSV line into dynamic array
+         row = CSVDQ(line)
+
+         record_count += 1
+
+         * Extract fields
+         trans_date = row<date_col>
+         payee = row<payee_col>
+         amount = row<amount_col>
+         category = row<category_col>
+         account = row<account_col>
+
+         * Apply conversions
+         IF trans_date # "" THEN
+            * Use "D" conversion which handles M/D/YYYY format
+            trans_date = ICONV(trans_date, "D")
+         END
+
+         IF amt_conv # "" AND amount # "" THEN
+            * Clean amount
+            amount = TRIM(amount)
+            amount = ICONV(amount, amt_conv)
+         END
+
+         * Validate
+         IF trans_date = "" THEN
+            error_list<-1> = "Row ": record_count : ": Invalid date"
+            CONTINUE
+         END
+
+         IF payee = "" THEN
+            error_list<-1> = "Row ": record_count : ": Missing payee"
+            CONTINUE
+         END
+
+         * Track date range
+         IF min_date = "" OR trans_date < min_date THEN min_date = trans_date
+         IF max_date = "" OR trans_date > max_date THEN max_date = trans_date
+
+         * Build transaction record
+         trans_rec = ""
+         trans_rec<1> = trans_date
+         trans_rec<2> = payee
+         trans_rec<3> = ""  ; * STANDARDIZED_PAYEE
+         trans_rec<4> = amount
+         trans_rec<5> = category
+         trans_rec<6> = account
+         trans_rec<8> = "N"  ; * REIMBURSABLE_FLAG
+         trans_rec<10> = "NOT.APPLICABLE"  ; * REIMBURSEMENT_STATUS
+         trans_rec<12> = batch_id
+         trans_rec<23> = row  ; * RAW_CSV_LINE
+
+         * Write transaction
+         trans_id = batch_id : "-" : record_count
+         WRITE trans_rec TO F.TRANS, trans_id
+
+         * Progress
+         IF MOD(record_count, 100) = 0 THEN
+            CRT "  Processed ": record_count : " records..."
+         END
+      REPEAT
+
+      CLOSESEQ F.CSV
+
+      * Write import log
+      log_rec = ""
+      log_rec<1> = DATE()
+      log_rec<2> = file_name
+      log_rec<3> = record_count
+      log_rec<4> = min_date : " to " : max_date
+      log_rec<5> = error_list
+
+      WRITE log_rec TO F.LOG, batch_id
+
+      CRT
+      CRT STR("=",70)
+      CRT "Import complete!"
+      CRT "  Records imported: ": record_count
+      CRT "  Batch ID: ": batch_id
+      CRT "  Date range: ": min_date : " to " : max_date
+      IF error_list # "" THEN
+         CRT "  Errors: ": DCOUNT(error_list, @FM)
+         CRT "  Review IMPORT.LOG ": batch_id
+      END
+      CRT STR("=",70)
+
+      STOP
+      END

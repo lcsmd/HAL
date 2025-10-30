@@ -1,0 +1,217 @@
+PROGRAM REPORT.REIMBURSABLE
+*
+* REPORT.REIMBURSABLE - Generate reimbursement reports
+* Compatible with HAL schema-driven architecture
+*
+* Usage: REPORT.REIMBURSABLE [SUMMARY|DETAIL|BATCH batch_id]
+*
+
+$INCLUDE EQU/FILES.EQU
+
+PROMPT ""
+
+* Get report type
+report_type = TRIM(SENTENCE())
+IF report_type = "" THEN report_type = "SUMMARY"
+
+* Open files using COMMON FILES array
+OPEN "TRANSACTION" TO trn ELSE
+   CRT "ERROR: Cannot open TRANSACTION file"
+   STOP
+END
+
+OPEN "PAYEE" TO pye ELSE
+   CRT "ERROR: Cannot open PAYEE file"
+   STOP
+END
+
+BEGIN CASE
+   CASE report_type = "SUMMARY"
+      GOSUB SUMMARY_REPORT
+   CASE report_type = "DETAIL"
+      GOSUB DETAIL_REPORT
+   CASE report_type[1,5] = "BATCH"
+      batch_id = FIELD(report_type, " ", 2)
+      GOSUB BATCH_REPORT
+   CASE 1
+      CRT "Invalid report type. Use: SUMMARY, DETAIL, or BATCH <batch_id>"
+END CASE
+
+STOP
+
+*
+* Subroutine: Summary report
+*
+SUMMARY_REPORT:
+   CRT
+   CRT "Reimbursable Transactions Summary"
+   CRT STR("=",70)
+   CRT
+   
+   total_count = 0
+   total_amount = 0
+   DIM category_count(100)
+   DIM category_amount(100)
+   DIM category_name(100)
+   num_categories = 0
+   
+   SELECT trn
+   LOOP
+      READNEXT trans_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ trans_rec FROM trn, trans_id THEN
+         IF trans_rec<8> = "Y" THEN
+            total_count = total_count + 1
+            total_amount = total_amount + trans_rec<4>
+            
+            * Track by category
+            cat = trans_rec<9>
+            IF cat = "" THEN cat = "UNCATEGORIZED"
+            
+            found = @FALSE
+            FOR i = 1 TO num_categories
+               IF category_name(i) = cat THEN
+                  category_count(i) = category_count(i) + 1
+                  category_amount(i) = category_amount(i) + trans_rec<4>
+                  found = @TRUE
+                  EXIT
+               END
+            NEXT i
+            
+            IF NOT(found) THEN
+               num_categories = num_categories + 1
+               category_name(num_categories) = cat
+               category_count(num_categories) = 1
+               category_amount(num_categories) = trans_rec<4>
+            END
+         END
+      END
+   REPEAT
+   
+   CRT "By Category:"
+   CRT STR("-",70)
+   CRT FMT("Category", "30L"): " ": FMT("Count", "10R"): " ": FMT("Amount", "15R")
+   CRT STR("-",70)
+   
+   FOR i = 1 TO num_categories
+      CRT FMT(category_name(i), "30L"): " ":
+      CRT FMT(category_count(i), "10R"): " ":
+      CRT FMT(category_amount(i), "15R")
+   NEXT i
+   
+   CRT STR("-",70)
+   CRT FMT("TOTAL", "30L"): " ": FMT(total_count, "10R"): " ": FMT(total_amount, "15R")
+   CRT STR("=",70)
+   
+   RETURN
+
+*
+* Subroutine: Detail report
+*
+DETAIL_REPORT:
+   CRT
+   CRT "Reimbursable Transactions Detail"
+   CRT STR("=",90)
+   CRT
+   CRT FMT("Date", "12L"): " ":
+   CRT FMT("Payee", "25L"): " ":
+   CRT FMT("Category", "20L"): " ":
+   CRT FMT("Amount", "12R"): " ":
+   CRT FMT("Status", "15L")
+   CRT STR("-",90)
+   
+   total_amount = 0
+   count = 0
+   
+   SELECT trn
+   LOOP
+      READNEXT trans_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ trans_rec FROM trn, trans_id THEN
+         IF trans_rec<8> = "Y" THEN
+            count = count + 1
+            trans_date = trans_rec<1>
+            payee = trans_rec<3>
+            IF payee = "" THEN payee = trans_rec<2>
+            category = trans_rec<9>
+            IF category = "" THEN category = "UNCATEGORIZED"
+            amount = trans_rec<4>
+            status = trans_rec<10>
+            
+            CRT FMT(trans_date, "12L"): " ":
+            CRT FMT(payee[1,25], "25L"): " ":
+            CRT FMT(category[1,20], "20L"): " ":
+            CRT FMT(amount, "12R"): " ":
+            CRT FMT(status, "15L")
+            
+            total_amount = total_amount + amount
+         END
+      END
+   REPEAT
+   
+   CRT STR("-",90)
+   CRT "Total transactions: ": count
+   CRT "Total amount: ": total_amount
+   CRT STR("=",90)
+   
+   RETURN
+
+*
+* Subroutine: Batch report
+*
+BATCH_REPORT:
+   CRT
+   CRT "Reimbursable Transactions for Batch: ": batch_id
+   CRT STR("=",90)
+   CRT
+   
+   total_amount = 0
+   count = 0
+   
+   SELECT trn
+   LOOP
+      READNEXT trans_id ELSE DONE = @TRUE
+   UNTIL DONE DO
+      READ trans_rec FROM trn, trans_id THEN
+         IF trans_rec<8> = "Y" AND trans_rec<12> = batch_id THEN
+            IF count = 0 THEN
+               CRT FMT("Date", "12L"): " ":
+               CRT FMT("Payee", "25L"): " ":
+               CRT FMT("Category", "20L"): " ":
+               CRT FMT("Amount", "12R"): " ":
+               CRT FMT("Status", "15L")
+               CRT STR("-",90)
+            END
+            
+            count = count + 1
+            trans_date = trans_rec<1>
+            payee = trans_rec<3>
+            IF payee = "" THEN payee = trans_rec<2>
+            category = trans_rec<9>
+            IF category = "" THEN category = "UNCATEGORIZED"
+            amount = trans_rec<4>
+            status = trans_rec<10>
+            
+            CRT FMT(trans_date, "12L"): " ":
+            CRT FMT(payee[1,25], "25L"): " ":
+            CRT FMT(category[1,20], "20L"): " ":
+            CRT FMT(amount, "12R"): " ":
+            CRT FMT(status, "15L")
+            
+            total_amount = total_amount + amount
+         END
+      END
+   REPEAT
+   
+   IF count = 0 THEN
+      CRT "No reimbursable transactions found for this batch"
+   END ELSE
+      CRT STR("-",90)
+      CRT "Total transactions: ": count
+      CRT "Total amount: ": total_amount
+      CRT STR("=",90)
+   END
+   
+   RETURN
+
+END

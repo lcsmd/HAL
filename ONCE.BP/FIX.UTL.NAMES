@@ -1,0 +1,71 @@
+PROGRAM FIX.UTL.NAMES
+*
+* Purpose: Rename programs in UTL.BP from UTIL.* to UTL.*
+* This is a one-time fix after the UTIL->UTL migration
+*
+
+PROMPT ""
+
+CRT
+CRT "Fixing program names in UTL.BP (UTIL.* -> UTL.*)"
+CRT STR("=",70)
+CRT
+
+* Open UTL.BP
+OPEN "UTL.BP" TO F.UTL ELSE
+   CRT "ERROR: Cannot open UTL.BP"
+   STOP
+END
+
+* List of programs to rename
+DIM OLD.NAMES(20), NEW.NAMES(20)
+COUNT = 0
+
+COUNT += 1 ; OLD.NAMES(COUNT) = "UTIL.TEST.DICT" ; NEW.NAMES(COUNT) = "UTL.TEST.DICT"
+COUNT += 1 ; OLD.NAMES(COUNT) = "UTIL.TEST.FILES" ; NEW.NAMES(COUNT) = "UTL.TEST.FILES"
+COUNT += 1 ; OLD.NAMES(COUNT) = "UTIL.TEST.PATH" ; NEW.NAMES(COUNT) = "UTL.TEST.PATH"
+COUNT += 1 ; OLD.NAMES(COUNT) = "UTIL.CRUD.TEMPLATE" ; NEW.NAMES(COUNT) = "UTL.CRUD.TEMPLATE"
+COUNT += 1 ; OLD.NAMES(COUNT) = "UTIL.DATA.FILTER" ; NEW.NAMES(COUNT) = "UTL.DATA.FILTER"
+COUNT += 1 ; OLD.NAMES(COUNT) = "UTIL.STR" ; NEW.NAMES(COUNT) = "UTL.STR"
+COUNT += 1 ; OLD.NAMES(COUNT) = "UTIL.SET.IDLENGTH" ; NEW.NAMES(COUNT) = "UTL.SET.IDLENGTH"
+
+SUCCESS = 0
+SKIPPED = 0
+
+FOR I = 1 TO COUNT
+   OLD.NAME = OLD.NAMES(I)
+   NEW.NAME = NEW.NAMES(I)
+   
+   * Check if old name exists
+   READ PROG FROM F.UTL, OLD.NAME ELSE
+      CRT "  SKIP: ": OLD.NAME : " (not found)"
+      SKIPPED += 1
+      CONTINUE
+   END
+   
+   * Check if new name already exists
+   READ TEST FROM F.UTL, NEW.NAME THEN
+      CRT "  SKIP: ": NEW.NAME : " (already exists)"
+      SKIPPED += 1
+      CONTINUE
+   END
+   
+   * Write with new name
+   WRITE PROG TO F.UTL, NEW.NAME
+   
+   * Delete old name
+   DELETE F.UTL, OLD.NAME
+   
+   CRT "  ": OLD.NAME : " -> ": NEW.NAME
+   SUCCESS += 1
+NEXT I
+
+CRT
+CRT STR("=",70)
+CRT "Complete!"
+CRT "  Renamed: ": SUCCESS
+CRT "  Skipped: ": SKIPPED
+CRT
+
+STOP
+END

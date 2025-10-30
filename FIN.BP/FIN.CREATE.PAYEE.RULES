@@ -1,0 +1,229 @@
+PROGRAM FIN.CREATE.PAYEE.RULES
+*
+* Interactive payee rule creation
+* - Browse payees sorted by frequency
+* - Pre-fill name, user deletes unwanted parts
+* - Auto-create wildcard rule
+*
+
+PROMPT ""
+
+OPEN "TRANSACTION" TO trans_file ELSE
+   PRINT "ERROR: Cannot open TRANSACTION"
+   STOP
+END
+
+OPEN "RULE" TO rules_file ELSE
+   PRINT "ERROR: Cannot open RULE"
+   STOP
+END
+
+PRINT "Auto Payee Rule Creator"
+PRINT STR("=",70)
+PRINT
+PRINT "Loading payees..."
+GOSUB LOAD_PAYEES
+PRINT "Found " : payee_count : " unique payees"
+PRINT
+
+* Auto-create rules for payees with 3+ words
+PRINT "Creating rules for payees with 3+ words..."
+PRINT
+rules_created = 0
+
+FOR i = 1 TO payee_count
+   payee_name = payee_list<1,i>
+   word_count = DCOUNT(payee_name, " ")
+   
+   IF word_count >= 3 THEN
+      * Use first 2 words
+      first_word = FIELD(payee_name, " ", 1)
+      second_word = FIELD(payee_name, " ", 2)
+      std_name = first_word : " " : second_word
+      
+      * Create rule
+      pattern = std_name : "*"
+      rule_id = "PAYEE." : DATE() : "." : TIME() : "." : i
+      
+      rule_rec = ""
+      rule_rec<1> = "PAYEE_STANDARDIZATION"
+      rule_rec<2> = pattern
+      rule_rec<3> = "STANDARDIZE"
+      rule_rec<4> = std_name
+      rule_rec<5> = 10
+      rule_rec<6> = "Y"
+      rule_rec<7> = DATE()
+      rule_rec<8> = ""
+      rule_rec<9> = "AUTO"
+      rule_rec<10> = "Auto: " : pattern : " -> " : std_name
+      
+      WRITE rule_rec TO rules_file, rule_id
+      
+      rules_created = rules_created + 1
+      PRINT rules_created : ". " : payee_name : " -> " : std_name
+   END
+NEXT i
+
+PRINT
+PRINT STR("=",70)
+PRINT "Created " : rules_created : " rules"
+PRINT
+PRINT "Rebuild payees now? (Y/N): ";
+INPUT rebuild
+
+IF rebuild = "Y" OR rebuild = "y" THEN
+   PRINT "Rebuilding payees..."
+   EXECUTE "FIN.REBUILD.PAYEES"
+END
+
+STOP
+
+LOAD_PAYEES:
+   payee_names = ""
+   payee_counts = ""
+   payee_count = 0
+   trans_read = 0
+   
+   SELECT trans_file
+   LOOP
+      READNEXT trans_id ELSE EXIT
+      
+      trans_read = trans_read + 1
+      IF MOD(trans_read, 1000) = 0 THEN
+         PRINT "  Read " : trans_read : " transactions, " : payee_count : " unique payees"
+      END
+      
+      READ trans_rec FROM trans_file, trans_id THEN
+         payee_name = trans_rec<2>
+         
+         * Find existing
+         found = 0
+         FOR i = 1 TO payee_count
+            IF payee_names<i> = payee_name THEN
+               payee_counts<i> = payee_counts<i> + 1
+               found = 1
+               i = payee_count + 1  ; * Exit loop
+            END
+         NEXT i
+         
+         * Add new
+         IF found = 0 THEN
+            payee_count = payee_count + 1
+            payee_names<payee_count> = payee_name
+            payee_counts<payee_count> = 1
+         END
+      END
+   REPEAT
+   
+   * Sort by count
+   payee_list = ""
+   FOR i = 1 TO payee_count
+      payee_list<1,i> = payee_names<i>
+      payee_list<2,i> = payee_counts<i>
+   NEXT i
+   
+   FOR i = 1 TO payee_count - 1
+      FOR j = i + 1 TO payee_count
+         IF payee_list<2,i> < payee_list<2,j> THEN
+            temp_n = payee_list<1,i>
+            temp_c = payee_list<2,i>
+            payee_list<1,i> = payee_list<1,j>
+            payee_list<2,i> = payee_list<2,j>
+            payee_list<1,j> = temp_n
+            payee_list<2,j> = temp_c
+         END
+      NEXT j
+   NEXT i
+   RETURN
+
+CREATE_RULE:
+   * Count words in payee name
+   word_count = DCOUNT(selected_payee, " ")
+   
+   * Skip if less than 3 words
+   IF word_count < 3 THEN
+      PRINT "Skipped (less than 3 words): " : selected_payee
+      RETURN
+   END
+   
+   PRINT
+   PRINT "Selected: " : selected_payee
+   PRINT STR("-",70)
+   
+   * Show samples
+   PRINT "Samples:"
+   SELECT trans_file
+   sample_count = 0
+   
+   LOOP
+      READNEXT trans_id ELSE EXIT
+      READ trans_rec FROM trans_file, trans_id THEN
+         IF trans_rec<2> = selected_payee THEN
+            sample_count = sample_count + 1
+            IF sample_count <= 3 THEN
+               PRINT "  " : trans_rec<1> : " $" : trans_rec<4>
+            END
+            IF sample_count >= 3 THEN EXIT
+         END
+      END
+   REPEAT
+   
+   * Pre-fill with first 2 words
+   first_word = FIELD(selected_payee, " ", 1)
+   second_word = FIELD(selected_payee, " ", 2)
+   default_name = first_word : " " : second_word
+   
+   PRINT
+   PRINT "Edit name (delete unwanted parts):"
+   PRINT "  [" : default_name : "]: ";
+   INPUT std_name
+   
+   IF std_name = "" THEN
+      PRINT "Skipped"
+      RETURN
+   END
+   
+   std_name = TRIM(std_name)
+   
+   * Create pattern
+   IF std_name = selected_payee THEN
+      pattern = selected_payee
+   END ELSE
+      pattern = std_name : "*"
+   END
+   
+   * Save rule
+   rule_id = "PAYEE." : DATE() : "." : TIME()
+   rule_rec = ""
+   rule_rec<1> = "PAYEE_STANDARDIZATION"
+   rule_rec<2> = pattern
+   rule_rec<3> = "STANDARDIZE"
+   rule_rec<4> = std_name
+   rule_rec<5> = 10
+   rule_rec<6> = "Y"
+   rule_rec<7> = DATE()
+   rule_rec<8> = ""
+   rule_rec<9> = "USER"
+   rule_rec<10> = "Manual: " : pattern : " -> " : std_name
+   
+   WRITE rule_rec TO rules_file, rule_id
+   
+   PRINT "Rule created: '" : pattern : "' -> '" : std_name : "'"
+   PRINT
+   RETURN
+
+SEARCH_PAYEES:
+   PRINT "Matches:"
+   found = 0
+   FOR i = 1 TO payee_count
+      IF INDEX(UPCASE(payee_list<1,i>), UPCASE(search_term), 1) > 0 THEN
+         found = found + 1
+         PRINT i : ". " : payee_list<1,i> : " (" : payee_list<2,i> : ")"
+         IF found >= 20 THEN i = payee_count + 1
+      END
+   NEXT i
+   IF found = 0 THEN PRINT "No matches"
+   PRINT
+   RETURN
+
+END

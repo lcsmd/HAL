@@ -1,0 +1,108 @@
+PROGRAM SETUP.DOM_FILE_FIELD
+* Create dictionary items for DOM_FILE_FIELD file and populate with initial data
+* Key: domain:filename:fieldname
+* Fields: M_S, association, index, required
+
+OPEN "DOM_FILE_FIELD" TO F.DOM_FILE_FIELD ELSE
+   CRT "Error: Cannot open DOM_FILE_FIELD file"
+   STOP
+END
+
+OPEN "DICT", "DOM_FILE_FIELD" TO F.DICT ELSE
+   CRT "Error: Cannot open DICT DOM_FILE_FIELD"
+   STOP
+END
+
+CRT "Creating dictionary items for DOM_FILE_FIELD file..."
+CRT ""
+
+* @ID
+DICT.REC = "D":@FM:"0":@FM:"":@FM:"Domain:File:Field":@FM:"40L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "@ID"
+CRT "Created @ID"
+
+* M_S (field 1) - Single or Multivalued
+DICT.REC = "D":@FM:"1":@FM:"":@FM:"Single/Multi":@FM:"5L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "M_S"
+CRT "Created M_S"
+
+* ASSOCIATION (field 2)
+DICT.REC = "D":@FM:"2":@FM:"":@FM:"Association":@FM:"20L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "ASSOCIATION"
+CRT "Created ASSOCIATION"
+
+* INDEX (field 3)
+DICT.REC = "D":@FM:"3":@FM:"":@FM:"Indexed":@FM:"5L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "INDEX"
+CRT "Created INDEX"
+
+* REQUIRED (field 4)
+DICT.REC = "D":@FM:"4":@FM:"":@FM:"Required":@FM:"5L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "REQUIRED"
+CRT "Created REQUIRED"
+
+CRT ""
+CRT "Dictionary items created successfully!"
+CRT ""
+CRT "Populating DOM_FILE_FIELD file with email field definitions..."
+CRT ""
+
+* com:email:emailaccount
+REC = "s":@FM:"":@FM:"x":@FM:"y"
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:emailaccount"
+CRT "Added: com:email:emailaccount"
+
+* com:email:eadd_from
+REC = "s":@FM:"":@FM:"x":@FM:"y"
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:eadd_from"
+CRT "Added: com:email:eadd_from"
+
+* com:email:eadd_to
+REC = "m":@FM:"":@FM:"x":@FM:"y"
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:eadd_to"
+CRT "Added: com:email:eadd_to"
+
+* com:email:eadd_cc
+REC = "m":@FM:"":@FM:"x":@FM:"n"
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:eadd_cc"
+CRT "Added: com:email:eadd_cc"
+
+* com:email:eadd_bcc
+REC = "m":@FM:"":@FM:"x":@FM:"n"
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:eadd_bcc"
+CRT "Added: com:email:eadd_bcc"
+
+* com:email:subject
+REC = "":@FM:"":@FM:"":@FM:""
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:subject"
+CRT "Added: com:email:subject"
+
+* com:email:body
+REC = "":@FM:"":@FM:"":@FM:""
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:body"
+CRT "Added: com:email:body"
+
+* com:email:date_sent
+REC = "":@FM:"":@FM:"x":@FM:"y"
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:date_sent"
+CRT "Added: com:email:date_sent"
+
+* com:email:date_rec
+REC = "":@FM:"":@FM:"x":@FM:"y"
+WRITE REC ON F.DOM_FILE_FIELD, "com:email:date_rec"
+CRT "Added: com:email:date_rec"
+
+CRT ""
+CRT "=================================================="
+CRT "DOM_FILE_FIELD file setup complete!"
+CRT "=================================================="
+CRT ""
+CRT "9 field definition records created for email file"
+CRT ""
+CRT "To view field definitions:"
+CRT "  LIST DOM_FILE_FIELD"
+CRT "  SELECT DOM_FILE_FIELD WITH @ID LIKE 'com:email:...'"
+CRT ""
+
+STOP
+END

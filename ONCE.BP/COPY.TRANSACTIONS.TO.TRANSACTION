@@ -1,0 +1,57 @@
+PROGRAM COPY.TRANSACTIONS.TO.TRANSACTION
+*
+* Purpose: Copy all records from TRANSACTIONS to TRANSACTION
+* One-time fix after import went to wrong file
+*
+
+PROMPT ""
+
+CRT
+CRT "Copying records from TRANSACTIONS to TRANSACTION"
+CRT STR("=",70)
+CRT
+
+* Open both files
+OPEN "TRANSACTIONS" TO F.OLD ELSE
+   CRT "ERROR: Cannot open TRANSACTIONS file"
+   STOP
+END
+
+OPEN "TRANSACTION" TO F.NEW ELSE
+   CRT "ERROR: Cannot open TRANSACTION file"
+   CRT "Run BUILD.SCHEMA first"
+   STOP
+END
+
+* Get list of all records
+SELECT F.OLD
+
+COPIED = 0
+LOOP
+   READNEXT ID ELSE EXIT
+   
+   * Read from old file
+   READ REC FROM F.OLD, ID ELSE
+      CRT "  ERROR: Cannot read ": ID
+      CONTINUE
+   END
+   
+   * Write to new file
+   WRITE REC TO F.NEW, ID
+   
+   COPIED += 1
+   IF MOD(COPIED, 100) = 0 THEN
+      CRT "  Copied ": COPIED : " records..."
+   END
+REPEAT
+
+CRT
+CRT STR("=",70)
+CRT "Complete!"
+CRT "  Total records copied: ": COPIED
+CRT
+CRT "You can now delete the TRANSACTIONS file if desired"
+CRT
+
+STOP
+END

@@ -1,0 +1,55 @@
+PROGRAM TEST.OPEN.FILES
+* Test the OPEN.FILES subroutine
+
+$INCLUDE EQU FILES.EQU
+
+CRT "Testing OPEN.FILES subroutine..."
+CRT ""
+
+* Call OPEN.FILES to open all data files
+CALL OPEN.FILES
+
+CRT ""
+CRT "Files opened successfully!"
+CRT ""
+
+* Test access to a few files using the EQU handles
+CRT "Testing file access using EQU handles..."
+CRT ""
+
+* Test PERSON file (per = FILES(1))
+CRT "Testing PERSON file (per)..."
+SELECT per
+COUNT.PER = 0
+LOOP
+   READNEXT ID FROM per ELSE EXIT
+   COUNT.PER += 1
+REPEAT
+CRT "  PERSON file has ":COUNT.PER:" records"
+
+* Test COMPANY file (com = FILES(2))
+CRT "Testing COMPANY file (com)..."
+SELECT com
+COUNT.COM = 0
+LOOP
+   READNEXT ID FROM com ELSE EXIT
+   COUNT.COM += 1
+REPEAT
+CRT "  COMPANY file has ":COUNT.COM:" records"
+
+* Test EVENT file (evt = FILES(3))
+CRT "Testing EVENT file (evt)..."
+SELECT evt
+COUNT.EVT = 0
+LOOP
+   READNEXT ID FROM evt ELSE EXIT
+   COUNT.EVT += 1
+REPEAT
+CRT "  EVENT file has ":COUNT.EVT:" records"
+
+CRT ""
+CRT "File access test complete!"
+
+RETURN
+END
+

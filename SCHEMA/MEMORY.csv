@@ -1,0 +1,25 @@
+FieldName,FieldNum,Type,Description,Required,Indexed
+ID,0,K,Unique memory identifier,Y,Y
+MEMORY_TYPE,1,A,Type (fact/preference/skill/context/summary),Y,Y
+PERSONA_ID,2,A,Associated persona,N,Y
+USER_ID,3,A,Associated user,N,Y
+SUBJECT,4,A,Memory subject or topic,Y,Y
+CONTENT,5,T,Memory content,Y,N
+CONTEXT,6,T,Additional context,N,N
+SOURCE_TYPE,7,A,Source (conversation/document/manual/learned),N,N
+SOURCE_ID,8,A,Source identifier,N,Y
+CONFIDENCE,9,N,Confidence level (0.0-1.0),N,N
+IMPORTANCE,10,N,Importance score (0-100),N,N
+ACCESS_COUNT,11,N,Number of times accessed,N,N
+LAST_ACCESSED,12,D,Last access timestamp,N,N
+EXPIRY_DATE,13,D,Memory expiration date,N,N
+EMBEDDING,14,T,Vector embedding for semantic search,N,N
+KEYWORDS,15,M,Keywords for search (multivalued),N,Y
+RELATED_MEMORIES,16,M,Related memory IDs (multivalued),N,N
+ENTITIES,17,M,Referenced entities (multivalued),N,N
+VERIFIED,18,A,Verified status (Y/N),N,N
+VERIFIED_DATE,19,D,Verification date,N,N
+TAGS,20,M,Tags for categorization (multivalued),N,N
+CREATED_DATE,21,D,Record creation date,Y,N
+UPDATED_DATE,22,D,Last update date,Y,N
+ACTIVE,23,A,Active status (Y/N),Y,Y

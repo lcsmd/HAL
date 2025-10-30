@@ -1,0 +1,252 @@
+      PROGRAM IMPORT.EPIC
+      * Import medical data from Epic MyChart exports
+      * Supports CCD-C (Continuity of Care Document), CSV, and FHIR JSON formats
+      
+      $INCLUDE FILES.EQU
+      
+      * Get import file path from command line or prompt
+      PRINT "Epic Data Import Utility"
+      PRINT ""
+      PRINT "Supported formats:"
+      PRINT "  1. CCD-C XML (Continuity of Care Document)"
+      PRINT "  2. CSV Export"
+      PRINT "  3. FHIR JSON"
+      PRINT ""
+      INPUT "Enter import file path: ", IMPORT.FILE
+      
+      IF IMPORT.FILE = "" THEN
+         PRINT "Error: No file specified"
+         STOP
+      END
+      
+      * Check if file exists
+      OPENSEQ IMPORT.FILE TO F.IMPORT ELSE
+         PRINT "Error: Cannot open file ":IMPORT.FILE
+         STOP
+      END
+      
+      * Detect file format
+      READSEQ FIRST.LINE FROM F.IMPORT ELSE
+         PRINT "Error: Cannot read file"
+         CLOSESEQ F.IMPORT
+         STOP
+      END
+      
+      * Reset file pointer
+      CLOSESEQ F.IMPORT
+      OPENSEQ IMPORT.FILE TO F.IMPORT ELSE
+         PRINT "Error: Cannot reopen file"
+         STOP
+      END
+      
+      FILE.FORMAT = ""
+      BEGIN CASE
+         CASE INDEX(FIRST.LINE, "<?xml", 1)
+            FILE.FORMAT = "XML"
+         CASE INDEX(FIRST.LINE, "{", 1) OR INDEX(FIRST.LINE, '"resourceType"', 1)
+            FILE.FORMAT = "JSON"
+         CASE INDEX(FIRST.LINE, ",", 1)
+            FILE.FORMAT = "CSV"
+         CASE 1
+            PRINT "Error: Unknown file format"
+            CLOSESEQ F.IMPORT
+            STOP
+      END CASE
+      
+      PRINT "Detected format: ":FILE.FORMAT
+      PRINT ""
+      
+      * Process based on format
+      BEGIN CASE
+         CASE FILE.FORMAT = "CSV"
+            GOSUB IMPORT.CSV
+         CASE FILE.FORMAT = "XML"
+            GOSUB IMPORT.XML
+         CASE FILE.FORMAT = "JSON"
+            GOSUB IMPORT.JSON
+      END CASE
+      
+      CLOSESEQ F.IMPORT
+      
+      PRINT ""
+      PRINT "Import complete!"
+      STOP
+      
+* ============================================================================
+* Import CSV format
+* ============================================================================
+IMPORT.CSV:
+      PRINT "Processing CSV import..."
+      
+      * Read header line
+      READSEQ HEADER.LINE FROM F.IMPORT ELSE
+         PRINT "Error: Cannot read CSV header"
+         RETURN
+      END
+      
+      * Parse headers
+      HEADERS = ""
+      COL.COUNT = DCOUNT(HEADER.LINE, ",")
+      FOR I = 1 TO COL.COUNT
+         HEADERS<I> = FIELD(HEADER.LINE, ",", I)
+      NEXT I
+      
+      * Determine CSV type based on headers
+      CSV.TYPE = ""
+      IF INDEX(HEADERS, "MEDICATION", 1) THEN CSV.TYPE = "MEDICATION"
+      IF INDEX(HEADERS, "ALLERGY", 1) THEN CSV.TYPE = "ALLERGY"
+      IF INDEX(HEADERS, "DIAGNOSIS", 1) OR INDEX(HEADERS, "CONDITION", 1) THEN CSV.TYPE = "MEDICAL_HISTORY"
+      IF INDEX(HEADERS, "IMMUNIZATION", 1) OR INDEX(HEADERS, "VACCINE", 1) THEN CSV.TYPE = "IMMUNIZATION"
+      IF INDEX(HEADERS, "LAB", 1) OR INDEX(HEADERS, "TEST", 1) THEN CSV.TYPE = "MEDICAL_TEST"
+      
+      IF CSV.TYPE = "" THEN
+         PRINT "Warning: Cannot determine CSV type from headers"
+         RETURN
+      END
+      
+      PRINT "Importing ":CSV.TYPE:" data..."
+      
+      REC.COUNT = 0
+      LOOP
+         READSEQ DATA.LINE FROM F.IMPORT ELSE EXIT
+         IF DATA.LINE = "" THEN CONTINUE
+         
+         REC.COUNT += 1
+         
+         * Parse CSV line and import based on type
+         BEGIN CASE
+            CASE CSV.TYPE = "MEDICATION"
+               GOSUB IMPORT.MEDICATION.CSV
+            CASE CSV.TYPE = "ALLERGY"
+               GOSUB IMPORT.ALLERGY.CSV
+            CASE CSV.TYPE = "MEDICAL_HISTORY"
+               GOSUB IMPORT.HISTORY.CSV
+            CASE CSV.TYPE = "IMMUNIZATION"
+               GOSUB IMPORT.IMMUNIZATION.CSV
+            CASE CSV.TYPE = "MEDICAL_TEST"
+               GOSUB IMPORT.TEST.CSV
+         END CASE
+      REPEAT
+      
+      PRINT "Imported ":REC.COUNT:" ":CSV.TYPE:" records"
+      RETURN
+      
+* ============================================================================
+* Import XML (CCD-C) format
+* ============================================================================
+IMPORT.XML:
+      PRINT "Processing XML/CCD-C import..."
+      PRINT "Note: Full XML parsing requires external library"
+      PRINT "Recommend converting to CSV or JSON format"
+      RETURN
+      
+* ============================================================================
+* Import FHIR JSON format
+* ============================================================================
+IMPORT.JSON:
+      PRINT "Processing FHIR JSON import..."
+      
+      * Read entire JSON file
+      JSON.DATA = ""
+      LOOP
+         READSEQ LINE FROM F.IMPORT ELSE EXIT
+         JSON.DATA := LINE
+      REPEAT
+      
+      * Parse FHIR resource type
+      * Note: Full JSON parsing would require external library
+      * This is a simplified version
+      
+      IF INDEX(JSON.DATA, '"resourceType":"MedicationStatement"', 1) THEN
+         PRINT "Detected FHIR MedicationStatement"
+         GOSUB IMPORT.MEDICATION.FHIR
+      END ELSE IF INDEX(JSON.DATA, '"resourceType":"AllergyIntolerance"', 1) THEN
+         PRINT "Detected FHIR AllergyIntolerance"
+         GOSUB IMPORT.ALLERGY.FHIR
+      END ELSE IF INDEX(JSON.DATA, '"resourceType":"Condition"', 1) THEN
+         PRINT "Detected FHIR Condition"
+         GOSUB IMPORT.CONDITION.FHIR
+      END ELSE IF INDEX(JSON.DATA, '"resourceType":"Immunization"', 1) THEN
+         PRINT "Detected FHIR Immunization"
+         GOSUB IMPORT.IMMUNIZATION.FHIR
+      END ELSE IF INDEX(JSON.DATA, '"resourceType":"Observation"', 1) THEN
+         PRINT "Detected FHIR Observation"
+         GOSUB IMPORT.OBSERVATION.FHIR
+      END ELSE
+         PRINT "Unknown or unsupported FHIR resource type"
+      END
+      
+      RETURN
+      
+* ============================================================================
+* Import medication from CSV
+* ============================================================================
+IMPORT.MEDICATION.CSV:
+      * TODO: Map CSV columns to MEDICATION fields
+      * This would parse DATA.LINE and create MEDICATION records
+      RETURN
+      
+* ============================================================================
+* Import allergy from CSV
+* ============================================================================
+IMPORT.ALLERGY.CSV:
+      * TODO: Map CSV columns to ALLERGY fields
+      RETURN
+      
+* ============================================================================
+* Import medical history from CSV
+* ============================================================================
+IMPORT.HISTORY.CSV:
+      * TODO: Map CSV columns to MEDICAL_HISTORY fields
+      RETURN
+      
+* ============================================================================
+* Import immunization from CSV
+* ============================================================================
+IMPORT.IMMUNIZATION.CSV:
+      * TODO: Map CSV columns to IMMUNIZATION fields
+      RETURN
+      
+* ============================================================================
+* Import test from CSV
+* ============================================================================
+IMPORT.TEST.CSV:
+      * TODO: Map CSV columns to MEDICAL_TEST fields
+      RETURN
+      
+* ============================================================================
+* Import medication from FHIR
+* ============================================================================
+IMPORT.MEDICATION.FHIR:
+      * TODO: Parse FHIR JSON and create MEDICATION records
+      RETURN
+      
+* ============================================================================
+* Import allergy from FHIR
+* ============================================================================
+IMPORT.ALLERGY.FHIR:
+      * TODO: Parse FHIR JSON and create ALLERGY records
+      RETURN
+      
+* ============================================================================
+* Import condition from FHIR
+* ============================================================================
+IMPORT.CONDITION.FHIR:
+      * TODO: Parse FHIR JSON and create MEDICAL_HISTORY records
+      RETURN
+      
+* ============================================================================
+* Import immunization from FHIR
+* ============================================================================
+IMPORT.IMMUNIZATION.FHIR:
+      * TODO: Parse FHIR JSON and create IMMUNIZATION records
+      RETURN
+      
+* ============================================================================
+* Import observation from FHIR
+* ============================================================================
+IMPORT.OBSERVATION.FHIR:
+      * TODO: Parse FHIR JSON and create MEDICAL_TEST or VITAL_SIGNS records
+      RETURN
+      
+      END

@@ -1,0 +1,29 @@
+FieldName,FieldNum,Type,Description,Required,Indexed
+ID,0,K,Unique medication record ID,Y,Y
+PERSON_ID,1,A,Reference to PERSON file,Y,Y
+MEDICATION_NAME,2,A,Medication name,Y,Y
+GENERIC_NAME,3,A,Generic/chemical name,N,N
+NDC_CODE,4,A,National Drug Code,N,Y
+DOSAGE,5,A,Dosage amount,Y,N
+DOSAGE_UNIT,6,A,Dosage unit (mg/ml/units),Y,N
+FREQUENCY,7,A,Frequency (daily/BID/TID/QID/PRN),Y,N
+ROUTE,8,A,Route (oral/IV/topical/injection),Y,N
+START_DATE,9,D,Start date,Y,Y
+END_DATE,10,D,End date (if discontinued),N,N
+STATUS,11,A,Status (active/discontinued/completed),Y,Y
+PRESCRIBER_ID,12,A,Prescribing doctor ID,N,Y
+PHARMACY_ID,13,A,Pharmacy ID,N,Y
+PRESCRIPTION_NUMBER,14,A,Prescription number,N,N
+REFILLS_REMAINING,15,N,Refills remaining,N,N
+REASON,16,A,Reason for medication,N,N
+CONDITION_ID,17,A,Related medical condition ID,N,Y
+SIDE_EFFECTS,18,M,Observed side effects (multivalued),N,N
+INTERACTIONS,19,M,Drug interaction warnings (multivalued),N,N
+INSTRUCTIONS,20,T,Special instructions,N,N
+COST,21,N,Cost per fill,N,N
+INSURANCE_COVERED,22,A,Insurance coverage flag (Y/N),N,N
+NOTES,23,T,Additional notes,N,N
+TAGS,24,M,Tags for categorization (multivalued),N,N
+ACTIVE,25,A,Active status (Y/N),Y,Y
+CREATED_DATE,26,D,Record creation date,Y,N
+UPDATED_DATE,27,D,Last update date,Y,N

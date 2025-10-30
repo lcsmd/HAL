@@ -1,0 +1,109 @@
+PROGRAM SETUP.FILES
+* Create dictionary items for FILES file and populate with initial data
+
+OPEN "FILES" TO F.FILES ELSE
+   CRT "Error: Cannot open FILES file"
+   STOP
+END
+
+OPEN "DICT", "FILES" TO F.DICT ELSE
+   CRT "Error: Cannot open DICT FILES"
+   STOP
+END
+
+CRT "Creating dictionary items for FILES file..."
+CRT ""
+
+* @ID
+DICT.REC = "D":@FM:"0":@FM:"":@FM:"File name":@FM:"20L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "@ID"
+CRT "Created @ID"
+
+* FILE_ABB (field 1)
+DICT.REC = "D":@FM:"1":@FM:"":@FM:"File abbreviation":@FM:"10L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "FILE_ABB"
+CRT "Created FILE_ABB"
+
+* FILE_DESCRIPTION (field 2)
+DICT.REC = "D":@FM:"2":@FM:"":@FM:"File description":@FM:"50L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "FILE_DESCRIPTION"
+CRT "Created FILE_DESCRIPTION"
+
+* DOMAIN (field 3)
+DICT.REC = "D":@FM:"3":@FM:"":@FM:"Domain":@FM:"15L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "DOMAIN"
+CRT "Created DOMAIN"
+
+* TAGS (field 4)
+DICT.REC = "D":@FM:"4":@FM:"":@FM:"Tags":@FM:"30L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "TAGS"
+CRT "Created TAGS"
+
+* PRIORITY (field 5)
+DICT.REC = "D":@FM:"5":@FM:"":@FM:"Priority":@FM:"8R":@FM:"S"
+WRITE DICT.REC ON F.DICT, "PRIORITY"
+CRT "Created PRIORITY"
+
+* ID_TYPE (field 6)
+DICT.REC = "D":@FM:"6":@FM:"":@FM:"ID Type":@FM:"20L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "ID_TYPE"
+CRT "Created ID_TYPE"
+
+* NEXT_ID_SEQ (field 7)
+DICT.REC = "D":@FM:"7":@FM:"":@FM:"Next ID Sequence":@FM:"10R":@FM:"S"
+WRITE DICT.REC ON F.DICT, "NEXT_ID_SEQ"
+CRT "Created NEXT_ID_SEQ"
+
+* ITEM_COUNT (field 8)
+DICT.REC = "D":@FM:"8":@FM:"MR0":@FM:"Item Count":@FM:"10R":@FM:"S"
+WRITE DICT.REC ON F.DICT, "ITEM_COUNT"
+CRT "Created ITEM_COUNT"
+
+* FIELDS (field 9) - multivalued
+DICT.REC = "D":@FM:"9":@FM:"":@FM:"Fields":@FM:"30L":@FM:"M"
+WRITE DICT.REC ON F.DICT, "FIELDS"
+CRT "Created FIELDS"
+
+CRT ""
+CRT "Dictionary items created successfully!"
+CRT ""
+CRT "Populating FILES file with initial data..."
+CRT ""
+
+* email record
+REC = ""
+REC<1> = "eml"
+REC<2> = "email messages"
+REC<3> = "com"
+REC<4> = ""
+REC<5> = ""
+REC<6> = "[date:time]:seq"
+REC<7> = ""
+REC<8> = "0"
+* Fields as multivalued (field 9)
+REC<9,1> = "emailaccount"
+REC<9,2> = "eadd_from"
+REC<9,3> = "eadd_to"
+REC<9,4> = "eadd_cc"
+REC<9,5> = "eadd_bcc"
+REC<9,6> = "subject"
+REC<9,7> = "body"
+REC<9,8> = "date_sent"
+REC<9,9> = "date_rec"
+WRITE REC ON F.FILES, "email"
+CRT "Added: email"
+
+CRT ""
+CRT "=================================================="
+CRT "FILES file setup complete!"
+CRT "=================================================="
+CRT ""
+CRT "1 file record created"
+CRT ""
+CRT "To view files:"
+CRT "  LIST FILES"
+CRT "  LIST FILES FILE_ABB FILE_DESCRIPTION DOMAIN"
+CRT ""
+
+STOP
+END

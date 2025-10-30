@@ -1,0 +1,46 @@
+SUBROUTINE SCHEMA.VIEW.FILE
+* View detailed schema for a specific file
+
+INPUT FILENAME, "Enter filename: "
+IF FILENAME = "" THEN RETURN
+
+SCHEMA.FILE = "SCHEMA/":FILENAME:".csv"
+OPENSEQ SCHEMA.FILE TO F.SCHEMA ELSE
+   CRT "Error: Schema file not found: ":SCHEMA.FILE
+   RETURN
+END
+
+CRT ""
+CRT "=========================================="
+CRT "  FILE SCHEMA: ":FILENAME
+CRT "=========================================="
+CRT ""
+
+LINE.NUM = 0
+LOOP
+   READSEQ LINE FROM F.SCHEMA ELSE EXIT
+   LINE.NUM += 1
+   
+   IF LINE.NUM = 1 THEN
+      * Header
+      CRT "Field#  Name                Type  Req  Idx  Description"
+      CRT "------  ------------------  ----  ---  ---  -----------"
+   END ELSE IF LINE # "" THEN
+      FIELDNAME = FIELD(LINE, ",", 1)
+      FIELDNUM = FIELD(LINE, ",", 2)
+      FIELDTYPE = FIELD(LINE, ",", 3)
+      FIELDDESC = FIELD(LINE, ",", 4)
+      REQUIRED = FIELD(LINE, ",", 5)
+      INDEXED = FIELD(LINE, ",", 6)
+      
+      IF FIELDNAME # "" THEN
+         CRT FMT(FIELDNUM, "4R"):"    ":FMT(FIELDNAME, "20L"):" ":FMT(FIELDTYPE, "4L"):"  ":FMT(REQUIRED, "3L"):"  ":FMT(INDEXED, "3L"):"  ":FIELDDESC
+      END
+   END
+REPEAT
+CLOSESEQ F.SCHEMA
+
+CRT ""
+
+RETURN
+END

@@ -1,0 +1,26 @@
+PROGRAM TEST.PATH
+* Test file path access
+CRT "Testing file paths..."
+CRT "Current directory: ":SYSTEM(1027)
+
+* Try different path formats
+PATHS = ""
+PATHS<-1> = "SCHEMA/SCHEMA_INDEX.csv"
+PATHS<-1> = "./SCHEMA/SCHEMA_INDEX.csv"
+PATHS<-1> = "C:/QMSYS/HAL/SCHEMA/SCHEMA_INDEX.csv"
+PATHS<-1> = "\QMSYS\HAL\SCHEMA\SCHEMA_INDEX.csv"
+
+FOR I = 1 TO DCOUNT(PATHS, @FM)
+   TESTPATH = PATHS<I>
+   CRT "Trying: ":TESTPATH
+   OPENSEQ TESTPATH TO F.TEST THEN
+      CRT "  SUCCESS!"
+      CLOSESEQ F.TEST
+   END ELSE
+      CRT "  FAILED"
+   END
+NEXT I
+
+RETURN
+END
+

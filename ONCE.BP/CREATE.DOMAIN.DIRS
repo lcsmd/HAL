@@ -1,0 +1,54 @@
+PROGRAM CREATE.DOMAIN.DIRS
+*
+* Purpose: Create QM directory files for domain organization
+* This must be run from within QM to create proper directory files
+*
+
+PROMPT ""
+
+CRT
+CRT "Creating QM Directory Files for Domain Organization"
+CRT STR("=",70)
+CRT
+
+* List of directories to create
+DIM DIR.LIST(10)
+DIR.LIST(1) = "FIN.BP"
+DIR.LIST(2) = "MED.BP"
+DIR.LIST(3) = "SEC.BP"
+DIR.LIST(4) = "COM.BP"
+DIR.LIST(5) = "UTL.BP"
+DIR.COUNT = 5
+
+* Create each directory
+FOR I = 1 TO DIR.COUNT
+   DIR.NAME = DIR.LIST(I)
+   
+   CRT "Creating ": DIR.NAME : "..."
+   
+   * Execute CREATE.FILE command
+   CMD = "CREATE.FILE " : DIR.NAME : " DIRECTORY"
+   EXECUTE CMD CAPTURING OUTPUT
+   
+   * Check if successful
+   OPEN DIR.NAME TO F.TEST THEN
+      CRT "  SUCCESS: ": DIR.NAME : " created"
+      CLOSE F.TEST
+   END ELSE
+      CRT "  NOTE: ": DIR.NAME : " may already exist or error occurred"
+   END
+   
+NEXT I
+
+CRT
+CRT STR("=",70)
+CRT "Directory creation complete!"
+CRT
+CRT "Directories created:"
+FOR I = 1 TO DIR.COUNT
+   CRT "  ": DIR.LIST(I)
+NEXT I
+CRT
+
+STOP
+END

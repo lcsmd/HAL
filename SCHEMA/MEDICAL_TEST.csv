@@ -1,0 +1,30 @@
+FieldName,FieldNum,Type,Description,Required,Indexed
+ID,0,K,Unique test record ID,Y,Y
+PERSON_ID,1,A,Reference to PERSON file,Y,Y
+TEST_NAME,2,A,Test name,Y,Y
+TEST_TYPE,3,A,Type (lab/imaging/diagnostic/screening),Y,Y
+TEST_CODE,4,A,CPT or LOINC code,N,Y
+TEST_DATE,5,D,Date test performed,Y,Y
+ORDERED_BY,6,A,Doctor ID who ordered,N,Y
+PERFORMED_BY,7,A,Doctor/technician ID who performed,N,Y
+FACILITY_ID,8,A,Testing facility ID,N,Y
+REASON,9,A,Reason for test,N,N
+CONDITION_ID,10,A,Related medical condition ID,N,Y
+RESULT_STATUS,11,A,Status (pending/completed/cancelled),Y,Y
+RESULT_DATE,12,D,Date results received,N,N
+RESULT_SUMMARY,13,A,Summary result (normal/abnormal/critical),N,N
+RESULT_VALUE,14,A,Numeric or text result value,N,N
+RESULT_UNIT,15,A,Unit of measurement,N,N
+REFERENCE_RANGE,16,A,Normal reference range,N,N
+ABNORMAL_FLAG,17,A,Abnormal flag (Y/N),N,N
+CRITICAL_FLAG,18,A,Critical result flag (Y/N),N,N
+RESULT_NOTES,19,T,Detailed results and interpretation,N,N
+FOLLOW_UP_REQUIRED,20,A,Follow-up required flag (Y/N),N,N
+FOLLOW_UP_DATE,21,D,Scheduled follow-up date,N,N
+ATTACHMENTS,22,M,Document IDs (multivalued),N,N
+COST,23,N,Test cost,N,N
+INSURANCE_COVERED,24,A,Insurance coverage flag (Y/N),N,N
+TAGS,25,M,Tags for categorization (multivalued),N,N
+ACTIVE,26,A,Active status (Y/N),Y,Y
+CREATED_DATE,27,D,Record creation date,Y,N
+UPDATED_DATE,28,D,Last update date,Y,N

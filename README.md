@@ -50,46 +50,106 @@ OpenQM files:
 
 ## Setup
 
-1. Install Python dependencies:
-```bash
+### 1. Configure Environment Variables
+
+The system now uses environment variables for configuration. Run the setup script:
+
+**Option A: PowerShell (Recommended)**
+
+```powershell
+cd C:\QMSYS\HAL
+.\setup_environment.ps1
+```
+
+**Option B: Batch File**
+
+```cmd
+cd C:\QMSYS\HAL
+setup_environment.bat
+```
+
+**Option C: Manual Configuration**
+
+See [CONFIGURATION.md](CONFIGURATION.md) for detailed instructions on setting environment variables manually.
+
+Required variables:
+
+- `HAL_PYTHON_PATH` - Path to Python executable (default: `C:\Python312\python.exe`)
+- `HAL_SCRIPT_PATH` - Path to AI handler script (default: `C:\QMSYS\HAL\PY\ai_handler.py`)
+- `OLLAMA_HOST` - Ollama server hostname (default: `ubuai.q.lcs.ai`)
+- `OLLAMA_PORT` - Ollama server port (default: `11434`)
+
+### 2. Install Python dependencies
+
+```powershell
+cd C:\QMSYS\HAL\PY
 pip install -r requirements.txt
 ```
 
-2. Configure environment variables:
-```bash
-QMHOME=/path/to/qm
-EMAIL_SERVER=your_email_server
-EMAIL_USER=your_email
-EMAIL_PASSWORD=your_password
+### 3. Configure API Keys in OpenQM
+
+```qm
+LOGTO HAL
+ED API.KEYS OPENAI
 ```
 
-3. Initialize the OpenQM database structure:
-```bash
-python -m core.initialize_db
+Add your OpenAI API key, then:
+
+```qm
+ED API.KEYS ANTHROPIC
+```
+
+Add your Anthropic API key.
+
+### 4. Set up AI Model System
+
+```qm
+BASIC HAL.BP SETUP.MODEL.SYSTEM
+CATALOG HAL.BP SETUP.MODEL.SYSTEM
+SETUP.MODEL.SYSTEM
+
+BASIC HAL.BP POPULATE.MODELS
+CATALOG HAL.BP POPULATE.MODELS
+POPULATE.MODELS
+```
+
+### 5. Compile and catalog the AI integration
+
+```qm
+BASIC HAL.BP ask.b
+CATALOG HAL.BP ask.b
+BASIC HAL.BP ask.ai.b
+CATALOG HAL.BP ask.ai.b
 ```
 
 ## Usage
 
-1. Start the assistant:
-```bash
-python -m core.assistant
+### 1. Ask AI questions from OpenQM:
+```
+ask.b what is 2+2
+ask.b gpt-4o explain quantum physics
+ask.b claude-3.5-sonnet write a poem
+ask.b deepseek-r1:32b solve this math problem
 ```
 
-2. Interact through voice:
-```python
-assistant = AIAssistant(config)
-response = await assistant.handle_voice_input()
-await assistant.respond_with_voice(response)
+### 2. Query model information:
+```
+LIST MODELS
+LIST MODEL.NAMES
+SELECT MODELS WITH PROVIDER = "openai"
 ```
 
-3. Add new skills:
-```python
-skill_data = {
-    "name": "weather_check",
-    "api_endpoint": "weather_api_url",
-    "parameters": ["location", "date"]
-}
-assistant.learn_new_skill("weather_check", skill_data)
+### 3. Add custom model aliases:
+```
+EDIT MODEL.NAMES my-custom-gpt
+```
+Set FRIENDLY_NAME, MODEL_ID, TEMPERATURE, etc.
+
+### 4. Add system prompts:
+```
+BASIC HAL.BP ADD.PROMPT
+CATALOG HAL.BP ADD.PROMPT
+ADD.PROMPT
 ```
 
 ## Extending the System

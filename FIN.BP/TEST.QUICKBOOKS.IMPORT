@@ -1,0 +1,94 @@
+      PROGRAM TEST.QUICKBOOKS.IMPORT
+      *
+      * Test program for QuickBooks import
+      * Creates a small test file and imports it
+      *
+
+      PROMPT ""
+
+      * Create test CSV file
+      test_file = "UPLOADS/test_qb_transactions.csv"
+
+      OPENSEQ test_file TO F.TEST THEN
+         * Delete existing file
+         CLOSESEQ F.TEST
+         DELETE test_file
+      END
+
+      * Create new test file
+      OPENSEQ test_file TO F.TEST ELSE
+         CREATE F.TEST ELSE
+            CRT "ERROR: Cannot create test file"
+            STOP
+         END
+      END
+
+      * Write QB identifier
+      line = "QB"
+      WRITESEQ line TO F.TEST ELSE
+         CRT "ERROR: Cannot write to test file"
+         CLOSESEQ F.TEST
+         STOP
+      END
+
+      * Write headers
+      line = "ID,TYPE,DATE,NUM,NAME,DESC,ITEM,ACCOUNT,CLASS,SPLIT,DEBIT,CREDIT,AMT"
+      WRITESEQ line TO F.TEST ELSE
+         CRT "ERROR: Cannot write headers"
+         CLOSESEQ F.TEST
+         STOP
+      END
+
+      * Write test transaction 1
+      line = '1001,Deposit,01/15/2025,,,Test Payee 1,Test Description 1,Income Category,Test Account 1,,Test Split 1,,100.00,100.00'
+      WRITESEQ line TO F.TEST ELSE
+         CRT "ERROR: Cannot write transaction 1"
+         CLOSESEQ F.TEST
+         STOP
+      END
+
+      * Write test transaction 2
+      line = '1002,Check,01/20/2025,123,Test Payee 2,Test Description 2,Expense Category,Test Account 2,Test Class,Test Split 2,50.00,,-50.00'
+      WRITESEQ line TO F.TEST ELSE
+         CRT "ERROR: Cannot write transaction 2"
+         CLOSESEQ F.TEST
+         STOP
+      END
+
+      * Write test transaction 3 (with commas in amount)
+      line = '1003,Deposit,01/25/2025,,,Test Payee 3,"Description with, commas",Income Category,Test Account 3,,Test Split 3,,"1,234.56","1,234.56"'
+      WRITESEQ line TO F.TEST ELSE
+         CRT "ERROR: Cannot write transaction 3"
+         CLOSESEQ F.TEST
+         STOP
+      END
+
+      * Write test transaction 4 (minimal data)
+      line = ',Deposit,02/01/2025,,,Minimal Test,,,,,,,25.00,25.00'
+      WRITESEQ line TO F.TEST ELSE
+         CRT "ERROR: Cannot write transaction 4"
+         CLOSESEQ F.TEST
+         STOP
+      END
+
+      CLOSESEQ F.TEST
+
+      CRT
+      CRT "Test file created: ": test_file
+      CRT
+      CRT "Test transactions:"
+      CRT "  1. Deposit $100.00 on 01/15/2025"
+      CRT "  2. Check $-50.00 on 01/20/2025"
+      CRT "  3. Deposit $1,234.56 on 01/25/2025 (with commas)"
+      CRT "  4. Deposit $25.00 on 02/01/2025 (minimal data)"
+      CRT
+      CRT "To import, run:"
+      CRT "  FIN.IMPORT.QUICKBOOKS test_qb_transactions.csv"
+      CRT
+      CRT "After import, verify with:"
+      CRT "  LIST TRANSACTION WITH ORIGINAL.PAYEE LIKE 'Test Payee%'"
+      CRT
+
+      STOP
+      END
+

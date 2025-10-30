@@ -1,0 +1,91 @@
+PROGRAM MIGRATE.EPIC.TO.MED
+*
+* Purpose: Migrate EPIC.BP Python files to MED.PY with med_ prefix
+* This consolidates medical programs under the MED domain
+*
+
+PROMPT ""
+
+CRT
+CRT "Migrating EPIC.BP Python files to MED.PY"
+CRT STR("=",70)
+CRT
+
+* Create MED.PY directory if it doesn't exist
+CMD = "CREATE.FILE MED.PY DIRECTORY"
+EXECUTE CMD
+CRT "Created MED.PY directory"
+CRT
+
+* Open directories
+OPEN "EPIC.BP" TO F.EPIC ELSE
+   CRT "ERROR: Cannot open EPIC.BP"
+   STOP
+END
+
+OPEN "MED.PY" TO F.MED ELSE
+   CRT "ERROR: Cannot open MED.PY"
+   STOP
+END
+
+* List of Python files to migrate
+* Format: OLD.NAME -> NEW.NAME
+DIM OLD.NAMES(20), NEW.NAMES(20)
+COUNT = 0
+
+COUNT += 1 ; OLD.NAMES(COUNT) = "epic_api_client.py" ; NEW.NAMES(COUNT) = "med_epic_api_client.py"
+COUNT += 1 ; OLD.NAMES(COUNT) = "parse_fhir.py" ; NEW.NAMES(COUNT) = "med_parse_fhir.py"
+COUNT += 1 ; OLD.NAMES(COUNT) = "parse_ccd.py" ; NEW.NAMES(COUNT) = "med_parse_ccd.py"
+COUNT += 1 ; OLD.NAMES(COUNT) = "analyze_medical_data.py" ; NEW.NAMES(COUNT) = "med_analyze_data.py"
+COUNT += 1 ; OLD.NAMES(COUNT) = "complete_example.py" ; NEW.NAMES(COUNT) = "med_epic_example.py"
+
+* Also copy documentation files
+COUNT += 1 ; OLD.NAMES(COUNT) = "README.md" ; NEW.NAMES(COUNT) = "README_EPIC.md"
+COUNT += 1 ; OLD.NAMES(COUNT) = "QUICK_START.md" ; NEW.NAMES(COUNT) = "QUICK_START_EPIC.md"
+COUNT += 1 ; OLD.NAMES(COUNT) = "START_HERE.md" ; NEW.NAMES(COUNT) = "START_HERE_EPIC.md"
+COUNT += 1 ; OLD.NAMES(COUNT) = "API_QUICK_REFERENCE.md" ; NEW.NAMES(COUNT) = "API_QUICK_REFERENCE_EPIC.md"
+COUNT += 1 ; OLD.NAMES(COUNT) = "EPIC_API_GUIDE.md" ; NEW.NAMES(COUNT) = "EPIC_API_GUIDE.md"
+COUNT += 1 ; OLD.NAMES(COUNT) = "FILE_INDEX.md" ; NEW.NAMES(COUNT) = "FILE_INDEX_EPIC.md"
+COUNT += 1 ; OLD.NAMES(COUNT) = "requirements.txt" ; NEW.NAMES(COUNT) = "requirements_epic.txt"
+
+SUCCESS = 0
+SKIPPED = 0
+ERRORS = 0
+
+FOR I = 1 TO COUNT
+   OLD.NAME = OLD.NAMES(I)
+   NEW.NAME = NEW.NAMES(I)
+   
+   * Read from EPIC.BP
+   READ CONTENT FROM F.EPIC, OLD.NAME ELSE
+      CRT "  SKIP: ": OLD.NAME : " (not found)"
+      SKIPPED += 1
+      CONTINUE
+   END
+   
+   * Write to MED.PY with new name
+   WRITE CONTENT TO F.MED, NEW.NAME ON ERROR
+      CRT "  ERROR: Cannot write ": NEW.NAME
+      ERRORS += 1
+      CONTINUE
+   END
+   
+   CRT "  ": OLD.NAME : " -> MED.PY/": NEW.NAME
+   SUCCESS += 1
+NEXT I
+
+CRT
+CRT STR("=",70)
+CRT "Migration Complete!"
+CRT "  Copied: ": SUCCESS
+CRT "  Skipped: ": SKIPPED
+CRT "  Errors: ": ERRORS
+CRT
+CRT "Next Steps:"
+CRT "  1. Review files in MED.PY"
+CRT "  2. Update import statements in Python files"
+CRT "  3. EPIC.BP can be archived or removed"
+CRT
+
+STOP
+END

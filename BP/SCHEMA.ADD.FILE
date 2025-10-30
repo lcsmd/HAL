@@ -1,0 +1,117 @@
+SUBROUTINE SCHEMA.ADD.FILE
+* Add a new file to SCHEMA_INDEX.csv
+
+CRT ""
+CRT "=========================================="
+CRT "         ADD NEW FILE"
+CRT "=========================================="
+CRT ""
+
+* Get file information
+INPUT FILENAME, "File name (uppercase): "
+IF FILENAME = "" THEN RETURN
+FILENAME = UPCASE(FILENAME)
+
+INPUT FILE.ABB, "File abbreviation (3 chars lowercase): "
+IF FILE.ABB = "" THEN RETURN
+IF LEN(FILE.ABB) # 3 THEN
+   CRT "Error: Abbreviation must be exactly 3 characters"
+   RETURN
+END
+FILE.ABB = DOWNCASE(FILE.ABB)
+
+INPUT FILE.TYPE, "File type (DYNAMIC/STATIC) [DYNAMIC]: "
+IF FILE.TYPE = "" THEN FILE.TYPE = "DYNAMIC"
+
+INPUT FILE.PRIORITY, "Priority (1=high, 2=medium, 3=low) [1]: "
+IF FILE.PRIORITY = "" THEN FILE.PRIORITY = "1"
+
+INPUT FILE.DESC, "Description: "
+
+* Get next file number
+INDEX.FILE = "SCHEMA/SCHEMA_INDEX.csv"
+OPENSEQ INDEX.FILE TO F.INDEX ELSE
+   CRT "Error: Cannot open ":INDEX.FILE
+   RETURN
+END
+
+MAX.NUM = 0
+LINE.NUM = 0
+LOOP
+   READSEQ LINE FROM F.INDEX ELSE EXIT
+   LINE.NUM += 1
+   IF LINE.NUM > 1 AND LINE # "" THEN
+      NUM = FIELD(LINE, ",", 3)
+      IF NUM > MAX.NUM THEN MAX.NUM = NUM
+   END
+REPEAT
+CLOSESEQ F.INDEX
+
+FILE.NUM = MAX.NUM + 1
+
+* Append to index file
+OPENSEQ INDEX.FILE TO F.INDEX ELSE
+   CRT "Error: Cannot open ":INDEX.FILE
+   RETURN
+END
+
+* Seek to end
+LOOP
+   READSEQ LINE FROM F.INDEX ELSE EXIT
+REPEAT
+
+* Write new file entry
+NEW.LINE = FILENAME:",":FILE.ABB:",":FILE.NUM:",":FILE.TYPE:",":FILE.PRIORITY:",":FILE.DESC:",0,active"
+WRITESEQ NEW.LINE TO F.INDEX ELSE
+   CRT "Error writing file entry"
+END
+
+CLOSESEQ F.INDEX
+
+* Create schema CSV file
+SCHEMA.FILE = "SCHEMA/":FILENAME:".csv"
+OPENSEQ SCHEMA.FILE TO F.SCHEMA ELSE
+   CREATE F.SCHEMA ELSE
+      CRT "Error creating schema file"
+      RETURN
+   END
+END
+
+* Write header
+HEADER = "FieldName,FieldNum,Type,Description,Required,Indexed"
+WRITESEQ HEADER TO F.SCHEMA ELSE
+   CRT "Error writing header"
+END
+
+* Write ID field
+ID.LINE = "ID,0,K,Unique identifier,Y,Y"
+WRITESEQ ID.LINE TO F.SCHEMA ELSE
+   CRT "Error writing ID field"
+END
+
+* Write standard system fields
+SYS.FIELDS = ""
+SYS.FIELDS<-1> = "ACTIVE,1,A,Active status (Y/N),Y,Y"
+SYS.FIELDS<-1> = "CREATED_DATE,2,D,Record creation date,Y,N"
+SYS.FIELDS<-1> = "UPDATED_DATE,3,D,Last update date,Y,N"
+
+FOR I = 1 TO DCOUNT(SYS.FIELDS, @FM)
+   WRITESEQ SYS.FIELDS<I> TO F.SCHEMA ELSE
+      CRT "Error writing system fields"
+   END
+NEXT I
+
+CLOSESEQ F.SCHEMA
+
+CRT ""
+CRT "File added successfully!"
+CRT "File Number: ":FILE.NUM
+CRT "Schema file created: ":SCHEMA.FILE
+CRT ""
+CRT "Next steps:"
+CRT "1. Edit ":SCHEMA.FILE:" to add custom fields"
+CRT "2. Run BUILD.SCHEMA to create file and dictionary"
+CRT ""
+
+RETURN
+END
