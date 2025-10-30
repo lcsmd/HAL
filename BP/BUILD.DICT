@@ -1,0 +1,197 @@
+PROGRAM BUILD.DICT
+* Build dictionary entries for a file by combining FIELDS and DOM_FILE_FIELD data
+* Usage: BUILD.DICT <filename>
+* Example: BUILD.DICT EMAIL
+
+* Get filename from command line
+* @SENTENCE contains the full command, we need to parse it
+CMD.LINE = TRIM(@SENTENCE)
+* Remove program name from command line
+SPACE.POS = INDEX(CMD.LINE, " ", 1)
+IF SPACE.POS > 0 THEN
+   FILENAME = TRIM(CMD.LINE[SPACE.POS + 1, 999])
+END ELSE
+   FILENAME = ""
+END
+
+IF FILENAME = "" THEN
+   CRT "Usage: BUILD.DICT <filename>"
+   CRT "Example: BUILD.DICT EMAIL"
+   STOP
+END
+
+CRT ""
+CRT "Building dictionary for ":FILENAME:" file..."
+CRT ""
+
+* Open required files
+OPEN "FILES" TO F.FILES ELSE
+   CRT "Error: Cannot open FILES file"
+   STOP
+END
+
+OPEN "FIELDS" TO F.FIELDS ELSE
+   CRT "Error: Cannot open FIELDS file"
+   STOP
+END
+
+OPEN "DOM_FILE_FIELD" TO F.DOM_FILE_FIELD ELSE
+   CRT "Error: Cannot open DOM_FILE_FIELD file"
+   STOP
+END
+
+* Read file definition (try lowercase first, then uppercase)
+FILENAME.LOWER = OCONV(FILENAME, "MCL")
+READ FILE.REC FROM F.FILES, FILENAME.LOWER THEN
+   FILENAME = FILENAME.LOWER
+END ELSE
+   FILENAME.UPPER = OCONV(FILENAME, "MCU")
+   READ FILE.REC FROM F.FILES, FILENAME.UPPER THEN
+      FILENAME = FILENAME.UPPER
+   END ELSE
+      CRT "Error: File ":FILENAME:" not found in FILES"
+      STOP
+   END
+END
+
+* Get domain
+DOMAIN = FILE.REC<3>
+
+CRT "Domain: ":DOMAIN
+CRT "Filename: ":FILENAME
+CRT ""
+
+* Select all fields for this file from DOM_FILE_FIELD
+* Key format is domain:filename:fieldname
+SEARCH.KEY = DOMAIN:":":FILENAME:":"
+CRT "Selecting fields from DOM_FILE_FIELD with key starting with: ":SEARCH.KEY
+CRT ""
+
+* Build select list
+SELECT.CMD = "SELECT DOM_FILE_FIELD WITH @ID LIKE '":SEARCH.KEY:"...'"
+EXECUTE SELECT.CMD
+
+* Read selected keys into array
+FIELD.LIST = ""
+FIELD.COUNT = 0
+LOOP
+   READNEXT FULL.KEY ELSE EXIT
+   * Extract field name from key (last part after LAST colon)
+   * Key format: domain:filename:fieldname
+   * Find last colon position
+   LAST.COLON = 0
+   FOR I = 1 TO LEN(FULL.KEY)
+      IF FULL.KEY[I,1] = ":" THEN LAST.COLON = I
+   NEXT I
+   * Extract everything after last colon
+   FIELD.NAME = FULL.KEY[LAST.COLON + 1, 999]
+   FIELD.COUNT += 1
+   FIELD.LIST<FIELD.COUNT> = FIELD.NAME
+REPEAT
+
+IF FIELD.COUNT = 0 THEN
+   CRT "Error: No fields found in DOM_FILE_FIELD for ":DOMAIN:":":FILENAME
+   STOP
+END
+
+CRT "Found ":FIELD.COUNT:" field(s)"
+CRT ""
+
+* Open target dictionary (always use uppercase for file names)
+DICT.NAME = "DICT"
+FILENAME.UPPER = OCONV(FILENAME, "MCU")
+OPEN DICT.NAME, FILENAME.UPPER TO F.DICT ELSE
+   CRT "Error: Cannot open DICT ":FILENAME.UPPER
+   STOP
+END
+
+* Create @ID entry
+DICT.REC = "D":@FM:"0":@FM:"":@FM:"Record ID":@FM:"20L":@FM:"S"
+WRITE DICT.REC ON F.DICT, "@ID"
+CRT "Created @ID"
+
+* Process each field
+FOR FIELD.NUM = 1 TO FIELD.COUNT
+   FIELD.NAME = FIELD.LIST<FIELD.NUM>
+   
+   * Build DOM_FILE_FIELD key (domain:filename:fieldname)
+   DFF.KEY = DOMAIN:":":FILENAME:":":FIELD.NAME
+   
+   * Read DOM_FILE_FIELD record
+   READ DFF.REC FROM F.DOM_FILE_FIELD, DFF.KEY THEN
+      * Record found - continue processing
+   END ELSE
+      CRT "Warning: ":DFF.KEY:" not found in DOM_FILE_FIELD - skipping"
+      CONTINUE
+   END
+   
+   * Get DOM_FILE_FIELD attributes
+   M_S = DFF.REC<1>
+   ASSOCIATION = DFF.REC<2>
+   INDEX.FLAG = DFF.REC<3>
+   REQUIRED = DFF.REC<4>
+   
+   * Parse field name for inheritance
+   * If field has underscore, first part is major type
+   UNDERSCORE.POS = INDEX(FIELD.NAME, "_", 1)
+   IF UNDERSCORE.POS > 0 THEN
+      MAJOR.TYPE = FIELD.NAME[1, UNDERSCORE.POS - 1]
+   END ELSE
+      MAJOR.TYPE = FIELD.NAME
+   END
+   
+   * Read FIELDS record (try full name first, then major type)
+   READ FIELDS.REC FROM F.FIELDS, FIELD.NAME ELSE
+      READ FIELDS.REC FROM F.FIELDS, MAJOR.TYPE ELSE
+         CRT "Warning: Field type ":FIELD.NAME:" not found in FIELDS - skipping"
+         CONTINUE
+      END
+   END
+   
+   * Get FIELDS attributes
+   DISPLAY.DESC = FIELDS.REC<1>
+   CONV = FIELDS.REC<2>
+   LEN.JUST = FIELDS.REC<3>
+   
+   * Build dictionary entry
+   DICT.REC = ""
+   DICT.REC<1> = "D"
+   DICT.REC<2> = FIELD.NUM
+   DICT.REC<3> = CONV
+   DICT.REC<4> = DISPLAY.DESC
+   DICT.REC<5> = LEN.JUST
+   
+   * Set S/M flag
+   IF M_S = "m" OR M_S = "M" THEN
+      DICT.REC<6> = "M"
+   END ELSE
+      DICT.REC<6> = "S"
+   END
+   
+   * Set index flag
+   IF INDEX.FLAG = "x" OR INDEX.FLAG = "X" OR INDEX.FLAG = "y" OR INDEX.FLAG = "Y" THEN
+      DICT.REC<8> = "X"
+   END ELSE
+      DICT.REC<8> = ""
+   END
+   
+   * Write dictionary entry
+   WRITE DICT.REC ON F.DICT, FIELD.NAME
+   
+   * Display what we created
+   CRT "Created ":FIELD.NAME:" (":FIELD.NUM:") - ":DISPLAY.DESC:" ":LEN.JUST:" ":CONV
+   IF DICT.REC<6> = "M" THEN CRT "  [Multivalued]"
+   IF DICT.REC<8> = "X" THEN CRT "  [Indexed]"
+   
+NEXT FIELD.NUM
+
+CRT ""
+CRT "Dictionary build complete for ":FILENAME
+CRT FIELD.COUNT:" field(s) created"
+CRT ""
+CRT "To view dictionary:"
+CRT "  LIST DICT ":FILENAME
+CRT ""
+
+STOP
+END

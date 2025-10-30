@@ -1,0 +1,98 @@
+* SAVE.DICT - Save dictionary definitions to SAVED.DICTS file
+* Usage: SAVE.DICT <filename>
+* Saves all DICT entries for a file to backup
+* Structure: Attr 1 = dict names (MV), Attr 2 = TYPE fields (MV), Attr 3 = LOC fields (MV), etc.
+
+PROGRAM SAVE.DICT
+
+   PROMPT ''
+   
+   * Get filename from command line
+   filename = TRIM(@SENTENCE)
+   filename = FIELD(filename, ' ', 2, 99)
+   
+   IF filename = '' THEN
+      PRINT 'Usage: SAVE.DICT <filename>'
+      STOP
+   END
+   
+   * Open the DICT of the specified file
+   dict.name = 'DICT ' : filename
+   OPEN dict.name TO dict.file ELSE
+      PRINT 'Error: Cannot open ' : dict.name
+      STOP
+   END
+   
+   * Open or create SAVED.DICTS file
+   OPEN 'SAVED.DICTS' TO saved.file ELSE
+      EXECUTE 'CREATE.FILE SAVED.DICTS 1 1'
+      OPEN 'SAVED.DICTS' TO saved.file ELSE
+         PRINT 'Error: Cannot create SAVED.DICTS file'
+         STOP
+      END
+   END
+   
+   * Collect all DICT entries
+   DIM dict.array(1000, 20)
+   
+   * Initialize array to empty strings
+   FOR i = 1 TO 1000
+      FOR j = 1 TO 20
+         dict.array(i, j) = ''
+      NEXT j
+   NEXT i
+   
+   count = 0
+   max.fields = 0
+   
+   SELECT dict.file
+   LOOP
+      READNEXT dict.id ELSE EXIT
+      
+      * Skip system entries starting with $
+      IF dict.id[1,1] = '$' THEN CONTINUE
+      
+      READ dict.rec FROM dict.file, dict.id THEN
+         count += 1
+         
+         * Column 1: Dict name
+         dict.array(count, 1) = dict.id
+         
+         * Columns 2+: All DICT attributes (TYPE, LOC, CONV, DESC, FMT, SM, ASSOC, INDEX, etc.)
+         num.fields = DCOUNT(dict.rec, @FM)
+         IF num.fields > max.fields THEN max.fields = num.fields
+         
+         FOR i = 1 TO num.fields
+            dict.array(count, i + 1) = dict.rec<i>
+         NEXT i
+      END
+   REPEAT
+   
+   IF count = 0 THEN
+      PRINT 'No dictionary entries found for ' : filename
+      STOP
+   END
+   
+   * Build the save record with transposed structure
+   * Attr 1 = all dict names, Attr 2 = all TYPE fields, Attr 3 = all LOC fields, etc.
+   save.rec = ''
+   
+   * Build each attribute as a multivalued list
+   * Attribute 1: All dict names (column 1)
+   * Attributes 2+: All DICT fields (columns 2+)
+   FOR col = 1 TO max.fields + 1
+      FOR i = 1 TO count
+         IF i = 1 THEN
+            save.rec<col> = dict.array(i, col)
+         END ELSE
+            save.rec<col> := @VM : dict.array(i, col)
+         END
+      NEXT i
+   NEXT col
+   
+   * Write to SAVED.DICTS
+   WRITE save.rec TO saved.file, filename
+   
+   PRINT count : ' dictionary entries saved for ' : filename
+   
+END

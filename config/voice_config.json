@@ -1,0 +1,89 @@
+{
+  "gateway": {
+    "host": "0.0.0.0",
+    "port": 8765,
+    "max_connections": 50,
+    "log_level": "INFO"
+  },
+  "whisper": {
+    "url": "http://ubuai.q.lcs.ai:9000/transcribe",
+    "model": "large-v3",
+    "language": "en",
+    "timeout": 10
+  },
+  "qm_listener": {
+    "host": "localhost",
+    "port": 8767,
+    "timeout": 30
+  },
+  "ollama": {
+    "url": "http://ubuai.q.lcs.ai:11434",
+    "default_model": "deepseek-r1:32b",
+    "classification_model": "deepseek-r1:8b",
+    "timeout": 60
+  },
+  "openai": {
+    "models": ["gpt-4o", "gpt-4o-mini"],
+    "default_model": "gpt-4o",
+    "temperature": 0.7
+  },
+  "anthropic": {
+    "models": ["claude-3-5-sonnet-20241022"],
+    "default_model": "claude-3-5-sonnet-20241022",
+    "temperature": 0.7
+  },
+  "audio": {
+    "sample_rate": 16000,
+    "channels": 1,
+    "format": "wav",
+    "ack_sound": "VOICE/SOUNDS/ack.wav",
+    "processing_sound": "VOICE/SOUNDS/processing.wav",
+    "error_sound": "VOICE/SOUNDS/error.wav",
+    "goodbye_sound": "VOICE/SOUNDS/goodbye.wav"
+  },
+  "timing": {
+    "wake_word_timeout_ms": 5000,
+    "active_listening_timeout_ms": 30000,
+    "follow_up_window_ms": 10000,
+    "processing_timeout_ms": 60000,
+    "speech_pause_threshold_ms": 1000
+  },
+  "tts": {
+    "enabled": false,
+    "engine": "piper",
+    "url": "http://ubuai.q.lcs.ai:5000/tts",
+    "voice": "en_US-lessac-medium",
+    "speed": 1.0,
+    "fallback_engine": "none"
+  },
+  "wake_words": {
+    "primary": "hey hal",
+    "alternatives": ["ok hal", "hal", "computer"],
+    "sensitivity": 0.5
+  },
+  "commands": {
+    "interrupt": ["hal hold", "hal stop", "stop"],
+    "repeat": ["hal repeat", "repeat that", "say again"],
+    "goodbye": ["hal goodbye", "goodbye", "that's all"]
+  },
+  "session": {
+    "max_context_turns": 10,
+    "session_timeout_minutes": 30,
+    "auto_save_context": true
+  },
+  "logging": {
+    "conversation_file": "CONVERSATION",
+    "session_file": "SESSION",
+    "log_directory": "LOGS",
+    "log_transcriptions": true,
+    "log_responses": true
+  },
+  "features": {
+    "multi_turn_conversation": true,
+    "context_awareness": true,
+    "intent_classification": true,
+    "voice_biometrics": false,
+    "emotion_detection": false,
+    "proactive_suggestions": false
+  }
+}

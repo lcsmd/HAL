@@ -1,0 +1,280 @@
+* HAL Voice Listener
+* TCP server that receives voice messages from Voice Gateway
+* Routes to appropriate handlers and returns responses
+
+PROGRAM VOICE.LISTENER
+
+$INCLUDE INCLUDES/COMMON.VAR
+
+EQU TRUE TO 1, FALSE TO 0
+EQU SOCKET.PORT TO 8767
+EQU BUFFER.SIZE TO 32768
+
+* Initialize
+PRINT "HAL Voice Listener starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Create server socket
+CALL QMB.CREATE.SERVER.SOCKET(SOCKET.PORT, SERVER.SOCKET, STATUS)
+IF STATUS < 0 THEN
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS
+   STOP
+END
+
+PRINT "Voice Listener active on port ":SOCKET.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CALL QMB.ACCEPT.SOCKET.CONNECTION(SERVER.SOCKET, CLIENT.SOCKET, CLIENT.ADDR, STATUS)
+   IF STATUS < 0 THEN
+      PRINT "Warning: Accept failed, status: ":STATUS
+      CONTINUE
+   END
+   
+   PRINT "Connection from: ":CLIENT.ADDR
+   
+   * Read message
+   MESSAGE.JSON = ''
+   CALL QMB.READ.SOCKET(CLIENT.SOCKET, BUFFER.SIZE, MESSAGE.JSON, STATUS)
+   
+   IF STATUS < 0 THEN
+      PRINT "Warning: Read failed, status: ":STATUS
+      CALL QMB.CLOSE.SOCKET(CLIENT.SOCKET)
+      CONTINUE
+   END
+   
+   * Process message
+   GOSUB PROCESS.VOICE.MESSAGE
+   
+   * Send response
+   CALL QMB.WRITE.SOCKET(CLIENT.SOCKET, RESPONSE.JSON, STATUS)
+   
+   IF STATUS < 0 THEN
+      PRINT "Warning: Write failed, status: ":STATUS
+   END
+   
+   * Close connection
+   CALL QMB.CLOSE.SOCKET(CLIENT.SOCKET)
+   
+   PRINT "Request completed"
+REPEAT
+
+RETURN
+
+* ========================================
+* Process incoming voice message
+* ========================================
+PROCESS.VOICE.MESSAGE:
+   PRINT "Processing message: ":MESSAGE.JSON[1,100]:"..."
+   
+   * Parse JSON message
+   GOSUB PARSE.JSON.MESSAGE
+   
+   IF PARSE.ERROR THEN
+      RESPONSE.TEXT = 'I had trouble understanding that.'
+      ACTION.TAKEN = 'PARSE_ERROR'
+      GOSUB BUILD.JSON.RESPONSE
+      RETURN
+   END
+   
+   * Log to conversation file
+   GOSUB LOG.CONVERSATION
+   
+   * Route to appropriate handler based on intent
+   GOSUB CLASSIFY.INTENT
+   
+   PRINT "Intent classified as: ":INTENT
+   
+   BEGIN CASE
+      CASE INTENT = 'MEDICATION'
+         CALL VOICE.HANDLE.MEDICATION(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'MEDICATION_QUERY'
+         
+      CASE INTENT = 'APPOINTMENT'
+         CALL VOICE.HANDLE.APPOINTMENT(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'APPOINTMENT_QUERY'
+         
+      CASE INTENT = 'ALLERGY'
+         CALL VOICE.HANDLE.ALLERGY(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'ALLERGY_QUERY'
+         
+      CASE INTENT = 'HEALTH_DATA'
+         CALL VOICE.HANDLE.HEALTH(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'HEALTH_QUERY'
+         
+      CASE INTENT = 'TRANSACTION'
+         CALL VOICE.HANDLE.TRANSACTION(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'TRANSACTION_QUERY'
+         
+      CASE INTENT = 'PASSWORD'
+         CALL VOICE.HANDLE.PASSWORD(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'PASSWORD_QUERY'
+         
+      CASE INTENT = 'REMINDER'
+         CALL VOICE.HANDLE.REMINDER(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'REMINDER_QUERY'
+         
+      CASE INTENT = 'SYSTEM'
+         CALL VOICE.HANDLE.SYSTEM(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'SYSTEM_QUERY'
+         
+      CASE INTENT = 'AI_QUERY'
+         CALL VOICE.HANDLE.AI(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'AI_QUERY'
+         
+      CASE 1
+         * General query - route to AI
+         CALL VOICE.HANDLE.GENERAL(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+         ACTION.TAKEN = 'GENERAL_QUERY'
+   END CASE
+   
+   * Build JSON response
+   GOSUB BUILD.JSON.RESPONSE
+   
+RETURN
+
+* ========================================
+* Parse JSON message from Voice Gateway
+* ========================================
+PARSE.JSON.MESSAGE:
+   PARSE.ERROR = FALSE
+   
+   * Extract fields using simple JSON parsing
+   * In production, use proper JSON parser
+   
+   * Extract session_id
+   POS = INDEX(MESSAGE.JSON, '"session_id"', 1)
+   IF POS THEN
+      START.POS = INDEX(MESSAGE.JSON, ':"', POS) + 2
+      END.POS = INDEX(MESSAGE.JSON, '"', START.POS)
+      SESSION.ID = MESSAGE.JSON[START.POS, END.POS - START.POS]
+   END ELSE
+      SESSION.ID = ''
+      PARSE.ERROR = TRUE
+   END
+   
+   * Extract transcription
+   POS = INDEX(MESSAGE.JSON, '"transcription"', 1)
+   IF POS THEN
+      START.POS = INDEX(MESSAGE.JSON, ':"', POS) + 2
+      END.POS = INDEX(MESSAGE.JSON, '"', START.POS)
+      TRANSCRIPTION = MESSAGE.JSON[START.POS, END.POS - START.POS]
+   END ELSE
+      TRANSCRIPTION = ''
+      PARSE.ERROR = TRUE
+   END
+   
+   * Extract timestamp
+   POS = INDEX(MESSAGE.JSON, '"timestamp"', 1)
+   IF POS THEN
+      START.POS = INDEX(MESSAGE.JSON, ':"', POS) + 2
+      END.POS = INDEX(MESSAGE.JSON, '"', START.POS)
+      TIMESTAMP = MESSAGE.JSON[START.POS, END.POS - START.POS]
+   END ELSE
+      TIMESTAMP = ''
+   END
+   
+   * Extract client_type
+   POS = INDEX(MESSAGE.JSON, '"client_type"', 1)
+   IF POS THEN
+      START.POS = INDEX(MESSAGE.JSON, ':"', POS) + 2
+      END.POS = INDEX(MESSAGE.JSON, '"', START.POS)
+      CLIENT.TYPE = MESSAGE.JSON[START.POS, END.POS - START.POS]
+   END ELSE
+      CLIENT.TYPE = 'unknown'
+   END
+   
+   * Extract context (array of previous interactions)
+   CONTEXT = ''
+   POS = INDEX(MESSAGE.JSON, '"context"', 1)
+   IF POS THEN
+      * Simple extraction - just get the array
+      START.POS = INDEX(MESSAGE.JSON, ':[', POS) + 2
+      END.POS = INDEX(MESSAGE.JSON, ']', START.POS)
+      IF END.POS > START.POS THEN
+         CONTEXT = MESSAGE.JSON[START.POS, END.POS - START.POS]
+      END
+   END
+   
+RETURN
+
+* ========================================
+* Classify intent using AI
+* ========================================
+CLASSIFY.INTENT:
+   * Build classification prompt
+   PROMPT = 'Classify this user request into ONE of these categories: '
+   PROMPT := 'MEDICATION, APPOINTMENT, ALLERGY, HEALTH_DATA, TRANSACTION, PASSWORD, REMINDER, SYSTEM, AI_QUERY, GENERAL.'
+   PROMPT := @FM:'User request: ':TRANSCRIPTION
+   
+   * Add context if available
+   IF CONTEXT NE '' THEN
+      PROMPT := @FM:'Previous context: ':CONTEXT
+   END
+   
+   PROMPT := @FM:'Return ONLY the category name, nothing else.'
+   
+   * Use fast local model for classification
+   CALL ASK.AI.B('deepseek-r1:8b', PROMPT, INTENT.RAW)
+   
+   * Clean up response
+   INTENT = TRIM(INTENT.RAW)
+   INTENT = UPCASE(INTENT)
+   
+   * Validate intent
+   VALID.INTENTS = 'MEDICATION':@VM:'APPOINTMENT':@VM:'ALLERGY':@VM:'HEALTH_DATA'
+   VALID.INTENTS := @VM:'TRANSACTION':@VM:'PASSWORD':@VM:'REMINDER':@VM:'SYSTEM'
+   VALID.INTENTS := @VM:'AI_QUERY':@VM:'GENERAL'
+   
+   IF NOT(LOCATE(INTENT, VALID.INTENTS, 1; POS)) THEN
+      INTENT = 'GENERAL'
+   END
+   
+RETURN
+
+* ========================================
+* Log conversation to CONVERSATION file
+* ========================================
+LOG.CONVERSATION:
+   * Generate conversation ID
+   CONV.ID = SESSION.ID:'-':OCONV(DATE(), 'D4-'):'-':OCONV(TIME(), 'MTS')
+   
+   * Build conversation record
+   CONV.REC = ''
+   CONV.REC<1> = SESSION.ID          ; * Session ID
+   CONV.REC<2> = CLIENT.TYPE         ; * Client type
+   CONV.REC<3> = TRANSCRIPTION       ; * User utterance
+   CONV.REC<4> = ''                  ; * Response (filled later)
+   CONV.REC<5> = TIMESTAMP           ; * Timestamp
+   CONV.REC<6> = INTENT              ; * Classified intent
+   CONV.REC<7> = CONTEXT             ; * Context
+   
+   * Write to CONVERSATION file
+   WRITE CONV.REC TO CONVERSATION, CONV.ID
+   
+RETURN
+
+* ========================================
+* Build JSON response
+* ========================================
+BUILD.JSON.RESPONSE:
+   * Escape special characters in response text
+   ESCAPED.TEXT = RESPONSE.TEXT
+   ESCAPED.TEXT = CHANGE(ESCAPED.TEXT, '"', '\"')
+   ESCAPED.TEXT = CHANGE(ESCAPED.TEXT, CHAR(10), '\n')
+   ESCAPED.TEXT = CHANGE(ESCAPED.TEXT, CHAR(13), '')
+   
+   * Build JSON
+   RESPONSE.JSON = '{'
+   RESPONSE.JSON := '"response_text": "':ESCAPED.TEXT:'",'
+   RESPONSE.JSON := '"action_taken": "':ACTION.TAKEN:'",'
+   RESPONSE.JSON := '"status": "success",'
+   RESPONSE.JSON := '"timestamp": "':OCONV(DATE():'T':TIME(), 'ISO'):'"'
+   RESPONSE.JSON := '}'
+   
+RETURN
+
+END

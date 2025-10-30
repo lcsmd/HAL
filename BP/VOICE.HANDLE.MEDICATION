@@ -1,0 +1,268 @@
+* Handle medication-related voice queries
+* Called by VOICE.LISTENER when intent is classified as MEDICATION
+
+SUBROUTINE VOICE.HANDLE.MEDICATION(TRANSCRIPTION, SESSION.ID, CONTEXT, RESPONSE.TEXT, STATUS)
+
+$INCLUDE INCLUDES/COMMON.VAR
+$INCLUDE EQU/MEDICATION.h
+
+* Initialize
+STATUS = 0
+RESPONSE.TEXT = ''
+
+* Determine specific medication query type
+CALL CLASSIFY.MEDICATION.QUERY(TRANSCRIPTION, QUERY.TYPE)
+
+BEGIN CASE
+   CASE QUERY.TYPE = 'SCHEDULE'
+      GOSUB HANDLE.MEDICATION.SCHEDULE
+      
+   CASE QUERY.TYPE = 'LIST_ALL'
+      GOSUB HANDLE.LIST.MEDICATIONS
+      
+   CASE QUERY.TYPE = 'DETAILS'
+      GOSUB HANDLE.MEDICATION.DETAILS
+      
+   CASE QUERY.TYPE = 'INTERACTIONS'
+      GOSUB HANDLE.MEDICATION.INTERACTIONS
+      
+   CASE QUERY.TYPE = 'REFILL'
+      GOSUB HANDLE.REFILL.STATUS
+      
+   CASE 1
+      * Generic medication query
+      GOSUB HANDLE.GENERAL.MEDICATION
+END CASE
+
+RETURN
+
+* ========================================
+* Handle medication schedule query
+* "What's my medication schedule?"
+* "When do I take my medications?"
+* ========================================
+HANDLE.MEDICATION.SCHEDULE:
+   * Select all active medications
+   SELECT MEDICATION WITH MED.STATUS = 'Active'
+   
+   MED.COUNT = @SELECTED
+   
+   IF MED.COUNT = 0 THEN
+      RESPONSE.TEXT = 'You don\'t have any active medications recorded.'
+      RETURN
+   END
+   
+   * Build schedule response
+   RESPONSE.TEXT = 'Here are your medications: '
+   
+   LOOP
+      READNEXT MED.ID ELSE EXIT
+      
+      READ MED.REC FROM MEDICATION, MED.ID ELSE CONTINUE
+      
+      MED.NAME = MED.REC<MED.NAME>
+      MED.DOSAGE = MED.REC<MED.DOSAGE>
+      MED.FREQUENCY = MED.REC<MED.FREQUENCY>
+      MED.INSTRUCTIONS = MED.REC<MED.INSTRUCTIONS>
+      
+      * Parse frequency and build readable schedule
+      CALL PARSE.MEDICATION.FREQUENCY(MED.FREQUENCY, TIMES)
+      
+      RESPONSE.TEXT := MED.NAME:' ':MED.DOSAGE:' '
+      
+      IF TIMES NE '' THEN
+         RESPONSE.TEXT := 'at ':TIMES:'. '
+      END ELSE
+         RESPONSE.TEXT := MED.FREQUENCY:'. '
+      END
+      
+      IF MED.INSTRUCTIONS NE '' THEN
+         RESPONSE.TEXT := MED.INSTRUCTIONS:'. '
+      END
+   REPEAT
+   
+RETURN
+
+* ========================================
+* Handle list all medications
+* ========================================
+HANDLE.LIST.MEDICATIONS:
+   SELECT MEDICATION WITH MED.STATUS = 'Active'
+   
+   MED.COUNT = @SELECTED
+   
+   IF MED.COUNT = 0 THEN
+      RESPONSE.TEXT = 'You don\'t have any active medications recorded.'
+      RETURN
+   END
+   
+   RESPONSE.TEXT = 'You are currently taking '
+   
+   IF MED.COUNT = 1 THEN
+      RESPONSE.TEXT := 'one medication: '
+   END ELSE
+      RESPONSE.TEXT := MED.COUNT:' medications: '
+   END
+   
+   MED.NAMES = ''
+   LOOP
+      READNEXT MED.ID ELSE EXIT
+      READ MED.REC FROM MEDICATION, MED.ID ELSE CONTINUE
+      
+      MED.NAME = MED.REC<MED.NAME>
+      MED.NAMES<-1> = MED.NAME
+   REPEAT
+   
+   * Build natural language list
+   FOR I = 1 TO DCOUNT(MED.NAMES, @FM)
+      IF I > 1 AND I = DCOUNT(MED.NAMES, @FM) THEN
+         RESPONSE.TEXT := ', and '
+      END ELSE IF I > 1 THEN
+         RESPONSE.TEXT := ', '
+      END
+      
+      RESPONSE.TEXT := MED.NAMES<I>
+   NEXT I
+   
+   RESPONSE.TEXT := '.'
+   
+RETURN
+
+* ========================================
+* Handle medication details query
+* "Tell me about Metformin"
+* ========================================
+HANDLE.MEDICATION.DETAILS:
+   * Extract medication name from transcription
+   CALL EXTRACT.MEDICATION.NAME(TRANSCRIPTION, MED.NAME.QUERY)
+   
+   IF MED.NAME.QUERY = '' THEN
+      RESPONSE.TEXT = 'Which medication would you like to know about?'
+      RETURN
+   END
+   
+   * Search for medication
+   SELECT MEDICATION WITH MED.NAME LIKE '...':MED.NAME.QUERY:'...'
+   
+   READNEXT MED.ID ELSE
+      RESPONSE.TEXT = 'I couldn\'t find any information about ':MED.NAME.QUERY:'.'
+      RETURN
+   END
+   
+   READ MED.REC FROM MEDICATION, MED.ID ELSE
+      RESPONSE.TEXT = 'I had trouble accessing that medication record.'
+      RETURN
+   END
+   
+   * Build detailed response
+   MED.NAME = MED.REC<MED.NAME>
+   MED.DOSAGE = MED.REC<MED.DOSAGE>
+   MED.FREQUENCY = MED.REC<MED.FREQUENCY>
+   MED.START.DATE = MED.REC<MED.START.DATE>
+   MED.INSTRUCTIONS = MED.REC<MED.INSTRUCTIONS>
+   MED.PURPOSE = MED.REC<MED.PURPOSE>
+   
+   RESPONSE.TEXT = MED.NAME:' ':MED.DOSAGE:'. '
+   
+   IF MED.PURPOSE NE '' THEN
+      RESPONSE.TEXT := 'Prescribed for ':MED.PURPOSE:'. '
+   END
+   
+   RESPONSE.TEXT := 'Take ':MED.FREQUENCY:'. '
+   
+   IF MED.INSTRUCTIONS NE '' THEN
+      RESPONSE.TEXT := MED.INSTRUCTIONS:'. '
+   END
+   
+   IF MED.START.DATE NE '' THEN
+      START.DATE.TEXT = OCONV(MED.START.DATE, 'D2/MDY[,A3]')
+      RESPONSE.TEXT := 'Started on ':START.DATE.TEXT:'.'
+   END
+   
+RETURN
+
+* ========================================
+* Handle medication interactions check
+* ========================================
+HANDLE.MEDICATION.INTERACTIONS:
+   * This would integrate with drug interaction database
+   * For now, provide a placeholder
+   RESPONSE.TEXT = 'I can check for medication interactions, but this feature '
+   RESPONSE.TEXT := 'requires integration with a drug interaction database. '
+   RESPONSE.TEXT := 'Please consult your pharmacist or doctor for interaction information.'
+   
+RETURN
+
+* ========================================
+* Handle refill status
+* ========================================
+HANDLE.REFILL.STATUS:
+   * Select medications that need refills
+   SELECT MEDICATION WITH MED.STATUS = 'Active' AND MED.DAYS.SUPPLY < 7
+   
+   MED.COUNT = @SELECTED
+   
+   IF MED.COUNT = 0 THEN
+      RESPONSE.TEXT = 'All your medications have adequate supply for at least a week.'
+      RETURN
+   END
+   
+   RESPONSE.TEXT = 'You have '
+   
+   IF MED.COUNT = 1 THEN
+      RESPONSE.TEXT := 'one medication '
+   END ELSE
+      RESPONSE.TEXT := MED.COUNT:' medications '
+   END
+   
+   RESPONSE.TEXT := 'that may need refilling soon: '
+   
+   LOOP
+      READNEXT MED.ID ELSE EXIT
+      READ MED.REC FROM MEDICATION, MED.ID ELSE CONTINUE
+      
+      MED.NAME = MED.REC<MED.NAME>
+      DAYS.SUPPLY = MED.REC<MED.DAYS.SUPPLY>
+      
+      RESPONSE.TEXT := MED.NAME:' has ':DAYS.SUPPLY:' days remaining. '
+   REPEAT
+   
+RETURN
+
+* ========================================
+* Handle general medication query with AI
+* ========================================
+HANDLE.GENERAL.MEDICATION:
+   * Use AI to generate response based on medication data
+   
+   * Get all active medications for context
+   MED.CONTEXT = ''
+   SELECT MEDICATION WITH MED.STATUS = 'Active'
+   LOOP
+      READNEXT MED.ID ELSE EXIT
+      READ MED.REC FROM MEDICATION, MED.ID ELSE CONTINUE
+      
+      MED.NAME = MED.REC<MED.NAME>
+      MED.DOSAGE = MED.REC<MED.DOSAGE>
+      MED.FREQUENCY = MED.REC<MED.FREQUENCY>
+      
+      MED.CONTEXT<-1> = MED.NAME:' ':MED.DOSAGE:' ':MED.FREQUENCY
+   REPEAT
+   
+   * Build AI prompt
+   PROMPT = 'You are a helpful medical assistant. Answer this question about the user\'s medications: '
+   PROMPT := @FM:'Question: ':TRANSCRIPTION
+   PROMPT := @FM:'Current medications:'
+   FOR I = 1 TO DCOUNT(MED.CONTEXT, @FM)
+      PROMPT := @FM:'- ':MED.CONTEXT<I>
+   NEXT I
+   PROMPT := @FM:'Provide a clear, concise response. If you need more information, say so.'
+   
+   * Use AI to generate response
+   CALL ASK.AI.B('gpt-4o', PROMPT, AI.RESPONSE)
+   
+   RESPONSE.TEXT = AI.RESPONSE
+   
+RETURN
+
+END

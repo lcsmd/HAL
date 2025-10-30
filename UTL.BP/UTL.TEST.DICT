@@ -1,0 +1,31 @@
+PROGRAM TEST.DICT
+* Test dictionary structure
+CRT "Reading PERSON dictionary entries..."
+
+OPEN "DICT", "PERSON" TO F.DICT ELSE
+   CRT "Cannot open DICT PERSON"
+   STOP
+END
+
+* Read a few dictionary entries
+FIELDS = "FIRST_NAME":@FM:"LAST_NAME":@FM:"EMAIL":@FM:"BIRTHDATE"
+
+FOR I = 1 TO DCOUNT(FIELDS, @FM)
+   FIELDNAME = FIELDS<I>
+   READ DICT.REC FROM F.DICT, FIELDNAME THEN
+      CRT ""
+      CRT "Field: ":FIELDNAME
+      CRT "  <1> Type: ":DICT.REC<1>
+      CRT "  <2> Field#: ":DICT.REC<2>
+      CRT "  <3> Conv: ":DICT.REC<3>
+      CRT "  <4> Heading: ":DICT.REC<4>
+      CRT "  <5> Format: ":DICT.REC<5>
+      CRT "  <6> S/M: ":DICT.REC<6>
+   END ELSE
+      CRT "Field ":FIELDNAME:" not found"
+   END
+NEXT I
+
+RETURN
+END
+

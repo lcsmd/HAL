@@ -1,0 +1,74 @@
+* RESTORE.DICT - Restore dictionary definitions from SAVED.DICTS file
+* Usage: RESTORE.DICT <filename>
+* Restores all DICT entries for a file from backup
+* Structure: Attr 1 = dict names (MV), Attr 2 = TYPE fields (MV), Attr 3 = LOC fields (MV), etc.
+
+PROGRAM RESTORE.DICT
+
+   PROMPT ''
+   
+   * Get filename from command line
+   filename = TRIM(@SENTENCE)
+   filename = FIELD(filename, ' ', 2, 99)
+   
+   IF filename = '' THEN
+      PRINT 'Usage: RESTORE.DICT <filename>'
+      STOP
+   END
+   
+   * Open SAVED.DICTS file
+   OPEN 'SAVED.DICTS' TO saved.file ELSE
+      PRINT 'Error: Cannot open SAVED.DICTS file'
+      STOP
+   END
+   
+   * Read the saved dictionary
+   READ save.rec FROM saved.file, filename ELSE
+      PRINT 'Error: No saved dictionary found for ' : filename
+      STOP
+   END
+   
+   * Open the DICT of the specified file
+   dict.name = 'DICT ' : filename
+   OPEN dict.name TO dict.file ELSE
+      PRINT 'Error: Cannot open ' : dict.name
+      PRINT 'File may need to be created first'
+      STOP
+   END
+   
+   * Get count of dict entries from attribute 1
+   count = DCOUNT(save.rec<1>, @VM)
+   
+   IF count = 0 THEN
+      PRINT 'No dictionary entries found in backup for ' : filename
+      STOP
+   END
+   
+   * Find max number of attributes in saved record
+   max.attr = DCOUNT(save.rec, @FM)
+   
+   * Restore each DICT entry by transposing back
+   restored = 0
+   FOR i = 1 TO count
+      * Get dict name from attribute 1
+      dict.id = save.rec<1, i>
+      
+      IF dict.id = '' THEN CONTINUE
+      
+      * Rebuild the DICT record from transposed structure
+      * Attribute 1 = dict names, Attributes 2+ = DICT fields
+      dict.rec = ''
+      
+      * Extract DICT fields from attributes 2+
+      FOR attr.num = 2 TO max.attr
+         dict.rec<attr.num - 1> = save.rec<attr.num, i>
+      NEXT attr.num
+      
+      * Write the DICT entry
+      WRITE dict.rec TO dict.file, dict.id
+      restored += 1
+   NEXT i
+   
+   PRINT restored : ' dictionary entries restored for ' : filename
+   
+END
