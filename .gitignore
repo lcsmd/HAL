@@ -1,72 +1,83 @@
-# Python
-__pycache__/
-*.pyc
+# Python Virtual Environments
 venv/
-openqm_ws_env/
+.venv/
+env/
+ENV/
+PY/venv/
+PYTHON/PY/venv/
+
+# Python Bytecode
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python Distribution / Packaging
+*.egg-info/
+dist/
+build/
+*.egg
 
 # Logs
 *.log
+logs/
+*.log.*
+hal_agent_service.log
 
-# Temp files
+# OpenQM Generated Files
+*.DIC/%[0-9]
+*.OUT/
+*/%[0-9]
+*/%[0-9][0-9]
+
+# Backup Files
 *.bak
+*.backup
+*~
+
+# Temporary Files
+TEMP/
+temp/
+tmp/
 *.tmp
 
-# Binary files
-*.zip
-*.exe
-*.dll
-*.pack
-
-# OpenQM System Files - DO NOT COMMIT THESE
-VOC/
-*.OUT/
-*.DIC/
-DICT/
-*.dict
-ERRMSG
-ACCOUNTS
-gcat.*
-$COMO/
-stacks/
-
-# OpenQM Data Directories - DO NOT COMMIT
-API.KEY/
-BOOKS/
-CUSTOMERS/
-READERS/
-SALES/
-STOCK/
-TEMP/
-TITLES/
-HAL.TXT/
-HAL2.BP/
-PERSONS.TXT/
-META/APPOINTMENTS
-META/TASK
-META/SCHEMA.DEF.csv
-
-# Catalog files
-cat/
-
-# Environment files with secrets
-PY/.env
+# Configuration with Secrets
 .env
+config/*_tokens.json
+API.KEYS
+*password*.txt
+*secret*.txt
 
-# Mac files
+# Git Analysis Files (temporary)
+git-status-full.txt
+analyze_git_status.ps1
+COMMIT_MESSAGE.txt
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
 .DS_Store
+Thumbs.db
 
-# Test/temp files
-*.LIS
-test_*.ps1
-compare_requests.ps1
-simple_git_backup.ps1
-start_stunnel.ps1
-test_stunnel.ps1
-python_test_output.txt
-stunnel-*.txt
-stunnel-*.conf
-haproxy.cfg.*
-requests_*.log
+# Windows System Files
+desktop.ini
+$RECYCLE.BIN/
 
-# IDE
-.gpt-runner/
+# Archives (optional - uncomment if you want to ignore)
+# archives/
+# *.zip
+# *.7z
+# *.tar.gz
+
+# Large Media Files (YouTube archive)
+YT-THUMB/
+YT-JSON/
+WORD.FILES/
+
+# Legacy System Files
+LCS.*
+LCS2.*
