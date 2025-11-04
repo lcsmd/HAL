@@ -1,0 +1,77 @@
+* HAL Voice Listener
+* TCP server that receives voice messages from Voice Gateway
+* Routes to appropriate handlers and returns responses
+
+PROGRAM VOICE.LISTENER.NEW
+
+* Socket constants
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+EQU SOCKET.PORT TO 8767
+EQU BUFFER.SIZE TO 32768
+
+* Initialize
+PRINT "HAL Voice Listener starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Create server socket
+SRVR.SKT = CREATE.SERVER.SOCKET("", SOCKET.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS()
+   STOP
+END
+
+PRINT "Voice Listener active on port ":SOCKET.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+   IF STATUS() THEN
+      PRINT "Warning: Accept failed, status: ":STATUS()
+      CONTINUE
+   END
+   
+   PRINT "Connection accepted"
+   
+   * Read message
+   MESSAGE.JSON = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+   
+   IF STATUS() THEN
+      PRINT "Warning: Read failed, status: ":STATUS()
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   IF LEN(MESSAGE.JSON) = 0 THEN
+      PRINT "Warning: Empty message received"
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   PRINT "Received: ":MESSAGE.JSON[1,80]
+   
+   * Build simple response for now
+   RESPONSE.JSON = '{"response_text":"Hello from QM Voice Listener!","status":"success"}'
+   
+   * Send response
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, 0, 0)
+   IF STATUS() THEN
+      PRINT "Warning: Write failed, status: ":STATUS()
+   END ELSE
+      PRINT "Response sent"
+   END
+   
+   * Close connection
+   CLOSE.SOCKET CLIENT.SKT
+   
+   PRINT "Request completed"
+REPEAT
+
+* Close server socket on exit (never reached in this version)
+CLOSE.SOCKET SRVR.SKT
+
+END

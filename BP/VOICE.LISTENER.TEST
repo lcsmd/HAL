@@ -1,0 +1,56 @@
+* HAL Voice Listener - Test Version
+* Using SERVER.SOCKET statement
+
+PROGRAM VOICE.LISTENER.TEST
+
+EQU SOCKET.PORT TO 8767
+
+PRINT "HAL Voice Listener starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Create server socket
+SERVER.SOCKET SOCKET.PORT SETTING STATUS ELSE
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS
+   STOP
+END
+
+PRINT "Voice Listener active on port ":SOCKET.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept connection
+   ACCEPT.SOCKET.CONNECTION SETTING CLIENT.SOCKET, CLIENT.ADDR ELSE
+      PRINT "Warning: Accept failed"
+      CONTINUE
+   END
+   
+   PRINT "Connection from: ":CLIENT.ADDR
+   
+   * Read message
+   READ.SOCKET CLIENT.SOCKET SETTING MESSAGE.JSON ELSE
+      PRINT "Warning: Read failed"
+      CLOSE.SOCKET CLIENT.SOCKET
+      CONTINUE
+   END
+   
+   PRINT "Received: ":MESSAGE.JSON[1,80]
+   
+   * Build simple response
+   RESPONSE = '{"response_text":"Hello from QM!","status":"success"}'
+   
+   * Send response
+   WRITE.SOCKET CLIENT.SOCKET, RESPONSE SETTING STATUS ELSE
+      PRINT "Warning: Write failed"
+   END
+   
+   PRINT "Response sent"
+   
+   * Close connection
+   CLOSE.SOCKET CLIENT.SOCKET
+   
+   PRINT "Request completed"
+REPEAT
+
+END

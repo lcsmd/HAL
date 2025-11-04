@@ -1,0 +1,66 @@
+* HAL Voice Listener - Simplified Version
+* Test with basic SERVER.SOCKET functionality
+
+PROGRAM VOICE.LISTENER.SIMPLE
+
+EQU TRUE TO 1, FALSE TO 0
+EQU SOCKET.PORT TO 8767
+
+PRINT "HAL Voice Listener starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Open server socket
+OPEN.SOCKET SOCKET.PORT, SERVER.SOCK.KEY ON ERROR
+   PRINT "ERROR: Failed to open server socket on port ":SOCKET.PORT
+   STOP
+END THEN
+   PRINT "Voice Listener active on port ":SOCKET.PORT
+   PRINT "Waiting for connections..."
+END ELSE
+   PRINT "ERROR: Could not create socket on port ":SOCKET.PORT
+   STOP
+END
+
+* Main listen loop
+LOOP
+   * Wait for connection
+   ACCEPT.SOCKET.CONNECTION SERVER.SOCK.KEY TO CLIENT.SOCK.KEY FROM CLIENT.ADDR ON ERROR
+      PRINT "Warning: Accept failed"
+      CONTINUE
+   END THEN
+      PRINT "Connection from: ":CLIENT.ADDR
+   END ELSE
+      PRINT "No connection"
+      CONTINUE
+   END
+   
+   * Read message
+   READ.SOCKET CLIENT.SOCK.KEY TO MESSAGE.JSON ON ERROR
+      PRINT "Warning: Read failed"
+      CLOSE.SOCKET CLIENT.SOCK.KEY
+      CONTINUE
+   END THEN
+      PRINT "Received: ":MESSAGE.JSON[1,80]
+   END ELSE
+      PRINT "No data"
+      CLOSE.SOCKET CLIENT.SOCK.KEY
+      CONTINUE
+   END
+   
+   * Build simple response
+   RESPONSE = '{"response_text":"Hello from QM!","status":"success"}'
+   
+   * Send response
+   WRITE.SOCKET CLIENT.SOCK.KEY FROM RESPONSE ON ERROR
+      PRINT "Warning: Write failed"
+   END THEN
+      PRINT "Response sent"
+   END
+   
+   * Close connection
+   CLOSE.SOCKET CLIENT.SOCK.KEY
+   
+   PRINT "Request completed"
+REPEAT
+
+END
