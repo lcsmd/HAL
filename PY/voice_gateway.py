@@ -17,7 +17,7 @@ from enum import Enum
 # Configuration
 WEBSOCKET_HOST = "0.0.0.0"
 WEBSOCKET_PORT = 8765
-WHISPER_URL = "https://speech.lcs.ai/transcribe"
+WHISPER_URL = "http://ubuai:9000/transcribe"
 QM_LISTENER_HOST = "localhost"
 QM_LISTENER_PORT = 8767
 MAX_CONNECTIONS = 50

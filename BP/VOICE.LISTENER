@@ -54,8 +54,36 @@ LOOP
    
    PRINT "Received: ":MESSAGE.JSON[1,80]
    
-   * Build simple response for now
-   RESPONSE.JSON = '{"response_text":"Hello from QM Voice Listener!","status":"success"}'
+   * Parse transcription from JSON
+   TRANSCRIPTION = ''
+   POS = INDEX(MESSAGE.JSON, '"transcription"', 1)
+   IF POS THEN
+      START.POS = INDEX(MESSAGE.JSON, '"', POS + 16) + 1
+      END.POS = INDEX(MESSAGE.JSON, '"', START.POS)
+      IF END.POS > START.POS THEN
+         TRANSCRIPTION = MESSAGE.JSON[START.POS, END.POS - START.POS]
+      END
+   END
+   
+   * Classify intent based on keywords
+   INTENT = 'GENERAL'
+   TEXT.UPPER = OCONV(TRANSCRIPTION, 'MCU')
+   IF INDEX(TEXT.UPPER, 'MEDICATION', 1) OR INDEX(TEXT.UPPER, 'MEDICINE', 1) THEN
+      INTENT = 'MEDICATION'
+   END
+   
+   PRINT "Transcription: ":TRANSCRIPTION
+   PRINT "Intent: ":INTENT
+   
+   * Route to handler
+   IF INTENT = 'MEDICATION' THEN
+      RESPONSE.TEXT = "I can help with your medications. You are taking Metformin 500mg twice daily."
+   END ELSE
+      RESPONSE.TEXT = "I received: ":TRANSCRIPTION
+   END
+   
+   * Build JSON response
+   RESPONSE.JSON = '{"response_text":"':RESPONSE.TEXT:'","status":"success","intent":"':INTENT:'"}'
    
    * Send response
    N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, 0, 0)
