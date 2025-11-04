@@ -1,0 +1,302 @@
+* HAL Voice Listener - Full Implementation
+* TCP server that receives voice messages from Voice Gateway
+* Routes to appropriate handlers and returns responses
+
+PROGRAM VOICE.LISTENER.FULL
+
+* Socket constants
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+EQU SOCKET.PORT TO 8767
+EQU BUFFER.SIZE TO 32768
+
+* Field positions
+EQU SESSION.ID TO 1
+EQU CLIENT.TYPE TO 2
+EQU TRANSCRIPTION TO 3
+EQU TIMESTAMP TO 4
+EQU CONTEXT TO 5
+
+* Response positions
+EQU RESPONSE.TEXT TO 1
+EQU ACTION.TAKEN TO 2
+EQU RESPONSE.STATUS TO 3
+EQU RESPONSE.TIMESTAMP TO 4
+
+* Initialize
+PRINT "HAL Voice Listener starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Open files
+OPEN 'CONVERSATION' TO CONVERSATION ELSE
+   PRINT "Warning: Could not open CONVERSATION file"
+   CONVERSATION = 0
+END
+
+* Create server socket
+SRVR.SKT = CREATE.SERVER.SOCKET("", SOCKET.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS()
+   STOP
+END
+
+PRINT "Voice Listener active on port ":SOCKET.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+   IF STATUS() THEN
+      PRINT "Warning: Accept failed, status: ":STATUS()
+      CONTINUE
+   END
+   
+   PRINT "Connection accepted"
+   
+   * Read message
+   MESSAGE.JSON = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+   
+   IF STATUS() THEN
+      PRINT "Warning: Read failed, status: ":STATUS()
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   IF LEN(MESSAGE.JSON) = 0 THEN
+      PRINT "Warning: Empty message received"
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   PRINT "Received: ":MESSAGE.JSON[1,80]
+   
+   * Process the message
+   GOSUB PROCESS.VOICE.MESSAGE
+   
+   * Send response
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, 0, 0)
+   IF STATUS() THEN
+      PRINT "Warning: Write failed, status: ":STATUS()
+   END ELSE
+      PRINT "Response sent"
+   END
+   
+   * Close connection
+   CLOSE.SOCKET CLIENT.SKT
+   
+   PRINT "Request completed"
+REPEAT
+
+* Close server socket on exit (never reached in this version)
+CLOSE.SOCKET SRVR.SKT
+
+STOP
+
+* ========================================
+* Process voice message
+* ========================================
+PROCESS.VOICE.MESSAGE:
+   * Parse JSON message
+   GOSUB PARSE.JSON.MESSAGE
+   
+   * Classify intent
+   GOSUB CLASSIFY.INTENT
+   
+   * Log conversation
+   IF CONVERSATION THEN GOSUB LOG.CONVERSATION
+   
+   * Route to appropriate handler
+   IF INTENT = 'MEDICATION' THEN
+      CALL VOICE.HANDLE.MEDICATION(TRANSCRIPTION, CONTEXT, RESPONSE.REC)
+   END ELSE
+      IF INTENT = 'APPOINTMENT' THEN
+         RESPONSE.TEXT = "Appointment handling not yet implemented"
+         ACTION.TAKEN = "none"
+      END ELSE
+         IF INTENT = 'ALLERGY' THEN
+            RESPONSE.TEXT = "Allergy handling not yet implemented"
+            ACTION.TAKEN = "none"
+         END ELSE
+            IF INTENT = 'HEALTH_DATA' THEN
+               RESPONSE.TEXT = "Health data handling not yet implemented"
+               ACTION.TAKEN = "none"
+            END ELSE
+               IF INTENT = 'TRANSACTION' THEN
+                  RESPONSE.TEXT = "Transaction handling not yet implemented"
+                  ACTION.TAKEN = "none"
+               END ELSE
+                  IF INTENT = 'PASSWORD' THEN
+                     RESPONSE.TEXT = "Password handling not yet implemented"
+                     ACTION.TAKEN = "none"
+                  END ELSE
+                     * General/AI query
+                     RESPONSE.TEXT = "I received your message: ":TRANSCRIPTION
+                     ACTION.TAKEN = "acknowledged"
+                  END
+               END
+            END
+         END
+      END
+   END
+   
+   * Build JSON response
+   GOSUB BUILD.JSON.RESPONSE
+   
+RETURN
+
+* ========================================
+* Parse JSON message
+* ========================================
+PARSE.JSON.MESSAGE:
+   * Simple JSON parsing for known fields
+   * Extract session_id
+   POS = INDEX(MESSAGE.JSON, '"session_id"', 1)
+   IF POS THEN
+      START = INDEX(MESSAGE.JSON, '"', POS + 13) + 1
+      END.POS = INDEX(MESSAGE.JSON, '"', START)
+      SESSION.ID = MESSAGE.JSON[START, END.POS - START]
+   END ELSE
+      SESSION.ID = 'unknown'
+   END
+   
+   * Extract client_type
+   POS = INDEX(MESSAGE.JSON, '"client_type"', 1)
+   IF POS THEN
+      START = INDEX(MESSAGE.JSON, '"', POS + 14) + 1
+      END.POS = INDEX(MESSAGE.JSON, '"', START)
+      CLIENT.TYPE = MESSAGE.JSON[START, END.POS - START]
+   END ELSE
+      CLIENT.TYPE = 'unknown'
+   END
+   
+   * Extract transcription
+   POS = INDEX(MESSAGE.JSON, '"transcription"', 1)
+   IF POS THEN
+      START = INDEX(MESSAGE.JSON, '"', POS + 16) + 1
+      END.POS = INDEX(MESSAGE.JSON, '"', START)
+      TRANSCRIPTION = MESSAGE.JSON[START, END.POS - START]
+   END ELSE
+      TRANSCRIPTION = ''
+   END
+   
+   * Extract timestamp
+   POS = INDEX(MESSAGE.JSON, '"timestamp"', 1)
+   IF POS THEN
+      START = INDEX(MESSAGE.JSON, '"', POS + 12) + 1
+      END.POS = INDEX(MESSAGE.JSON, '"', START)
+      TIMESTAMP = MESSAGE.JSON[START, END.POS - START]
+   END ELSE
+      TIMESTAMP = DATE():' ':TIME()
+   END
+   
+   * Extract context
+   POS = INDEX(MESSAGE.JSON, '"context"', 1)
+   IF POS THEN
+      START = INDEX(MESSAGE.JSON, '"', POS + 10) + 1
+      END.POS = INDEX(MESSAGE.JSON, '"', START)
+      CONTEXT = MESSAGE.JSON[START, END.POS - START]
+   END ELSE
+      CONTEXT = ''
+   END
+   
+RETURN
+
+* ========================================
+* Classify intent using simple keyword matching
+* (Can be enhanced to use Ollama for AI classification)
+* ========================================
+CLASSIFY.INTENT:
+   * Default
+   INTENT = 'GENERAL'
+   
+   * Convert to uppercase for matching
+   TEXT.UPPER = OCONV(TRANSCRIPTION, 'MCU')
+   
+   * Medication keywords
+   IF INDEX(TEXT.UPPER, 'MEDICATION', 1) OR INDEX(TEXT.UPPER, 'MEDICINE', 1) OR INDEX(TEXT.UPPER, 'PILL', 1) OR INDEX(TEXT.UPPER, 'DRUG', 1) OR INDEX(TEXT.UPPER, 'PRESCRIPTION', 1) THEN
+      INTENT = 'MEDICATION'
+      RETURN
+   END
+   
+   * Appointment keywords
+   IF INDEX(TEXT.UPPER, 'APPOINTMENT', 1) OR INDEX(TEXT.UPPER, 'DOCTOR', 1) OR INDEX(TEXT.UPPER, 'VISIT', 1) THEN
+      INTENT = 'APPOINTMENT'
+      RETURN
+   END
+   
+   * Allergy keywords
+   IF INDEX(TEXT.UPPER, 'ALLERGY', 1) OR INDEX(TEXT.UPPER, 'ALLERGIC', 1) THEN
+      INTENT = 'ALLERGY'
+      RETURN
+   END
+   
+   * Health data keywords
+   IF INDEX(TEXT.UPPER, 'BLOOD PRESSURE', 1) OR INDEX(TEXT.UPPER, 'WEIGHT', 1) OR INDEX(TEXT.UPPER, 'VITAL', 1) THEN
+      INTENT = 'HEALTH_DATA'
+      RETURN
+   END
+   
+   * Transaction keywords
+   IF INDEX(TEXT.UPPER, 'TRANSACTION', 1) OR INDEX(TEXT.UPPER, 'PAYMENT', 1) OR INDEX(TEXT.UPPER, 'EXPENSE', 1) THEN
+      INTENT = 'TRANSACTION'
+      RETURN
+   END
+   
+   * Password keywords
+   IF INDEX(TEXT.UPPER, 'PASSWORD', 1) OR INDEX(TEXT.UPPER, 'LOGIN', 1) THEN
+      INTENT = 'PASSWORD'
+      RETURN
+   END
+   
+RETURN
+
+* ========================================
+* Log conversation to CONVERSATION file
+* ========================================
+LOG.CONVERSATION:
+   IF NOT(CONVERSATION) THEN RETURN
+   
+   * Generate conversation ID
+   CONV.ID = SESSION.ID:'-':OCONV(DATE(), 'D4-'):'-':OCONV(TIME(), 'MTS')
+   
+   * Build conversation record
+   CONV.REC = ''
+   CONV.REC<1> = SESSION.ID
+   CONV.REC<2> = CLIENT.TYPE
+   CONV.REC<3> = TRANSCRIPTION
+   CONV.REC<4> = RESPONSE.TEXT
+   CONV.REC<5> = TIMESTAMP
+   CONV.REC<6> = INTENT
+   CONV.REC<7> = CONTEXT
+   
+   * Write to CONVERSATION file
+   WRITE CONV.REC TO CONVERSATION, CONV.ID
+   
+RETURN
+
+* ========================================
+* Build JSON response
+* ========================================
+BUILD.JSON.RESPONSE:
+   * Escape special characters in response text
+   ESCAPED.TEXT = RESPONSE.TEXT
+   ESCAPED.TEXT = CHANGE(ESCAPED.TEXT, '\', '\\')
+   ESCAPED.TEXT = CHANGE(ESCAPED.TEXT, '"', '\"')
+   ESCAPED.TEXT = CHANGE(ESCAPED.TEXT, CHAR(10), '\n')
+   ESCAPED.TEXT = CHANGE(ESCAPED.TEXT, CHAR(13), '')
+   
+   * Build JSON
+   RESPONSE.JSON = '{'
+   RESPONSE.JSON := '"response_text":"':ESCAPED.TEXT:'",'
+   RESPONSE.JSON := '"action_taken":"':ACTION.TAKEN:'",'
+   RESPONSE.JSON := '"status":"success",'
+   RESPONSE.JSON := '"intent":"':INTENT:'",'
+   RESPONSE.JSON := '"timestamp":"':OCONV(DATE():'T':TIME(), 'D4-'):'T':OCONV(TIME(), 'MTS'):'"'
+   RESPONSE.JSON := '}'
+   
+RETURN
+
+END
