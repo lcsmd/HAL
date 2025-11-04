@@ -1,0 +1,117 @@
+==========================================================
+EASIEST WAY TO ADD voice.lcs.ai TO HAPROXY
+==========================================================
+
+Method 1: From PowerShell on MV1 (THIS MACHINE)
+------------------------------------------------
+
+1. Open PowerShell and run:
+
+ssh -p 2222 lawr@ubu6
+
+Password: apgar-66
+
+2. Once connected, paste this entire block:
+
+sudo bash << 'EOFSCRIPT'
+# Backup
+cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.backup.$(date +%Y%m%d_%H%M%S)
+
+# Check if already configured
+if grep -q "is_voice" /etc/haproxy/haproxy.cfg; then
+    echo "Already configured!"
+    exit 0
+fi
+
+# Add ACL
+sed -i '/acl is_/a \    acl is_voice hdr(host) -i voice.lcs.ai' /etc/haproxy/haproxy.cfg
+
+# Add use_backend
+sed -i '/use_backend.*if is_/a \    use_backend voice_gateway if is_voice' /etc/haproxy/haproxy.cfg
+
+# Add backend
+cat >> /etc/haproxy/haproxy.cfg << 'EOF'
+
+# Voice Gateway WebSocket
+backend voice_gateway
+    mode http
+    option http-server-close
+    option forwardfor
+    timeout tunnel 3600s
+    timeout client 3600s
+    timeout server 3600s
+    http-request set-header X-Forwarded-Proto https
+    http-request set-header X-Forwarded-Host %[req.hdr(Host)]
+    server voice1 10.1.34.103:8765 check
+EOF
+
+# Test and reload
+if haproxy -c -f /etc/haproxy/haproxy.cfg; then
+    systemctl reload haproxy
+    echo "SUCCESS! voice.lcs.ai is now active!"
+else
+    echo "ERROR: Configuration invalid"
+    cp /etc/haproxy/haproxy.cfg.backup.* /etc/haproxy/haproxy.cfg
+    exit 1
+fi
+EOFSCRIPT
+
+3. Done! Type 'exit' to leave SSH
+
+
+Method 2: Manual (Step by Step)
+--------------------------------
+
+ssh -p 2222 lawr@ubu6
+(Password: apgar-66)
+
+sudo nano /etc/haproxy/haproxy.cfg
+
+Find the ACL section and add:
+    acl is_voice hdr(host) -i voice.lcs.ai
+
+Find the use_backend section and add:
+    use_backend voice_gateway if is_voice
+
+Scroll to bottom and add:
+
+# Voice Gateway WebSocket
+backend voice_gateway
+    mode http
+    option http-server-close
+    option forwardfor
+    timeout tunnel 3600s
+    timeout client 3600s
+    timeout server 3600s
+    http-request set-header X-Forwarded-Proto https
+    http-request set-header X-Forwarded-Host %[req.hdr(Host)]
+    server voice1 10.1.34.103:8765 check
+
+Save: Ctrl+O, Enter, Ctrl+X
+
+Test: sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+Reload: sudo systemctl reload haproxy
+
+
+Method 3: One Command (if script is already on ubu6)
+-----------------------------------------------------
+
+ssh -p 2222 lawr@ubu6 'bash /tmp/add_voice_backend.sh'
+
+(You'd need to copy the script there first)
+
+
+==========================================================
+AFTER DEPLOYMENT
+==========================================================
+
+Test it works:
+  nslookup voice.lcs.ai
+  curl https://voice.lcs.ai
+
+Then start QM Voice Listener:
+  In QM window: PHANTOM VOICE.LISTENER
+
+Then you're LIVE!
+
+==========================================================
