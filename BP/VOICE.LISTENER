@@ -14,11 +14,25 @@ EQU BUFFER.SIZE TO 32768
 PRINT "HAL Voice Listener starting..."
 PRINT "Port: ":SOCKET.PORT
 
-* Create server socket
-CALL QMB.CREATE.SERVER.SOCKET(SOCKET.PORT, SERVER.SOCKET, STATUS)
+* Create server socket using OpenQM native socket support
+SERVER.SOCKET = SOCKET(AF$INET, SOCK$STREAM, 0)
+IF SERVER.SOCKET < 0 THEN
+   PRINT "ERROR: Failed to create socket"
+   STOP
+END
+
+* Bind to port
+STATUS = BIND.SOCKET(SERVER.SOCKET, SOCKET.PORT)
 IF STATUS < 0 THEN
-   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "ERROR: Failed to bind to port ":SOCKET.PORT
    PRINT "Status: ":STATUS
+   STOP
+END
+
+* Listen for connections
+STATUS = LISTEN.SOCKET(SERVER.SOCKET, 5)
+IF STATUS < 0 THEN
+   PRINT "ERROR: Failed to listen on socket"
    STOP
 END
 
@@ -28,9 +42,9 @@ PRINT "Waiting for connections..."
 * Main listen loop
 LOOP
    * Accept incoming connection
-   CALL QMB.ACCEPT.SOCKET.CONNECTION(SERVER.SOCKET, CLIENT.SOCKET, CLIENT.ADDR, STATUS)
-   IF STATUS < 0 THEN
-      PRINT "Warning: Accept failed, status: ":STATUS
+   CLIENT.SOCKET = ACCEPT.SOCKET(SERVER.SOCKET, CLIENT.ADDR)
+   IF CLIENT.SOCKET < 0 THEN
+      PRINT "Warning: Accept failed"
       CONTINUE
    END
    
@@ -38,11 +52,11 @@ LOOP
    
    * Read message
    MESSAGE.JSON = ''
-   CALL QMB.READ.SOCKET(CLIENT.SOCKET, BUFFER.SIZE, MESSAGE.JSON, STATUS)
+   MESSAGE.JSON = READ.SOCKET(CLIENT.SOCKET, BUFFER.SIZE)
    
-   IF STATUS < 0 THEN
-      PRINT "Warning: Read failed, status: ":STATUS
-      CALL QMB.CLOSE.SOCKET(CLIENT.SOCKET)
+   IF LEN(MESSAGE.JSON) = 0 THEN
+      PRINT "Warning: Read failed or connection closed"
+      STATUS = CLOSE.SOCKET(CLIENT.SOCKET)
       CONTINUE
    END
    
@@ -50,14 +64,14 @@ LOOP
    GOSUB PROCESS.VOICE.MESSAGE
    
    * Send response
-   CALL QMB.WRITE.SOCKET(CLIENT.SOCKET, RESPONSE.JSON, STATUS)
+   STATUS = WRITE.SOCKET(CLIENT.SOCKET, RESPONSE.JSON)
    
    IF STATUS < 0 THEN
       PRINT "Warning: Write failed, status: ":STATUS
    END
    
    * Close connection
-   CALL QMB.CLOSE.SOCKET(CLIENT.SOCKET)
+   STATUS = CLOSE.SOCKET(CLIENT.SOCKET)
    
    PRINT "Request completed"
 REPEAT
