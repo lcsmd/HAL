@@ -43,7 +43,7 @@ backend voice_gateway
     timeout server 3600s
     http-request set-header X-Forwarded-Proto https
     http-request set-header X-Forwarded-Host %[req.hdr(Host)]
-    server voice1 10.1.10.20:8765 check
+    server voice1 10.1.34.103:8765 check
 EOF
 echo "  Backend added"
 echo ""
