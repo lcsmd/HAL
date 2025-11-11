@@ -10,13 +10,17 @@ import json
 import base64
 import uuid
 import requests
+import socket
 from datetime import datetime
 from typing import Dict, Set
 from enum import Enum
+import sys
+sys.path.insert(0, '.')
+from qm_client_sync import query_qm
 
 # Configuration
 WEBSOCKET_HOST = "0.0.0.0"
-WEBSOCKET_PORT = 8765
+WEBSOCKET_PORT = 8768  # Using 8768 (8765-8767 in use)
 WHISPER_URL = "http://ubuai:9000/transcribe"
 QM_LISTENER_HOST = "localhost"
 QM_LISTENER_PORT = 8767
@@ -112,6 +116,8 @@ class VoiceGateway:
                 await self.handle_wake_word(session, data)
             elif msg_type == 'speech_ended':
                 await self.handle_speech_ended(session, data)
+            elif msg_type == 'text_input':
+                await self.handle_text_input(session, data)
             elif msg_type == 'command':
                 await self.handle_command(session, data)
             elif msg_type == 'heartbeat':
@@ -157,6 +163,75 @@ class VoiceGateway:
             'timestamp': datetime.now().isoformat()
         })
         
+    async def handle_text_input(self, session: VoiceSession, data: dict):
+        """Handle direct text input (bypass audio transcription)"""
+        if session.state != ClientState.ACTIVE:
+            # Activate if passive
+            if session.state == ClientState.PASSIVE:
+                session.state = ClientState.ACTIVE
+        
+        text = data.get('text', '').strip()
+        if not text:
+            return
+            
+        print(f"[{datetime.now()}] Text input for session {session.session_id}: {text}")
+        
+        # Transition to processing
+        session.state = ClientState.PROCESSING
+        
+        # Send processing feedback
+        await self.send_message(session.websocket, {
+            'type': 'processing',
+            'sound': 'working_tone',
+            'message': 'Processing your request...',
+            'timestamp': datetime.now().isoformat()
+        })
+        
+        try:
+            # Send directly to QM listener (bypass transcription)
+            response = await self.send_to_qm(session, text)
+            
+            # Transition to responding
+            session.state = ClientState.RESPONDING
+            
+            # Send response
+            await self.send_message(session.websocket, {
+                'type': 'response',
+                'text': response.get('response_text', 'I didn\'t understand that.'),
+                'action_taken': response.get('action_taken'),
+                'timestamp': datetime.now().isoformat()
+            })
+            
+            # Store last response
+            session.last_response = response.get('response_text')
+            
+            # Add to context
+            session.add_to_context(text, response.get('response_text'))
+            
+            # Transition to active listening (follow-up window)
+            session.state = ClientState.ACTIVE
+            await self.send_message(session.websocket, {
+                'type': 'state_change',
+                'new_state': 'active_listening',
+                'countdown_ms': FOLLOW_UP_WINDOW,
+                'timestamp': datetime.now().isoformat()
+            })
+            
+            # Schedule return to passive after follow-up window
+            await asyncio.sleep(FOLLOW_UP_WINDOW / 1000)
+            if session.state == ClientState.ACTIVE:
+                session.state = ClientState.PASSIVE
+                await self.send_message(session.websocket, {
+                    'type': 'state_change',
+                    'new_state': 'passive_listening',
+                    'timestamp': datetime.now().isoformat()
+                })
+                
+        except Exception as e:
+            print(f"[{datetime.now()}] Error processing text: {e}")
+            await self.send_error(session.websocket, f"Processing failed: {e}")
+            session.state = ClientState.PASSIVE
+    
     async def handle_speech_ended(self, session: VoiceSession, data: dict):
         if session.state != ClientState.ACTIVE:
             return
@@ -296,37 +371,26 @@ class VoiceGateway:
             raise
             
     async def send_to_qm(self, session: VoiceSession, transcription: str) -> dict:
-        """Send transcription to QM listener"""
+        """Send transcription to QM listener using simple synchronous client"""
         try:
-            # Create message
-            message = {
-                'session_id': session.session_id,
-                'transcription': transcription,
-                'timestamp': datetime.now().isoformat(),
-                'client_type': session.client_type or 'unknown',
-                'context': session.context[-3:] if session.context else []
-            }
+            print(f"[{datetime.now()}] Querying QM: {transcription[:50]}")
             
-            # Connect to QM listener
-            reader, writer = await asyncio.open_connection(
-                QM_LISTENER_HOST, QM_LISTENER_PORT
+            # Use simple synchronous client in thread pool to avoid blocking
+            loop = asyncio.get_event_loop()
+            response = await loop.run_in_executor(
+                None,
+                query_qm,
+                transcription,
+                session.session_id
             )
             
-            # Send message
-            writer.write(json.dumps(message).encode() + b'\n')
-            await writer.drain()
-            
-            # Read response
-            response_data = await reader.readline()
-            writer.close()
-            await writer.wait_closed()
-            
-            # Parse response
-            response = json.loads(response_data.decode())
+            print(f"[{datetime.now()}] QM response: {response.get('response_text', '')[:50]}")
             return response
             
         except Exception as e:
-            print(f"[{datetime.now()}] QM listener error: {e}")
+            print(f"[{datetime.now()}] QM listener error: {type(e).__name__}: {e}")
+            import traceback
+            traceback.print_exc()
             return {
                 'response_text': 'Sorry, I\'m having trouble connecting to my brain right now.',
                 'action_taken': 'ERROR',

@@ -1,0 +1,96 @@
+* QM Command Helper - Execute QM commands via socket
+* Listens on port 8766 for command requests
+
+PROGRAM QM.COMMAND.HELPER
+
+* Socket constants
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+EQU SOCKET.PORT TO 8766
+EQU BUFFER.SIZE TO 32768
+
+PRINT "QM Command Helper starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Create server socket
+SRVR.SKT = CREATE.SERVER.SOCKET("", SOCKET.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS()
+   STOP
+END
+
+PRINT "Command Helper active on port ":SOCKET.PORT
+PRINT "Waiting for commands..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+   IF STATUS() THEN
+      CONTINUE
+   END
+   
+   PRINT "Connection accepted"
+   
+   * Read command
+   COMMAND.TEXT = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+   
+   IF STATUS() OR LEN(COMMAND.TEXT) = 0 THEN
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   PRINT "Received command: ":COMMAND.TEXT
+   
+   * Execute the command and capture output
+   * Build command to capture output via shell
+   SHELL.CMD = "echo ":COMMAND.TEXT:" | qm HAL"
+   EXECUTE "SH -c ":DQUOTE(SHELL.CMD) CAPTURING OUTPUT
+   
+   EXEC.STATUS = STATUS()
+   
+   PRINT "Command executed, status: ":EXEC.STATUS
+   PRINT "Output length: ":LEN(OUTPUT)
+   
+   * Build JSON response
+   RESPONSE.JSON = '{"status":'
+   RESPONSE.JSON := EXEC.STATUS
+   RESPONSE.JSON := ',"output":"'
+   
+   * Escape quotes and special characters in output
+   ESCAPED.OUTPUT = OUTPUT
+   * Remove QM field markers (0xFE, 0xFF, etc)
+   ESCAPED.OUTPUT = CHANGE(ESCAPED.OUTPUT, CHAR(254), '')
+   ESCAPED.OUTPUT = CHANGE(ESCAPED.OUTPUT, CHAR(255), '')
+   ESCAPED.OUTPUT = CHANGE(ESCAPED.OUTPUT, CHAR(253), '')
+   * Replace backslash first
+   ESCAPED.OUTPUT = CHANGE(ESCAPED.OUTPUT, '\', '\\')
+   * Then escape quotes
+   ESCAPED.OUTPUT = CHANGE(ESCAPED.OUTPUT, '"', '\"')
+   * Replace newlines with literal \n
+   ESCAPED.OUTPUT = CHANGE(ESCAPED.OUTPUT, CHAR(10), '\\n')
+   * Remove carriage returns
+   ESCAPED.OUTPUT = CHANGE(ESCAPED.OUTPUT, CHAR(13), '')
+   
+   RESPONSE.JSON := ESCAPED.OUTPUT
+   RESPONSE.JSON := '","command":"'
+   RESPONSE.JSON := COMMAND.TEXT
+   RESPONSE.JSON := '"}'
+   
+   * Send response with blocking to ensure delivery
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, SKT$BLOCKING, 5000)
+   IF STATUS() = 0 THEN
+      PRINT "Response sent: ":LEN(RESPONSE.JSON):" bytes"
+   END ELSE
+      PRINT "WRITE.SOCKET error: ":STATUS()
+   END
+   
+   * Close connection
+   CLOSE.SOCKET CLIENT.SKT
+   PRINT "Request completed"
+   PRINT ""
+REPEAT
+
+END

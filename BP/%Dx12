@@ -1,0 +1,207 @@
+* HAL Voice Listener - Using proper JSON parsing
+* TCP server with JSON.PARSE for reliable extraction
+
+PROGRAM VOICE.LISTENER.JPARSE
+
+* Socket constants
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+EQU SOCKET.PORT TO 8767
+EQU BUFFER.SIZE TO 32768
+
+* Initialize
+PRINT "HAL Voice Listener (JSON Parser) starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Create server socket
+SRVR.SKT = CREATE.SERVER.SOCKET("", SOCKET.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS()
+   STOP
+END
+
+PRINT "Voice Listener active on port ":SOCKET.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+   IF STATUS() THEN
+      CONTINUE
+   END
+   
+   PRINT "Connection accepted"
+   
+   * Read message with error protection
+   MESSAGE.JSON = ""
+   ON ERROR GOSUB READ.ERROR
+   MESSAGE.JSON = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+   OFF ERROR
+   
+   READ.STATUS = STATUS()
+   MSG.LEN = LEN(MESSAGE.JSON)
+   
+   PRINT "Read status: ":READ.STATUS:", bytes: ":MSG.LEN
+   
+   IF READ.STATUS OR MSG.LEN = 0 THEN
+      PRINT "No data received, closing connection"
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   PRINT "Received ":MSG.LEN:" bytes"
+   
+   * Parse JSON using native JPARSE function
+   JSON.OBJ = JPARSE(MESSAGE.JSON)
+   
+   IF STATUS() # 0 THEN
+      PRINT "JSON Parse Error (status ":STATUS():") at position ":INMAT():" - using fallback"
+      * Fall back to simple parsing
+      GOSUB SIMPLE.PARSE
+   END ELSE
+      * Extract fields from parsed JSON object using curly bracket syntax
+      TRANSCRIPTION = JSON.OBJ{"transcription"}
+      SESSION.ID = JSON.OBJ{"session_id"}
+      IF TRANSCRIPTION = "" THEN TRANSCRIPTION = "unknown query"
+      IF SESSION.ID = "" THEN SESSION.ID = "unknown"
+      PRINT "Successfully parsed with JPARSE()"
+   END
+   
+   PRINT "Session: ":SESSION.ID
+   PRINT "Text: ":TRANSCRIPTION
+   
+   * Simple intent detection
+   INTENT = "GENERAL"
+   UPPER.TEXT = OCONV(TRANSCRIPTION, "MCU")
+   
+   IF INDEX(UPPER.TEXT, "MEDICATION", 1) OR INDEX(UPPER.TEXT, "MEDICINE", 1) OR INDEX(UPPER.TEXT, "PILL", 1) THEN
+      INTENT = "MEDICATION"
+   END ELSE
+      IF INDEX(UPPER.TEXT, "APPOINTMENT", 1) OR INDEX(UPPER.TEXT, "DOCTOR", 1) THEN
+         INTENT = "APPOINTMENT"
+      END ELSE
+         IF INDEX(UPPER.TEXT, "HEALTH", 1) OR INDEX(UPPER.TEXT, "VITAL", 1) OR INDEX(UPPER.TEXT, "BLOOD", 1) THEN
+            INTENT = "HEALTH_DATA"
+         END
+      END
+   END
+   
+   PRINT "Intent: ":INTENT
+   
+   * Build response
+   IF INTENT = "MEDICATION" THEN
+      RESPONSE.TEXT = "I detected a medication query: ":TRANSCRIPTION
+      ACTION = "medication_detected"
+   END ELSE
+      IF INTENT = "APPOINTMENT" THEN
+         RESPONSE.TEXT = "I detected an appointment query: ":TRANSCRIPTION
+         ACTION = "appointment_detected"
+      END ELSE
+         IF INTENT = "HEALTH_DATA" THEN
+            RESPONSE.TEXT = "I detected a health data query: ":TRANSCRIPTION
+            ACTION = "health_detected"
+         END ELSE
+            RESPONSE.TEXT = "I received your message: ":TRANSCRIPTION
+            ACTION = "acknowledged"
+         END
+      END
+   END
+   
+   * Build JSON response using native JBUILD function
+   * First create an empty collection
+   RESPONSE.OBJ = COLLECTION()
+   RESPONSE.OBJ{"response_text"} = RESPONSE.TEXT
+   RESPONSE.OBJ{"action_taken"} = ACTION
+   RESPONSE.OBJ{"intent"} = INTENT
+   RESPONSE.OBJ{"status"} = "success"
+   
+   RESPONSE.JSON = JBUILD(RESPONSE.OBJ)
+   
+   IF RESPONSE.JSON = "" THEN
+      * Fallback to manual JSON building
+      RESPONSE.JSON = '{"response_text":"'
+      RESPONSE.JSON := RESPONSE.TEXT
+      RESPONSE.JSON := '","action_taken":"'
+      RESPONSE.JSON := ACTION
+      RESPONSE.JSON := '","intent":"'
+      RESPONSE.JSON := INTENT
+      RESPONSE.JSON := '","status":"success"}'
+   END
+   
+   * Send response
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, 0, 0)
+   IF STATUS() = 0 THEN
+      PRINT "Response sent: ":LEN(RESPONSE.JSON):" bytes"
+   END
+   
+   * Close connection
+   CLOSE.SOCKET CLIENT.SKT
+   PRINT "Request completed"
+   PRINT ""
+REPEAT
+
+STOP
+
+* ========================================
+* Error handlers
+* ========================================
+READ.ERROR:
+   PRINT "ERROR during READ.SOCKET: ":SYSTEM(0)
+   CLOSE.SOCKET CLIENT.SKT
+RETURN
+
+* ========================================
+* Simple fallback parser
+* ========================================
+SIMPLE.PARSE:
+   TRANSCRIPTION = ""
+   SESSION.ID = "unknown"
+   
+   * Extract transcription with better logic
+   POS = INDEX(MESSAGE.JSON, '"transcription"', 1)
+   IF POS THEN
+      * Find the colon after "transcription"
+      COLON.POS = INDEX(MESSAGE.JSON, ':', POS)
+      IF COLON.POS THEN
+         * Skip whitespace and find opening quote
+         START = COLON.POS + 1
+         LOOP WHILE MESSAGE.JSON[START,1] = ' ' OR MESSAGE.JSON[START,1] = CHAR(9)
+            START = START + 1
+         REPEAT
+         * Should be at opening quote
+         IF MESSAGE.JSON[START,1] = '"' THEN
+            START = START + 1
+            * Find closing quote
+            END.POS = INDEX(MESSAGE.JSON, '"', START)
+            IF END.POS > START THEN
+               TRANSCRIPTION = MESSAGE.JSON[START, END.POS - START]
+            END
+         END
+      END
+   END
+   
+   * Extract session_id similarly
+   POS = INDEX(MESSAGE.JSON, '"session_id"', 1)
+   IF POS THEN
+      COLON.POS = INDEX(MESSAGE.JSON, ':', POS)
+      IF COLON.POS THEN
+         START = COLON.POS + 1
+         LOOP WHILE MESSAGE.JSON[START,1] = ' ' OR MESSAGE.JSON[START,1] = CHAR(9)
+            START = START + 1
+         REPEAT
+         IF MESSAGE.JSON[START,1] = '"' THEN
+            START = START + 1
+            END.POS = INDEX(MESSAGE.JSON, '"', START)
+            IF END.POS > START THEN
+               SESSION.ID = MESSAGE.JSON[START, END.POS - START]
+            END
+         END
+      END
+   END
+   
+RETURN
+
+END

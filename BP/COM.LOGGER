@@ -1,0 +1,101 @@
+* COM.LOGGER - Log commands and outputs to COM file with sequential numbering
+* Reads from COM/input.txt, executes commands, writes to COM file
+
+PROGRAM COM.LOGGER
+
+* Open COM file
+OPEN "COM" TO COM.FH ELSE
+   PRINT "Cannot open COM file"
+   STOP
+END
+
+* Get date prefix for record IDs
+TODAY = DATE()
+DATE.STR = OCONV(TODAY, "D4-")
+DATE.PREFIX = DATE.STR[1,4]:DATE.STR[6,2]:DATE.STR[9,2]
+
+* Find next sequence number by checking existing records
+SEQ.NUM = 1
+LOOP
+   TEST.ID = DATE.PREFIX:"-I":FMT(SEQ.NUM, "3'0'R")
+   READ TEST.REC FROM COM.FH, TEST.ID THEN
+      SEQ.NUM += 1
+   END ELSE
+      EXIT
+   END
+REPEAT
+
+* Read input commands
+INPUT.FILE = "COM\input.txt"
+OPENSEQ INPUT.FILE TO INPUT.FH ELSE
+   PRINT "No input file"
+   STOP
+END
+
+* Read all commands
+ALL.COMMANDS = ""
+LOOP
+   READSEQ LINE FROM INPUT.FH ELSE EXIT
+   IF ALL.COMMANDS # "" THEN ALL.COMMANDS := CHAR(254)
+   ALL.COMMANDS := LINE
+REPEAT
+CLOSESEQ INPUT.FH
+
+* Write input commands to COM with field marks between commands
+INPUT.ID = DATE.PREFIX:"-I":FMT(SEQ.NUM, "3'0'R")
+WRITE ALL.COMMANDS TO COM.FH, INPUT.ID
+
+PRINT "Input stored as ":INPUT.ID
+
+* Now execute each command and capture output
+OUTPUT.FILE = "COM\output.txt"
+OPENSEQ OUTPUT.FILE TO OUTPUT.FH ELSE
+   CREATE OUTPUT.FH ELSE
+      PRINT "Cannot create output file"
+      STOP
+   END
+END
+WEOFSEQ OUTPUT.FH
+
+* Process each command
+CMD.COUNT = DCOUNT(ALL.COMMANDS, CHAR(254))
+FOR CMD.IDX = 1 TO CMD.COUNT
+   COMMAND.TXT = ALL.COMMANDS<CMD.IDX>
+   
+   IF COMMAND.TXT = "" THEN CONTINUE
+   
+   * Execute command
+   EXECUTE COMMAND.TXT CAPTURING OUTPUT.TXT
+   EXEC.STATUS = STATUS()
+   
+   * Write to output file
+   WRITESEQ "COMMAND:":COMMAND.TXT TO OUTPUT.FH ELSE STOP
+   WRITESEQ "STATUS:":EXEC.STATUS TO OUTPUT.FH ELSE STOP
+   WRITESEQ "OUTPUT:":OUTPUT.TXT TO OUTPUT.FH ELSE STOP
+   WRITESEQ "---" TO OUTPUT.FH ELSE STOP
+NEXT CMD.IDX
+
+CLOSESEQ OUTPUT.FH
+
+* Read back the output file and write to COM
+OPENSEQ OUTPUT.FILE TO OUTPUT.FH ELSE STOP
+ALL.OUTPUT = ""
+LOOP
+   READSEQ LINE FROM OUTPUT.FH ELSE EXIT
+   IF ALL.OUTPUT # "" THEN ALL.OUTPUT := CHAR(10)
+   ALL.OUTPUT := LINE
+REPEAT
+CLOSESEQ OUTPUT.FH
+
+* Write output to COM
+OUTPUT.ID = DATE.PREFIX:"-O":FMT(SEQ.NUM, "3'0'R")
+WRITE ALL.OUTPUT TO COM.FH, OUTPUT.ID
+
+PRINT "Output stored as ":OUTPUT.ID
+PRINT "Total commands: ":CMD.COUNT
+
+* Clean up
+EXECUTE "DEL COM\input.txt"
+
+STOP
+END

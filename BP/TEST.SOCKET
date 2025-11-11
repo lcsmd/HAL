@@ -1,0 +1,45 @@
+* Minimal socket test
+PROGRAM TEST.SOCKET
+
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+EQU SOCKET.PORT TO 8767
+EQU BUFFER.SIZE TO 32768
+
+PRINT "Creating server socket on port ":SOCKET.PORT
+SRVR.SKT = CREATE.SERVER.SOCKET("", SOCKET.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Cannot create socket, status=":STATUS()
+   STOP
+END
+
+PRINT "Listening on port ":SOCKET.PORT
+PRINT "Waiting for connection..."
+
+CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+IF STATUS() THEN
+   PRINT "ERROR: Cannot accept connection, status=":STATUS()
+   STOP
+END
+
+PRINT "Connection accepted!"
+PRINT "Attempting to read..."
+
+* Try to read
+MESSAGE = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+READ.STATUS = STATUS()
+
+PRINT "Read completed, status=":READ.STATUS
+PRINT "Bytes received: ":LEN(MESSAGE)
+IF LEN(MESSAGE) > 0 THEN
+   PRINT "First 100 chars: ":MESSAGE[1,100]
+END
+
+* Close
+CLOSE.SOCKET CLIENT.SKT
+CLOSE.SOCKET SRVR.SKT
+
+PRINT "Done"
+STOP
+END

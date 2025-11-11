@@ -1,0 +1,55 @@
+===============================================
+HAL VOICE SYSTEM - QUICK DEPLOYMENT
+Server: 10.1.34.103
+===============================================
+
+ON WINDOWS QM SERVER:
+---------------------
+1. Start installer server:
+   cd C:\qmsys\hal\clients
+   python serve_installer.py
+
+2. Leave running until all installations complete
+
+
+DEPLOY TO MAC CLIENTS:
+---------------------
+Run this ONE command on each Mac:
+
+curl -fsSL http://10.1.34.103:8080/install_hal_mac.sh | HAL_SERVER_URL=http://10.1.34.103:8768 bash
+
+
+DEPLOY TO WINDOWS CLIENTS:
+--------------------------
+Run this ONE command in PowerShell on each Windows PC:
+
+$env:HAL_SERVER_URL="http://10.1.34.103:8768"; iex (irm http://10.1.34.103:8080/install_hal_windows.ps1)
+
+
+THEN USE HAL (Mac or Windows):
+------------------------------
+Restart terminal, then:
+
+hal
+
+or
+
+hal --query "What medications am I taking?"
+
+
+REVIEW COMMANDS IN QM:
+---------------------
+SEE.NEW.COM
+
+
+STOP INSTALLER SERVER:
+---------------------
+On Windows QM server, press Ctrl+C to stop serve_installer.py
+(Only needed during installation)
+
+
+VOICE GATEWAY:
+-------------
+Runs 24/7 on 10.1.34.103:8768
+All clients connect to this
+===============================================

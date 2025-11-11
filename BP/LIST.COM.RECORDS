@@ -1,0 +1,17 @@
+PROGRAM LIST.COM.RECORDS
+OPEN "","COM" TO F ELSE
+   PRINT "Cannot open COM"
+   STOP
+END
+SELECT F
+LOOP
+   READNEXT ID ELSE EXIT
+   READ REC FROM F, ID THEN
+      PRINT "ID: ":ID
+      PRINT "Length: ":LEN(REC)
+      PRINT "Content: ":REC[1,100]
+      PRINT ""
+   END
+REPEAT
+STOP
+END

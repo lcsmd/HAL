@@ -1,0 +1,17 @@
+PROGRAM TEST.COM
+CRT "Starting test"
+OPEN "COM" TO F ELSE
+   CRT "Cannot open COM"
+   STOP
+END
+CRT "Writing record..."
+WRITE "Test data" TO F, "20251107-001I"
+CRT "Written 20251107-001I"
+CRT "Counting..."
+EXECUTE "COUNT COM" CAPTURING OUT
+CRT "Count: ":OUT
+CRT "Listing..."
+EXECUTE "SSELECT COM" CAPTURING OUT
+CRT "Records: ":OUT
+STOP
+END

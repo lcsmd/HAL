@@ -1,0 +1,50 @@
+* QM BASIC Syntax Reference Test
+PROGRAM QM.SYNTAX.TEST
+
+* Test 1: Sequential file operations
+PRINT "Test 1: Sequential File I/O"
+TEST.FILE = "C:/qmsys/hal/test_seq.txt"
+OPENSEQ TEST.FILE TO FH THEN
+   WEOFSEQ FH
+END ELSE
+   CREATE FH ELSE
+      PRINT "Cannot create file"
+      STOP
+   END
+END
+WRITESEQ "Line 1" TO FH ELSE STOP
+WRITESEQ "Line 2" TO FH ELSE STOP
+CLOSESEQ FH
+
+OPENSEQ TEST.FILE TO FH ELSE STOP
+READSEQ LINE1 FROM FH ELSE LINE1 = "ERROR"
+READSEQ LINE2 FROM FH ELSE LINE2 = "ERROR"
+CLOSESEQ FH
+PRINT "Read: ":LINE1:", ":LINE2
+
+* Test 2: Execute with capturing
+PRINT "Test 2: EXECUTE with CAPTURING"
+EXECUTE "DIR C:\qmsys\hal\BP\QM*.* /B" CAPTURING OUTPUT
+PRINT "Status: ":STATUS()
+PRINT "Output lines: ":DCOUNT(OUTPUT, @AM)
+
+* Test 3: Socket operations
+PRINT "Test 3: Socket Constants"
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+PRINT "SKT$STREAM=":SKT$STREAM:", SKT$TCP=":SKT$TCP:", SKT$BLOCKING=":SKT$BLOCKING
+
+* Test 4: String operations
+PRINT "Test 4: String Operations"
+TEST.STR = "Hello World"
+PRINT "LEN=":LEN(TEST.STR)
+PRINT "INDEX=":INDEX(TEST.STR, "World", 1)
+PRINT "CHANGE=":CHANGE(TEST.STR, "World", "QM")
+
+* Test 5: Character codes
+PRINT "Test 5: Character Codes"
+PRINT "CHAR(10)=newline, CHAR(13)=CR, CHAR(254)=FM"
+
+STOP
+END

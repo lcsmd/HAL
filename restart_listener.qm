@@ -1,0 +1,27 @@
+* Restart QM Voice Listener with full version
+* Run with: qm HAL restart_listener
+
+PROGRAM RESTART.LISTENER
+
+* Step 1: Copy full version
+PRINT "Copying VOICE.LISTENER.FULL to VOICE.LISTENER..."
+EXECUTE "COPY BP VOICE.LISTENER.FULL BP VOICE.LISTENER OVERWRITING"
+
+* Step 2: Compile
+PRINT "Compiling VOICE.LISTENER..."
+EXECUTE "BASIC BP VOICE.LISTENER"
+
+* Step 3: Catalog
+PRINT "Cataloging VOICE.LISTENER..."
+EXECUTE "CATALOG BP VOICE.LISTENER"
+
+PRINT ""
+PRINT "Full listener deployed!"
+PRINT ""
+PRINT "Now restart the PHANTOM process:"
+PRINT "  1. Run: LIST.READU"
+PRINT "  2. Find VOICE.LISTENER phantom"
+PRINT "  3. Run: KILL.PHANTOM [id]"
+PRINT "  4. Run: PHANTOM VOICE.LISTENER"
+
+END

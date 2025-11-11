@@ -1,0 +1,70 @@
+* Command Executor - Execute commands and store in COM hashed file
+* Reads commands from COM.DIR/INPUT.COMMANDS.txt (one per line)
+* For each command creates TWO records in COM:
+*   YYYYMMDD-nnnI = the command text
+*   YYYYMMDD-nnnO = the captured output (exact, no prefix)
+* Also writes all output to COM.DIR/OUTPUT.txt for review
+* Usage: RUN BP COMMAND.EXECUTOR
+
+PROGRAM COMMAND.EXECUTOR
+
+* Open COM file
+OPEN "COM" TO COM.FH ELSE STOP
+
+* Get date prefix for record IDs - format as YYYYMMDD
+TODAY = DATE()
+TEMP.DATE = OCONV(TODAY, "D-YMD[4,2,2]")
+DATE.PREFIX = CHANGE(TEMP.DATE, "-", "")
+
+* Find next sequence number
+SEQ.NUM = 1
+LOOP
+   TEST.ID = DATE.PREFIX:"-":FMT(SEQ.NUM, "3'0'R"):"I"
+   READ TEST.REC FROM COM.FH, TEST.ID THEN
+      SEQ.NUM += 1
+   END ELSE
+      EXIT
+   END
+REPEAT
+
+* Open input file in COM.DIR directory
+OPENSEQ "COM.DIR/INPUT.COMMANDS.txt" TO INPUT.FH ELSE STOP
+
+* Open or create output file in COM.DIR directory
+OPENSEQ "COM.DIR/OUTPUT.txt" TO OUTPUT.FH ELSE
+   CREATE OUTPUT.FH ELSE STOP
+END
+
+* Clear output file
+WEOFSEQ OUTPUT.FH
+
+* Process each command
+LOOP
+   READSEQ CMD FROM INPUT.FH ELSE EXIT
+   
+   IF CMD = "" THEN CONTINUE
+   
+   * Write command to COM input record
+   INPUT.ID = DATE.PREFIX:"-":FMT(SEQ.NUM, "3'0'R"):"I"
+   WRITE CMD TO COM.FH, INPUT.ID
+   
+   * Execute command capturing output
+   EXECUTE CMD CAPTURING CAP
+   
+   * Write captured output to COM output record (exact contents, no prefix)
+   OUTPUT.ID = DATE.PREFIX:"-":FMT(SEQ.NUM, "3'0'R"):"O"
+   WRITE CAP TO COM.FH, OUTPUT.ID
+   
+   * Write to OUTPUT.txt for review
+   WRITESEQ "==== ":CMD:" ====" TO OUTPUT.FH ELSE STOP
+   WRITESEQ CAP TO OUTPUT.FH ELSE STOP
+   WRITESEQ "" TO OUTPUT.FH ELSE STOP
+   
+   SEQ.NUM += 1
+REPEAT
+
+CLOSESEQ INPUT.FH
+CLOSESEQ OUTPUT.FH
+
+STOP
+END

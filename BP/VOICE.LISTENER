@@ -1,8 +1,7 @@
-* HAL Voice Listener
-* TCP server that receives voice messages from Voice Gateway
-* Routes to appropriate handlers and returns responses
+* HAL Voice Listener - Using proper JSON parsing
+* TCP server with JSON.PARSE for reliable extraction
 
-PROGRAM VOICE.LISTENER.NEW
+PROGRAM VOICE.LISTENER.JPARSE
 
 * Socket constants
 EQU SKT$STREAM TO 1
@@ -12,7 +11,7 @@ EQU SOCKET.PORT TO 8767
 EQU BUFFER.SIZE TO 32768
 
 * Initialize
-PRINT "HAL Voice Listener starting..."
+PRINT "HAL Voice Listener (JSON Parser) starting..."
 PRINT "Port: ":SOCKET.PORT
 
 * Create server socket
@@ -31,47 +30,201 @@ LOOP
    * Accept incoming connection
    CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
    IF STATUS() THEN
-      PRINT "Warning: Accept failed, status: ":STATUS()
       CONTINUE
    END
    
    PRINT "Connection accepted"
    
-   * Read message
-   MESSAGE.JSON = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+   * Read message - loop with non-blocking until we get data
+   MESSAGE.JSON = ""
+   MAX.WAIT = 200
+   WAIT.COUNT = 0
+   GOT.DATA = 0
    
-   IF STATUS() THEN
-      PRINT "Warning: Read failed, status: ":STATUS()
+   LOOP
+      CHUNK = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, 0, 0)
+      READ.STATUS = STATUS()
+      
+      IF READ.STATUS = 0 AND LEN(CHUNK) > 0 THEN
+         MESSAGE.JSON := CHUNK
+         * Check if we have complete JSON (ends with newline or closing brace)
+         IF INDEX(MESSAGE.JSON, CHAR(10), 1) OR (INDEX(MESSAGE.JSON, "}", 1) AND LEN(MESSAGE.JSON) > 10) THEN
+            GOT.DATA = 1
+            EXIT
+         END
+      END
+      
+      IF READ.STATUS # 0 AND READ.STATUS # 1011 THEN
+         PRINT "Fatal read error: ":READ.STATUS
+         EXIT
+      END
+      
+      * Small delay before retry to reduce CPU usage
+      IF READ.STATUS = 1011 OR LEN(CHUNK) = 0 THEN
+         SLEEP 10
+      END
+      
+      WAIT.COUNT += 1
+      IF WAIT.COUNT > MAX.WAIT THEN
+         PRINT "Timeout waiting for data"
+         EXIT
+      END
+   REPEAT
+   
+   MSG.LEN = LEN(MESSAGE.JSON)
+   PRINT "Read ":MSG.LEN:" bytes after ":WAIT.COUNT:" attempts"
+   
+   IF GOT.DATA = 0 OR MSG.LEN = 0 THEN
+      PRINT "No data received"
       CLOSE.SOCKET CLIENT.SKT
       CONTINUE
    END
    
-   IF LEN(MESSAGE.JSON) = 0 THEN
-      PRINT "Warning: Empty message received"
-      CLOSE.SOCKET CLIENT.SKT
-      CONTINUE
-   END
+      * Parse JSON using native JPARSE function
+      JSON.OBJ = JPARSE(MESSAGE.JSON)
    
-   PRINT "Received: ":MESSAGE.JSON[1,80]
-   
-   * Build simple response for now
-   RESPONSE.JSON = '{"response_text":"Hello from QM Voice Listener!","status":"success"}'
-   
-   * Send response
-   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, 0, 0)
-   IF STATUS() THEN
-      PRINT "Warning: Write failed, status: ":STATUS()
+   IF STATUS() # 0 THEN
+      PRINT "JSON Parse Error (status ":STATUS():") at position ":INMAT():" - using fallback"
+      * Fall back to simple parsing
+      GOSUB SIMPLE.PARSE
    END ELSE
-      PRINT "Response sent"
+      * Extract fields from parsed JSON object using curly bracket syntax
+      * Try "text" field first (UBUAI format), then "transcription" (legacy format)
+      TRANSCRIPTION = JSON.OBJ{"text"}
+      IF TRANSCRIPTION = "" THEN TRANSCRIPTION = JSON.OBJ{"transcription"}
+      SESSION.ID = JSON.OBJ{"session_id"}
+      TIMESTAMP = JSON.OBJ{"timestamp"}
+      IF TRANSCRIPTION = "" THEN TRANSCRIPTION = "unknown query"
+      IF SESSION.ID = "" THEN SESSION.ID = "unknown"
+      PRINT "Successfully parsed with JPARSE()"
    END
    
-   * Close connection
-   CLOSE.SOCKET CLIENT.SKT
+   PRINT "Session: ":SESSION.ID
+   PRINT "Text: ":TRANSCRIPTION
    
-   PRINT "Request completed"
+   * Simple intent detection
+   INTENT = "GENERAL"
+   UPPER.TEXT = OCONV(TRANSCRIPTION, "MCU")
+   
+   IF INDEX(UPPER.TEXT, "MEDICATION", 1) OR INDEX(UPPER.TEXT, "MEDICINE", 1) OR INDEX(UPPER.TEXT, "PILL", 1) THEN
+      INTENT = "MEDICATION"
+   END ELSE
+      IF INDEX(UPPER.TEXT, "APPOINTMENT", 1) OR INDEX(UPPER.TEXT, "DOCTOR", 1) THEN
+         INTENT = "APPOINTMENT"
+      END ELSE
+         IF INDEX(UPPER.TEXT, "HEALTH", 1) OR INDEX(UPPER.TEXT, "VITAL", 1) OR INDEX(UPPER.TEXT, "BLOOD", 1) THEN
+            INTENT = "HEALTH_DATA"
+         END
+      END
+   END
+   
+   PRINT "Intent: ":INTENT
+   
+   * Build response
+   IF INTENT = "MEDICATION" THEN
+      RESPONSE.TEXT = "I detected a medication query: ":TRANSCRIPTION
+      ACTION = "medication_detected"
+   END ELSE
+      IF INTENT = "APPOINTMENT" THEN
+         RESPONSE.TEXT = "I detected an appointment query: ":TRANSCRIPTION
+         ACTION = "appointment_detected"
+      END ELSE
+         IF INTENT = "HEALTH_DATA" THEN
+            RESPONSE.TEXT = "I detected a health data query: ":TRANSCRIPTION
+            ACTION = "health_detected"
+         END ELSE
+            RESPONSE.TEXT = "I received your message: ":TRANSCRIPTION
+            ACTION = "acknowledged"
+         END
+      END
+   END
+   
+   * Build JSON response using native JBUILD function
+   * First create an empty collection
+   RESPONSE.OBJ = COLLECTION()
+   RESPONSE.OBJ{"response_text"} = RESPONSE.TEXT
+   RESPONSE.OBJ{"action_taken"} = ACTION
+   RESPONSE.OBJ{"intent"} = INTENT
+   RESPONSE.OBJ{"status"} = "success"
+   
+   RESPONSE.JSON = JBUILD(RESPONSE.OBJ)
+   
+   IF RESPONSE.JSON = "" THEN
+      * Fallback to manual JSON building
+      RESPONSE.JSON = '{"response_text":"'
+      RESPONSE.JSON := RESPONSE.TEXT
+      RESPONSE.JSON := '","action_taken":"'
+      RESPONSE.JSON := ACTION
+      RESPONSE.JSON := '","intent":"'
+      RESPONSE.JSON := INTENT
+      RESPONSE.JSON := '","status":"success"}'
+   END
+   
+   * Send response with blocking flag to ensure data is transmitted
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, SKT$BLOCKING, 10000)
+   IF STATUS() = 0 THEN
+      PRINT "Response sent: ":LEN(RESPONSE.JSON):" bytes"
+   END ELSE
+      PRINT "WRITE.SOCKET error: ":STATUS()
+   END
+   
+   CLOSE.SOCKET CLIENT.SKT
+   PRINT "Request completed, connection closed"
+   PRINT ""
 REPEAT
 
-* Close server socket on exit (never reached in this version)
-CLOSE.SOCKET SRVR.SKT
+STOP
+
+* ========================================
+* Simple fallback parser
+* ========================================
+SIMPLE.PARSE:
+   TRANSCRIPTION = ""
+   SESSION.ID = "unknown"
+   
+   * Extract text field (UBUAI format) or transcription (legacy)
+   POS = INDEX(MESSAGE.JSON, '"text"', 1)
+   IF POS = 0 THEN POS = INDEX(MESSAGE.JSON, '"transcription"', 1)
+   IF POS THEN
+      * Find the colon after "transcription"
+      COLON.POS = INDEX(MESSAGE.JSON, ':', POS)
+      IF COLON.POS THEN
+         * Skip whitespace and find opening quote
+         START = COLON.POS + 1
+         LOOP WHILE MESSAGE.JSON[START,1] = ' ' OR MESSAGE.JSON[START,1] = CHAR(9)
+            START = START + 1
+         REPEAT
+         * Should be at opening quote
+         IF MESSAGE.JSON[START,1] = '"' THEN
+            START = START + 1
+            * Find closing quote
+            END.POS = INDEX(MESSAGE.JSON, '"', START)
+            IF END.POS > START THEN
+               TRANSCRIPTION = MESSAGE.JSON[START, END.POS - START]
+            END
+         END
+      END
+   END
+   
+   * Extract session_id similarly
+   POS = INDEX(MESSAGE.JSON, '"session_id"', 1)
+   IF POS THEN
+      COLON.POS = INDEX(MESSAGE.JSON, ':', POS)
+      IF COLON.POS THEN
+         START = COLON.POS + 1
+         LOOP WHILE MESSAGE.JSON[START,1] = ' ' OR MESSAGE.JSON[START,1] = CHAR(9)
+            START = START + 1
+         REPEAT
+         IF MESSAGE.JSON[START,1] = '"' THEN
+            START = START + 1
+            END.POS = INDEX(MESSAGE.JSON, '"', START)
+            IF END.POS > START THEN
+               SESSION.ID = MESSAGE.JSON[START, END.POS - START]
+            END
+         END
+      END
+   END
+   
+RETURN
 
 END

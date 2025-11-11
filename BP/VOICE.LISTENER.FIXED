@@ -1,0 +1,172 @@
+* HAL Voice Listener - Fixed JSON parsing without JPARSE
+* TCP server with improved string parsing
+
+PROGRAM VOICE.LISTENER
+
+* Socket constants
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+EQU SOCKET.PORT TO 8767
+EQU BUFFER.SIZE TO 32768
+
+* Initialize
+PRINT "HAL Voice Listener (Fixed Parser) starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Create server socket
+SRVR.SKT = CREATE.SERVER.SOCKET("", SOCKET.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS()
+   STOP
+END
+
+PRINT "Voice Listener active on port ":SOCKET.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+   IF STATUS() THEN
+      CONTINUE
+   END
+   
+   PRINT "Connection accepted"
+   
+   * Read message
+   MESSAGE.JSON = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+   
+   IF STATUS() OR LEN(MESSAGE.JSON) = 0 THEN
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   PRINT "Received ":LEN(MESSAGE.JSON):" bytes"
+   
+   * Parse JSON with improved logic
+   TRANSCRIPTION = ""
+   SESSION.ID = "unknown"
+   
+   * Extract transcription - find "transcription":"value"
+   POS = INDEX(MESSAGE.JSON, '"transcription"', 1)
+   IF POS THEN
+      * Find colon after "transcription"
+      SEARCH.START = POS + 15
+      COLON.POS = INDEX(MESSAGE.JSON, ':', SEARCH.START)
+      IF COLON.POS THEN
+         * Skip past colon and any whitespace
+         START = COLON.POS + 1
+         * Skip whitespace
+         LOOP WHILE START <= LEN(MESSAGE.JSON)
+            CH = MESSAGE.JSON[START,1]
+            IF CH NE ' ' AND CH NE CHAR(9) AND CH NE CHAR(10) AND CH NE CHAR(13) THEN EXIT
+            START = START + 1
+         REPEAT
+         * Should be at opening quote
+         IF MESSAGE.JSON[START,1] = '"' THEN
+            START = START + 1
+            * Find closing quote (not escaped)
+            END.POS = INDEX(MESSAGE.JSON, '"', START)
+            IF END.POS > START THEN
+               TRANSCRIPTION = MESSAGE.JSON[START, END.POS - START]
+            END
+         END
+      END
+   END
+   
+   * Extract session_id similarly
+   POS = INDEX(MESSAGE.JSON, '"session_id"', 1)
+   IF POS THEN
+      SEARCH.START = POS + 13
+      COLON.POS = INDEX(MESSAGE.JSON, ':', SEARCH.START)
+      IF COLON.POS THEN
+         START = COLON.POS + 1
+         * Skip whitespace
+         LOOP WHILE START <= LEN(MESSAGE.JSON)
+            CH = MESSAGE.JSON[START,1]
+            IF CH NE ' ' AND CH NE CHAR(9) AND CH NE CHAR(10) AND CH NE CHAR(13) THEN EXIT
+            START = START + 1
+         REPEAT
+         IF MESSAGE.JSON[START,1] = '"' THEN
+            START = START + 1
+            END.POS = INDEX(MESSAGE.JSON, '"', START)
+            IF END.POS > START THEN
+               SESSION.ID = MESSAGE.JSON[START, END.POS - START]
+            END
+         END
+      END
+   END
+   
+   IF TRANSCRIPTION = "" THEN TRANSCRIPTION = "empty query"
+   
+   PRINT "Session: ":SESSION.ID
+   PRINT "Transcription: ":TRANSCRIPTION
+   
+   * Simple intent detection
+   INTENT = "GENERAL"
+   UPPER.TEXT = OCONV(TRANSCRIPTION, "MCU")
+   
+   * Check for medication keywords
+   IF INDEX(UPPER.TEXT, "MEDICATION", 1) THEN INTENT = "MEDICATION"
+   IF INDEX(UPPER.TEXT, "MEDICINE", 1) THEN INTENT = "MEDICATION"
+   IF INDEX(UPPER.TEXT, "PILL", 1) THEN INTENT = "MEDICATION"
+   IF INDEX(UPPER.TEXT, "DRUG", 1) THEN INTENT = "MEDICATION"
+   
+   * Check for appointment keywords
+   IF INDEX(UPPER.TEXT, "APPOINTMENT", 1) THEN INTENT = "APPOINTMENT"
+   IF INDEX(UPPER.TEXT, "DOCTOR", 1) THEN INTENT = "APPOINTMENT"
+   
+   * Check for health keywords
+   IF INDEX(UPPER.TEXT, "HEALTH", 1) THEN INTENT = "HEALTH_DATA"
+   IF INDEX(UPPER.TEXT, "VITAL", 1) THEN INTENT = "HEALTH_DATA"
+   IF INDEX(UPPER.TEXT, "BLOOD", 1) THEN INTENT = "HEALTH_DATA"
+   
+   PRINT "Intent: ":INTENT
+   
+   * Build response based on intent
+   IF INTENT = "MEDICATION" THEN
+      RESPONSE.TEXT = "I detected a medication query: ":TRANSCRIPTION
+      ACTION = "medication_detected"
+   END ELSE
+      IF INTENT = "APPOINTMENT" THEN
+         RESPONSE.TEXT = "I detected an appointment query: ":TRANSCRIPTION
+         ACTION = "appointment_detected"
+      END ELSE
+         IF INTENT = "HEALTH_DATA" THEN
+            RESPONSE.TEXT = "I detected a health data query: ":TRANSCRIPTION
+            ACTION = "health_detected"
+         END ELSE
+            RESPONSE.TEXT = "I received your message: ":TRANSCRIPTION
+            ACTION = "acknowledged"
+         END
+      END
+   END
+   
+   * Build simple JSON response
+   RESPONSE.JSON = '{"response_text":"'
+   RESPONSE.JSON := RESPONSE.TEXT
+   RESPONSE.JSON := '","action_taken":"'
+   RESPONSE.JSON := ACTION
+   RESPONSE.JSON := '","intent":"'
+   RESPONSE.JSON := INTENT
+   RESPONSE.JSON := '","status":"success"}'
+   
+   * Send response - use 0, 0 for non-blocking write
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, 0, 0)
+   IF STATUS() = 0 THEN
+      PRINT "Response sent: ":LEN(RESPONSE.JSON):" bytes"
+      PRINT ""
+   END ELSE
+      PRINT "Write error: ":STATUS()
+   END
+   
+   * Shutdown socket for writing to flush buffers
+   * (QM doesn't have shutdown, so just close)
+   CLOSE.SOCKET CLIENT.SKT
+   PRINT "Request completed"
+   PRINT ""
+REPEAT
+
+END

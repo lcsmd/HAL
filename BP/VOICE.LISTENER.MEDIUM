@@ -1,0 +1,165 @@
+* HAL Voice Listener - Medium Implementation
+* TCP server with basic intent classification but without complex file operations
+* Routes to appropriate handlers and returns responses
+
+PROGRAM VOICE.LISTENER.MEDIUM
+
+* Socket constants
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+EQU SOCKET.PORT TO 8767
+EQU BUFFER.SIZE TO 32768
+
+* Initialize
+PRINT "HAL Voice Listener (Medium) starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Create server socket
+SRVR.SKT = CREATE.SERVER.SOCKET("", SOCKET.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS()
+   STOP
+END
+
+PRINT "Voice Listener active on port ":SOCKET.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+   IF STATUS() THEN
+      PRINT "Warning: Accept failed, status: ":STATUS()
+      CONTINUE
+   END
+   
+   PRINT "Connection accepted"
+   
+   * Read message
+   MESSAGE.JSON = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+   
+   IF STATUS() THEN
+      PRINT "Warning: Read failed, status: ":STATUS()
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   IF LEN(MESSAGE.JSON) = 0 THEN
+      PRINT "Warning: Empty message received"
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   PRINT "Received: ":MESSAGE.JSON[1,80]
+   
+   * Process the message
+   GOSUB PROCESS.VOICE.MESSAGE
+   
+   * Send response
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, 0, 0)
+   IF STATUS() THEN
+      PRINT "Warning: Write failed, status: ":STATUS()
+   END ELSE
+      PRINT "Response sent: ":RESPONSE.JSON[1,60]
+   END
+   
+   * Close connection
+   CLOSE.SOCKET CLIENT.SKT
+   
+   PRINT "Request completed"
+REPEAT
+
+* Close server socket on exit (never reached in this version)
+CLOSE.SOCKET SRVR.SKT
+
+STOP
+
+* ========================================
+* Process voice message
+* ========================================
+PROCESS.VOICE.MESSAGE:
+   * Parse JSON message - simple extraction
+   TRANSCRIPTION = ''
+   SESSION.ID = 'unknown'
+   
+   * Extract transcription
+   POS = INDEX(MESSAGE.JSON, '"transcription"', 1)
+   IF POS THEN
+      START = INDEX(MESSAGE.JSON, '"', POS + 16) + 1
+      END.POS = INDEX(MESSAGE.JSON, '"', START)
+      IF END.POS > START THEN
+         TRANSCRIPTION = MESSAGE.JSON[START, END.POS - START]
+      END
+   END
+   
+   * Extract session_id
+   POS = INDEX(MESSAGE.JSON, '"session_id"', 1)
+   IF POS THEN
+      START = INDEX(MESSAGE.JSON, '"', POS + 13) + 1
+      END.POS = INDEX(MESSAGE.JSON, '"', START)
+      IF END.POS > START THEN
+         SESSION.ID = MESSAGE.JSON[START, END.POS - START]
+      END
+   END
+   
+   PRINT "Parsed - Session: ":SESSION.ID:", Text: ":TRANSCRIPTION
+   
+   * Classify intent using simple keyword matching
+   INTENT = 'GENERAL'
+   TEXT.UPPER = OCONV(TRANSCRIPTION, 'MCU')
+   
+   * Medication keywords
+   IF INDEX(TEXT.UPPER, 'MEDICATION', 1) OR INDEX(TEXT.UPPER, 'MEDICINE', 1) OR INDEX(TEXT.UPPER, 'PILL', 1) OR INDEX(TEXT.UPPER, 'DRUG', 1) OR INDEX(TEXT.UPPER, 'PRESCRIPTION', 1) THEN
+      INTENT = 'MEDICATION'
+   END
+   
+   * Appointment keywords
+   IF INDEX(TEXT.UPPER, 'APPOINTMENT', 1) OR INDEX(TEXT.UPPER, 'DOCTOR', 1) OR INDEX(TEXT.UPPER, 'VISIT', 1) THEN
+      INTENT = 'APPOINTMENT'
+   END
+   
+   * Health data keywords
+   IF INDEX(TEXT.UPPER, 'BLOOD PRESSURE', 1) OR INDEX(TEXT.UPPER, 'WEIGHT', 1) OR INDEX(TEXT.UPPER, 'VITAL', 1) THEN
+      INTENT = 'HEALTH_DATA'
+   END
+   
+   PRINT "Intent classified as: ":INTENT
+   
+   * Build response based on intent
+   RESPONSE.TEXT = ''
+   ACTION.TAKEN = 'acknowledged'
+   
+   BEGIN CASE
+      CASE INTENT = 'MEDICATION'
+         * For now, simple canned response - later call handler
+         RESPONSE.TEXT = 'I detected a medication query. The medication handler would process this: '
+         RESPONSE.TEXT := TRANSCRIPTION
+         ACTION.TAKEN = 'medication_query_detected'
+         
+      CASE INTENT = 'APPOINTMENT'
+         RESPONSE.TEXT = 'I detected an appointment query: ':TRANSCRIPTION
+         ACTION.TAKEN = 'appointment_query_detected'
+         
+      CASE INTENT = 'HEALTH_DATA'
+         RESPONSE.TEXT = 'I detected a health data query: ':TRANSCRIPTION
+         ACTION.TAKEN = 'health_query_detected'
+         
+      CASE 1
+         * General query
+         RESPONSE.TEXT = 'I heard your general query: ':TRANSCRIPTION
+         ACTION.TAKEN = 'general_query'
+   END CASE
+   
+   * Build JSON response
+   RESPONSE.JSON = '{'
+   RESPONSE.JSON := '"response_text":"':RESPONSE.TEXT:'",'
+   RESPONSE.JSON := '"action_taken":"':ACTION.TAKEN:'",'
+   RESPONSE.JSON := '"intent":"':INTENT:'",'
+   RESPONSE.JSON := '"status":"success"'
+   RESPONSE.JSON := '}'
+   
+RETURN
+
+END

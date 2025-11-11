@@ -1,0 +1,47 @@
+* Test JPARSE and JBUILD functions
+PROGRAM TEST.JPARSE
+
+* Test simple JSON parsing
+JSON.STR = '{"name":"John","age":30}'
+
+PRINT "Testing JPARSE..."
+PRINT "Input JSON: ":JSON.STR
+
+* Parse it
+OBJ = JPARSE(JSON.STR)
+PRINT "JPARSE STATUS: ":STATUS()
+
+IF STATUS() = 0 THEN
+   PRINT "Parse successful!"
+   
+   * Try to extract using curly brackets
+   NAME.VAL = OBJ{"name"}
+   PRINT "NAME extracted: ":NAME.VAL
+   PRINT "STATUS after extract: ":STATUS()
+   
+   AGE.VAL = OBJ{"age"}
+   PRINT "AGE extracted: ":AGE.VAL
+   
+   * Now test JBUILD
+   PRINT ""
+   PRINT "Testing JBUILD..."
+   NEW.OBJ = COLLECTION()
+   NEW.OBJ{"response"} = "Hello"
+   NEW.OBJ{"count"} = 42
+   
+   NEW.JSON = JBUILD(NEW.OBJ)
+   PRINT "JBUILD STATUS: ":STATUS()
+   IF STATUS() = 0 THEN
+      PRINT "Build successful!"
+      PRINT "Output JSON: ":NEW.JSON
+   END ELSE
+      PRINT "JBUILD FAILED with status ":STATUS()
+   END
+   
+END ELSE
+   PRINT "JPARSE FAILED with status ":STATUS()
+   PRINT "Error position: ":INMAT()
+END
+
+STOP
+END

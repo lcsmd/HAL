@@ -1,0 +1,127 @@
+* HAL Voice Listener - Minimal working version
+* TCP server that receives messages and returns simple responses
+
+PROGRAM VOICE.LISTENER.MINIMAL
+
+* Socket constants
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+EQU SOCKET.PORT TO 8767
+EQU BUFFER.SIZE TO 32768
+
+* Initialize
+PRINT "HAL Voice Listener (Minimal with Intent) starting..."
+PRINT "Port: ":SOCKET.PORT
+
+* Create server socket
+SRVR.SKT = CREATE.SERVER.SOCKET("", SOCKET.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Failed to create server socket on port ":SOCKET.PORT
+   PRINT "Status: ":STATUS()
+   STOP
+END
+
+PRINT "Voice Listener active on port ":SOCKET.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+   IF STATUS() THEN
+      CONTINUE
+   END
+   
+   PRINT "Connection accepted"
+   
+   * Read message
+   MESSAGE.JSON = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, SKT$BLOCKING, 0)
+   
+   IF STATUS() OR LEN(MESSAGE.JSON) = 0 THEN
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   PRINT "Received ":LEN(MESSAGE.JSON):" bytes"
+   
+   * Extract transcription simply
+   TRANSCRIPTION = ""
+   POS = INDEX(MESSAGE.JSON, '"transcription"', 1)
+   IF POS THEN
+      START = INDEX(MESSAGE.JSON, ':"', POS)
+      IF START THEN
+         START = START + 2
+         END.POS = INDEX(MESSAGE.JSON, '"', START)
+         IF END.POS > START THEN
+            TRANSCRIPTION = MESSAGE.JSON[START, END.POS - START]
+         END
+      END
+   END
+   
+   IF TRANSCRIPTION = "" THEN
+      TRANSCRIPTION = "unknown query"
+   END
+   
+   PRINT "Text: ":TRANSCRIPTION
+   
+   * Simple intent detection
+   INTENT = "GENERAL"
+   UPPER.TEXT = OCONV(TRANSCRIPTION, "MCU")
+   
+   IF INDEX(UPPER.TEXT, "MEDICATION", 1) OR INDEX(UPPER.TEXT, "MEDICINE", 1) THEN
+      INTENT = "MEDICATION"
+   END ELSE
+      IF INDEX(UPPER.TEXT, "APPOINTMENT", 1) OR INDEX(UPPER.TEXT, "DOCTOR", 1) THEN
+         INTENT = "APPOINTMENT"
+      END ELSE
+         IF INDEX(UPPER.TEXT, "HEALTH", 1) OR INDEX(UPPER.TEXT, "VITAL", 1) THEN
+            INTENT = "HEALTH_DATA"
+         END
+      END
+   END
+   
+   PRINT "Intent: ":INTENT
+   
+   * Build simple response
+   IF INTENT = "MEDICATION" THEN
+      RESPONSE.TEXT = "I detected a medication query: ":TRANSCRIPTION
+      RESPONSE.TEXT := ". The medication handler would process this."
+      ACTION = "medication_detected"
+   END ELSE
+      IF INTENT = "APPOINTMENT" THEN
+         RESPONSE.TEXT = "I detected an appointment query: ":TRANSCRIPTION
+         ACTION = "appointment_detected"
+      END ELSE
+         IF INTENT = "HEALTH_DATA" THEN
+            RESPONSE.TEXT = "I detected a health data query: ":TRANSCRIPTION
+            ACTION = "health_detected"
+         END ELSE
+            RESPONSE.TEXT = "I received your message: ":TRANSCRIPTION
+            ACTION = "acknowledged"
+         END
+      END
+   END
+   
+   * Build JSON response (keep it simple, no special character handling yet)
+   RESPONSE.JSON = '{"response_text":"'
+   RESPONSE.JSON := RESPONSE.TEXT
+   RESPONSE.JSON := '","action_taken":"'
+   RESPONSE.JSON := ACTION
+   RESPONSE.JSON := '","intent":"'
+   RESPONSE.JSON := INTENT
+   RESPONSE.JSON := '","status":"success"}'
+   
+   * Send response
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, 0, 0)
+   IF STATUS() = 0 THEN
+      PRINT "Response sent: ":LEN(RESPONSE.JSON):" bytes"
+   END
+   
+   * Close connection
+   CLOSE.SOCKET CLIENT.SKT
+   PRINT "Request completed"
+   PRINT ""
+REPEAT
+
+END

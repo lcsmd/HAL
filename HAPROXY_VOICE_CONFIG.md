@@ -1,445 +1,247 @@
-# HAProxy Configuration for HAL Voice Interface
+# HAProxy Configuration for HAL Voice Gateway
 
-**Infrastructure**: HAProxy on ubu6 with wildcard SSL cert for *.lcs.ai
+## Overview
+Configure HAProxy to route external WebSocket connections to the HAL Voice Gateway.
 
----
+## HAProxy Configuration
 
-## Current Setup
-
-### Existing Subdomains
-- `ollama.lcs.ai` → ubuai:11434 (Ollama LLM server)
-- `speech.lcs.ai` → ubuai:???? (Speech transcription + TTS)
-- `hal.lcs.ai` → Open-WebUI
-- `next.lcs.ai` → Nextcloud
-
-### DNS
-- Windows Server Domain Controller (q1)
-- Wildcard DNS: *.lcs.ai → ubu6 (HAProxy)
-
----
-
-## New Subdomains Needed for Voice Interface
-
-### 1. `voice.lcs.ai` - Voice Gateway
-**Backend**: Windows QM Server (this machine)  
-**Port**: 8765 (WebSocket)  
-**Protocol**: HTTPS/WSS (WebSocket Secure)
-
-**HAProxy Backend Configuration**:
-```haproxy
-# Voice Gateway WebSocket
-frontend https_in
-    bind *:443 ssl crt /etc/haproxy/certs/lcs.ai.pem
-    
-    # Voice Gateway WebSocket
-    acl is_voice hdr(host) -i voice.lcs.ai
-    use_backend voice_gateway if is_voice
-
-backend voice_gateway
-    mode http
-    option http-server-close
-    option forwardfor
-    # Enable WebSocket
-    timeout tunnel 3600s
-    timeout client 3600s
-    timeout server 3600s
-    http-request set-header X-Forwarded-Proto https
-    server voice1 qm-server:8765 check
-```
-
-### 2. `speech.lcs.ai` - Already Configured ✓
-**Backend**: ubuai (Speech transcription + TTS)  
-**Endpoints Needed**:
-- `POST /transcribe` - Faster-Whisper transcription
-- `POST /tts` - Text-to-Speech generation
-- `GET /health` - Health check
-
-**Verify Configuration**:
-```haproxy
-backend speech_service
-    mode http
-    balance roundrobin
-    option httpchk GET /health
-    server speech1 ubuai:9000 check
-```
-
-### 3. `ollama.lcs.ai` - Already Configured ✓
-**Backend**: ubuai:11434  
-**Used For**: Local LLM inference
-
----
-
-## Updated Voice Gateway Configuration
-
-### New URLs (Using HAProxy)
-
-```json
-{
-  "gateway": {
-    "public_url": "wss://voice.lcs.ai",
-    "local_url": "ws://localhost:8765"
-  },
-  "whisper": {
-    "url": "https://speech.lcs.ai/transcribe"
-  },
-  "ollama": {
-    "url": "https://ollama.lcs.ai"
-  },
-  "tts": {
-    "url": "https://speech.lcs.ai/tts"
-  }
-}
-```
-
-### Benefits
-- ✅ Single wildcard SSL certificate
-- ✅ Centralized routing through HAProxy
-- ✅ Easy to add/remove backends
-- ✅ Load balancing capability
-- ✅ Health checks
-- ✅ Secure WebSocket (WSS)
-
----
-
-## HAProxy Complete Configuration Example
+Add to your `haproxy.cfg`:
 
 ```haproxy
-global
-    log /dev/log local0
-    log /dev/log local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin
-    stats timeout 30s
-    user haproxy
-    group haproxy
-    daemon
-    
-    # SSL
-    ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256
-    ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
-    tune.ssl.default-dh-param 2048
-
-defaults
-    log global
-    mode http
-    option httplog
-    option dontlognull
-    timeout connect 5000
-    timeout client 50000
-    timeout server 50000
-
-frontend http_in
+#---------------------------------------------------------------------
+# HAL Voice Gateway - WebSocket Support
+#---------------------------------------------------------------------
+frontend hal_voice_frontend
+    bind *:443 ssl crt /path/to/certificate.pem
     bind *:80
+    
     # Redirect HTTP to HTTPS
-    redirect scheme https code 301
-
-frontend https_in
-    bind *:443 ssl crt /etc/haproxy/certs/lcs.ai.pem
+    redirect scheme https code 301 if !{ ssl_fc }
     
-    # ACLs for subdomain routing
-    acl is_ollama hdr(host) -i ollama.lcs.ai
-    acl is_speech hdr(host) -i speech.lcs.ai
-    acl is_hal hdr(host) -i hal.lcs.ai
-    acl is_next hdr(host) -i next.lcs.ai
-    acl is_voice hdr(host) -i voice.lcs.ai
-    
-    # WebSocket detection
+    # WebSocket upgrade headers
     acl is_websocket hdr(Upgrade) -i WebSocket
+    acl is_websocket hdr_beg(Host) -i hal.
     
-    # Backend selection
-    use_backend ollama_backend if is_ollama
-    use_backend speech_backend if is_speech
-    use_backend hal_backend if is_hal
-    use_backend nextcloud_backend if is_next
-    use_backend voice_gateway if is_voice is_websocket
-    use_backend voice_gateway if is_voice
+    # Route to HAL Voice Gateway
+    use_backend hal_voice_backend if is_websocket
+    
+    # Default backend for other traffic
+    default_backend hal_voice_backend
 
-# Ollama LLM (Already configured)
-backend ollama_backend
-    mode http
-    balance roundrobin
-    option httpchk GET /api/tags
-    timeout server 120s
-    server ollama1 ubuai:11434 check
-
-# Speech (Whisper + TTS) - Needs verification
-backend speech_backend
-    mode http
-    balance roundrobin
-    option httpchk GET /health
-    timeout server 60s
-    server speech1 ubuai:9000 check
-    # If TTS is on different port:
-    # server tts1 ubuai:5000 check backup
-
-# HAL Open-WebUI (Already configured)
-backend hal_backend
-    mode http
-    server hal1 hal-webui-server:port check
-
-# Nextcloud (Already configured)
-backend nextcloud_backend
-    mode http
-    server next1 nextcloud-server:port check
-
-# Voice Gateway (NEW)
-backend voice_gateway
-    mode http
+backend hal_voice_backend
+    # WebSocket specific settings
     option http-server-close
-    option forwardfor
-    # WebSocket support
-    timeout tunnel 3600s
-    timeout client 3600s
-    timeout server 3600s
-    http-request set-header X-Forwarded-Proto https
-    http-request set-header X-Forwarded-Host %[req.hdr(Host)]
-    server voice1 qm-server:8765 check
-```
+    option forceclose
+    
+    # Timeout settings for WebSocket
+    timeout connect 5s
+    timeout client 1h
+    timeout server 1h
+    timeout tunnel 1h
+    
+    # Health check
+    option httpchk GET / HTTP/1.1\r\nHost:\ localhost\r\nUpgrade:\ websocket
+    
+    # Route to Voice Gateway
+    server voice_gateway localhost:8768 check
 
----
+#---------------------------------------------------------------------
+# Alternative: Use path-based routing
+#---------------------------------------------------------------------
+frontend hal_https_frontend
+    bind *:443 ssl crt /path/to/certificate.pem
+    
+    # Route /voice or /ws to Voice Gateway
+    acl is_voice path_beg /voice /ws
+    use_backend hal_voice_backend if is_voice
+    
+    # Other paths can go elsewhere
+    default_backend other_backend
 
-## Testing the Setup
-
-### 1. Test Ollama (Should Already Work)
-```bash
-curl https://ollama.lcs.ai/api/tags
-```
-
-Expected: JSON list of models
-
-### 2. Test Speech Service
-```bash
-# Test transcription endpoint
-curl https://speech.lcs.ai/health
-
-# Test transcription (with sample audio)
-curl -X POST https://speech.lcs.ai/transcribe \
-  -H "Content-Type: application/json" \
-  -d '{"audio": "base64_audio_data", "language": "en"}'
-
-# Test TTS
-curl -X POST https://speech.lcs.ai/tts \
-  -H "Content-Type: application/json" \
-  -d '{"text": "Hello world", "voice": "en_US-lessac-medium"}'
-```
-
-### 3. Test Voice Gateway (Once Configured)
-```bash
-# From Mac or Windows
-wscat -c wss://voice.lcs.ai
-
-# Or use Python
-python -c "
-import asyncio
-import websockets
-
-async def test():
-    async with websockets.connect('wss://voice.lcs.ai') as ws:
-        msg = await ws.recv()
-        print(f'Received: {msg}')
-
-asyncio.run(test())
-"
-```
-
----
-
-## Client Configuration Updates
-
-### Mac Voice Client
-```python
-# Change from:
-GATEWAY_URL = "ws://localhost:8765"
-
-# To:
-GATEWAY_URL = "wss://voice.lcs.ai"
-```
-
-### Windows Testing
-```python
-# Local testing (on QM server):
-GATEWAY_URL = "ws://localhost:8765"
-
-# Remote testing (from other machines):
-GATEWAY_URL = "wss://voice.lcs.ai"
-```
-
----
-
-## Security Considerations
-
-### 1. WebSocket Security
-- ✅ WSS (WebSocket Secure) via HAProxy SSL
-- ✅ Wildcard certificate for *.lcs.ai
-- ⚠️ Consider adding authentication token in WebSocket handshake
-
-### 2. API Security
-- ⚠️ Speech API should have rate limiting
-- ⚠️ Consider API keys for external access
-- ✅ Internal network traffic can be HTTP (behind HAProxy)
-
-### 3. Firewall Rules
-**ubu6 (HAProxy)**:
-- Port 80 (HTTP → HTTPS redirect)
-- Port 443 (HTTPS/WSS)
-
-**ubuai (AI Services)**:
-- Port 11434 (Ollama) - Internal only
-- Port 9000 (Whisper) - Internal only
-- Port 5000 (TTS) - Internal only
-
-**qm-server (Voice Gateway)**:
-- Port 8765 (WebSocket) - Internal only
-- Port 8767 (QM Listener) - Internal only
-
----
-
-## Deployment Steps
-
-### Step 1: Verify Existing Services
-```bash
-# SSH to ubu6 (HAProxy)
-ssh ubu6
-
-# Check current backends
-sudo cat /etc/haproxy/haproxy.cfg | grep backend
-
-# Test ollama
-curl https://ollama.lcs.ai/api/tags
-
-# Test speech
-curl https://speech.lcs.ai/health
-```
-
-### Step 2: Add Voice Gateway Backend
-```bash
-# Edit HAProxy config
-sudo nano /etc/haproxy/haproxy.cfg
-
-# Add voice_gateway backend (see config above)
-
-# Test configuration
-sudo haproxy -c -f /etc/haproxy/haproxy.cfg
-
-# Reload HAProxy (zero downtime)
-sudo systemctl reload haproxy
-```
-
-### Step 3: Start Voice Gateway on QM Server
-```powershell
-cd C:\qmsys\hal\PY
-python voice_gateway.py
-```
-
-### Step 4: Test from External Client
-```bash
-# From Mac or any machine
-wscat -c wss://voice.lcs.ai
-```
-
----
-
-## Monitoring
-
-### HAProxy Stats
-```bash
-# Enable stats page in haproxy.cfg
+# Stats page (optional)
 listen stats
-    bind *:9000
+    bind *:8404
     stats enable
     stats uri /stats
     stats refresh 30s
     stats auth admin:password
-
-# Access at: http://ubu6:9000/stats
 ```
 
-### Health Checks
+## Simple Configuration (No SSL)
+
+For testing or internal network only:
+
+```haproxy
+frontend hal_simple
+    bind *:80
+    
+    acl is_websocket hdr(Upgrade) -i WebSocket
+    use_backend hal_voice_backend if is_websocket
+    default_backend hal_voice_backend
+
+backend hal_voice_backend
+    timeout tunnel 1h
+    server voice_gateway localhost:8768 check
+```
+
+## DNS/Domain Setup
+
+### Option 1: Subdomain
+Point `hal.yourdomain.com` to your server IP:
+```
+hal.yourdomain.com.  A  123.45.67.89
+```
+
+Then use: `https://hal.yourdomain.com`
+
+### Option 2: Path-based
+Use existing domain with path:
+```
+https://yourdomain.com/voice
+```
+
+Configure HAProxy path routing (see Alternative config above).
+
+### Option 3: IP-based (No DNS)
+Direct to IP with SSL:
+```
+https://123.45.67.89
+```
+
+Requires valid SSL certificate for the IP.
+
+## SSL Certificate
+
+### Option 1: Let's Encrypt (Free)
 ```bash
-# Check all backends
-curl https://ollama.lcs.ai/api/tags
-curl https://speech.lcs.ai/health
-curl https://hal.lcs.ai/
-curl https://voice.lcs.ai/ (should upgrade to WebSocket)
+# Install certbot
+apt-get install certbot
+
+# Get certificate for your domain
+certbot certonly --standalone -d hal.yourdomain.com
+
+# Combine cert and key for HAProxy
+cat /etc/letsencrypt/live/hal.yourdomain.com/fullchain.pem \\
+    /etc/letsencrypt/live/hal.yourdomain.com/privkey.pem \\
+    > /etc/haproxy/certs/hal.yourdomain.com.pem
+
+# Set permissions
+chmod 600 /etc/haproxy/certs/hal.yourdomain.com.pem
 ```
 
----
+### Option 2: Self-Signed (Testing Only)
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \\
+    -keyout /etc/haproxy/certs/selfsigned.key \\
+    -out /etc/haproxy/certs/selfsigned.crt
+
+cat /etc/haproxy/certs/selfsigned.crt \\
+    /etc/haproxy/certs/selfsigned.key \\
+    > /etc/haproxy/certs/selfsigned.pem
+```
+
+## Firewall Rules
+
+### Windows (Voice Gateway)
+```powershell
+# Allow HAProxy to connect to Voice Gateway
+New-NetFirewallRule -DisplayName "HAL Voice Gateway" \\
+    -Direction Inbound -LocalPort 8768 -Protocol TCP -Action Allow
+```
+
+### Linux (HAProxy Server)
+```bash
+# Allow HTTPS
+ufw allow 443/tcp
+
+# Allow HTTP (for redirect)
+ufw allow 80/tcp
+
+# If HAProxy on different machine, allow it to connect to Windows
+# On Windows, allow the HAProxy server IP
+```
+
+## Testing
+
+### Test HAProxy Config
+```bash
+haproxy -c -f /etc/haproxy/haproxy.cfg
+```
+
+### Reload HAProxy
+```bash
+systemctl reload haproxy
+```
+
+### Test Connection
+```bash
+# From Mac
+curl -i -N -H "Connection: Upgrade" \\
+     -H "Upgrade: websocket" \\
+     -H "Host: hal.yourdomain.com" \\
+     https://hal.yourdomain.com/
+```
+
+## Mac Client URLs
+
+After HAProxy setup, Mac clients use:
+
+**Local Network:**
+```bash
+HAL_SERVER_URL=http://192.168.1.100:8768
+```
+
+**External via HAProxy:**
+```bash
+HAL_SERVER_URL=https://hal.yourdomain.com
+```
+
+**Path-based routing:**
+```bash
+HAL_SERVER_URL=https://yourdomain.com/voice
+```
 
 ## Troubleshooting
 
-### Voice Gateway Not Accessible
-```bash
-# On ubu6
-sudo tail -f /var/log/haproxy.log
+### Connection Refused
+- Check HAProxy is running: `systemctl status haproxy`
+- Check Voice Gateway is running on port 8768
+- Check firewall allows connections
 
-# Check if backend is down
-echo "show servers state" | sudo socat stdio /var/run/haproxy/admin.sock
+### WebSocket Upgrade Failed
+- Verify `Upgrade: websocket` header is being passed
+- Check HAProxy logs: `tail -f /var/log/haproxy.log`
+- Ensure timeout tunnel is set (not timing out)
 
-# Manual test
-curl http://qm-server:8765
+### SSL Certificate Errors
+- Verify certificate is valid: `openssl s_client -connect hal.yourdomain.com:443`
+- Check certificate permissions (should be 600)
+- Ensure combined cert includes both cert and key
+
+### HAProxy Can't Reach Voice Gateway
+- If HAProxy on different machine, check network connectivity
+- Verify Windows firewall allows connection from HAProxy server
+- Test: `telnet windows_ip 8768` from HAProxy server
+
+## Architecture
+
+```
+Internet/WAN
+    ↓
+HAProxy (Port 443/80) - SSL Termination
+    ↓
+Voice Gateway (Port 8768) - WebSocket
+    ↓
+QM Listener (Port 8767) - Native QM
+    ↓
+HAL QM Database
 ```
 
-### Speech Service Issues
-```bash
-# SSH to ubuai
-ssh ubuai
+## Security Considerations
 
-# Check if service is running
-ps aux | grep whisper
-ps aux | grep tts
-
-# Check ports
-netstat -tulpn | grep :9000
-netstat -tulpn | grep :5000
-```
-
-### SSL Certificate Issues
-```bash
-# Check certificate
-openssl s_client -connect voice.lcs.ai:443 -servername voice.lcs.ai
-
-# Verify wildcard cert includes voice.lcs.ai
-openssl x509 -in /etc/haproxy/certs/lcs.ai.pem -text -noout | grep DNS
-```
-
----
-
-## Next Steps
-
-1. **Verify speech.lcs.ai endpoints**
-   - What API does it expose?
-   - Is it Faster-Whisper compatible?
-   - Does it have TTS?
-
-2. **Add voice.lcs.ai backend to HAProxy**
-   - Configure WebSocket support
-   - Add health checks
-   - Test from external client
-
-3. **Update Voice Gateway**
-   - Use HTTPS URLs for speech and ollama
-   - Handle SSL connections
-   - Test transcription integration
-
-4. **Deploy Mac Client**
-   - Use wss://voice.lcs.ai
-   - Test end-to-end flow
-
----
-
-## Questions for You
-
-1. **What API does speech.lcs.ai expose?**
-   - Is it Faster-Whisper?
-   - What are the endpoints?
-   - POST /transcribe format?
-
-2. **What's the QM server hostname for HAProxy?**
-   - Is it `qm-server`, `q1`, or something else?
-   - What's the internal IP?
-
-3. **Do you want voice.lcs.ai subdomain?**
-   - Or different name?
-   - Should it be public or internal only?
-
-Let me know these details and I can generate the exact HAProxy configuration!
+- Use SSL/TLS for external access
+- Consider adding WebSocket authentication
+- Use strong SSL certificates (not self-signed for production)
+- Keep HAProxy updated
+- Monitor logs for suspicious activity
+- Consider rate limiting in HAProxy
