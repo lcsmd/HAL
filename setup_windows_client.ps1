@@ -195,51 +195,30 @@ Write-Host ""
 Write-Host "Step 7: Testing Connection to HAL Server" -ForegroundColor Green
 Write-Host "-------------------------------------" -ForegroundColor Green
 
-# Python test script will be created inline below to avoid parsing issues
-
 Write-Host "Testing connection to QM server (10.1.34.103:8768)..." -ForegroundColor Cyan
 
-# Create test script using separate lines to avoid parsing issues
-$testLines = @(
-    "import asyncio",
-    "import websockets",
-    "import sys",
-    "",
-    "async def test():",
-    "    uri = 'ws://10.1.34.103:8768'",
-    "    try:",
-    "        async with websockets.connect(uri, ping_interval=None) as ws:",
-    "            await ws.send('{`"command`":`"ping`"}')",
-    "            response = await asyncio.wait_for(ws.recv(), timeout=5)",
-    "            print('SUCCESS')",
-    "            return True",
-    "    except Exception as e:",
-    "        print(f'FAILED: {e}')",
-    "        return False",
-    "",
-    "result = asyncio.run(test())",
-    "sys.exit(0 if result else 1)"
-)
-
-$testLines | Out-File -FilePath "test_connection_temp.py" -Encoding UTF8
-$testOutput = python test_connection_temp.py 2>&1
-
-if ($testOutput -match "SUCCESS") {
-    Write-Host "✓ Connection successful!" -ForegroundColor Green
+# Use the test script from the repository
+$testScriptPath = Join-Path $InstallPath "test_hal_connection.py"
+if (Test-Path $testScriptPath) {
+    $testOutput = python $testScriptPath 2>&1
+    
+    if ($testOutput -match "SUCCESS") {
+        Write-Host "✓ Connection successful!" -ForegroundColor Green
+    } else {
+        Write-Host "⚠ Connection failed" -ForegroundColor Yellow
+        Write-Host "  Error: $testOutput" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "  Possible causes:" -ForegroundColor Yellow
+        Write-Host "    - QM server is offline" -ForegroundColor Yellow
+        Write-Host "    - WebSocket listener not running on server" -ForegroundColor Yellow
+        Write-Host "    - Firewall blocking connection" -ForegroundColor Yellow
+        Write-Host "    - Not on same network" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "  You can still use the client, but it won't connect yet." -ForegroundColor Yellow
+    }
 } else {
-    Write-Host "⚠ Connection failed" -ForegroundColor Yellow
-    Write-Host "  Error: $testOutput" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "  Possible causes:" -ForegroundColor Yellow
-    Write-Host "    - QM server is offline" -ForegroundColor Yellow
-    Write-Host "    - WebSocket listener not running on server" -ForegroundColor Yellow
-    Write-Host "    - Firewall blocking connection" -ForegroundColor Yellow
-    Write-Host "    - Not on same network" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "  You can still use the client, but it won't connect yet." -ForegroundColor Yellow
+    Write-Host "⚠ Test script not found, skipping connection test" -ForegroundColor Yellow
 }
-
-Remove-Item "test_connection_temp.py" -ErrorAction SilentlyContinue
 Write-Host ""
 
 # Step 8: Create Desktop Shortcuts
