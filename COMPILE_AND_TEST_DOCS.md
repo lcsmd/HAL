@@ -35,9 +35,9 @@ BASIC BP FIND.DOC
 ### Step 2: Catalog the Programs
 
 ```
-* Catalog so they can be run from command line
-CATALOG BP VIEW.DOC
-CATALOG BP FIND.DOC
+* Catalog so they can be run from command line (LOCAL for account-specific)
+CATALOG BP VIEW.DOC LOCAL
+CATALOG BP FIND.DOC LOCAL
 ```
 
 **Expected output**: "Cataloged successfully" or similar

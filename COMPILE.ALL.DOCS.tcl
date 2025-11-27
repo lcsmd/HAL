@@ -26,9 +26,9 @@ FOR I = 1 TO NUM.PROGRAMS
       PRINT " SUCCESS"
       SUCCESS.COUNT += 1
       
-      * Catalog it
-      PRINT "  Cataloging ":PROG:"...":
-      EXECUTE "CATALOG BP ":PROG CAPTURING CAT.OUTPUT RETURNING CAT.STATUS
+      * Catalog it (LOCAL for account-specific)
+      PRINT "  Cataloging ":PROG:" LOCAL...":
+      EXECUTE "CATALOG BP ":PROG:" LOCAL" CAPTURING CAT.OUTPUT RETURNING CAT.STATUS
       
       IF CAT.STATUS = 0 THEN
          PRINT " SUCCESS"

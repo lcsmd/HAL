@@ -5,7 +5,7 @@ PROGRAM VIEW.DOC
 *
 * Location: C:\qmsys\hal\BP\VIEW.DOC.b
 * Compile: COMPILE BP VIEW.DOC
-* Catalog: CATALOG BP VIEW.DOC
+* Catalog: CATALOG BP VIEW.DOC LOCAL
 * Run: VIEW.DOC
 *
 

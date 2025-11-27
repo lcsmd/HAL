@@ -22,9 +22,9 @@ foreach ($prog in $programs) {
     if ($exitCode -eq 0) {
         Write-Host " SUCCESS" -ForegroundColor Green
         
-        # Try to catalog
-        Write-Host "  Cataloging $prog..." -NoNewline
-        $catOutput = & qm -qhal -k"CATALOG BP $prog" 2>&1
+        # Try to catalog (LOCAL for account-specific)
+        Write-Host "  Cataloging $prog LOCAL..." -NoNewline
+        $catOutput = & qm -qhal -k"CATALOG BP $prog LOCAL" 2>&1
         if ($LASTEXITCODE -eq 0) {
             Write-Host " SUCCESS" -ForegroundColor Green
             $results += [PSCustomObject]@{
