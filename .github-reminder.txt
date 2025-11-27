@@ -1,0 +1,46 @@
+================================================================================
+GITHUB REMINDER FOR AI AGENTS
+================================================================================
+
+Repository: https://github.com/lcsmd/hal
+Owner: lcsmd
+Branch: main
+
+================================================================================
+BEFORE ANY MAJOR CHANGES
+================================================================================
+
+1. git status
+2. git pull origin main
+3. git checkout -b backup-before-[description]-[date]
+4. git push origin backup-before-[description]-[date]
+5. git checkout main
+
+NOW you can safely make major changes!
+
+================================================================================
+AFTER MAKING CHANGES
+================================================================================
+
+1. Update HAL_SYSTEM_MASTER.md
+2. Update related documentation
+3. git add [docs]
+4. git commit -m "docs: [description]"
+5. git add [code]
+6. git commit -m "feat: [description]"
+7. git push origin main
+
+VERIFY: git log --oneline -3
+
+================================================================================
+IF SOMETHING GOES WRONG
+================================================================================
+
+git checkout backup-before-[description]-[date]
+git checkout -b recovery
+# Fix issues
+git push origin recovery
+
+================================================================================
+
+See: DOCUMENTATION_MAINTENANCE.md for complete instructions

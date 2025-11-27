@@ -1,6 +1,35 @@
-# Personal AI Assistant
+# HAL Personal AI Assistant
 
 An advanced AI assistant with persistent memory, voice interaction, and expandable skills. Built on OpenQM for robust data storage and various LLM models for cognitive functions.
+
+---
+
+## 🎯 For AI Agents & Developers
+
+**START HERE**: Read these files IN ORDER:
+
+1. **[HAL_SYSTEM_MASTER.md](DOCS/SYSTEM/HAL_SYSTEM_MASTER.md)** - Complete system understanding
+   - Complete architecture overview
+   - All architectural decisions and rationale
+   - Code organization and locations
+   - Database structure and schema
+   - Network infrastructure
+   - Integration points
+   - Development history
+
+2. **[DOCUMENTATION_MAINTENANCE.md](DOCS/SYSTEM/DOCUMENTATION_MAINTENANCE.md)** - CRITICAL maintenance instructions
+   - How to keep documentation updated
+   - GitHub repository workflow
+   - What to update when making changes
+   - Commit standards and checklists
+
+**GitHub Repository**: `https://github.com/lcsmd/hal` (owner: lcsmd)
+
+**All Documentation**: See **[DOCS.md](DOCS.md)** for complete documentation organization
+
+**Purpose**: Single source of truth for AI agents to understand the entire system without repetition or confusion, and maintain it properly.
+
+---
 
 ## Core Features
 
