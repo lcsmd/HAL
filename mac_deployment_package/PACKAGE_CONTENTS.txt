@@ -1,0 +1,137 @@
+HAL MAC DEPLOYMENT PACKAGE
+===========================
+
+Version: 1.0
+Created: 2025-11-26
+Platform: MacBook Pro (macOS 10.15+)
+
+PACKAGE CONTENTS
+================
+
+Core Files:
+-----------
+1. hal_text_client.py           - Simple text interface (no audio dependencies)
+2. hal_voice_client.py          - Full voice interface with wake word detection
+3. requirements.txt             - Python dependencies
+4. generate_sounds.py           - Audio feedback sound generator
+
+Setup & Testing:
+----------------
+5. setup_mac.sh                 - Automated setup script
+6. test_connection.sh           - Connection testing script
+
+Documentation:
+--------------
+7. README.md                    - Complete documentation
+8. QUICKSTART.md                - 5-minute quick start guide
+9. START_HERE.md                - Quick overview and entry point
+10. NETWORK_INFO.md             - Detailed network architecture
+11. AI_SERVICES.md              - GPU server & AI services details
+12. PHANTOM_PROCESS_INFO.md     - QM phantom process guide
+13. DEPLOYMENT_CHECKLIST.md     - Deployment verification checklist
+14. PACKAGE_CONTENTS.txt        - This file
+
+Configuration & Security:
+-------------------------
+15. network_config.sh           - Network configuration script
+16. CREDENTIALS.txt             - Server credentials (SECURE - not in git)
+17. ssh_config_example.txt      - SSH config template
+18. setup_ssh_keys.sh           - SSH key setup automation
+19. .gitignore                  - Protect sensitive files
+
+Generated (after setup):
+------------------------
+- venv/                         - Python virtual environment (created by setup)
+- activation.wav                - Activation sound (created by generate_sounds.py)
+- acknowledgement.wav           - Acknowledgement sound
+- error.wav                     - Error sound
+- correction.wav                - Correction sound
+
+FEATURES
+========
+
+Text Mode (hal_text_client.py):
+- ✅ Simple text-based interface
+- ✅ No audio dependencies required
+- ✅ Interactive and single-query modes
+- ✅ Intent detection (MEDICATION, APPOINTMENT, HEALTH_DATA)
+- ✅ Built-in help and examples
+- ✅ Easy to use and troubleshoot
+
+Voice Mode (hal_voice_client.py):
+- ✅ Wake word detection ("Hey Jarvis", "Computer")
+- ✅ Voice Activity Detection (VAD)
+- ✅ Audio feedback sounds
+- ✅ Interruption handling
+- ✅ 10-second follow-up window
+- ✅ Keyboard fallback mode
+
+REQUIREMENTS
+============
+
+Hardware:
+- MacBook Pro (or any Mac)
+- Network connection to Windows HAL server
+- Microphone (for voice mode only)
+- Speakers (for voice mode only)
+
+Software:
+- macOS 10.15 or higher
+- Python 3.8 or higher (usually pre-installed)
+- Network access to Windows server
+
+Services (on Windows):
+- HAL Voice Gateway (PY/voice_gateway.py) on port 8768
+- QM Voice Listener (BP/VOICE.LISTENER) on port 8767
+
+QUICK START
+===========
+
+1. Get Windows IP:
+   ipconfig | findstr IPv4
+
+2. Copy package to Mac
+
+3. Run setup:
+   bash setup_mac.sh
+
+4. Configure:
+   export HAL_GATEWAY_URL=ws://YOUR_WINDOWS_IP:8768
+
+5. Test:
+   bash test_connection.sh
+
+6. Use:
+   python3 hal_text_client.py
+
+ARCHITECTURE
+============
+
+MacBook Pro                Windows Server              Windows Server
+(hal_text_client.py)  →    (voice_gateway.py)     →    (VOICE.LISTENER)    →    HAL Database
+  Text I/O                WebSocket (8768)            TCP (8767)               OpenQM
+                          Message routing             Intent detection         Data access
+
+SUPPORT
+=======
+
+- See README.md for detailed documentation
+- See QUICKSTART.md for step-by-step guide
+- See DEPLOYMENT_CHECKLIST.md for verification
+- Run test_connection.sh to diagnose issues
+
+NOTES
+=====
+
+- Text mode requires only 'websockets' Python package
+- Voice mode requires additional audio packages (portaudio, sounddevice, etc.)
+- Both modes connect to same Voice Gateway
+- Gateway handles communication with QM Voice Listener
+- QM Listener detects intent and routes to appropriate handlers
+
+For voice features, see README.md section "Voice Mode (Optional)"
+
+LICENSE
+=======
+
+Part of HAL Personal AI Assistant

@@ -4,7 +4,24 @@
 
 ---
 
-## 🚀 Quick Start
+## 🎯 For AI Agents & Complete System Understanding
+
+### **[HAL_SYSTEM_MASTER.md](HAL_SYSTEM_MASTER.md)** ← START HERE
+
+**Complete system documentation in a single file** (846 lines, 31KB):
+- Architecture decisions and rationale
+- All code locations (75+ QM programs, 50+ Python scripts)
+- Database structure (40+ files, schema system)
+- Network infrastructure (4 servers, IP addresses, roles)
+- Integration points (Epic, Gmail, AI services)
+- Development history and lessons learned
+- Security, deployment, and maintenance
+
+**Purpose**: Single source of truth for AI agents to understand the entire HAL system.
+
+---
+
+## 🚀 Quick Start (For Users)
 
 - **[START_HERE.md](START_HERE.md)** - Complete setup guide for Epic API integration
 - **[README.md](README.md)** - System overview and basic usage

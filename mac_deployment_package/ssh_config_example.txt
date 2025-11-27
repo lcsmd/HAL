@@ -1,0 +1,40 @@
+# SSH Config for HAL Servers
+# Add this to ~/.ssh/config on your Mac for easy access
+
+# HAProxy Server
+Host haproxy
+    HostName 10.1.50.100
+    Port 2222
+    User lawr
+    # Optional: Add key-based auth
+    # IdentityFile ~/.ssh/id_ed25519
+
+# AI Server (Ollama/Faster-Whisper)
+Host ai-server
+    HostName 10.1.10.20
+    User lawr
+    # Optional: Add key-based auth
+    # IdentityFile ~/.ssh/id_ed25519
+
+# QM Server (if SSH is enabled)
+Host qm-server
+    HostName 10.1.34.103
+    User lawr
+    # Note: Windows - may need special config
+
+# Proxmox
+Host proxmox
+    HostName 10.1.33.1
+    User root
+    # Optional: Add key-based auth
+    # IdentityFile ~/.ssh/id_ed25519
+
+# Usage after adding to ~/.ssh/config:
+#   ssh haproxy
+#   ssh ai-server
+#   ssh proxmox
+#
+# Instead of:
+#   ssh lawr@10.1.50.100 -p 2222
+#   ssh lawr@10.1.10.20
+#   ssh root@10.1.33.1
