@@ -195,30 +195,33 @@ Write-Host ""
 Write-Host "Step 7: Testing Connection to HAL Server" -ForegroundColor Green
 Write-Host "-------------------------------------" -ForegroundColor Green
 
-$testScript = @"
-import asyncio
-import websockets
-import sys
-
-async def test():
-    uri = 'ws://10.1.34.103:8768'
-    try:
-        async with websockets.connect(uri, ping_interval=None) as ws:
-            await ws.send('{\"command\":\"ping\"}')
-            response = await asyncio.wait_for(ws.recv(), timeout=5)
-            print('SUCCESS')
-            return True
-    except Exception as e:
-        print(f'FAILED: {e}')
-        return False
-
-result = asyncio.run(test())
-sys.exit(0 if result else 1)
-"@
-
-$testScript | Out-File -FilePath "test_connection_temp.py" -Encoding UTF8
+# Python test script will be created inline below to avoid parsing issues
 
 Write-Host "Testing connection to QM server (10.1.34.103:8768)..." -ForegroundColor Cyan
+
+# Create test script using separate lines to avoid parsing issues
+$testLines = @(
+    "import asyncio",
+    "import websockets",
+    "import sys",
+    "",
+    "async def test():",
+    "    uri = 'ws://10.1.34.103:8768'",
+    "    try:",
+    "        async with websockets.connect(uri, ping_interval=None) as ws:",
+    "            await ws.send('{`"command`":`"ping`"}')",
+    "            response = await asyncio.wait_for(ws.recv(), timeout=5)",
+    "            print('SUCCESS')",
+    "            return True",
+    "    except Exception as e:",
+    "        print(f'FAILED: {e}')",
+    "        return False",
+    "",
+    "result = asyncio.run(test())",
+    "sys.exit(0 if result else 1)"
+)
+
+$testLines | Out-File -FilePath "test_connection_temp.py" -Encoding UTF8
 $testOutput = python test_connection_temp.py 2>&1
 
 if ($testOutput -match "SUCCESS") {
