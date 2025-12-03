@@ -79,9 +79,15 @@ class QueryRouter:
         """
         Detect query intent
         Returns: (intent_type, confidence)
-        intent_type: 'home_assistant', 'database', 'llm'
+        intent_type: 'home_assistant', 'database', 'llm', 'builtin'
         """
         query_lower = query.lower()
+        
+        # Check for built-in queries (time, date, hello) - HIGHEST PRIORITY
+        if re.search(r'\b(what|current|tell me)\s+(time|date)\b', query_lower):
+            return ('builtin', 0.95)
+        if re.search(r'\b(hello|hi|hey)\b', query_lower) and len(query_lower) < 20:
+            return ('builtin', 0.95)
         
         # Check Home Assistant patterns
         for pattern in self.home_assistant_patterns:
@@ -109,7 +115,13 @@ class QueryRouter:
             print(f"[Router] Query: {query[:50]}...")
             
             # Route to handler
-            if intent == 'home_assistant' and self.config['home_assistant']['enabled']:
+            if intent == 'builtin':
+                # Use AI.SERVER for built-in queries (time, date, hello)
+                import socket
+                import json
+                response = self._query_ai_server(query, session_id)
+                
+            elif intent == 'home_assistant' and self.config['home_assistant']['enabled']:
                 response = handle_home_assistant(
                     query, 
                     self.config['home_assistant'], 
@@ -155,6 +167,41 @@ class QueryRouter:
                 'intent': 'error',
                 'status': 'error'
             }
+    
+    def _query_ai_server(self, query: str, session_id: str) -> Dict:
+        """Query AI.SERVER directly for built-in responses"""
+        import socket
+        import json
+        
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(5.0)
+            s.connect(('localhost', 8745))
+            
+            message = {'type': 'text_input', 'text': query, 'session_id': session_id}
+            s.sendall(json.dumps(message).encode() + b'\n')
+            
+            response_data = b""
+            while True:
+                chunk = s.recv(4096)
+                if not chunk:
+                    break
+                response_data += chunk
+                if b'}' in chunk:
+                    break
+            
+            s.close()
+            
+            if response_data:
+                result = json.loads(response_data.decode())
+                return {
+                    'text': result.get('text', 'No response'),
+                    'status': result.get('status', 'success'),
+                    'intent': 'builtin'
+                }
+        except Exception as e:
+            print(f"[Router] AI.SERVER error: {e}")
+            return {'text': f'Error: {e}', 'status': 'error', 'intent': 'builtin'}
 
 # Singleton instance
 _router = None
