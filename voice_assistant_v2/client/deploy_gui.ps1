@@ -10,20 +10,20 @@ Write-Host "HAL Voice Assistant GUI - Deploy" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Function to print status
+# Functions to print status
 function Print-Status {
     param([string]$Message)
-    Write-Host "✓ $Message" -ForegroundColor Green
+    Write-Host "checkmark $Message" -ForegroundColor Green
 }
 
 function Print-Error {
     param([string]$Message)
-    Write-Host "✗ $Message" -ForegroundColor Red
+    Write-Host "X $Message" -ForegroundColor Red
 }
 
 function Print-Warning {
     param([string]$Message)
-    Write-Host "⚠ $Message" -ForegroundColor Yellow
+    Write-Host "! $Message" -ForegroundColor Yellow
 }
 
 # Step 1: Check Python 3
