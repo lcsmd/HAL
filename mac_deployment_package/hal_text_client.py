@@ -38,25 +38,25 @@ class HALTextClient:
             
             if data.get('type') == 'connected':
                 self.session_id = data.get('session_id')
-                print(f"✅ Connected to HAL Voice Gateway")
+                print(f"[OK] Connected to HAL Voice Gateway")
                 print(f"   Session ID: {self.session_id}")
                 print(f"   State: {data.get('state')}\n")
                 return True
             
-            print(f"❌ Unexpected response: {data}")
+            print(f"[ERROR] Unexpected response: {data}")
             return False
             
         except asyncio.TimeoutError:
-            print(f"❌ Connection timeout. Is Voice Gateway running?")
+            print(f"[ERROR] Connection timeout. Is Voice Gateway running?")
             return False
         except ConnectionRefusedError:
-            print(f"❌ Connection refused. Possible issues:")
+            print(f"[ERROR] Connection refused. Possible issues:")
             print(f"   1. Voice Gateway not running on Windows")
             print(f"   2. Wrong IP address in GATEWAY_URL")
             print(f"   3. Firewall blocking port 8768")
             return False
         except Exception as e:
-            print(f"❌ Connection failed: {e}")
+            print(f"[ERROR] Connection failed: {e}")
             return False
     
     async def send_text_query(self, text):
@@ -93,9 +93,9 @@ class HALTextClient:
                     intent = data.get('intent', 'unknown')
                     action = data.get('action_taken', 'unknown')
                     
-                    print(f"\n{'─'*60}")
-                    print(f"🤖 HAL: {response_text}")
-                    print(f"{'─'*60}")
+                    print(f"\n{'='*60}")
+                    print(f"HAL: {response_text}")
+                    print(f"{'='*60}")
                     print(f"   Intent: {intent}")
                     print(f"   Action: {action}")
                     print(f"{'─'*60}\n")
