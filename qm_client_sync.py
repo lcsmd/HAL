@@ -52,13 +52,13 @@ def query_qm(transcription, session_id='unknown'):
         except:
             bad_data = str(response_data)
         return {
-            'response_text': f'JSON error: {e} | Data: {bad_data[:200]}',
+            'text': f'JSON error: {e} | Data: {bad_data[:200]}',
             'action_taken': 'ERROR',
             'status': 'error'
         }
     except Exception as e:
         return {
-            'response_text': f'QM connection error: {e}',
+            'text': f'QM connection error: {e}',
             'action_taken': 'ERROR',
             'status': 'error'
         }
