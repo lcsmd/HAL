@@ -108,27 +108,27 @@
             
             BEGIN CASE
                CASE FIELDTYPE = "D"
-                  * Date fields: D4- conversion, R10 format (JLength)
+                  * Date fields: D4- conversion, 10R format (LenJ)
                   CONV.CODE = "D4-"
-                  FORMAT.SPEC = "R10"
+                  FORMAT.SPEC = "10R"
                   
                CASE FIELDTYPE = "N"
                   * Numeric fields - check for currency, percentages, etc.
                   IF INDEX(FIELDNAME, "COST", 1) OR INDEX(FIELDNAME, "PRICE", 1) OR INDEX(FIELDNAME, "AMOUNT", 1) OR INDEX(FIELDNAME, "TOTAL", 1) OR INDEX(FIELDNAME, "BALANCE", 1) THEN
-                     * Currency fields: MD2,$ conversion, right justified (JLength)
+                     * Currency fields: MD2,$ conversion, right justified (LenJ)
                      CONV.CODE = "MD2,$"
-                     FORMAT.SPEC = "R12"
+                     FORMAT.SPEC = "12R"
                   END ELSE IF INDEX(FIELDNAME, "PERCENT", 1) OR INDEX(FIELDNAME, "RATE", 1) THEN
-                     * Percentage/rate fields: MD2 conversion (JLength)
+                     * Percentage/rate fields: MD2 conversion (LenJ)
                      CONV.CODE = "MD2"
-                     FORMAT.SPEC = "R8"
+                     FORMAT.SPEC = "8R"
                   END ELSE IF INDEX(FIELDNAME, "COUNT", 1) OR INDEX(FIELDNAME, "NUM", 1) OR INDEX(FIELDNAME, "QTY", 1) OR INDEX(FIELDNAME, "QUANTITY", 1) THEN
-                     * Count/quantity fields: no decimals (JLength)
+                     * Count/quantity fields: no decimals (LenJ)
                      CONV.CODE = "MR0"
-                     FORMAT.SPEC = "R8"
+                     FORMAT.SPEC = "8R"
                   END ELSE
-                     * General numeric: right justified (JLength)
-                     FORMAT.SPEC = "R10"
+                     * General numeric: right justified (LenJ)
+                     FORMAT.SPEC = "10R"
                   END
                   
                CASE FIELDTYPE = "A"
