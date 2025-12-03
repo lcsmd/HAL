@@ -14,15 +14,65 @@ This guide covers setting up automatic startup for all HAL services on both Wind
 
 ---
 
-## Part 1: Windows Services Installation
+## Part 1: Windows Auto-Start Configuration
 
-### Prerequisites
+### AI.SERVER: Use MASTER.LOGIN (Recommended)
+
+**This is the proper QM-native method for auto-starting phantoms.**
+
+#### Step 1: Create Q-Pointer (if not exists)
+
+```qm
+LOGTO QMSYS
+CREATE.FILE VOC HAL.BP Q
+* Type: Q
+* Path: HAL,BP
+```
+
+#### Step 2: Add to MASTER.LOGIN
+
+```qm
+LOGTO QMSYS
+ED VOC MASTER.LOGIN
+
+* Add line:
+PHANTOM HAL.BP AI.SERVER
+
+* Save:
+FI
+```
+
+#### Step 3: Verify After QMSvc Restart
+
+```powershell
+# Restart QMSvc
+Restart-Service QMSvc
+Start-Sleep -Seconds 5
+
+# Check phantom started
+"LISTU" | Out-File "COM.DIR\INPUT.COMMANDS.txt" -Encoding ASCII
+C:\QMSYS\BIN\qm.exe -aHAL "RUN BP COMMAND.EXECUTOR"
+Get-Content "COM.DIR\OUTPUT.txt"
+
+# Check port
+netstat -ano | findstr :8745
+```
+
+**Benefits:**
+- ✅ Native QM functionality
+- ✅ No wrapper scripts
+- ✅ Proper QM environment
+- ✅ Automatic with QMSvc
+
+### Voice Gateway: Windows Service
+
+**Prerequisites**:
 - Windows Server with Administrator access
 - PowerShell 5.1 or later
 - OpenQM installed and running (QMSvc service)
 - Python 3.13 installed at `C:\Python313\python.exe`
 
-### Step 1: Install Windows Services
+### Step 1: Install Voice Gateway Service
 
 Open PowerShell **as Administrator**:
 

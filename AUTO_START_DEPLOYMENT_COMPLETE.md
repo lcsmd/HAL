@@ -60,9 +60,16 @@ netstat -ano | findstr "8745 8768"
 python C:\qmsys\hal\test_voice_gateway.py
 ```
 
-### Manual Startup (Current Method)
+### Automatic Startup (MASTER.LOGIN Method)
 
-**AI.SERVER:**
+**AI.SERVER Auto-Start:**
+- ✅ Added to QMSYS/VOC/MASTER.LOGIN
+- ✅ Command: `PHANTOM HAL.BP AI.SERVER`
+- ✅ Starts automatically when QMSvc starts
+- ✅ Uses Q-pointer HAL.BP → HAL,BP
+- ✅ **THIS IS THE PROPER QM-NATIVE METHOD**
+
+**Manual Startup (if needed):**
 ```powershell
 "PHANTOM AI.SERVER" | Out-File -FilePath "C:\qmsys\hal\COM.DIR\INPUT.COMMANDS.txt" -Encoding ASCII
 C:\QMSYS\BIN\qm.exe -aHAL "RUN BP COMMAND.EXECUTOR"
