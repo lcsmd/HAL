@@ -371,28 +371,35 @@ class VoiceGateway:
             raise
             
     async def send_to_qm(self, session: VoiceSession, transcription: str) -> dict:
-        """Send transcription to QM listener using simple synchronous client"""
+        """Send transcription to intelligent query router"""
         try:
-            print(f"[{datetime.now()}] Querying QM: {transcription[:50]}")
+            print(f"[{datetime.now()}] Routing query: {transcription[:50]}")
             
-            # Use simple synchronous client in thread pool to avoid blocking
+            # Use intelligent router instead of direct QM connection
+            from query_router import route_query
+            
+            # Use router in thread pool to avoid blocking
             loop = asyncio.get_event_loop()
             response = await loop.run_in_executor(
                 None,
-                query_qm,
+                route_query,
                 transcription,
-                session.session_id
+                session.session_id,
+                session.context,
+                'config/router_config.json'
             )
             
-            print(f"[{datetime.now()}] QM response: {response.get('text', '')[:50]}")
+            intent = response.get('intent', 'unknown')
+            text = response.get('text', '')[:50]
+            print(f"[{datetime.now()}] Router response (intent: {intent}): {text}")
             return response
             
         except Exception as e:
-            print(f"[{datetime.now()}] QM listener error: {type(e).__name__}: {e}")
+            print(f"[{datetime.now()}] Router error: {type(e).__name__}: {e}")
             import traceback
             traceback.print_exc()
             return {
-                'text': 'Sorry, I\'m having trouble connecting to my brain right now.',
+                'text': 'Sorry, I\'m having trouble processing your request.',
                 'action_taken': 'ERROR',
                 'status': 'error'
             }
