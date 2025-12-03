@@ -11,11 +11,13 @@ def query_qm(transcription, session_id='unknown'):
         s.settimeout(5.0)
         
         # Connect
-        s.connect(('localhost', 8767))
+        s.connect(('localhost', 8745))  # AI.SERVER port
         
-        # Build message
+        # Build message (format for AI.SERVER)
         message = {
-            'transcription': transcription,
+            'type': 'text_input',
+            'text': transcription,
+            'user_id': session_id,
             'session_id': session_id
         }
         

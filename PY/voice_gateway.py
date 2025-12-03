@@ -23,7 +23,7 @@ WEBSOCKET_HOST = "0.0.0.0"
 WEBSOCKET_PORT = 8768  # Using 8768 (8765-8767 in use)
 WHISPER_URL = "http://ubuai:9000/transcribe"
 QM_LISTENER_HOST = "localhost"
-QM_LISTENER_PORT = 8767
+QM_LISTENER_PORT = 8745  # AI.SERVER port
 MAX_CONNECTIONS = 50
 ACTIVE_TIMEOUT = 30000  # 30 seconds
 FOLLOW_UP_WINDOW = 10000  # 10 seconds
@@ -197,16 +197,16 @@ class VoiceGateway:
             # Send response
             await self.send_message(session.websocket, {
                 'type': 'response',
-                'text': response.get('response_text', 'I didn\'t understand that.'),
+                'text': response.get('text', 'I didn\'t understand that.'),
                 'action_taken': response.get('action_taken'),
                 'timestamp': datetime.now().isoformat()
             })
             
             # Store last response
-            session.last_response = response.get('response_text')
+            session.last_response = response.get('text')
             
             # Add to context
-            session.add_to_context(text, response.get('response_text'))
+            session.add_to_context(text, response.get('text'))
             
             # Transition to active listening (follow-up window)
             session.state = ClientState.ACTIVE
@@ -266,16 +266,16 @@ class VoiceGateway:
             # Send response
             await self.send_message(session.websocket, {
                 'type': 'response',
-                'text': response.get('response_text', 'I didn\'t understand that.'),
+                'text': response.get('text', 'I didn\'t understand that.'),
                 'action_taken': response.get('action_taken'),
                 'timestamp': datetime.now().isoformat()
             })
             
             # Store last response for "repeat" command
-            session.last_response = response.get('response_text')
+            session.last_response = response.get('text')
             
             # Add to context
-            session.add_to_context(transcription, response.get('response_text'))
+            session.add_to_context(transcription, response.get('text'))
             
             # Transition to active listening (follow-up window)
             session.state = ClientState.ACTIVE
@@ -384,7 +384,7 @@ class VoiceGateway:
                 session.session_id
             )
             
-            print(f"[{datetime.now()}] QM response: {response.get('response_text', '')[:50]}")
+            print(f"[{datetime.now()}] QM response: {response.get('text', '')[:50]}")
             return response
             
         except Exception as e:
@@ -392,7 +392,7 @@ class VoiceGateway:
             import traceback
             traceback.print_exc()
             return {
-                'response_text': 'Sorry, I\'m having trouble connecting to my brain right now.',
+                'text': 'Sorry, I\'m having trouble connecting to my brain right now.',
                 'action_taken': 'ERROR',
                 'status': 'error'
             }

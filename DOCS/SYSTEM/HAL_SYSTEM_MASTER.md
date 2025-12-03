@@ -87,34 +87,41 @@ HAL is a **personal AI assistant** combining:
 
 ### Decision 2: Phantom Process for WebSocket Listener
 
-**Made**: November 2025  
+**Made**: November-December 2025  
 **Rationale**:
-- Native QM sockets eliminate Python gateway layer
-- Direct database access (no IPC overhead)
-- Simplified deployment (one process instead of two)
+- Two-tier architecture for flexibility and scalability
+- AI.SERVER handles core logic (QM BASIC)
+- Voice Gateway handles client connections (Python WebSocket)
+- Clean separation of concerns
+- Easy to add new client types
 - Automatic restart capability
-- Lower latency (<50ms saved)
+- Production-ready and tested
 
 **Previous Architecture**: 
 ```
 Mac → Python Voice Gateway → QM Listener → Database
 ```
 
-**Current Architecture**:
+**Current Architecture (December 2025)**:
 ```
-Mac → QM WebSocket Phantom → Database
+Client → Voice Gateway (8768) → AI.SERVER (8745) → Database
+         Python WebSocket       QM BASIC Phantom
 ```
 
 **Impact**: 
-- BP/WEBSOCKET.LISTENER runs as phantom process
-- Python PY/voice_gateway.py is deprecated (kept for reference)
-- Port 8768 handled directly by QM
-- Simplified deployment and maintenance
+- `BP/AI.SERVER` - QM BASIC phantom on port 8745 (core AI logic)
+- `PY/voice_gateway.py` - Python WebSocket server on port 8768 (client handler)
+- `qm_client_sync.py` - Synchronous client library for gateway-to-AI.SERVER communication
+- Two phantom processes for reliability and separation of concerns
+- Proven working with real client connections from Windows, Mac, Ubuntu
 
 **Files Affected**:
-- `BP/WEBSOCKET.LISTENER` - Main phantom process
-- `HAL.SPLITTER.LOG` - Phantom process logs
-- Deployment scripts updated
+- `BP/AI.SERVER` - Main AI logic processor (QM BASIC)
+- `PY/voice_gateway.py` - Client connection handler (Python)
+- `qm_client_sync.py` - Communication library
+- `test_voice_gateway.py` - Test utilities
+- `start_voice_gateway.bat` - Startup scripts
+- `VOICE_SYSTEM_SETUP_COMPLETE.md` - Complete setup documentation
 
 ---
 
@@ -306,9 +313,11 @@ Mac → QM WebSocket Phantom → Database
 
 | Service | Server | Port | Protocol | Purpose |
 |---------|--------|------|----------|---------|
-| WebSocket Listener | 10.1.34.103 | 8768 | WS | Client connections |
-| Faster-Whisper | 10.1.10.20 | 9000 | HTTP | Speech-to-Text |
-| Ollama | 10.1.10.20 | 11434 | HTTP | LLM inference |
+| AI.SERVER | 10.1.34.103 | 8745 | TCP | Core AI logic (QM BASIC phantom) |
+| Voice Gateway | 10.1.34.103 | 8768 | WebSocket | Client connections (Python) |
+| VOICE.LISTENER | 10.1.34.103 | 8767 | TCP | Legacy listener (deprecated) |
+| Faster-Whisper | 10.1.10.20 | 9000 | HTTP | Speech-to-Text (GPU) |
+| Ollama | 10.1.10.20 | 11434 | HTTP | LLM inference (GPU) |
 | HAProxy SSH | 10.1.50.100 | 2222 | SSH | Admin access |
 | Proxmox Web | 10.1.33.1 | 8006 | HTTPS | VM management |
 
@@ -457,6 +466,215 @@ CATALOG BP program.name
 ```bash
 cd C:\qmsys\hal
 python PY\script_name.py
+```
+
+---
+
+## 🛠️ Development Tools & QM Command Execution
+
+### Running Native QM Commands from Python
+
+**Problem**: Need to execute QM commands programmatically without manual terminal interaction.
+
+**Solution**: Use `qm_exec.py` and `COMMAND.EXECUTOR` system.
+
+#### Method 1: Using qm_exec.py
+
+**File**: `C:\qmsys\hal\qm_exec.py`
+
+**How it works**:
+1. Write commands to `COM\input.txt`
+2. Run `COMMAND.EXECUTOR` program  
+3. Read results from `COM\output.txt`
+
+**Example**:
+```python
+# C:\qmsys\hal\qm_exec.py
+from qm_exec import execute_qm_commands
+
+results = execute_qm_commands(["LISTU", "COUNT MEDICATION"])
+for result in results:
+    print(f"Command: {result['command']}")
+    print(f"Output: {result['output']}")
+```
+
+#### Method 2: Direct File Writing
+
+**For Simple Commands**:
+```powershell
+# Write command
+"LISTU" | Out-File -FilePath "COM\input.txt" -Encoding ASCII
+
+# Execute via COMMAND.EXECUTOR
+cd C:\qmsys\hal
+C:\QMSYS\BIN\qm.exe -aHAL "RUN BP COMMAND.EXECUTOR"
+
+# Read output
+Get-Content "COM\output.txt"
+```
+
+**For Multiple Commands**:
+```powershell
+@"
+LISTU
+PHANTOM BP AI.SERVER
+LISTU
+"@ | Out-File -FilePath "COM.DIR\INPUT.COMMANDS.txt" -Encoding ASCII
+
+C:\QMSYS\BIN\qm.exe -aHAL "RUN BP COMMAND.EXECUTOR"
+Get-Content "COM.DIR\OUTPUT.txt"
+```
+
+### Important QM Commands Reference
+
+#### CATALOG Command - Always Use LOCAL Option
+
+**❌ WRONG**:
+```qm
+BASIC BP AI.SERVER
+CATALOG BP AI.SERVER
+```
+
+**✅ CORRECT**:
+```qm
+BASIC BP AI.SERVER
+CATALOG BP AI.SERVER LOCAL
+```
+
+**Why LOCAL is required**:
+- Compiles to `BP.OUT\` directory
+- Avoids global catalog pollution
+- Prevents permission issues
+- Standard practice for HAL system
+
+**Full Workflow**:
+```qm
+* Compile program
+BASIC BP AI.SERVER
+
+* Catalog locally
+CATALOG BP AI.SERVER LOCAL
+
+* Run it
+RUN BP AI.SERVER
+
+* Or as phantom
+PHANTOM BP AI.SERVER
+```
+
+#### LISTU - List Users and Phantoms
+
+**Command**: `LISTU`
+
+**Purpose**: Shows ALL active QM sessions including:
+- Interactive users
+- Phantom processes
+- Background jobs
+
+**Example Output**:
+```
+  User  Pid    Puid  Login time    Origin : Username, Account
+     3  13388        03 Dec 06:07  10.1.34.103 telnet: LAWR, HAL
+    46  11144    44  03 Dec 11:54  iPhantom: LAWR, HAL
+*   47  18676        03 Dec 11:55  console: LAWR, HAL
+```
+
+**Key Columns**:
+- **User**: QM user number
+- **Pid**: Windows process ID
+- **Puid**: Parent user ID (for phantoms)
+- **Origin**: Connection type
+  - `iPhantom` = Phantom process
+  - `console` = Direct console
+  - `10.1.34.103 telnet` = Network connection
+
+**Finding Phantoms**:
+```qm
+* List all users (including phantoms)
+LISTU
+
+* Phantom processes will show "iPhantom" in Origin column
+* Note the User number to kill phantom if needed
+```
+
+**Killing a Phantom**:
+```qm
+* First list to find user number
+LISTU
+
+* Kill specific phantom (e.g., user 46)
+KILL.PHANTOM 46
+
+* Verify it's gone
+LISTU
+```
+
+#### Other Essential Commands
+
+**LIST.PHANTOMS** - Dedicated phantom viewer (if available):
+```qm
+LIST.PHANTOMS
+```
+
+**Checking Ports**:
+```powershell
+# Check if AI.SERVER is listening (port 8745)
+netstat -ano | findstr :8745
+
+# Check if Voice Gateway is listening (port 8768)
+netstat -ano | findstr :8768
+```
+
+**Viewing Phantom Output**:
+```qm
+* Phantom output goes to $COMO directory
+* Each phantom has a file named after its user number
+* View with: ED $COMO 46
+* Or in PowerShell:
+```
+```powershell
+Get-Content "C:\qmsys\hal\`$COMO\46" -Tail 50
+```
+
+### Development Best Practices
+
+**1. Always Use LOCAL When Cataloging**:
+```qm
+CATALOG BP PROGRAM.NAME LOCAL
+```
+
+**2. Check Phantoms Regularly**:
+```qm
+LISTU
+* Look for iPhantom entries
+```
+
+**3. Use qm_exec.py for Automation**:
+```python
+# Not this:
+os.system('qm -aHAL "LISTU"')
+
+# Do this:
+from qm_exec import execute_qm_commands
+results = execute_qm_commands(["LISTU"])
+```
+
+**4. Verify Services After Start**:
+```powershell
+# Check phantom is running
+"LISTU" | Out-File COM\input.txt
+C:\QMSYS\BIN\qm.exe -aHAL "RUN BP COMMAND.EXECUTOR"
+Get-Content COM\output.txt
+
+# Check port is listening
+netstat -ano | findstr :8745
+```
+
+**5. Command.EXECUTOR Input Files**:
+```
+COM\input.txt         - Simple single command
+COM.DIR\INPUT.COMMANDS.txt  - Multiple commands
+COM.DIR\OUTPUT.txt    - Command results
 ```
 
 ### Include Files (EQU/ Directory)

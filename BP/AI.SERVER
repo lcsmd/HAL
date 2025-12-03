@@ -1,0 +1,228 @@
+PROGRAM AI.SERVER
+*
+* AI Server - Voice Assistant Logic Processing
+* OpenQM BASIC Phantom Process
+* 
+* Listens on TCP port 8745 for text input from voice server
+* Processes requests and sends text responses back to voice server
+*
+* To run as phantom:
+*   PHANTOM BP AI.SERVER
+*
+* Author: Voice Assistant System
+* Date: 2025-12-03
+*
+
+* Socket constants
+EQU SKT$STREAM TO 1
+EQU SKT$TCP TO 2
+EQU SKT$BLOCKING TO 4
+
+* Configuration
+EQU AI.SERVER.PORT TO 8745
+EQU BUFFER.SIZE TO 32768
+
+* Initialize
+PRINT "AI Server starting..."
+PRINT "Port: ":AI.SERVER.PORT
+
+* Create server socket
+SRVR.SKT = CREATE.SERVER.SOCKET("", AI.SERVER.PORT, SKT$STREAM + SKT$TCP)
+IF STATUS() THEN
+   PRINT "ERROR: Failed to create server socket on port ":AI.SERVER.PORT
+   PRINT "Status: ":STATUS()
+   STOP
+END
+
+PRINT "AI Server active on port ":AI.SERVER.PORT
+PRINT "Waiting for connections..."
+
+* Main listen loop
+LOOP
+   * Accept incoming connection
+   CLIENT.SKT = ACCEPT.SOCKET.CONNECTION(SRVR.SKT, 0)
+   IF STATUS() THEN
+      CONTINUE
+   END
+   
+   PRINT "Connection accepted"
+   
+   * Read message with non-blocking loop
+   MESSAGE.JSON = ""
+   MAX.WAIT = 200
+   WAIT.COUNT = 0
+   GOT.DATA = 0
+   
+   LOOP
+      CHUNK = READ.SOCKET(CLIENT.SKT, BUFFER.SIZE, 0, 0)
+      READ.STATUS = STATUS()
+      
+      IF READ.STATUS = 0 AND LEN(CHUNK) > 0 THEN
+         MESSAGE.JSON := CHUNK
+         * Check if we have complete JSON
+         IF INDEX(MESSAGE.JSON, CHAR(10), 1) OR (INDEX(MESSAGE.JSON, "}", 1) AND LEN(MESSAGE.JSON) > 10) THEN
+            GOT.DATA = 1
+            EXIT
+         END
+      END
+      
+      IF READ.STATUS # 0 AND READ.STATUS # 1011 THEN
+         PRINT "Fatal read error: ":READ.STATUS
+         EXIT
+      END
+      
+      * Small delay to reduce CPU
+      IF READ.STATUS = 1011 OR LEN(CHUNK) = 0 THEN
+         SLEEP 10
+      END
+      
+      WAIT.COUNT += 1
+      IF WAIT.COUNT > MAX.WAIT THEN
+         PRINT "Timeout waiting for data"
+         EXIT
+      END
+   REPEAT
+   
+   MSG.LEN = LEN(MESSAGE.JSON)
+   PRINT "Read ":MSG.LEN:" bytes"
+   
+   IF GOT.DATA = 0 OR MSG.LEN = 0 THEN
+      PRINT "No data received"
+      CLOSE.SOCKET CLIENT.SKT
+      CONTINUE
+   END
+   
+   * Parse JSON using native JPARSE function
+   JSON.OBJ = JPARSE(MESSAGE.JSON)
+   
+   IF STATUS() # 0 THEN
+      PRINT "JSON Parse Error - status ":STATUS()
+      * Use simple fallback parsing
+      GOSUB SIMPLE.PARSE
+   END ELSE
+      * Extract fields from parsed JSON
+      INPUT.TEXT = JSON.OBJ{"text"}
+      USER.ID = JSON.OBJ{"user_id"}
+      SESSION.ID = JSON.OBJ{"session_id"}
+      MSG.TYPE = JSON.OBJ{"type"}
+      
+      IF INPUT.TEXT = "" THEN INPUT.TEXT = JSON.OBJ{"transcription"}
+      IF INPUT.TEXT = "" THEN INPUT.TEXT = "unknown query"
+      IF USER.ID = "" THEN USER.ID = "unknown"
+      IF SESSION.ID = "" THEN SESSION.ID = "unknown"
+      
+      PRINT "Parsed - Type: ":MSG.TYPE:", Text: ":INPUT.TEXT[1,50]
+   END
+   
+   * Process the message
+   GOSUB PROCESS.MESSAGE
+   
+   * Send response
+   N = WRITE.SOCKET(CLIENT.SKT, RESPONSE.JSON, SKT$BLOCKING, 10000)
+   IF STATUS() = 0 THEN
+      PRINT "Response sent: ":LEN(RESPONSE.JSON):" bytes"
+   END ELSE
+      PRINT "WRITE.SOCKET error: ":STATUS()
+   END
+   
+   CLOSE.SOCKET CLIENT.SKT
+   PRINT "Request completed"
+   PRINT ""
+REPEAT
+
+* Should never reach here
+CLOSE.SOCKET SRVR.SKT
+STOP
+
+* ============================================================================
+* SIMPLE.PARSE - Fallback parser when JPARSE fails
+* ============================================================================
+SIMPLE.PARSE:
+   PRINT "Using simple parser"
+   INPUT.TEXT = ""
+   USER.ID = "unknown"
+   SESSION.ID = "unknown"
+   
+   * Try to extract "text" field
+   TEXT.POS = INDEX(MESSAGE.JSON, '"text":', 1)
+   IF TEXT.POS THEN
+      TEXT.START = INDEX(MESSAGE.JSON, '"', TEXT.POS + 7) + 1
+      TEXT.END = INDEX(MESSAGE.JSON, '"', TEXT.START)
+      IF TEXT.END > TEXT.START THEN
+         INPUT.TEXT = MESSAGE.JSON[TEXT.START, TEXT.END - TEXT.START]
+      END
+   END
+   
+   * Try "transcription" as fallback
+   IF INPUT.TEXT = "" THEN
+      TRANS.POS = INDEX(MESSAGE.JSON, '"transcription":', 1)
+      IF TRANS.POS THEN
+         TRANS.START = INDEX(MESSAGE.JSON, '"', TRANS.POS + 16) + 1
+         TRANS.END = INDEX(MESSAGE.JSON, '"', TRANS.START)
+         IF TRANS.END > TRANS.START THEN
+            INPUT.TEXT = MESSAGE.JSON[TRANS.START, TRANS.END - TRANS.START]
+         END
+      END
+   END
+   
+   IF INPUT.TEXT = "" THEN INPUT.TEXT = "unable to parse request"
+   
+   RETURN
+
+* ============================================================================
+* PROCESS.MESSAGE - Main processing logic
+* ============================================================================
+PROCESS.MESSAGE:
+   * Log the input
+   PRINT "Processing: ":INPUT.TEXT
+   
+   * Simple intent detection
+   INPUT.LOWER = DOWNCASE(INPUT.TEXT)
+   
+   BEGIN CASE
+      CASE INDEX(INPUT.LOWER, 'time', 1)
+         GOSUB HANDLE.TIME
+      
+      CASE INDEX(INPUT.LOWER, 'date', 1)
+         GOSUB HANDLE.DATE
+      
+      CASE INDEX(INPUT.LOWER, 'hello', 1) OR INDEX(INPUT.LOWER, 'hi', 1)
+         RESPONSE.TEXT = "Hello! How can I help you today?"
+      
+      CASE INDEX(INPUT.LOWER, 'weather', 1)
+         RESPONSE.TEXT = "I don't have weather information available at the moment."
+      
+      CASE 1
+         * Default response
+         RESPONSE.TEXT = "I heard you say: ":INPUT.TEXT
+   END CASE
+   
+   * Build JSON response
+   RESPONSE.JSON = '{'
+   RESPONSE.JSON := '"type":"text_response",'
+   RESPONSE.JSON := '"text":"':RESPONSE.TEXT:'",'
+   RESPONSE.JSON := '"status":"success",'
+   RESPONSE.JSON := '"session_id":"':SESSION.ID:'"'
+   RESPONSE.JSON := '}'
+   
+   RETURN
+
+* ============================================================================
+* HANDLE.TIME - Process time query
+* ============================================================================
+HANDLE.TIME:
+   CURRENT.TIME = TIME()
+   FORMATTED.TIME = OCONV(CURRENT.TIME, 'MTS')
+   RESPONSE.TEXT = 'The current time is ':FORMATTED.TIME
+   RETURN
+
+* ============================================================================
+* HANDLE.DATE - Process date query
+* ============================================================================
+HANDLE.DATE:
+   CURRENT.DATE = DATE()
+   FORMATTED.DATE = OCONV(CURRENT.DATE, 'D4-MDY[A,3]')
+   RESPONSE.TEXT = "Today's date is ":FORMATTED.DATE
+   RETURN
+
+END
