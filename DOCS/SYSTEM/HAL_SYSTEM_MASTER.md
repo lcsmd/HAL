@@ -1175,14 +1175,31 @@ After reading this document, you understand:
 
 1. ✅ Read this entire file (`HAL_SYSTEM_MASTER.md`)
 2. ✅ Read `DOCUMENTATION_MAINTENANCE.md` for update procedures
-3. ✅ Pull latest from GitHub: `git pull origin main`
-4. ✅ Understand current architecture and decisions
-5. ✅ Create backup branch before major changes
-6. ✅ Update docs in same session as code changes
-7. ✅ Push to GitHub before risky operations
+3. ✅ **Read `DOCS/SYNTAX.MD`** for OpenQM syntax rules and common errors
+4. ✅ Pull latest from GitHub: `git pull origin main`
+5. ✅ Understand current architecture and decisions
+6. ✅ Create backup branch before major changes
+7. ✅ Update docs in same session as code changes
+8. ✅ Push to GitHub before risky operations
+
+**Before writing QM BASIC or QM TCL code**:
+
+1. ✅ **MUST READ**: `DOCS/SYNTAX.MD` - Contains all OpenQM syntax rules
+2. ✅ Check Section 15 for previously encountered syntax errors
+3. ✅ Follow QM-specific conventions (not UniVerse)
+4. ✅ If you encounter a NEW syntax error:
+   - Add entry to `DOCS/SYNTAX.MD` Section 15 immediately
+   - Include date, description, wrong/correct examples
+   - Commit the update so future agents learn from it
 
 **Repository**: https://github.com/lcsmd/hal (owner: lcsmd)
 
-**Your responsibility**: Keep this documentation accurate and current.
+**Your responsibility**: 
+- Keep this documentation accurate and current
+- Learn from previous syntax errors in SYNTAX.MD
+- Update SYNTAX.MD when you discover new errors
+- Never repeat errors listed in SYNTAX.MD Section 15
 
 **Failure to maintain docs**: Future AI agents will make conflicting changes based on outdated information.
+
+**Failure to read SYNTAX.MD**: You will repeat syntax errors that have already been solved.

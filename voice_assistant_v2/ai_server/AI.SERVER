@@ -1,0 +1,511 @@
+PROGRAM AI.SERVER
+*
+* AI Server - Voice Assistant Logic Processing
+* OpenQM BASIC Phantom Process
+* 
+* Listens on WebSocket port 8745 for text input from voice server
+* Processes requests and sends text responses back to voice server
+*
+* To run as phantom:
+*   PHANTOM BP AI.SERVER
+*
+* Author: Voice Assistant System
+* Date: 2025-12-03
+*
+
+* Include master file with all constants and common definitions
+$INCLUDE INCLUDE MASTER.H
+
+* Configuration (using constants from MASTER.H)
+PORT = AI.SERVER.PORT
+LOG.FILE.NAME = VOICE.LOG.FILE
+SESSION.FILE.NAME = VOICE.SESSIONS.FILE
+
+* Initialize
+CALL INIT.SERVER
+
+* Main loop
+RUNNING = TRUE
+WHILE RUNNING DO
+   CALL PROCESS.REQUESTS
+   * Small delay to prevent CPU spinning
+   MSLEEP 10
+REPEAT
+
+* Cleanup
+CALL SHUTDOWN.SERVER
+
+STOP
+
+* ============================================================================
+* INIT.SERVER - Initialize server and WebSocket listener
+* ============================================================================
+SUBROUTINE INIT.SERVER
+   * Open log file
+   OPEN LOG.FILE.NAME TO LOG.FILE ELSE
+      EXECUTE 'CREATE.FILE ':LOG.FILE.NAME:' 1'
+      OPEN LOG.FILE.NAME TO LOG.FILE ELSE
+         CRT 'ERROR: Cannot open log file'
+         STOP
+      END
+   END
+   
+   * Open sessions file
+   OPEN SESSION.FILE.NAME TO SESSION.FILE ELSE
+      EXECUTE 'CREATE.FILE ':SESSION.FILE.NAME:' 1'
+      OPEN SESSION.FILE.NAME TO SESSION.FILE ELSE
+         CRT 'ERROR: Cannot open sessions file'
+         STOP
+      END
+   END
+   
+   * Create WebSocket server
+   CALL CREATE.WEBSOCKET.SERVER(PORT, STATUS)
+   IF NOT(STATUS) THEN
+      CALL LOG.MESSAGE(LOG.LEVEL.ERROR, 'Failed to create WebSocket server')
+      STOP
+   END
+   
+   CALL LOG.MESSAGE(LOG.LEVEL.INFO, 'AI Server started on port ':PORT)
+   
+   RETURN
+END
+
+* ============================================================================
+* PROCESS.REQUESTS - Main request processing loop
+* ============================================================================
+SUBROUTINE PROCESS.REQUESTS
+   * Check for incoming WebSocket connections
+   CALL ACCEPT.WEBSOCKET.CONNECTION(SOCKET, STATUS)
+   
+   IF STATUS THEN
+      * New connection - handle it
+      CALL HANDLE.CLIENT.CONNECTION(SOCKET)
+   END
+   
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.CLIENT.CONNECTION - Handle a single client connection
+* ============================================================================
+SUBROUTINE HANDLE.CLIENT.CONNECTION(SOCKET)
+   SESSION.ID = ''
+   CLIENT.ID = ''
+   USER.ID = ''
+   
+   * Receive messages from this connection
+   CONNECTED = TRUE
+   WHILE CONNECTED DO
+      * Read message with timeout
+      CALL READ.WEBSOCKET(SOCKET, MESSAGE, TIMEOUT:1000, STATUS)
+      
+      IF STATUS THEN
+         * Parse JSON message
+         CALL PARSE.JSON(MESSAGE, MSG.DATA)
+         
+         MSG.TYPE = MSG.DATA<1,1>
+         
+         BEGIN CASE
+            CASE MSG.TYPE = 'session_start'
+               CALL HANDLE.SESSION.START(SOCKET, MSG.DATA, SESSION.ID, CLIENT.ID, USER.ID)
+            
+            CASE MSG.TYPE = 'text_input'
+               CALL HANDLE.TEXT.INPUT(SOCKET, MSG.DATA, SESSION.ID, CLIENT.ID, USER.ID)
+            
+            CASE MSG.TYPE = 'session_end'
+               CONNECTED = FALSE
+            
+            CASE 1
+               CALL LOG.MESSAGE('WARNING', 'Unknown message type: ':MSG.TYPE)
+         END CASE
+      END ELSE
+         * Check if connection is still alive
+         CALL IS.SOCKET.CONNECTED(SOCKET, IS.CONNECTED)
+         IF NOT(IS.CONNECTED) THEN
+            CONNECTED = FALSE
+         END
+      END
+      
+      * Small delay
+      MSLEEP 10
+   REPEAT
+   
+   * Close connection
+   CALL CLOSE.WEBSOCKET(SOCKET)
+   
+   * Log session end
+   IF SESSION.ID NE '' THEN
+      CALL LOG.MESSAGE('INFO', 'Session ended: ':SESSION.ID)
+   END
+   
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.SESSION.START - Process session start
+* ============================================================================
+SUBROUTINE HANDLE.SESSION.START(SOCKET, MSG.DATA, SESSION.ID, CLIENT.ID, USER.ID)
+   * Extract session information
+   CLIENT.ID = MSG.DATA<1,2>
+   USER.ID = MSG.DATA<1,3>
+   WAKE.WORD = MSG.DATA<1,4>
+   TIMESTAMP = MSG.DATA<1,5>
+   
+   * Generate session ID
+   SESSION.ID = DATE():'.':TIME():'.':SEQ()
+   
+   * Log session
+   CALL LOG.MESSAGE(LOG.LEVEL.INFO, 'New session: ':CLIENT.ID:' user=':USER.ID)
+   
+   * Save session to file
+   SESSION.REC = EMPTY.STRING
+   SESSION.REC<1> = CLIENT.ID
+   SESSION.REC<2> = USER.ID
+   SESSION.REC<3> = WAKE.WORD
+   SESSION.REC<4> = TIMESTAMP
+   SESSION.REC<5> = STATUS.ACTIVE
+   
+   WRITE SESSION.REC TO SESSION.FILE, SESSION.ID
+   
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.TEXT.INPUT - Process text input from user
+* ============================================================================
+SUBROUTINE HANDLE.TEXT.INPUT(SOCKET, MSG.DATA, SESSION.ID, CLIENT.ID, USER.ID)
+   * Extract message data
+   TEXT = MSG.DATA<1,4>
+   TIMESTAMP = MSG.DATA<1,5>
+   
+   CALL LOG.MESSAGE(LOG.LEVEL.INFO, 'Text input from ':USER.ID:': ':TEXT[1,50])
+   
+   * Process the text and generate response
+   CALL PROCESS.USER.INPUT(USER.ID, TEXT, RESPONSE.TEXT, VOICE.ID, VOLUME)
+   
+   * Send response back to voice server
+   CALL SEND.TEXT.RESPONSE(SOCKET, RESPONSE.TEXT, VOICE.ID, VOLUME)
+   
+   * Log the interaction
+   CALL LOG.INTERACTION(SESSION.ID, USER.ID, TEXT, RESPONSE.TEXT)
+   
+   RETURN
+END
+
+* ============================================================================
+* PROCESS.USER.INPUT - Main logic processing
+* ============================================================================
+SUBROUTINE PROCESS.USER.INPUT(USER.ID, INPUT.TEXT, RESPONSE.TEXT, VOICE.ID, VOLUME)
+   * This is where the main AI/logic processing happens
+   * Route to appropriate handlers based on input
+   
+   INPUT.LOWER = DOWNCASE(INPUT.TEXT)
+   
+   * Default values (using constants from MASTER.H)
+   VOICE.ID = VOICE.DEFAULT.ID
+   VOLUME = VOICE.DEFAULT.VOLUME
+   
+   * Simple intent detection
+   BEGIN CASE
+      CASE INDEX(INPUT.LOWER, 'time', 1)
+         CALL HANDLE.TIME.QUERY(RESPONSE.TEXT)
+      
+      CASE INDEX(INPUT.LOWER, 'date', 1)
+         CALL HANDLE.DATE.QUERY(RESPONSE.TEXT)
+      
+      CASE INDEX(INPUT.LOWER, 'weather', 1)
+         CALL HANDLE.WEATHER.QUERY(USER.ID, RESPONSE.TEXT)
+      
+      CASE INDEX(INPUT.LOWER, 'reminder', 1)
+         CALL HANDLE.REMINDER(USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+      
+      CASE INDEX(INPUT.LOWER, 'calendar', 1) OR INDEX(INPUT.LOWER, 'appointment', 1)
+         CALL HANDLE.CALENDAR.QUERY(USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+      
+      CASE INDEX(INPUT.LOWER, 'email', 1) OR INDEX(INPUT.LOWER, 'mail', 1)
+         CALL HANDLE.EMAIL.QUERY(USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+      
+      CASE 1
+         * Default: Use LLM for general conversation
+         CALL HANDLE.GENERAL.QUERY(USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+   END CASE
+   
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.TIME.QUERY - Handle time queries
+* ============================================================================
+SUBROUTINE HANDLE.TIME.QUERY(RESPONSE.TEXT)
+   CURRENT.TIME = TIME()
+   FORMATTED.TIME = OCONV(CURRENT.TIME, TIME.FORMAT.12HR)
+   RESPONSE.TEXT = 'The current time is ':FORMATTED.TIME
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.DATE.QUERY - Handle date queries
+* ============================================================================
+SUBROUTINE HANDLE.DATE.QUERY(RESPONSE.TEXT)
+   CURRENT.DATE = DATE()
+   FORMATTED.DATE = OCONV(CURRENT.DATE, DATE.FORMAT.LONG)
+   RESPONSE.TEXT = "Today's date is ":FORMATTED.DATE
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.WEATHER.QUERY - Handle weather queries
+* ============================================================================
+SUBROUTINE HANDLE.WEATHER.QUERY(USER.ID, RESPONSE.TEXT)
+   * Placeholder - integrate with weather API
+   RESPONSE.TEXT = 'Weather information is not available at the moment.'
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.REMINDER - Handle reminder creation
+* ============================================================================
+SUBROUTINE HANDLE.REMINDER(USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+   * Placeholder - implement reminder logic
+   RESPONSE.TEXT = 'I will create a reminder for you.'
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.CALENDAR.QUERY - Handle calendar queries
+* ============================================================================
+SUBROUTINE HANDLE.CALENDAR.QUERY(USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+   * Placeholder - integrate with calendar system
+   RESPONSE.TEXT = 'Calendar information is not available at the moment.'
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.EMAIL.QUERY - Handle email queries
+* ============================================================================
+SUBROUTINE HANDLE.EMAIL.QUERY(USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+   * Placeholder - integrate with email system
+   RESPONSE.TEXT = 'Email information is not available at the moment.'
+   RETURN
+END
+
+* ============================================================================
+* HANDLE.GENERAL.QUERY - Handle general queries with LLM
+* ============================================================================
+SUBROUTINE HANDLE.GENERAL.QUERY(USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+   * Call Ollama or other LLM service
+   * For now, simple echo response
+   RESPONSE.TEXT = 'I heard you say: ':INPUT.TEXT
+   RETURN
+END
+
+* ============================================================================
+* SEND.TEXT.RESPONSE - Send text response to voice server
+* ============================================================================
+SUBROUTINE SEND.TEXT.RESPONSE(SOCKET, TEXT, VOICE.ID, VOLUME)
+   * Build JSON response (using constants from MASTER.H)
+   JSON.MSG = '{'
+   JSON.MSG := DQUOTE:JSON.KEY.TYPE:DQUOTE:COLON:DQUOTE:MSG.TYPE.TEXT.RESPONSE:DQUOTE:COMMA
+   JSON.MSG := DQUOTE:JSON.KEY.TEXT:DQUOTE:COLON:DQUOTE:TEXT:DQUOTE:COMMA
+   JSON.MSG := DQUOTE:JSON.KEY.VOICE.ID:DQUOTE:COLON:DQUOTE:VOICE.ID:DQUOTE:COMMA
+   JSON.MSG := DQUOTE:JSON.KEY.VOLUME:DQUOTE:COLON:VOLUME
+   JSON.MSG := '}'
+   
+   * Send via WebSocket
+   CALL WRITE.WEBSOCKET(SOCKET, JSON.MSG, STATUS)
+   
+   IF NOT(STATUS) THEN
+      CALL LOG.MESSAGE(LOG.LEVEL.ERROR, 'Failed to send response')
+   END
+   
+   RETURN
+END
+
+* ============================================================================
+* LOG.INTERACTION - Log user interaction
+* ============================================================================
+SUBROUTINE LOG.INTERACTION(SESSION.ID, USER.ID, INPUT.TEXT, RESPONSE.TEXT)
+   LOG.REC = EMPTY.STRING
+   LOG.REC<1> = SESSION.ID
+   LOG.REC<2> = USER.ID
+   LOG.REC<3> = INPUT.TEXT
+   LOG.REC<4> = RESPONSE.TEXT
+   LOG.REC<5> = DATE()
+   LOG.REC<6> = TIME()
+   
+   LOG.ID = SESSION.ID:PERIOD:SEQ()
+   
+   WRITE LOG.REC TO LOG.FILE, LOG.ID
+   
+   RETURN
+END
+
+* ============================================================================
+* LOG.MESSAGE - Log message to file and console
+* ============================================================================
+SUBROUTINE LOG.MESSAGE(LEVEL, MESSAGE)
+   TIMESTAMP = OCONV(DATE(), DATE.FORMAT.ISO):SPACE:OCONV(TIME(), TIME.FORMAT.12HR)
+   LOG.LINE = '[':TIMESTAMP:'] ':LEVEL:': ':MESSAGE
+   
+   * Write to console
+   CRT LOG.LINE
+   
+   * Write to log file
+   LOG.REC = ''
+   LOG.REC<1> = LEVEL
+   LOG.REC<2> = MESSAGE
+   LOG.REC<3> = DATE()
+   LOG.REC<4> = TIME()
+   
+   LOG.ID = DATE():'.':TIME():'.':SEQ()
+   WRITE LOG.REC TO LOG.FILE, LOG.ID
+   
+   RETURN
+END
+
+* ============================================================================
+* SHUTDOWN.SERVER - Clean shutdown
+* ============================================================================
+SUBROUTINE SHUTDOWN.SERVER
+   CALL LOG.MESSAGE(LOG.LEVEL.INFO, 'AI Server shutting down')
+   
+   * Close WebSocket server
+   CALL CLOSE.WEBSOCKET.SERVER
+   
+   * Close files
+   CLOSE LOG.FILE
+   CLOSE SESSION.FILE
+   
+   RETURN
+END
+
+* ============================================================================
+* WebSocket Helper Functions
+* These are wrappers around OpenQM's native WebSocket functionality
+* ============================================================================
+
+SUBROUTINE CREATE.WEBSOCKET.SERVER(PORT, STATUS)
+   * Create WebSocket server listening on PORT
+   * Set STATUS to TRUE on success, FALSE on failure
+   
+   * Use OpenQM's native SOCKET.SERVER function
+   CALL !SOCKET.SERVER(PORT, STATUS)
+   
+   RETURN
+END
+
+SUBROUTINE ACCEPT.WEBSOCKET.CONNECTION(SOCKET, STATUS)
+   * Accept incoming WebSocket connection
+   * Returns SOCKET handle and STATUS
+   
+   CALL !SOCKET.ACCEPT(SOCKET, STATUS)
+   
+   RETURN
+END
+
+SUBROUTINE READ.WEBSOCKET(SOCKET, MESSAGE, TIMEOUT, STATUS)
+   * Read message from WebSocket with timeout (milliseconds)
+   
+   CALL !SOCKET.READ(SOCKET, MESSAGE, TIMEOUT, STATUS)
+   
+   RETURN
+END
+
+SUBROUTINE WRITE.WEBSOCKET(SOCKET, MESSAGE, STATUS)
+   * Write message to WebSocket
+   
+   CALL !SOCKET.WRITE(SOCKET, MESSAGE, STATUS)
+   
+   RETURN
+END
+
+SUBROUTINE CLOSE.WEBSOCKET(SOCKET)
+   * Close WebSocket connection
+   
+   CALL !SOCKET.CLOSE(SOCKET)
+   
+   RETURN
+END
+
+SUBROUTINE CLOSE.WEBSOCKET.SERVER
+   * Close WebSocket server
+   
+   CALL !SOCKET.SERVER.CLOSE
+   
+   RETURN
+END
+
+SUBROUTINE IS.SOCKET.CONNECTED(SOCKET, IS.CONNECTED)
+   * Check if socket is still connected
+   
+   CALL !SOCKET.STATUS(SOCKET, IS.CONNECTED)
+   
+   RETURN
+END
+
+* ============================================================================
+* JSON Helper Functions
+* ============================================================================
+
+SUBROUTINE PARSE.JSON(JSON.TEXT, DATA)
+   * Simple JSON parser - extracts key-value pairs
+   * Returns data in field-marked format
+   
+   * This is a simplified parser - for production use a proper JSON library
+   * or OpenQM's JSON functions if available
+   
+   DATA = ''
+   
+   * Extract type
+   TYPE.POS = INDEX(JSON.TEXT, '"type":', 1)
+   IF TYPE.POS THEN
+      TYPE.START = INDEX(JSON.TEXT, '"', TYPE.POS + 7) + 1
+      TYPE.END = INDEX(JSON.TEXT, '"', TYPE.START)
+      DATA<1,1> = JSON.TEXT[TYPE.START, TYPE.END - TYPE.START]
+   END
+   
+   * Extract client_id
+   CLIENT.POS = INDEX(JSON.TEXT, '"client_id":', 1)
+   IF CLIENT.POS THEN
+      CLIENT.START = INDEX(JSON.TEXT, '"', CLIENT.POS + 12) + 1
+      CLIENT.END = INDEX(JSON.TEXT, '"', CLIENT.START)
+      DATA<1,2> = JSON.TEXT[CLIENT.START, CLIENT.END - CLIENT.START]
+   END
+   
+   * Extract user_id
+   USER.POS = INDEX(JSON.TEXT, '"user_id":', 1)
+   IF USER.POS THEN
+      USER.START = INDEX(JSON.TEXT, '"', USER.POS + 10) + 1
+      USER.END = INDEX(JSON.TEXT, '"', USER.START)
+      DATA<1,3> = JSON.TEXT[USER.START, USER.END - USER.START]
+   END
+   
+   * Extract text
+   TEXT.POS = INDEX(JSON.TEXT, '"text":', 1)
+   IF TEXT.POS THEN
+      TEXT.START = INDEX(JSON.TEXT, '"', TEXT.POS + 7) + 1
+      TEXT.END = INDEX(JSON.TEXT, '"', TEXT.START)
+      DATA<1,4> = JSON.TEXT[TEXT.START, TEXT.END - TEXT.START]
+   END
+   
+   * Extract timestamp
+   TS.POS = INDEX(JSON.TEXT, '"timestamp":', 1)
+   IF TS.POS THEN
+      TS.START = INDEX(JSON.TEXT, '"', TS.POS + 12) + 1
+      TS.END = INDEX(JSON.TEXT, '"', TS.START)
+      DATA<1,5> = JSON.TEXT[TS.START, TS.END - TS.START]
+   END
+   
+   * Extract wake_word
+   WAKE.POS = INDEX(JSON.TEXT, '"wake_word":', 1)
+   IF WAKE.POS THEN
+      WAKE.START = INDEX(JSON.TEXT, '"', WAKE.POS + 12) + 1
+      WAKE.END = INDEX(JSON.TEXT, '"', WAKE.START)
+      DATA<1,4> = JSON.TEXT[WAKE.START, WAKE.END - WAKE.START]
+   END
+   
+   RETURN
+END
+
+END
