@@ -18,12 +18,18 @@ from pathlib import Path
 # Try to import voice components (optional)
 try:
     import pyaudio
-    import webrtcvad
     from openwakeword.model import Model as OWWModel
     VOICE_AVAILABLE = True
-except ImportError:
+    # webrtcvad is optional - use fallback VAD if not available
+    try:
+        import webrtcvad
+        WEBRTCVAD_AVAILABLE = True
+    except ImportError:
+        WEBRTCVAD_AVAILABLE = False
+        print("webrtcvad not available - using simple voice detection")
+except ImportError as e:
     VOICE_AVAILABLE = False
-    print("Voice components not available - text-only mode")
+    print(f"Voice components not available - text-only mode: {e}")
 
 try:
     import websockets
