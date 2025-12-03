@@ -69,7 +69,32 @@ Should show "active (running)".
 
 ---
 
-### Step 3: Start Client (Mac - 5 min)
+### Step 3: Start Client - ONE COMMAND!
+
+**Mac / Linux:**
+```bash
+cd /path/to/voice_assistant_v2/client
+./deploy.sh
+```
+
+**Windows:**
+```powershell
+cd C:\path\to\voice_assistant_v2\client
+.\deploy.ps1
+```
+
+**That's it!** The deploy script handles everything:
+- ✅ Checks dependencies
+- ✅ Creates virtual environment  
+- ✅ Installs packages
+- ✅ Copies sound files
+- ✅ Starts the client
+
+---
+
+#### Manual Deployment (Alternative)
+
+If you prefer step-by-step:
 
 ```bash
 # On your Mac

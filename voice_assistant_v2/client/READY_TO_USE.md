@@ -4,9 +4,53 @@
 
 ---
 
-## 🚀 Quick Start (60 Seconds)
+## 🚀 Quick Start (ONE COMMAND!)
 
-### Step 1: Run the client (30 sec)
+### Mac / Linux:
+
+```bash
+cd voice_assistant_v2/client
+./deploy.sh
+```
+
+### Windows:
+
+```powershell
+cd voice_assistant_v2\client
+.\deploy.ps1
+```
+
+**That's it!** The script will:
+- ✅ Check/install dependencies
+- ✅ Set up virtual environment
+- ✅ Install Python packages
+- ✅ Copy sound files
+- ✅ Start the voice client
+
+---
+
+## 📋 What the Deploy Script Does
+
+### On Mac:
+1. Checks for Python 3
+2. Installs portaudio & ffmpeg (via Homebrew)
+3. Creates virtual environment
+4. Installs Python packages
+5. Copies sound files from CLIENT/
+6. Starts hal_voice_client.py
+
+### On Windows:
+1. Checks for Python 3
+2. Creates virtual environment
+3. Installs Python packages
+4. Copies sound files from CLIENT\
+5. Starts hal_voice_client.py
+
+---
+
+## 🔧 Manual Deployment (If Needed)
+
+If you prefer step-by-step:
 
 ```bash
 cd voice_assistant_v2/client
