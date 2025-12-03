@@ -15,9 +15,9 @@ This is superior to Windows Services or other external methods because:
 
 ## Configuration
 
-### Step 1: Create Q-Pointer (if needed)
+### Step 1: Create Q-Pointers
 
-If accessing programs from another account, create a Q-pointer in QMSYS:
+**In QMSYS Account** - Create Q-pointer to HAL BP file:
 
 ```qm
 LOGTO QMSYS
@@ -28,11 +28,37 @@ CREATE.FILE VOC HAL.BP Q
 
 This creates a Q-pointer `HAL.BP` that points to the `BP` file in the `HAL` account.
 
+**In HAL Account** - Create Q-pointer to QMSYS VOC (for convenience):
+
+```qm
+LOGTO HAL
+CREATE.FILE VOC QMSYS.VOC Q
+* Record type: Q
+* Path: QMSYS,VOC
+```
+
+This creates a Q-pointer `QMSYS.VOC` that allows accessing QMSYS VOC from HAL account.
+
+**Benefits:**
+- ✅ Edit MASTER.LOGIN from HAL: `ED QMSYS.VOC MASTER.LOGIN`
+- ✅ List QMSYS VOC items: `LIST QMSYS.VOC`
+- ✅ No need to switch accounts
+- ✅ Convenient cross-account management
+
 ### Step 2: Edit MASTER.LOGIN
+
+**Option A - From QMSYS account:**
 
 ```qm
 LOGTO QMSYS
 ED VOC MASTER.LOGIN
+```
+
+**Option B - From HAL account (using Q-pointer):**
+
+```qm
+LOGTO HAL
+ED QMSYS.VOC MASTER.LOGIN
 ```
 
 Add the phantom start command:
@@ -51,6 +77,14 @@ FI
 * File saved
 
 * Test by restarting QMSvc or rebooting
+```
+
+**Verify from HAL account:**
+
+```qm
+LOGTO HAL
+LIST QMSYS.VOC MASTER.LOGIN
+* Shows MASTER.LOGIN content without switching accounts
 ```
 
 ## Current Configuration
