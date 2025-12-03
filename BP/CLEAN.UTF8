@@ -1,0 +1,13 @@
+      FUNCTION CLEAN.UTF8(IN)
+      OUT = ""
+      FOR I = 1 TO LEN(IN)
+         C = SEQ(IN[I,1])
+         IF (C >= 32 AND C <= 126) OR C = 9 OR C = 10 OR C = 13 THEN
+            OUT := IN[I,1]
+         END ELSE
+            OUT := " "
+         END
+      NEXT I
+      RETURN OUT
+      END
+

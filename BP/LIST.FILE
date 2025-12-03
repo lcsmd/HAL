@@ -1,0 +1,35 @@
+      PROGRAM LIST.FILE
+
+      * external UTF-8 cleaning function
+      DEFFUN CLEAN.UTF8(IN)
+
+      BASE = @PATH
+
+      S = @SENTENCE
+      PROG = FIELD(S," ",1)
+      ARGS = CHANGE(S, PROG:" ", "")
+      ARGS = TRIM(ARGS)
+
+      RELPATH = ""
+      COUNT = DCOUNT(ARGS," ")
+
+      FOR I = 1 TO COUNT
+         P = FIELD(ARGS," ",I)
+         IF P # "" THEN
+            IF RELPATH = "" THEN
+               RELPATH = P
+            END ELSE
+               RELPATH := "\" : P
+            END
+         END
+      NEXT I
+
+      STARTPATH = BASE : "\" : RELPATH
+
+      CRT "Directory tree for: " : STARTPATH
+      CRT ""
+
+      CALL RECURSE.DIR(STARTPATH, 0)
+
+      END
+

@@ -1,0 +1,59 @@
+      SUBROUTINE RECURSE.DIR(PATH, LEVEL)
+
+      DEFFUN CLEAN.UTF8(IN)
+
+      * Build indent
+      INDENT = ""
+      FOR I = 1 TO LEVEL
+         INDENT := "   "
+      NEXT I
+
+      * List all entries (files + dirs)
+      CMD = "DIR /B """ : PATH : """"
+      EXECUTE "SH " : CMD CAPTURING ALLENTRIES
+
+      * List directories only
+      DCMD = "DIR /B /AD """ : PATH : """"
+      EXECUTE "SH " : DCMD CAPTURING ONLYDIRS
+
+      * Create a quick directory lookup table
+      DIRLIST = ""
+      LOOP
+         D = FIELD(ONLYDIRS, @AM, 1)
+         IF D = "" THEN EXIT
+         ONLYDIRS = FIELD(ONLYDIRS, @AM, 2, 9999)
+         D = CLEAN.UTF8(D)
+         DIRLIST<-1> = D
+      REPEAT
+
+      * Process all entries
+      LOOP
+         ITEM = FIELD(ALLENTRIES, @AM, 1)
+         IF ITEM = "" THEN EXIT
+
+         ALLENTRIES = FIELD(ALLENTRIES, @AM, 2, 9999)
+         ITEM = CLEAN.UTF8(ITEM)
+
+         * Check if this item is a directory
+         ISDIR = 0
+         FOR I = 1 TO DCOUNT(DIRLIST, @AM)
+            IF DIRLIST<I> = ITEM THEN
+               ISDIR = 1
+               EXIT
+            END
+         NEXT I
+
+         FULL = PATH : "\" : ITEM
+
+         IF ISDIR THEN
+            CRT INDENT : "[+] " : ITEM
+            CALL RECURSE.DIR(FULL, LEVEL + 1)
+         END ELSE
+            CRT INDENT : "- " : ITEM
+         END
+
+      REPEAT
+
+      RETURN
+      END
+

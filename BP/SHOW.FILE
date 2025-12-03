@@ -1,0 +1,54 @@
+      PROGRAM SHOW.FILE
+
+      * declare external function
+      DEFFUN CLEAN.UTF8(L)
+
+      * base OS directory for this QM account
+      BASE = @PATH
+
+      * full command line
+      S = @SENTENCE
+
+      * program name is first token
+      PROG = FIELD(S, " ", 1)
+
+      * remove program name
+      ARGS = CHANGE(S, PROG:" ", "")
+      ARGS = TRIM(ARGS)
+
+      * build the relative path from remaining arguments
+      RELPATH = ""
+      ARGCOUNT = DCOUNT(ARGS, " ")
+
+      FOR I = 1 TO ARGCOUNT
+         PART = FIELD(ARGS, " ", I)
+         IF PART # "" THEN
+            IF RELPATH = "" THEN
+               RELPATH = PART
+            END ELSE
+               RELPATH := "\" : PART
+            END
+         END
+      NEXT I
+
+      FULLPATH = BASE : "\" : RELPATH
+
+      * open and display file
+      OPENSEQ FULLPATH TO F ELSE
+         CRT "Cannot open: " : FULLPATH
+         STOP
+      END
+
+      CRT "Displaying: " : FULLPATH
+      CRT ""
+
+      LOOP
+         READSEQ L FROM F ELSE EXIT
+         L = CLEAN.UTF8(L)
+         CRT L
+      REPEAT
+
+      CLOSESEQ F
+
+      END
+
