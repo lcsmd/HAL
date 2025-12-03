@@ -21,7 +21,7 @@ from qm_client_sync import query_qm
 # Configuration
 WEBSOCKET_HOST = "0.0.0.0"
 WEBSOCKET_PORT = 8768  # Using 8768 (8765-8767 in use)
-WHISPER_URL = "http://ubuai:9000/transcribe"
+WHISPER_URL = "http://10.1.10.20:8001/transcribe"  # Whisper on port 8001
 QM_LISTENER_HOST = "localhost"
 QM_LISTENER_PORT = 8745  # AI.SERVER port
 MAX_CONNECTIONS = 50
@@ -344,19 +344,25 @@ class VoiceGateway:
             })
             
     async def transcribe_audio(self, audio: bytes) -> str:
-        """Send audio to Faster-Whisper for transcription"""
+        """Send audio to Faster-Whisper for transcription using OpenAI API format"""
         try:
-            # Encode audio as base64
-            audio_b64 = base64.b64encode(audio).decode()
+            # Whisper expects multipart/form-data with audio file
+            # Use OpenAI-compatible API: /v1/audio/transcriptions
+            whisper_endpoint = "http://10.1.10.20:8001/v1/audio/transcriptions"
             
-            # Send to Whisper server
+            # Create form data
+            files = {
+                'file': ('audio.wav', audio, 'audio/wav')
+            }
+            data = {
+                'model': 'whisper-1',
+                'language': 'en'
+            }
+            
             response = requests.post(
-                WHISPER_URL,
-                json={
-                    'audio': audio_b64,
-                    'language': 'en',
-                    'task': 'transcribe'
-                },
+                whisper_endpoint,
+                files=files,
+                data=data,
                 timeout=10
             )
             
@@ -364,7 +370,7 @@ class VoiceGateway:
                 result = response.json()
                 return result.get('text', '').strip()
             else:
-                raise Exception(f"Whisper server error: {response.status_code}")
+                raise Exception(f"Whisper server error: {response.status_code} - {response.text}")
                 
         except Exception as e:
             print(f"[{datetime.now()}] Transcription error: {e}")
