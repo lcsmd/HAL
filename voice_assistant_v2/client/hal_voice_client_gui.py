@@ -49,7 +49,7 @@ class HALVoiceClientGUI:
         self.root.geometry("800x600")
         
         # Configuration
-        self.voice_server_url = os.getenv('VOICE_SERVER_URL', 'ws://10.1.10.20:8585')
+        self.voice_server_url = os.getenv('VOICE_SERVER_URL', 'ws://10.1.34.103:8768')
         self.wake_word_model = os.getenv('WAKE_WORD', 'hey_jarvis_v0.1')
         
         # State
