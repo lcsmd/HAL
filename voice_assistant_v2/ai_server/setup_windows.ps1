@@ -248,5 +248,24 @@ QUIT
 }
 
 Write-Host ""
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host "Optional: Install as Auto-Start Service" -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "To make the AI Server start automatically on boot:" -ForegroundColor Yellow
+Write-Host "  1. Run: .\install_service.ps1" -ForegroundColor White
+Write-Host "  2. This creates a Windows Scheduled Task" -ForegroundColor White
+Write-Host "  3. Server will auto-start and auto-restart on failure" -ForegroundColor White
+Write-Host ""
+
+$installService = Read-Host "Install auto-start service now? (Y/N)"
+
+if ($installService -eq "Y" -or $installService -eq "y") {
+    Write-Host ""
+    Write-Host "Installing auto-start service..." -ForegroundColor Green
+    & "$PSScriptRoot\install_service.ps1"
+}
+
+Write-Host ""
 Write-Host "Setup complete!" -ForegroundColor Cyan
 Write-Host ""
