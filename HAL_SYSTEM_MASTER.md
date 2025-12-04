@@ -1381,9 +1381,9 @@ After reading this document, you understand:
 ---
 
 **File Location**: `C:\qmsys\hal\HAL_SYSTEM_MASTER.md`  
-**Version**: 2.0  
+**Version**: 2.1  
 **Maintained By**: Project maintainers and AI agents  
-**Last Review**: 2025-11-27
+**Last Review**: 2025-12-03
 
 ---
 

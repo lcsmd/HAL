@@ -221,23 +221,28 @@ class HALVoiceClientGUI:
     
     def send_to_server(self, message, input_type='text'):
         """Send message to voice server"""
+        print(f"[DEBUG] Queueing message: {message}")
         # Queue the message for async sending
         self.message_queue.put({
             'type': 'send',
             'message': message,
             'input_type': input_type
         })
+        print(f"[DEBUG] Message queued, queue size: {self.message_queue.qsize()}")
     
     async def async_send_to_server(self, message, input_type='text'):
         """Async send message to server"""
         try:
+            print(f"[DEBUG] async_send_to_server called with: {message}")
             if not self.ws_connection:
+                print(f"[DEBUG] Connecting to {self.voice_server_url}")
                 # Connect to voice server
                 self.ws_connection = await websockets.connect(
                     self.voice_server_url,
                     ping_interval=20,
                     ping_timeout=10
                 )
+                print("[DEBUG] Connected!")
             
             # Prepare request
             request = {
@@ -303,11 +308,24 @@ class HALVoiceClientGUI:
             RATE = 16000
             CHUNK = 1280  # 80ms at 16kHz
             
+            # Find an input device that works
+            input_device = None
+            for i in range(self.audio.get_device_count()):
+                try:
+                    info = self.audio.get_device_info_by_index(i)
+                    if info['maxInputChannels'] > 0:  # Has input
+                        input_device = i
+                        print(f"[Audio] Using device {i}: {info['name']}")
+                        break
+                except:
+                    continue
+            
             stream = self.audio.open(
                 format=pyaudio.paInt16,
                 channels=1,
                 rate=RATE,
                 input=True,
+                input_device_index=input_device,
                 frames_per_buffer=CHUNK
             )
             
@@ -475,6 +493,7 @@ class HALVoiceClientGUI:
     
     def async_message_loop(self):
         """Background thread to handle async operations"""
+        print("[DEBUG] Async message loop started")
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         
@@ -482,13 +501,17 @@ class HALVoiceClientGUI:
             try:
                 # Check for messages to send
                 msg = self.message_queue.get(timeout=0.1)
+                print(f"[DEBUG] Got message from queue: {msg.get('type')}")
                 
                 if msg['type'] == 'send':
+                    print(f"[DEBUG] Sending text: {msg['message'][:50]}")
                     loop.run_until_complete(
                         self.async_send_to_server(msg['message'], msg['input_type'])
                     )
+                    print("[DEBUG] Send complete")
                 
                 elif msg['type'] == 'send_voice':
+                    print("[DEBUG] Sending voice")
                     loop.run_until_complete(
                         self.async_send_voice_to_server(msg['audio'], msg['rate'])
                     )
@@ -497,6 +520,8 @@ class HALVoiceClientGUI:
                 continue
             except Exception as e:
                 print(f"Async loop error: {e}")
+                import traceback
+                traceback.print_exc()
     
     def process_messages(self):
         """Process messages from background threads (runs in main thread)"""

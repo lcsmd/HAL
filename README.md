@@ -1,6 +1,25 @@
 # HAL Personal AI Assistant
 
-An advanced AI assistant with persistent memory, voice interaction, and expandable skills. Built on OpenQM for robust data storage and various LLM models for cognitive functions.
+> **🤖 FOR AI AGENTS & LLMs:** Read [HAL_SYSTEM_MASTER.md](HAL_SYSTEM_MASTER.md) FIRST for complete system understanding.
+
+---
+
+## 🎤 NEW: Web Voice Client (Zero Installation!)
+
+**Access HAL from any device:** **https://hal2.lcs.ai**
+
+- ✅ No installation required - works in any browser
+- ✅ Cross-platform: Windows, Mac, Linux, iOS, Android  
+- ✅ Voice + Text interface with server-side wake word detection
+- ✅ Real SSL certificate (*.lcs.ai)
+
+**Quick Links:**
+- [Web Voice Client README](WEB_VOICE_CLIENT_README.md) - Overview and quick start
+- [Architecture](WEB_VOICE_CLIENT_ARCHITECTURE.md) - Complete technical documentation
+- [TODO List](TODO.md) - Current tasks and priorities  
+- [Errors Reference](ERRORS_ENCOUNTERED.md) - Common errors and solutions
+
+**Status:** ⚠️ In Development - WebSocket connection being debugged (Priority #1 - see TODO.md)
 
 ---
 
@@ -8,7 +27,7 @@ An advanced AI assistant with persistent memory, voice interaction, and expandab
 
 **START HERE**: Read these files IN ORDER:
 
-1. **[HAL_SYSTEM_MASTER.md](DOCS/SYSTEM/HAL_SYSTEM_MASTER.md)** - Complete system understanding
+1. **[HAL_SYSTEM_MASTER.md](HAL_SYSTEM_MASTER.md)** - Complete system understanding
    - Complete architecture overview
    - All architectural decisions and rationale
    - Code organization and locations
@@ -23,11 +42,14 @@ An advanced AI assistant with persistent memory, voice interaction, and expandab
    - What to update when making changes
    - Commit standards and checklists
 
+**For Web Voice Client Development:**
+- [WEB_VOICE_CLIENT_ARCHITECTURE.md](WEB_VOICE_CLIENT_ARCHITECTURE.md) - System design and data flow
+- [TODO.md](TODO.md) - Current priorities and known issues
+- [ERRORS_ENCOUNTERED.md](ERRORS_ENCOUNTERED.md) - Error reference and prevention
+
 **GitHub Repository**: `https://github.com/lcsmd/hal` (owner: lcsmd)
 
-**All Documentation**: See **[DOCS.md](DOCS.md)** for complete documentation organization
-
-**Purpose**: Single source of truth for AI agents to understand the entire system without repetition or confusion, and maintain it properly.
+**Purpose**: Single source of truth for understanding the entire HAL system architecture, development status, and integration points.
 
 ---
 
