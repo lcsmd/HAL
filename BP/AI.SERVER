@@ -24,6 +24,16 @@ EQU BUFFER.SIZE TO 32768
 
 * Initialize
 PRINT "AI Server starting..."
+
+* Open or create CONVERSATIONS file for logging
+OPEN "CONVERSATIONS" TO CONV.FILE ELSE
+   PRINT "Creating CONVERSATIONS file..."
+   EXECUTE "CREATE.FILE CONVERSATIONS 1 23" CAPTURING OUTPUT
+   OPEN "CONVERSATIONS" TO CONV.FILE ELSE
+      PRINT "Warning: Could not create CONVERSATIONS file"
+      CONV.FILE = ""
+   END
+END
 PRINT "Port: ":AI.SERVER.PORT
 
 * Create server socket
@@ -189,6 +199,9 @@ PROCESS.MESSAGE:
       CASE INDEX(INPUT.LOWER, 'hello', 1) OR INDEX(INPUT.LOWER, 'hi', 1)
          RESPONSE.TEXT = "Hello! How can I help you today?"
       
+      CASE INDEX(INPUT.LOWER, 'list conversations', 1) OR INDEX(INPUT.LOWER, 'show conversations', 1)
+         GOSUB LIST.CONVERSATIONS
+      
       CASE INDEX(INPUT.LOWER, 'weather', 1)
          RESPONSE.TEXT = "I don't have weather information available at the moment."
       
@@ -196,6 +209,9 @@ PROCESS.MESSAGE:
          * Default response
          RESPONSE.TEXT = "I heard you say: ":INPUT.TEXT
    END CASE
+   
+   * Log conversation
+   GOSUB LOG.CONVERSATION
    
    * Build JSON response
    RESPONSE.JSON = '{'
@@ -223,6 +239,73 @@ HANDLE.DATE:
    CURRENT.DATE = DATE()
    FORMATTED.DATE = OCONV(CURRENT.DATE, 'D4-MDY[A,3]')
    RESPONSE.TEXT = "Today's date is ":FORMATTED.DATE
+   RETURN
+
+* ============================================================================
+* LOG.CONVERSATION - Save conversation to CONVERSATIONS file
+* ============================================================================
+LOG.CONVERSATION:
+   IF CONV.FILE = "" THEN RETURN
+   
+   * Generate unique record ID: timestamp + session
+   CONV.ID = OCONV(DATE(), 'D4-YMDW'):'.':OCONV(TIME(), 'MTS:'):'.':SESSION.ID[1,8]
+   CONV.ID = CONVERT(' ', '', CONV.ID)
+   CONV.ID = CONVERT(':', '', CONV.ID)
+   
+   * Build record
+   * Field 1: Date (internal)
+   * Field 2: Time (internal)
+   * Field 3: Session ID
+   * Field 4: User ID
+   * Field 5: Input text
+   * Field 6: Response text
+   CONV.REC = DATE()
+   CONV.REC<2> = TIME()
+   CONV.REC<3> = SESSION.ID
+   CONV.REC<4> = USER.ID
+   CONV.REC<5> = INPUT.TEXT
+   CONV.REC<6> = RESPONSE.TEXT
+   
+   WRITE CONV.REC TO CONV.FILE, CONV.ID
+   PRINT "Logged conversation: ":CONV.ID
+   
+   RETURN
+
+* ============================================================================
+* LIST.CONVERSATIONS - Return recent conversations
+* ============================================================================
+LIST.CONVERSATIONS:
+   IF CONV.FILE = "" THEN
+      RESPONSE.TEXT = "Conversation logging is not available."
+      RETURN
+   END
+   
+   * Get last 10 conversations
+   EXECUTE "SELECT CONVERSATIONS BY-DSND @ID FIRST 10" CAPTURING SEL.OUT
+   
+   CONV.LIST = ""
+   CONV.COUNT = 0
+   
+   LOOP
+      READNEXT CONV.ID ELSE EXIT
+      READ CONV.REC FROM CONV.FILE, CONV.ID ELSE CONTINUE
+      
+      CONV.COUNT += 1
+      CONV.DATE = OCONV(CONV.REC<1>, 'D2-MDY')
+      CONV.TIME = OCONV(CONV.REC<2>, 'MTS')
+      CONV.INPUT = CONV.REC<5>[1,50]
+      CONV.RESP = CONV.REC<6>[1,50]
+      
+      IF CONV.LIST # "" THEN CONV.LIST := " | "
+      CONV.LIST := CONV.DATE:" ":CONV.TIME:" - Q: ":CONV.INPUT:" A: ":CONV.RESP
+   REPEAT
+   
+   IF CONV.COUNT = 0 THEN
+      RESPONSE.TEXT = "No conversations logged yet."
+   END ELSE
+      RESPONSE.TEXT = "Last ":CONV.COUNT:" conversations: ":CONV.LIST
+   END
+   
    RETURN
 
 END
