@@ -75,8 +75,8 @@ class VoiceSession:
         
         # Wake word detection
         if WAKE_WORD_AVAILABLE:
-            self.oww_model = OWWModel(wakeword_models=['hey_jarvis_v0.1'], inference_framework='onnx')
-            self.wake_word_name = list(self.oww_model.models.keys())[0]
+            self.oww_model = OWWModel()  # Loads all pre-trained models by default
+            self.wake_word_name = 'hey_jarvis'  # Use hey_jarvis model
             self.vad = webrtcvad.Vad(2)
         else:
             self.oww_model = None

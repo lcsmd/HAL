@@ -176,7 +176,7 @@ class QueryRouter:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(5.0)
-            s.connect(('localhost', 8745))
+            s.connect(('10.1.34.103', 8745))
             
             message = {'type': 'text_input', 'text': query, 'session_id': session_id}
             s.sendall(json.dumps(message).encode() + b'\n')
