@@ -183,6 +183,12 @@ SIMPLE.PARSE:
 * PROCESS.MESSAGE - Main processing logic
 * ============================================================================
 PROCESS.MESSAGE:
+   * Check if this is a log_conversation request from gateway
+   IF MSG.TYPE = "log_conversation" THEN
+      GOSUB HANDLE.LOG.REQUEST
+      RETURN
+   END
+   
    * Log the input
    PRINT "Processing: ":INPUT.TEXT
    
@@ -305,6 +311,54 @@ LIST.CONVERSATIONS:
    END ELSE
       RESPONSE.TEXT = "Last ":CONV.COUNT:" conversations: ":CONV.LIST
    END
+   
+   RETURN
+
+* ============================================================================
+* HANDLE.LOG.REQUEST - Handle log_conversation from gateway
+* ============================================================================
+HANDLE.LOG.REQUEST:
+   IF CONV.FILE = "" THEN
+      RESPONSE.JSON = '{"type":"log_response","status":"error","message":"Logging not available"}'
+      RETURN
+   END
+   
+   * Extract fields from JSON
+   USER.TEXT = JSON.OBJ{"user_text"}
+   RESP.TEXT = JSON.OBJ{"response_text"}
+   INTENT = JSON.OBJ{"intent"}
+   LATENCY = JSON.OBJ{"latency_ms"}
+   TIMESTAMP = JSON.OBJ{"timestamp"}
+   
+   * Generate unique record ID
+   CONV.ID = OCONV(DATE(), 'D4-YMDW'):'.':OCONV(TIME(), 'MTS:'):'.':SESSION.ID[1,8]
+   CONV.ID = CONVERT(' ', '', CONV.ID)
+   CONV.ID = CONVERT(':', '', CONV.ID)
+   
+   * Build record using CONVERSATION schema
+   * Field 1: Date (internal)
+   * Field 2: Time (internal)
+   * Field 3: Session ID
+   * Field 4: User ID
+   * Field 5: User text (input)
+   * Field 6: Response text
+   * Field 7: Intent
+   * Field 8: Latency ms
+   * Field 9: Timestamp (ISO format)
+   CONV.REC = DATE()
+   CONV.REC<2> = TIME()
+   CONV.REC<3> = SESSION.ID
+   CONV.REC<4> = USER.ID
+   CONV.REC<5> = USER.TEXT
+   CONV.REC<6> = RESP.TEXT
+   CONV.REC<7> = INTENT
+   CONV.REC<8> = LATENCY
+   CONV.REC<9> = TIMESTAMP
+   
+   WRITE CONV.REC TO CONV.FILE, CONV.ID
+   PRINT "Gateway log saved: ":CONV.ID
+   
+   RESPONSE.JSON = '{"type":"log_response","status":"success","id":"':CONV.ID:'"}'
    
    RETURN
 

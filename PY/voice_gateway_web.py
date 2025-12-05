@@ -3,11 +3,13 @@
 HAL Web Voice Gateway
 WebSocket server for the browser client (hal2.lcs.ai).
 
-Features (minimal, pragmatic implementation):
+Features:
 - Accepts WebSocket connections on port 8768
+- Wake word detection using openwakeword ("hey jarvis")
 - Streams audio chunks from the browser and detects end-of-speech via silence timeout
 - Transcribes audio via Faster-Whisper HTTP API (Ubuntu:8001)
 - Routes queries through QueryRouter (LLM / HA / QM) and returns responses
+- Logs all conversations to QM CONVERSATION file
 - Supports direct text input messages
 """
 
@@ -16,16 +18,27 @@ import base64
 import io
 import json
 import os
+import socket
 import sys
 import time
 import uuid
 import wave
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Dict, List, Optional
 
 import aiohttp
+import numpy as np
 import websockets
 from websockets.server import WebSocketServerProtocol
+
+# Wake word detection
+try:
+    from openwakeword.model import Model as WakeWordModel
+    WAKE_WORD_AVAILABLE = True
+except ImportError:
+    WAKE_WORD_AVAILABLE = False
+    print("[VoiceGatewayWeb] openwakeword not available - wake word detection disabled")
 
 # Add PY directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -42,6 +55,14 @@ TTS_VOICE = "alloy"
 SAMPLE_RATE = 16000
 SILENCE_TIMEOUT = 1.5  # seconds of silence to treat as end-of-speech
 MIN_AUDIO_MS = 500     # require at least this much audio before transcribing
+
+# Wake word settings
+WAKE_WORD_THRESHOLD = 0.5  # confidence threshold for wake word detection
+WAKE_WORD_MODEL = "hey_jarvis"  # openwakeword model name
+
+# Conversation logging - QM server
+QM_LOG_HOST = "10.1.34.103"  # Windows QM server
+QM_LOG_PORT = 8745  # AI.SERVER port
 
 
 @dataclass
