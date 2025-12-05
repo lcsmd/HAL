@@ -32,10 +32,9 @@ class HALClient {
         this.textInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.sendText();
         });
-        this.voiceBtn.addEventListener('click', () => this.toggleVoice());
         
-        // Request microphone permissions on load
-        this.requestMicrophoneAccess();
+        // Auto-start listening for wake word when connected
+        this.startListeningOnConnect = true;
     }
     
     async requestMicrophoneAccess() {
@@ -56,7 +55,11 @@ class HALClient {
         
         this.ws.onopen = () => {
             console.log('[OK] Connected to HAL');
-            this.updateStatus('Connected! Ready to chat.');
+            this.updateStatus('Connected! Say "Hey Jarvis" to begin.');
+            // Auto-start listening for wake word
+            if (this.startListeningOnConnect) {
+                this.startListening();
+            }
         };
         
         this.ws.onmessage = (event) => {
@@ -151,11 +154,11 @@ class HALClient {
             });
             
             this.isListening = true;
-            this.voiceBtn.classList.add('listening');
-            this.voiceBtn.textContent = '🔴';
+            if (this.voiceBtn) {
+                this.voiceBtn.classList.add('listening');
+                this.voiceBtn.textContent = '🔴';
+            }
             this.updateStatus('🎤 Listening for "Hey Jarvis"...');
-            this.voiceIndicator.textContent = '🎤 Say "Hey Jarvis"';
-            this.voiceIndicator.classList.add('active');
             
             // Create audio context for processing
             const audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
@@ -194,10 +197,14 @@ class HALClient {
     
     stopListening() {
         this.isListening = false;
-        this.voiceBtn.classList.remove('listening');
-        this.voiceBtn.textContent = '🎤';
+        if (this.voiceBtn) {
+            this.voiceBtn.classList.remove('listening');
+            this.voiceBtn.textContent = '🎤';
+        }
         this.updateStatus('Ready');
-        this.voiceIndicator.classList.remove('active');
+        if (this.voiceIndicator) {
+            this.voiceIndicator.classList.remove('active');
+        }
         
         if (this.audioStream) {
             this.audioStream.getTracks().forEach(track => track.stop());
