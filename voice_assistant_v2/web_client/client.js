@@ -10,7 +10,7 @@ class HALClient {
         this.isListening = false;
         
         // Server URL - using HAProxy reverse proxy with wildcard cert
-        this.serverUrl = 'wss://hal2.lcs.ai';
+        this.serverUrl = 'wss://hal.lcs.ai';
         
         // DOM elements
         this.chat = document.getElementById('chat');
