@@ -286,10 +286,10 @@
 **Last Updated:** 2025-12-03
 
 **Description:**
-Browser connects to wss://hal2.lcs.ai but connection doesn't stay stable. Client.js shows connect/disconnect loop.
+Browser connects to wss://hal.lcs.ai but connection doesn't stay stable. Client.js shows connect/disconnect loop.
 
 **Reproduction:**
-1. Open https://hal2.lcs.ai
+1. Open https://hal.lcs.ai
 2. Observe status indicator
 3. Try typing text - no response
 
@@ -418,7 +418,7 @@ WebSocket not properly connected.
 - Windows Server (10.1.34.103) ✅
 - Ubuntu Server (10.1.10.20) ✅
 - HAProxy server (ubu6) ✅
-- Domain name (hal2.lcs.ai) ✅
+- Domain name (hal.lcs.ai) ✅
 - SSL certificate (wildcard *.lcs.ai) ✅
 
 **Documentation:**

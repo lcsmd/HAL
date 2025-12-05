@@ -18,7 +18,7 @@ The HAL Web Voice Client is a **zero-installation, browser-based voice and text 
 │  │  - Displays responses in beautiful UI                  │ │
 │  └────────────────────────────────────────────────────────┘ │
 │                            ↓                                 │
-│                      wss://hal2.lcs.ai                       │
+│                      wss://hal.lcs.ai                       │
 └─────────────────────────────────────────────────────────────┘
                                ↓
 ┌─────────────────────────────────────────────────────────────┐
@@ -139,8 +139,8 @@ Intents:
 frontend https_in
     bind *:443 ssl crt /etc/haproxy/certs/wildcard.pem
     
-    # ACL for hal2.lcs.ai
-    acl is_hal2 hdr(host) -i hal2.lcs.ai
+    # ACL for hal.lcs.ai
+    acl is_hal2 hdr(host) -i hal.lcs.ai
     use_backend hal2_backend if is_hal2
 
 backend hal2_backend
@@ -290,7 +290,7 @@ HAL/
 ## URLs and Ports
 
 ### Production URLs
-- **Web Client:** https://hal2.lcs.ai
+- **Web Client:** https://hal.lcs.ai
 - **HAProxy Stats:** http://ubu6:8404/stats (admin/apgar-66)
 
 ### Internal Ports (Windows Server - 10.1.34.103)
@@ -313,7 +313,7 @@ HAL/
 ### HAProxy Backend (`/etc/haproxy/haproxy.cfg` on ubu6)
 
 Key sections:
-1. **Frontend ACL**: `acl is_hal2 hdr(host) -i hal2.lcs.ai`
+1. **Frontend ACL**: `acl is_hal2 hdr(host) -i hal.lcs.ai`
 2. **Frontend Routing**: `use_backend hal2_backend if is_hal2`
 3. **Backend Definition**: See architecture section above
 
@@ -347,7 +347,7 @@ Key sections:
 
 **Production-Ready:**
 - ✅ SSL with real certificate
-- ✅ Domain name (hal2.lcs.ai)
+- ✅ Domain name (hal.lcs.ai)
 - ✅ Reverse proxy (HAProxy)
 - ✅ Server-side processing
 - ✅ Cross-platform support
@@ -410,7 +410,7 @@ Key sections:
 ### Manual Testing Steps
 
 **Text Mode:**
-1. Open https://hal2.lcs.ai
+1. Open https://hal.lcs.ai
 2. Type "what time is it" → Should get current time
 3. Type "tell me a joke" → Should get LLM response
 4. Type "hello" → Should get AI.SERVER greeting
@@ -439,7 +439,7 @@ Key sections:
 **"Microphone access denied"**
 - Browser requires HTTPS for microphone access
 - Check browser permissions (Settings → Privacy → Microphone)
-- Ensure hal2.lcs.ai is in allowed list
+- Ensure hal.lcs.ai is in allowed list
 
 **"Connected/Disconnected loop"**
 - Check Voice Gateway is running (port 8768)

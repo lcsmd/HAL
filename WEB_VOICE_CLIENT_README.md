@@ -2,7 +2,7 @@
 
 **Zero-installation voice and text interface for HAL AI system**
 
-Access from any device: **https://hal2.lcs.ai**
+Access from any device: **https://hal.lcs.ai**
 
 ---
 
@@ -88,7 +88,7 @@ HAL/
 
 ```
 Browser (Any Device)
-    ↓ https://hal2.lcs.ai
+    ↓ https://hal.lcs.ai
 HAProxy (ubu6) - SSL Termination
     ↓ Routes to:
     ├─→ Port 8080: Static Files (HTML/JS)
@@ -111,7 +111,7 @@ Voice Gateway (Windows Server)
 ## How to Use (When Working)
 
 ### Access the Interface
-1. Open browser: **https://hal2.lcs.ai**
+1. Open browser: **https://hal.lcs.ai**
 2. Allow microphone access when prompted
 
 ### Text Mode
@@ -141,7 +141,7 @@ Voice Gateway (Windows Server)
 ### HAProxy Server (ubu6)
 - **Port 443:** HTTPS frontend (SSL termination)
 - Wildcard certificate: *.lcs.ai
-- Routes hal2.lcs.ai to backend servers
+- Routes hal.lcs.ai to backend servers
 
 ---
 
@@ -185,7 +185,7 @@ python PY\ai_server.py
 
 ### "Microphone access denied"
 1. Click lock icon in browser address bar
-2. Allow microphone for hal2.lcs.ai
+2. Allow microphone for hal.lcs.ai
 3. Refresh page
 
 ### "No response to text input"

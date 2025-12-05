@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 HAL Web Voice Gateway
-WebSocket server for the browser client (hal2.lcs.ai).
+WebSocket server for the browser client (hal.lcs.ai).
 
 Features:
 - Accepts WebSocket connections on port 8768

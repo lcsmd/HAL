@@ -97,7 +97,7 @@ TCP    0.0.0.0:8768    0.0.0.0:0    LISTENING
 
 ### Quick Test
 
-1. **Open browser:** https://hal2.lcs.ai
+1. **Open browser:** https://hal.lcs.ai
 2. **Watch status:** Should show "Connected!" (not "Disconnected")
 3. **Type:** `hello` and press Enter
 4. **Expect:** Response appears within 3 seconds

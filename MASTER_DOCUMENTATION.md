@@ -9,7 +9,7 @@
 **New User?** Start here:
 1. [WEB_VOICE_CLIENT_README.md](WEB_VOICE_CLIENT_README.md) - Overview of web voice client
 2. [WEB_VOICE_CLIENT_QUICK_START.md](WEB_VOICE_CLIENT_QUICK_START.md) - User guide (if available)
-3. Access HAL: **https://hal2.lcs.ai**
+3. Access HAL: **https://hal.lcs.ai**
 
 **Developer?** Start here:
 1. [WEB_VOICE_CLIENT_ARCHITECTURE.md](WEB_VOICE_CLIENT_ARCHITECTURE.md) - System architecture
@@ -200,7 +200,7 @@ ubuai_services/                 # Ubuntu AI services
 ## 🎯 Current Focus
 
 ### Active Development
-**Web Voice Client** - Browser-based interface (https://hal2.lcs.ai)
+**Web Voice Client** - Browser-based interface (https://hal.lcs.ai)
 
 **Status:** In Development  
 **Priority:** HIGH  
@@ -215,7 +215,7 @@ ubuai_services/                 # Ubuntu AI services
 ```
 ┌─────────────────────────────────────────────────────────┐
 │  Browser (Any Device)                                    │
-│  - https://hal2.lcs.ai                                   │
+│  - https://hal.lcs.ai                                   │
 │  - Zero installation                                     │
 │  - Voice + Text input                                    │
 └─────────────────────────────────────────────────────────┘
@@ -400,7 +400,7 @@ git push origin main
 ```
 
 ### Essential URLs
-- **Web Client:** https://hal2.lcs.ai
+- **Web Client:** https://hal.lcs.ai
 - **HAProxy Stats:** http://ubu6:8404/stats
 - **GitHub Repo:** https://github.com/lcsmd/HAL
 
@@ -469,7 +469,7 @@ git push origin main
 
 ### 👤 End User
 1. [WEB_VOICE_CLIENT_README.md](WEB_VOICE_CLIENT_README.md) - What is HAL and how to use it
-2. Go to https://hal2.lcs.ai and start using HAL
+2. Go to https://hal.lcs.ai and start using HAL
 
 ### 👨‍💻 Developer (New to Project)
 1. [WEB_VOICE_CLIENT_ARCHITECTURE.md](WEB_VOICE_CLIENT_ARCHITECTURE.md) - Understand the system

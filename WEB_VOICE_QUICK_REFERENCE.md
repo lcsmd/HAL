@@ -16,7 +16,7 @@ start_web_voice_servers.bat
 ```
 
 ### 3. Test
-Open browser: **https://hal2.lcs.ai**
+Open browser: **https://hal.lcs.ai**
 
 ---
 
@@ -55,7 +55,7 @@ curl http://10.1.34.103:8080
 wscat -c ws://10.1.34.103:8768
 
 # Through HAProxy
-curl -I https://hal2.lcs.ai
+curl -I https://hal.lcs.ai
 ```
 
 ---
@@ -106,11 +106,11 @@ pkill -f voice_gateway_web
 cd PY && python voice_gateway_web.py &
 ```
 
-### Can't Access https://hal2.lcs.ai
+### Can't Access https://hal.lcs.ai
 
 **Check 1: DNS**
 ```bash
-nslookup hal2.lcs.ai
+nslookup hal.lcs.ai
 # Should resolve to HAProxy server
 ```
 
@@ -135,7 +135,7 @@ sudo systemctl status haproxy
 # One-liner to check everything
 echo "HTTP Server:" && curl -s -o /dev/null -w "%{http_code}" http://10.1.34.103:8080 && \
 echo " | WebSocket:" && netstat -an | grep -q 8768 && echo "LISTENING" || echo "DOWN" && \
-echo " | HAProxy:" && curl -s -I https://hal2.lcs.ai | head -1
+echo " | HAProxy:" && curl -s -I https://hal.lcs.ai | head -1
 
 # Expected output:
 # HTTP Server: 200
@@ -161,7 +161,7 @@ echo " | HAProxy:" && curl -s -I https://hal2.lcs.ai | head -1
 ## 🌐 Network Layout
 
 ```
-Browser → wss://hal2.lcs.ai (HAProxy:443)
+Browser → wss://hal.lcs.ai (HAProxy:443)
            ↓
          HAProxy routes to:
            ↓
@@ -231,7 +231,7 @@ System is working when:
 ---
 
 **Quick Links:**
-- Public URL: https://hal2.lcs.ai
+- Public URL: https://hal.lcs.ai
 - HAProxy Stats: http://10.1.50.100:8404/stats (admin/apgar-66)
 - Docs: WEB_VOICE_CLIENT_TESTING.md
 

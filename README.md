@@ -6,7 +6,7 @@
 
 ## 🎤 NEW: Web Voice Client (Zero Installation!)
 
-**Access HAL from any device:** **https://hal2.lcs.ai**
+**Access HAL from any device:** **https://hal.lcs.ai**
 
 - ✅ No installation required - works in any browser
 - ✅ Cross-platform: Windows, Mac, Linux, iOS, Android  

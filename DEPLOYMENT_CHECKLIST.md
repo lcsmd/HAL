@@ -230,14 +230,14 @@ curl -I http://10.1.34.103:8080
 # Expected: HTTP/1.0 200 OK
 
 # Test through HAProxy
-curl -I https://hal2.lcs.ai
+curl -I https://hal.lcs.ai
 
 # Expected: HTTP/2 200
 ```
 
 **Test 2: WebSocket connection**
 
-Open browser to: **https://hal2.lcs.ai**
+Open browser to: **https://hal.lcs.ai**
 
 Watch the status indicator:
 - Should show "Connecting..." (< 1 second)
@@ -374,7 +374,7 @@ Once deployed, verify all these items:
 - [ ] No errors in service logs
 
 **Connectivity:**
-- [ ] Can access https://hal2.lcs.ai
+- [ ] Can access https://hal.lcs.ai
 - [ ] Page loads without SSL errors
 - [ ] No errors in browser console
 - [ ] Status shows "Connected!" (not "Disconnected")

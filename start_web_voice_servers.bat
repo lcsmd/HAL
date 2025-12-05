@@ -52,7 +52,7 @@ echo.
 echo HTTP Server (static files): http://10.1.34.103:8080
 echo Voice Gateway (WebSocket):  ws://10.1.34.103:8768
 echo.
-echo Public URL: https://hal2.lcs.ai
+echo Public URL: https://hal.lcs.ai
 echo.
 echo Servers are running in minimized windows.
 echo Close the windows to stop the servers.

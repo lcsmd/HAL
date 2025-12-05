@@ -59,7 +59,7 @@ netstat -an | findstr 8768
 
 **Option A: Using Browser Console**
 
-1. Open https://hal2.lcs.ai in your browser
+1. Open https://hal.lcs.ai in your browser
 2. Open Developer Tools (F12)
 3. Go to Console tab
 4. Look for connection messages:
@@ -74,7 +74,7 @@ netstat -an | findstr 8768
 npm install -g wscat
 
 # Test WebSocket connection
-wscat -c wss://hal2.lcs.ai
+wscat -c wss://hal.lcs.ai
 
 # You should see:
 Connected (press CTRL+C to quit)
@@ -87,7 +87,7 @@ Connected (press CTRL+C to quit)
 
 ### Step 5: Test Text Input
 
-1. Open https://hal2.lcs.ai
+1. Open https://hal.lcs.ai
 2. Wait for "Connected!" status
 3. Type "hello" in the text box
 4. Press Enter or click Send
@@ -117,7 +117,7 @@ Connected (press CTRL+C to quit)
    ```bash
    sudo tail -f /var/log/haproxy.log
    ```
-   Look for requests to `hal2.lcs.ai` and which backend they're routed to.
+   Look for requests to `hal.lcs.ai` and which backend they're routed to.
 
 2. **Check Voice Gateway logs:**
    ```bash
@@ -157,13 +157,13 @@ C. **Firewall blocking port 8768:**
 
 1. **Check SSL certificate:**
    ```bash
-   # Verify cert is valid for hal2.lcs.ai
-   openssl s_client -connect hal2.lcs.ai:443 -servername hal2.lcs.ai
+   # Verify cert is valid for hal.lcs.ai
+   openssl s_client -connect hal.lcs.ai:443 -servername hal.lcs.ai
    ```
 
 2. **Check DNS resolution:**
    ```bash
-   nslookup hal2.lcs.ai
+   nslookup hal.lcs.ai
    # Should resolve to HAProxy server IP
    ```
 
@@ -291,7 +291,7 @@ Before declaring the system "working", verify all these:
 - [ ] HAProxy config updated and reloaded
 - [ ] HTTP server running on port 8080
 - [ ] Voice Gateway running on port 8768
-- [ ] Can access https://hal2.lcs.ai in browser
+- [ ] Can access https://hal.lcs.ai in browser
 - [ ] Status shows "Connected!" within 3 seconds
 - [ ] Typing "hello" and pressing Enter gets a response
 - [ ] Response appears within 5 seconds
@@ -337,7 +337,7 @@ curl -I http://10.1.34.103:8080
 wscat -c ws://10.1.34.103:8768
 
 # Through HAProxy
-curl -I https://hal2.lcs.ai
+curl -I https://hal.lcs.ai
 ```
 
 ---

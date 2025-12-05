@@ -124,7 +124,7 @@ chmod +x start_web_voice_servers.sh stop_web_voice_servers.sh
 ### Step 4: Test
 ```bash
 # From your local machine
-# Open browser to https://hal2.lcs.ai
+# Open browser to https://hal.lcs.ai
 
 # Should see:
 # - "Connected!" within 3 seconds
@@ -139,7 +139,7 @@ chmod +x start_web_voice_servers.sh stop_web_voice_servers.sh
 ## Expected Behavior After Fix
 
 ### WebSocket Connection
-✅ Browser connects to `wss://hal2.lcs.ai`  
+✅ Browser connects to `wss://hal.lcs.ai`  
 ✅ Status shows "Connected!" within 3 seconds  
 ✅ Connection stays stable (no disconnect loop)  
 ✅ No errors in browser console
@@ -205,7 +205,7 @@ Use this checklist to verify the fix is working:
 - [ ] No Python errors in logs
 
 **Browser Access:**
-- [ ] Can access https://hal2.lcs.ai
+- [ ] Can access https://hal.lcs.ai
 - [ ] Page loads without SSL errors
 - [ ] Browser console shows no errors
 - [ ] Status changes from "Connecting..." to "Connected!"

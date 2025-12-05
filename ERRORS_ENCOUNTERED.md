@@ -257,15 +257,15 @@ server hal2_ws 10.1.34.103:8768 check
 **Missing Configuration:**
 ```haproxy
 # frontend https_in
-# Missing: acl is_hal2 hdr(host) -i hal2.lcs.ai
+# Missing: acl is_hal2 hdr(host) -i hal.lcs.ai
 # Missing: use_backend hal2_backend if is_hal2
 ```
 
 **Solution:**
 ```haproxy
 frontend https_in
-    # Add ACL for hal2.lcs.ai
-    acl is_hal2 hdr(host) -i hal2.lcs.ai
+    # Add ACL for hal.lcs.ai
+    acl is_hal2 hdr(host) -i hal.lcs.ai
     
     # Add routing BEFORE default_backend
     use_backend hal2_backend if is_hal2
@@ -683,7 +683,7 @@ Get-Process -Id (Get-NetTCPConnection -LocalPort 8768).OwningProcess
 
 # Test WebSocket connection
 # Use wscat tool: npm install -g wscat
-wscat -c wss://hal2.lcs.ai
+wscat -c wss://hal.lcs.ai
 ```
 
 ---
